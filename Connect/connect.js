@@ -1,7 +1,6 @@
 require('dotenv').config()
 const mysql = require("mysql2");
 
-console.log(process.env.DB_HOST)
 
 let client = {
     username: process.env.TWITCH_USER,
@@ -39,8 +38,6 @@ async function channels() {
   });
   return channelOptions
 }
-
-console.log(channels())
 
 module.exports = {
     con, 

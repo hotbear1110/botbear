@@ -1,7 +1,11 @@
 require('dotenv').config()
 const { ChatClient } = require("dank-twitch-irc");
-const login = require('./Connect/connect');
+const login = require('./connect/connect');
 
 const cc = new ChatClient(login.client);
 
-cc.on
+console.log("FeelsDankMan")
+cc.on("ready", async () => {
+    console.log("Successfully connected to chat")
+    cc.joinAll(await login.channels())
+});
