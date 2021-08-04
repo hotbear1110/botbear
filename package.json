@@ -1,0 +1,22 @@
+{
+  "name": "botbear-2.0",
+  "version": "1.0.0",
+  "description": "Dank bot, idk",
+  "main": "bot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hotbear1110/botbear.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hotbear1110/botbear/issues"
+  },
+  "homepage": "https://github.com/hotbear1110/botbear#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0"
+  }
+}
