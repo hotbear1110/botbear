@@ -1,8 +1,9 @@
 const db = require('../connect/connect.js');
 const tools = require("../tools/tools.js");
 
+
 module.exports = {
-    name: "notify",
+    name: "remove",
     execute: async (data, input) => {
         try {
             switch (input[1]) {
@@ -11,26 +12,23 @@ module.exports = {
                     let users = JSON.parse(getUsers[0].ping_users)
 
                     if (users.includes(data.senderUsername)) {
-                        return `You already have a subscription for the event "live". If you want to unsubscribe, type "``removeme live". `
-                    }
-                    else {
-                        users.push(data.senderUsername)
+                        users.splice(users.indexOf(data.senderUsername), 1);
                         users = JSON.stringify(users)
 
-                        tools.query(`UPDATE Streamers SET ping_users=? WHERE username=?`, [users, data.channelName])
 
-                        return `You are now subscribed to the event "live"`
+                        return `You are now unsubscribed from the event "live"`;
                     }
-
-
+                    else {
+                        return `You do not have a subscription for the event "live". If you want to subscribe, type "``notifyme live". `;
+                    }
                     break;
                 case "title":
-                    // add user to title notify list
+                    // remove user from title notify list
                     break;
                 case "game":
-                // add user to gamenotify list
+                // remove user from gamenotify list
                 default:
-                    return `Please specify an event to subscribe to. The following events are available: live (might add more stuff later) `
+                    return `Please specify an event to un-subscribe to. The following events are available: live (might add more stuff later) `;
             }
         } catch (err) {
             console.log(err);

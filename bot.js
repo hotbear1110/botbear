@@ -2,6 +2,7 @@ require('dotenv').config()
 const { ChatClient } = require("dank-twitch-irc");
 const login = require('./connect/connect.js');
 const tools = require("./tools/tools.js")
+const requireDir = require("require-dir")
 
 const cc = new ChatClient(login.client);
 
@@ -9,13 +10,11 @@ const cc = new ChatClient(login.client);
 cc.on("ready", async () => {
     console.log("Successfully connected to chat")
     cc.joinAll(await login.channels())
-
 });
 
 cc.on("JOIN", (msg) => {
     console.log(`* Joined ${msg.channelName}`)
 });
-
 
 cc.connect();
 
@@ -24,19 +23,26 @@ cc.on("PRIVMSG", async (msg) => {
     const commandName = msg.messageText.toLowerCase().trim();
     let input = msg.messageText.toLowerCase().split(" ");
 
-    if (msg.senderUserID === process.env.TWITCH_UID) {return;}
-    
-    if (input[0].slice(0,2) !== "``") {
+    if (msg.senderUserID === process.env.TWITCH_UID) { return; }
+
+    const testPhrase = await tools.banphrasePass(msg.senderUsername, msg.channelName);
+
+    if (testPhrase.banned) {
+        cc.say(channelName, `[Banphrased Username] cmonBruh `);
         return;
     }
 
-    input[0] = input[0].substr(2,input[0].length);
+    if (input[0].slice(0, 2) !== "``") {
+        return;
+    }
+
+    input[0] = input[0].substr(2, input[0].length);
 
 
     const commands = requireDir("./commands");
-    
 
-    if (typeof commands[input] === "undefined") {
+    if (typeof commands[input[0]] === "undefined") {
+        console.log("undefined")
         return;
     }
 
@@ -45,11 +51,13 @@ cc.on("PRIVMSG", async (msg) => {
 
 
     if (!result) {
+        console.log(result)
+        console.log("yes")
         return;
     }
 
     const userCD = new tools.Cooldown(msg, input);
-  
+
     if ((await userCD.setCooldown()).length) { return; }
 
     cc.say(msg.channelName, `${msg.senderUsername}, ` + result);
