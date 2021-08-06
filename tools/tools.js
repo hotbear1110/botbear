@@ -1,3 +1,4 @@
+require('dotenv').config()
 const mysql = require("mysql2");
 const got = require("got");
 const db = require('../connect/connect.js');
@@ -38,3 +39,35 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
         resolve(this.checkBanphrase);
       
       }); 
+
+
+ hasCooldown = new Set();
+
+      exports.Cooldown = class Cooldown {
+          constructor(msg, command) {
+              this.userId = msg.senderUserID;
+              this.command = command;
+              this.key = `${this.userId}_${this.command}`;
+          }
+      
+          async cooldownReduction() {
+              const cooldown = 5000;
+      
+              return cooldown;
+          }
+      
+          // command cooldown
+          async setCooldown() {
+              if (this.userId === process.env.TWITCH_OWNERUID) { return [] }; // Your user ID
+      
+              if (hasCooldown.has(this.key)) { return [this.key]; }
+      
+              hasCooldown.add(this.key);
+      
+              setTimeout(() => {
+                  hasCooldown.delete(this.key);
+              }, await this.cooldownReduction());
+              return [];
+          }
+      }
+
