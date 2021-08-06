@@ -17,9 +17,12 @@
   },
   "homepage": "https://github.com/hotbear1110/botbear#readme",
   "dependencies": {
+    "axios": "^0.21.1",
     "dank-twitch-irc": "^4.3.0",
     "dotenv": "^10.0.0",
     "got": "^11.8.2",
-    "mysql2": "^2.2.5"
+    "mysql2": "^2.2.5",
+    "require-dir": "^1.2.0",
+    "underscore": "^1.13.1"
   }
 }

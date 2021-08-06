@@ -3,16 +3,16 @@ const mysql = require("mysql2");
 
 
 let client = {
-    username: process.env.TWITCH_USER,
-    password: process.env.TWITCH_PASSWORD,
+  username: process.env.TWITCH_USER,
+  password: process.env.TWITCH_PASSWORD,
 };
 
 
 const con = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE,
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
 });
 
 
@@ -40,7 +40,7 @@ async function channels() {
 }
 
 module.exports = {
-    con, 
-    client,
-    channels: channels
- }
+  con,
+  client,
+  channels: channels
+}
