@@ -32,22 +32,21 @@ cc.on("PRIVMSG", async (msg) => {
         return;
     }
 
-    if (input[0].slice(0, 2) !== "``") {
+    if (input[0] !== "bb") {
         return;
     }
 
-    input[0] = input[0].substr(2, input[0].length);
 
 
     const commands = requireDir("./commands");
 
-    if (typeof commands[input[0]] === "undefined") {
+    if (typeof commands[input[1]] === "undefined") {
         console.log("undefined")
         return;
     }
 
 
-    let result = await commands[input[0].toLowerCase()].execute(msg, input)
+    let result = await commands[input[1].toLowerCase()].execute(msg, input)
 
 
     if (!result) {
