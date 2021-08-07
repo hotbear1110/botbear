@@ -5,7 +5,7 @@ module.exports = {
     name: "remove",
     execute: async (data, input) => {
         try {
-            switch (input[1]) {
+            switch (input[2]) {
                 case "live":
                     const getUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${data.channelName}"`)
                     let users = JSON.parse(getUsers[0].ping_users)
@@ -19,7 +19,7 @@ module.exports = {
                         return `You are now unsubscribed from the event "live"`;
                     }
                     else {
-                        return 'You do not have a subscription for the event "live". If you want to subscribe, type "``notify live".';
+                        return 'You do not have a subscription for the event "live". If you want to subscribe, type "bb notify live".';
                     }
                     break;
                 case "title":
