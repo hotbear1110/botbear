@@ -10,7 +10,7 @@ module.exports = {
                     let users = JSON.parse(getUsers[0].ping_users)
 
                     if (users.includes(data.senderUsername)) {
-                        return `You already have a subscription for the event "live". If you want to unsubscribe, type "``removeme live". `
+                        return 'You already have a subscription for the event "live". If you want to unsubscribe, type "``removeme live".'
                     }
                     else {
                         users.push(data.senderUsername)
@@ -18,7 +18,7 @@ module.exports = {
 
                         tools.query(`UPDATE Streamers SET ping_users=? WHERE username=?`, [users, data.channelName])
 
-                        return `You are now subscribed to the event "live"`
+                        return 'You are now subscribed to the event "live"'
                     }
 
 

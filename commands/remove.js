@@ -18,7 +18,7 @@ module.exports = {
                         return `You are now unsubscribed from the event "live"`;
                     }
                     else {
-                        return `You do not have a subscription for the event "live". If you want to subscribe, type "``notifyme live". `;
+                        return 'You do not have a subscription for the event "live". If you want to subscribe, type "``notifyme live".';
                     }
                     break;
                 case "title":
