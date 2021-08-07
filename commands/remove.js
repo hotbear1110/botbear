@@ -14,11 +14,12 @@ module.exports = {
                         users.splice(users.indexOf(data.senderUsername), 1);
                         users = JSON.stringify(users)
 
+                        tools.query(`UPDATE Streamers SET ping_users=? WHERE username=?`, [users, data.channelName])
 
                         return `You are now unsubscribed from the event "live"`;
                     }
                     else {
-                        return 'You do not have a subscription for the event "live". If you want to subscribe, type "``notifyme live".';
+                        return 'You do not have a subscription for the event "live". If you want to subscribe, type "``notify live".';
                     }
                     break;
                 case "title":
