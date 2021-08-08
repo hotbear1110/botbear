@@ -5,6 +5,7 @@ const mysql = require("mysql2");
 let client = {
   username: process.env.TWITCH_USER,
   password: process.env.TWITCH_PASSWORD,
+  rateLimits: "default",
 };
 
 
