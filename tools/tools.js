@@ -43,8 +43,8 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
 hasCooldown = new Set();
 
 exports.Cooldown = class Cooldown {
-    constructor(msg, command) {
-        this.userId = msg.senderUserID;
+    constructor(user, command) {
+        this.userId = user['user-id'];
         this.command = command;
         this.key = `${this.userId}_${this.command}`;
     }

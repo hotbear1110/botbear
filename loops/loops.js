@@ -1,24 +1,13 @@
 require('dotenv').config()
-const { ChatClient } = require("dank-twitch-irc");
+const tmi = require("tmi.js");
 const login = require('../connect/connect.js');
 const tools = require("../tools/tools.js")
 const _ = require("underscore")
 const axios = require('axios');
 
-const cc = new ChatClient(login.client);
+const cc = new tmi.client(login)
 
-
-
-cc.on("ready", async () => {
-    console.log("Loop works yes!")
-    cc.joinAll(await login.channels())
-
-});
-
-
-
-
-cc.connect();
+cc.connect()
 
 setInterval(async function () {
     const streamers = await tools.query('SELECT * FROM Streamers')
@@ -44,7 +33,7 @@ setInterval(async function () {
                     await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`)
                     _.each(userlist, function (msg, i) {
                         setTimeout(function () {
-                            cc.me(`${stream.username}`, `${stream.liveemote} ${stream.username} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`);
+                            cc.action(`#${stream.username}`, `${stream.liveemote} ${stream.username} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`);
                         }, 2000 * i);
                     });
                 };
@@ -53,7 +42,7 @@ setInterval(async function () {
                     await tools.query(`UPDATE Streamers SET islive = 0 WHERE username ="${stream.username}"`)
                     _.each(userlist, function (msg, i) {
                         setTimeout(function () {
-                            cc.me(`${stream.username}`, `${stream.offlineemote} ${stream.username} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`);
+                            cc.action(`#${stream.username}`, `${stream.offlineemote} ${stream.username} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`);
                         }, 2000 * i);
                     });
                 };
@@ -88,7 +77,7 @@ setInterval(async function () {
                     await tools.query(`UPDATE Streamers SET title=? WHERE username=?`, [newTitle, stream.username])
                     _.each(userlist, function (msg, i) {
                         setTimeout(function () {
-                            cc.me(`${stream.username}`, `${stream.liveemote} NEW TITLE ! ${stream.liveemote} 👉 ${newTitle} 👉 ${userlist[i]}`);
+                            cc.action(`#${stream.username}`, `${stream.liveemote} NEW TITLE ! ${stream.liveemote} 👉 ${newTitle} 👉 ${userlist[i]}`);
                         }, 2000 * i);
                     });
                 };
@@ -123,7 +112,7 @@ setInterval(async function () {
                     await tools.query(`UPDATE Streamers SET game=? WHERE username=?`, [newGame, stream.username])
                     _.each(userlist, function (msg, i) {
                         setTimeout(function () {
-                            cc.me(`${stream.username}`, `${stream.liveemote} NEW GAME ! ${stream.liveemote} 👉 ${newGame} 👉 ${userlist[i]}`);
+                            cc.action(`#${stream.username}`, `${stream.liveemote} NEW GAME ! ${stream.liveemote} 👉 ${newGame} 👉 ${userlist[i]}`);
                         }, 2000 * i);
                     });
                 };

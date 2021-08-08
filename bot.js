@@ -1,34 +1,30 @@
 require('dotenv').config()
-const { ChatClient } = require("dank-twitch-irc");
+const tmi = require("tmi.js");
 const login = require('./connect/connect.js');
 const tools = require("./tools/tools.js")
-const requireDir = require("require-dir")
+const requireDir = require("require-dir");
 
-const cc = new ChatClient(login.client);
-
-
-cc.on("ready", async () => {
-    console.log("Successfully connected to chat")
-    cc.joinAll(await login.channels())
-});
-
-cc.on("JOIN", (msg) => {
-    console.log(`* Joined ${msg.channelName}`)
-});
-
-cc.connect();
+const cc = new tmi.client(login.options)
 
 
-cc.on("PRIVMSG", async (msg) => {
-    const commandName = msg.messageText.toLowerCase().trim();
-    let input = msg.messageText.toLowerCase().split(" ");
+cc.on("message", onMessageHandler);
+cc.on('connected', onConnectedHandler);
 
-    if (msg.senderUserID === process.env.TWITCH_UID) { return; }
+cc.connect()
 
-    const testPhrase = await tools.banphrasePass(msg.senderUsername, msg.channelName);
+async function onMessageHandler(channel, user, msg, self) {
+    if (self) {
+        return;
+    }
+    const commandName = msg.toLowerCase().trim();
+    let input = msg.toLowerCase().split(" ");
+
+    if (user['user-id'] === process.env.TWITCH_UID) { return; }
+
+    const testPhrase = await tools.banphrasePass(user['user-id'], channel);
 
     if (testPhrase.banned) {
-        cc.say(channelName, `[Banphrased Username] cmonBruh `);
+        cc.say(channel, `[Banphrased Username] cmonBruh `);
         return;
     }
 
@@ -45,20 +41,21 @@ cc.on("PRIVMSG", async (msg) => {
         return;
     }
 
-
-    let result = await commands[input[1].toLowerCase()].execute(msg, input)
+    let realchannel = channel.substring(1)
+    let result = await commands[input[1].toLowerCase()].execute(realchannel, user, input)
 
 
     if (!result) {
-        console.log(result)
-        console.log("yes")
         return;
     }
 
-    const userCD = new tools.Cooldown(msg, input);
+    const userCD = new tools.Cooldown(user, input);
 
     if ((await userCD.setCooldown()).length) { return; }
 
-    cc.say(msg.channelName, `${msg.senderUsername}, ` + result);
+    cc.say(channel, `${user.username}, ` + result);
 
-});
+};
+function onConnectedHandler(addr, port) {
+    console.log(`* Connected to ${addr}:${port}`);
+}
