@@ -1,6 +1,6 @@
 module.exports = {
     name: "name",
-    execute: async (data, input) => {
+    execute: async (channel, user, input) => {
         try {
             return `FeelsDankMan pong!`;
         } catch (err) {

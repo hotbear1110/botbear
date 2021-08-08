@@ -1,14 +1,5 @@
-require('dotenv').config()
+require("dotenv").config();
 const mysql = require("mysql2");
-
-
-let client = {
-  username: process.env.TWITCH_USER,
-  password: process.env.TWITCH_PASSWORD,
-  rateLimits: "default",
-};
-
-
 const con = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -16,6 +7,12 @@ const con = mysql.createConnection({
   database: process.env.DB_DATABASE,
 });
 
+con.on("error", (err) => {
+  if (err.fatal) {
+    con.destroy();
+  }
+  throw err;
+});
 
 const getChannels = () =>
   new Promise((resolve, reject) => {
@@ -28,20 +25,30 @@ const getChannels = () =>
     });
   });
 
-
-
 const channelList = [];
 const channelOptions = [];
-async function channels() {
+async function res() {
   channelList.push(await getChannels());
   await channelList[0].forEach((i) => {
     channelOptions.push(i.username);
   });
-  return channelOptions
+  console.log(`Imported channels from database: ${channelOptions}`);
 }
 
-module.exports = {
-  con,
-  client,
-  channels: channels
-}
+res()
+
+let options = {
+  options: {
+    debug: false,
+  },
+  connection: {
+    secure: true,
+  },
+  identity: {
+    username: process.env.TWITCH_USER,
+    password: process.env.TWITCH_PASSWORD,
+  },
+  channels: channelOptions,
+};
+
+module.exports = { options, con };
