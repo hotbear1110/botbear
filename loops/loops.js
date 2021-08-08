@@ -1,3 +1,4 @@
+require('dotenv').config()
 const { ChatClient } = require("dank-twitch-irc");
 const login = require('../connect/connect.js');
 const tools = require("../tools/tools.js")
@@ -25,8 +26,8 @@ setInterval(async function () {
     _.each(streamers, async function (stream) {
         await axios.get(`https://api.twitch.tv/helix/streams?user_login=${stream.username}`, {
             headers: {
-                'client-id': 'nl7sh1z6rgj76gikoqgyaco9q2fmzy',
-                'Authorization': 'Bearer wq14j6cgoh0i0skxqrhob35p7vhfzh'
+                'client-id': process.env.TWITCH_CLIENTID,
+                'Authorization': process.env.TWITCH_AUTH
             }
         })
             .then(async function (response) {
@@ -68,8 +69,8 @@ setInterval(async function () {
     _.each(streamers, async function (stream) {
         await axios.get(`https://api.twitch.tv/helix/channels?broadcaster_id=${stream.uid}`, {
             headers: {
-                'client-id': 'nl7sh1z6rgj76gikoqgyaco9q2fmzy',
-                'Authorization': 'Bearer wq14j6cgoh0i0skxqrhob35p7vhfzh'
+                'client-id': process.env.TWITCH_CLIENTID,
+                'Authorization': process.env.TWITCH_AUTH
             }
         })
             .then(async function (response) {
@@ -103,8 +104,8 @@ setInterval(async function () {
     _.each(streamers, async function (stream) {
         await axios.get(`https://api.twitch.tv/helix/channels?broadcaster_id=${stream.uid}`, {
             headers: {
-                'client-id': 'nl7sh1z6rgj76gikoqgyaco9q2fmzy',
-                'Authorization': 'Bearer wq14j6cgoh0i0skxqrhob35p7vhfzh'
+                'client-id': process.env.TWITCH_CLIENTID,
+                'Authorization': process.env.TWITCH_AUTH
             }
         })
             .then(async function (response) {
