@@ -10,6 +10,7 @@ setInterval(async function () {
     const streamers = await tools.query('SELECT * FROM Streamers')
 
     _.each(streamers, async function (stream) {
+        setTimeout(function () { }, 100)
         await axios.get(`https://api.twitch.tv/helix/streams?user_login=${stream.username}`, {
             headers: {
                 'client-id': process.env.TWITCH_CLIENTID,
@@ -53,6 +54,7 @@ setInterval(async function () {
             });
     })
     _.each(streamers, async function (stream) {
+        setTimeout(function () { }, 100)
         await axios.get(`https://api.twitch.tv/helix/channels?broadcaster_id=${stream.uid}`, {
             headers: {
                 'client-id': process.env.TWITCH_CLIENTID,
@@ -63,53 +65,44 @@ setInterval(async function () {
                 // handle success
                 const twitchdata = response.data;
                 let newTitle = twitchdata.data[0].title
-                let users = JSON.parse(stream.title_ping)
-                users = users.toString().replaceAll(',', ' ')
+                let titleusers = JSON.parse(stream.title_ping)
+                titleusers = titleusers.toString().replaceAll(',', ' ')
+
+                let newGame = twitchdata.data[0].game_name
+                let gameusers = JSON.parse(stream.game_ping)
+                gameusers = gameusers.toString().replaceAll(',', ' ')
 
 
-                let userlist = tools.splitLine(users, 350)
+                let titleuserlist = tools.splitLine(titleusers, 350)
+                let gameuserlist = tools.splitLine(gameusers, 350)
 
                 if (newTitle != stream.title) {
                     console.log(stream.username + " NEW TITLE: " + newTitle);
                     await tools.query(`UPDATE Streamers SET title=? WHERE username=?`, [newTitle, stream.username])
-                    _.each(userlist, function (msg, i) {
+                    _.each(titleuserlist, function (msg, i) {
                         setTimeout(function () {
-                            cc.action(`#${stream.username}`, `${stream.liveemote} NEW TITLE ! ${stream.liveemote} 👉 ${newTitle} 👉 ${userlist[i]}`);
+                            cc.action(`#${stream.username}`, `${stream.liveemote} NEW TITLE ! ${stream.liveemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`);
                         }, 2000 * i);
                     });
                 };
-            })
-            .catch(function (error) {
-                // handle error
-                console.log(error);
-            })
-            .then(function () {
-                // always executed
-            });
-    })
-    _.each(streamers, async function (stream) {
-        await axios.get(`https://api.twitch.tv/helix/channels?broadcaster_id=${stream.uid}`, {
-            headers: {
-                'client-id': process.env.TWITCH_CLIENTID,
-                'Authorization': process.env.TWITCH_AUTH
-            }
-        })
-            .then(async function (response) {
-                // handle success
-                const twitchdata = response.data;
-                let newGame = twitchdata.data[0].game_name
-                let users = JSON.parse(stream.game_ping)
-                users = users.toString().replaceAll(',', ' ')
-
-
-                let userlist = tools.splitLine(users, 350)
-
                 if (newGame != stream.game) {
-                    console.log(stream.username + " NEW GAME: " + newGame);
+
                     await tools.query(`UPDATE Streamers SET game=? WHERE username=?`, [newGame, stream.username])
-                    _.each(userlist, function (msg, i) {
+                    if (newTitle != stream.title) {
+                        function sleep(milliseconds) {
+                            var start = new Date().getTime();
+                            for (var i = 0; i < 1e7; i++) {
+                                if ((new Date().getTime() - start) > milliseconds) {
+                                    break;
+                                }
+                            }
+                        }
+                        sleep(1500)
+                    }
+                    console.log(stream.username + " NEW GAME: " + newGame);
+                    _.each(gameuserlist, function (msg, i) {
                         setTimeout(function () {
-                            cc.action(`#${stream.username}`, `${stream.liveemote} NEW GAME ! ${stream.liveemote} 👉 ${newGame} 👉 ${userlist[i]}`);
+                            cc.action(`#${stream.username}`, `${stream.liveemote} NEW GAME ! ${stream.liveemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`);
                         }, 2000 * i);
                     });
                 };
@@ -122,5 +115,4 @@ setInterval(async function () {
                 // always executed
             });
     })
-
 }, 10000)

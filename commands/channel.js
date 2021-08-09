@@ -14,7 +14,7 @@ module.exports = {
                     let uid = user['user-id'];
 
                     if (input[3] && user.username !== input[3] && user['user-id'] != process.env.TWITCH_OWNERUID) {
-                        return "I can only join your stream!";
+                        return "I can only join your channel!";
                     }
                     if (input[3]) {
                         let streamer = await axios.get(`https://api.ivr.fi/twitch/resolve/${input[3]}`)
@@ -56,7 +56,7 @@ module.exports = {
                     }
 
                     if (input[3] && user.username !== input[3] && user['user-id'] != process.env.TWITCH_OWNERUID) {
-                        return "You can only remove from own channel";
+                        return "You can only make me leave your own channel";
                     }
 
                     const alreadyJoined2 = await tools.query(`
