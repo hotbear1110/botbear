@@ -49,10 +49,10 @@ module.exports = {
                     }
                     break;
                 case "leave":
-                    let username = user.username;
+                    let username2 = user.username;
                     if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username) { return; }
                     if (input[3]) {
-                        username = input[3];
+                        username2 = input[3];
                     }
 
                     if (input[3] && user.username !== input[3] && user['user-id'] != process.env.TWITCH_OWNERUID) {
@@ -63,21 +63,21 @@ module.exports = {
                             SELECT *
                             FROM Streamers
                             WHERE username=?`,
-                        [user.username]);
+                        [username2]);
 
                     if (!alreadyJoined2.length) {
                         return "I am not in your channel"
                     }
 
                     else {
-                        await tools.query('DELETE FROM Streamers WHERE username=?', [username]);
-                        cc.say(`#${username}`, '👋 nymnDank bye!');
-                        cc.part(username).then((data) => {
+                        await tools.query('DELETE FROM Streamers WHERE username=?', [username2]);
+                        cc.say(`#${username2}`, '👋 nymnDank bye!');
+                        cc.part(username2).then((data) => {
                             // data returns [channel]
                         }).catch((err) => {
                             console.log(err)
                         });
-                        return `Left channel: ${username}`
+                        return `Left channel: ${username2}`
 
                     }
                     break;
