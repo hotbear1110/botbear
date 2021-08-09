@@ -49,6 +49,7 @@ module.exports = {
                     }
                     break;
                 case "leave":
+                    let username = user.username;
                     if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username) { return; }
                     if (input[3]) {
                         username = input[3];
