@@ -1,11 +1,8 @@
 require('dotenv').config()
-const tmi = require("tmi.js");
-const login = require('../connect/connect.js');
 const tools = require("../tools/tools.js")
 const _ = require("underscore")
 const axios = require('axios');
-
-const cc = new tmi.client(login)
+const cc = require("../bot.js").cc;
 
 cc.connect()
 

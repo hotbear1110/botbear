@@ -53,9 +53,10 @@ async function onMessageHandler(channel, user, msg, self) {
 
     if ((await userCD.setCooldown()).length) { return; }
 
-    cc.say(channel, `${user.username}, ` + result);
+    cc.say(channel, `${user['display-name']}, ` + result);
 
 };
 function onConnectedHandler(addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
 }
+module.exports = { cc }

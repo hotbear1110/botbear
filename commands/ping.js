@@ -1,5 +1,5 @@
 module.exports = {
-    name: "name",
+    name: "ping",
     execute: async (channel, user, input) => {
         try {
             return `FeelsDankMan pong!`;

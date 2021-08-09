@@ -51,4 +51,4 @@ let options = {
   channels: channelOptions,
 };
 
-module.exports = { options, con };
+module.exports = { options, con, channelOptions};

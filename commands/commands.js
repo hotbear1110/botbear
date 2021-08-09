@@ -1,5 +1,5 @@
 module.exports = {
-    name: "name",
+    name: "commands",
     execute: async (channel, user, input) => {
         try {
             return `List of commands: https://botbear.github.io/`;
