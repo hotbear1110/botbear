@@ -28,14 +28,21 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
         resolve(0);
         return;
     }
-    this.checkBanphrase = await got(this.data[0].banphraseapi, {
-        method: "POST",
-        body: "message=" + message,
-        headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-    }).json();
-    resolve(this.checkBanphrase);
+    try {
+        this.checkBanphrase = await got(this.data[0].banphraseapi, {
+            method: "POST",
+            body: "message=" + message,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+        }).json();
+        console.log(this.data[0].banphraseapi)
+        console.log(this.channel)
+        resolve(this.checkBanphrase);
+    } catch (err) {
+        console.log(err);
+        resolve(0);
+    }
 
 });
 

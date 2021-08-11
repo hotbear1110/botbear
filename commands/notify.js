@@ -38,6 +38,19 @@ module.exports = {
                     }
                     break;
                 case "game":
+                    let userchannel = []
+                    userchannel.push(user.username)
+                    userchannel.push(channel)
+
+                    const alreadyJoined = await tools.query(`
+                SELECT *
+                FROM MyPing
+                WHERE username=?`,
+                        [`["${userchannel}"]`]);
+
+                    if (alreadyJoined.length) {
+                        return `You should remove all of you costom game pings first, by doing "bb myping remove all"`
+                    }
                     const gameUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`)
                     let gameusers = JSON.parse(gameUsers[0].game_ping)
 

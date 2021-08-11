@@ -8,6 +8,7 @@ cc.connect()
 
 setInterval(async function () {
     const streamers = await tools.query('SELECT * FROM Streamers')
+    const myping = await tools.query(`SELECT * FROM MyPing`)
 
     _.each(streamers, async function (stream) {
         setTimeout(function () { }, 100)
@@ -70,6 +71,13 @@ setInterval(async function () {
 
                 let newGame = twitchdata.data[0].game_name
                 let gameusers = JSON.parse(stream.game_ping)
+                _.each(myping, async function (userchanel) {
+                    let pingname = JSON.parse(userchanel.username)
+                    let gamename = userchanel.game_pings
+                    if (pingname.includes(stream.username) && gamename.includes(newGame)) {
+                        gameusers.push(pingname[0])
+                    }
+                })
                 gameusers = gameusers.toString().replaceAll(',', ' ')
 
 
@@ -88,6 +96,7 @@ setInterval(async function () {
                 if (newGame != stream.game) {
 
                     await tools.query(`UPDATE Streamers SET game=? WHERE username=?`, [newGame, stream.username])
+
                     if (newTitle != stream.title) {
                         function sleep(milliseconds) {
                             var start = new Date().getTime();
@@ -105,6 +114,7 @@ setInterval(async function () {
                             cc.action(`#${stream.username}`, `${stream.liveemote} NEW GAME ! ${stream.liveemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`);
                         }, 2000 * i);
                     });
+
                 };
             })
             .catch(function (error) {

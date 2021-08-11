@@ -17,21 +17,24 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
     const commandName = msg.toLowerCase().trim();
-    let input = msg.toLowerCase().split(" ");
+    let input = msg.split(" ");
+    if (input[1] !== "say") {
+        input = msg.toLowerCase().split(" ");
+    }
 
     if (user['user-id'] === process.env.TWITCH_UID) { return; }
 
-    const testPhrase = await tools.banphrasePass(user['user-id'], channel);
-
-    if (testPhrase.banned) {
-        cc.say(channel, `[Banphrased Username] cmonBruh `);
-        return;
-    }
 
     if (input[0] !== "bb") {
         return;
     }
+    
+    const usernamePhrase = await tools.banphrasePass(user.username, channel);
 
+    if (usernamePhrase.banned) {
+        cc.say(channel, `[Banphrased Username] cmonBruh `);
+        return;
+    }
 
 
     const commands = requireDir("./commands");
@@ -52,6 +55,13 @@ async function onMessageHandler(channel, user, msg, self) {
     const userCD = new tools.Cooldown(user, input);
 
     if ((await userCD.setCooldown()).length) { return; }
+
+    const banPhrase = await tools.banphrasePass(result, channel);
+
+    if (banPhrase.banned) {
+        cc.say(channel, `[Banphrased] cmonBruh `);
+        return;
+    }
 
     cc.say(channel, `${user['display-name']}, ` + result);
 

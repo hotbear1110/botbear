@@ -9,7 +9,7 @@ module.exports = {
         try {
             switch (input[2]) {
                 case "join":
-                    if (channel != "botbear1110" && channel != "hotbear1110") { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && user.username != "hotbear1110") { return; }
                     let username = user.username;
                     let uid = user['user-id'];
 
@@ -43,14 +43,14 @@ module.exports = {
                         }).catch((err) => {
                             console.log(err)
                         });
-                        cc.say(`#${username}`, '👋 nymnDank');
+                        cc.say(`#${username}`, '👋 nymnDank Hello!');
                         return `Joined channel: ${username}`
 
                     }
                     break;
                 case "leave":
                     let username2 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username) { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && user.username != "hotbear1110") { return; }
                     if (input[3]) {
                         username2 = input[3];
                     }
