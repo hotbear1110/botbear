@@ -5,7 +5,7 @@ module.exports = {
     execute: async (channel, user, input) => {
         try {
             const IDs = await tools.query(`SELECT * FROM Suggestions`)
-            let newID = IDs.length + 1;
+            let newID = IDs[IDs.length - 1].ID + 1;
             input = input.splice(2)
 
             let msg = input.toString().replaceAll(',', ' ')
