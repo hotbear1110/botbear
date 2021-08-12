@@ -4,10 +4,8 @@ module.exports = {
     name: "say",
     execute: async (channel, user, input) => {
         try {
-            input.splice(0,1)
-            let msg = input.toString();
-            msg = msg.substring(7)
-            msg = msg.toString().replaceAll(',', ' ')
+            input = input.splice(2)
+            let msg = input.toString().replaceAll(',', ' ')
 
             if (user.username != "hotbear1110") {
                 return;
