@@ -46,7 +46,7 @@ module.exports = {
                         SELECT *
                         FROM MyPing
                         WHERE username=?`,
-                        [`["${userchannel}"]`]);
+                        [`[${userchannel}]`]);
 
                     if (alreadyJoined.length) {
                         return `You should remove all of you costom game pings first, by doing "bb myping remove all"`
