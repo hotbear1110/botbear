@@ -3,6 +3,8 @@ const mysql = require("mysql2");
 const got = require("got");
 const db = require('../connect/connect.js');
 const tools = require("./tools.js");
+const pastebin = require("../connect/connect.js").pastebin;
+const hastebin = require('better-hastebin');
 
 
 exports.query = (query, data = []) =>
@@ -86,3 +88,12 @@ exports.splitLine = (message, chars) => {
     return messages
 }
 
+let hasteoptions = {
+    server: 'https://haste.zneix.eu/'
+  };
+  
+  exports.makehastebin = (message, username, channel) =>
+  hastebin(`${username}'s game list, from channel: ${channel}\n\nGame list:\n${message}`, hasteoptions).then((url) => {
+    console.log(url)
+    return url;
+  });

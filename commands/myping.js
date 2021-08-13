@@ -64,8 +64,8 @@ module.exports = {
 
                 case "remove":
                     let userchannel2 = []
-                    userchannel2.push(`${user.username}`)
-                    userchannel2.push(`${channel}`)
+                    userchannel2.push(`"${user.username}"`)
+                    userchannel2.push(`"${channel}"`)
 
                     if (input.length == 4 && input[3] === "all") {
                         let removeall = []
@@ -119,6 +119,31 @@ module.exports = {
                     return `The game ${realgame2} has been removed from your ping list :)`
                     break;
 
+                case "list":
+                    let userchannel3 = []
+                    userchannel3.push(`"${user.username}"`)
+                    userchannel3.push(`"${channel}"`)
+
+                    const alreadyJoined3 = await tools.query(`
+                        SELECT *
+                        FROM MyPing
+                        WHERE username=?`,
+                        [`[${userchannel3}]`]);
+
+                    if (!alreadyJoined3.length || alreadyJoined3[0].game_pings == "[]") {
+                        return `FeelsDankMan ! You don't have a game list yet. You should add a game first, by typing "bb myping add *game*"`
+                    }
+                    else {
+
+                        const gamelist = await tools.query(`SELECT * FROM MyPing WHERE username=?`, [`[${userchannel3}]`])
+                        let listgames = JSON.parse(gamelist[0].game_pings)
+                        listgames = listgames.toString().replaceAll(',', '\n')
+
+                        let hastebinlist = await tools.makehastebin(listgames, user.username, channel)
+
+                        return `Game list: ${hastebinlist}.txt`
+                        break;
+                    }
             }
 
         } catch (err) {

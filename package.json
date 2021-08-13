@@ -18,10 +18,12 @@
   "homepage": "https://github.com/hotbear1110/botbear#readme",
   "dependencies": {
     "axios": "^0.21.1",
+    "better-hastebin": "^1.0.0",
     "dank-twitch-irc": "^4.3.0",
     "dotenv": "^10.0.0",
     "got": "^11.8.2",
     "mysql2": "^2.2.5",
+    "pastebin-js": "^1.0.6",
     "require-dir": "^1.2.0",
     "tmi.js": "^1.8.3",
     "underscore": "^1.13.1"
