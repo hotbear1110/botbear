@@ -81,6 +81,8 @@ module.exports = {
 
                     }
                     break;
+                    default:
+                        return "Please specify if you want the bot to leave or join your channel, by writing either 'bb channel join' or 'bb channel leave'"
             }
         } catch (err) {
             console.log(err);

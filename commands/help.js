@@ -1,8 +1,21 @@
+const tools = require("../tools/tools.js")
+
 module.exports = {
     name: "help",
     execute: async (channel, user, input) => {
         try {
-            return `nymnDank botbear1110 is a scuffed bot, that works a bit like titlechange bot rn, for the future i would like the bot to be an all purpose bot. The bot is written entirely in Node.js and is made by HotBear1110 Link to my GitHub: https://github.com/hotbear1110/botbear List of commands: https://botbear.github.io/`;
+            if (!input[2]) {
+                return 'List of commands: https://botbear.github.io/ - If you want help with a command, write: "bb help *command*"'
+            }
+            const commandlist = await tools.query(`SELECT * FROM Commands WHERE Name="${input[2]}"`)
+
+            if (!commandlist.length) {
+                return;
+            }
+            else {
+                return `bb ${input[2]}: ${commandlist[0].Command}`;
+            }
+
         } catch (err) {
             console.log(err);
             return ` Error FeelsBadMan `;
