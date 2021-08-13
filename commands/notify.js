@@ -39,8 +39,9 @@ module.exports = {
                     break;
                 case "game":
                     let userchannel = []
-                    userchannel.push(`${"user.username"}`)
-                    userchannel.push(`${"channel"}`)
+                    userchannel.push(`"${user.username}"`)
+                    userchannel.push(`"${channel}"`)
+
 
                     const alreadyJoined = await tools.query(`
                         SELECT *
