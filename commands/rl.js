@@ -16,7 +16,7 @@ module.exports = {
     
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan `;
+            return ` Error FeelsBadMan : This chat does not have logs on: https://logs.ivr.fi/`;
         }
     })
 }
