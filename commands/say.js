@@ -17,7 +17,6 @@ module.exports = {
                     cc.say(channel, `[Banphrased] cmonBruh `);
                     return;
                 }
-
                 cc.say(`#${channel}`, msg)
             }
         } catch (err) {
