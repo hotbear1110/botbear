@@ -6,8 +6,8 @@ module.exports = {
     execute: async (channel, user, input) => {
         try {
             let username = user.username;
-            if (input[3]) {
-                username = input[3];
+            if (input[2]) {
+                username = input[2];
             }
 
             const rl = await got(`https://api.ivr.fi/logs/rq/${channel}/${username}`).json();
