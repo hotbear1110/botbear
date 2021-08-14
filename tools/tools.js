@@ -3,7 +3,6 @@ const mysql = require("mysql2");
 const got = require("got");
 const db = require('../connect/connect.js');
 const tools = require("./tools.js");
-const pastebin = require("../connect/connect.js").pastebin;
 const hastebin = require('better-hastebin');
 
 

@@ -7,6 +7,9 @@ module.exports = {
     name: "channel",
     execute: async (channel, user, input) => {
         try {
+            if (channel === "forsen") {
+                channel = "botbear1110"
+            }
             switch (input[2]) {
                 case "join":
                     if (channel != "botbear1110" && channel != "hotbear1110" && user.username != "hotbear1110") { return; }

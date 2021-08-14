@@ -26,13 +26,17 @@ setInterval(async function () {
 
 
                 let userlist = tools.splitLine(users, 350)
+                let proxychannel = stream.username
+                if (stream.username === "forsen") {
+                    proxychannel = "botbear1110";
+                }
 
                 if (twitchdata['data'].length !== 0 && stream.islive == 0) {
                     console.log(stream.username + " IS NOW LIVE");
                     await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`)
                     _.each(userlist, function (msg, i) {
                         setTimeout(function () {
-                            cc.action(`#${stream.username}`, `${stream.liveemote} ${stream.username} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`);
+                            cc.action(`#${proxychannel}`, `${stream.liveemote} ${stream.username} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`);
                         }, 2000 * i);
                     });
                 };
@@ -41,7 +45,7 @@ setInterval(async function () {
                     await tools.query(`UPDATE Streamers SET islive = 0 WHERE username ="${stream.username}"`)
                     _.each(userlist, function (msg, i) {
                         setTimeout(function () {
-                            cc.action(`#${stream.username}`, `${stream.offlineemote} ${stream.username} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`);
+                            cc.action(`#${proxychannel}`, `${stream.offlineemote} ${stream.username} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`);
                         }, 2000 * i);
                     });
                 };
@@ -84,12 +88,17 @@ setInterval(async function () {
                 let titleuserlist = tools.splitLine(titleusers, 350)
                 let gameuserlist = tools.splitLine(gameusers, 350)
 
+                let proxychannel2 = stream.username
+                if (stream.username === "forsen") {
+                    proxychannel2 = "botbear1110";
+                }
+
                 if (newTitle != stream.title) {
                     console.log(stream.username + " NEW TITLE: " + newTitle);
                     await tools.query(`UPDATE Streamers SET title=? WHERE username=?`, [newTitle, stream.username])
                     _.each(titleuserlist, function (msg, i) {
                         setTimeout(function () {
-                            cc.action(`#${stream.username}`, `${stream.liveemote} NEW TITLE ! ${stream.liveemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`);
+                            cc.action(`#${proxychannel2}`, `${stream.liveemote} NEW TITLE ! ${stream.liveemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`);
                         }, 2000 * i);
                     });
                 };
@@ -111,7 +120,7 @@ setInterval(async function () {
                     console.log(stream.username + " NEW GAME: " + newGame);
                     _.each(gameuserlist, function (msg, i) {
                         setTimeout(function () {
-                            cc.action(`#${stream.username}`, `${stream.liveemote} NEW GAME ! ${stream.liveemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`);
+                            cc.action(`#${proxychannel2}`, `${stream.liveemote} NEW GAME ! ${stream.liveemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`);
                         }, 2000 * i);
                     });
 
