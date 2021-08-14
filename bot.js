@@ -75,7 +75,7 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
-    cc.say(channel, `${user['display-name']}, ` + result);
+    cc.say(channel, result);
 
 };
 function onConnectedHandler(addr, port) {
