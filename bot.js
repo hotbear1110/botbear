@@ -62,7 +62,6 @@ async function onMessageHandler(channel, user, msg, self) {
     if (!result) {
         return;
     }
-    console.log(realcommand)
 
     if (commands[realcommand].ping == true) {
         result = `${user['display-name']} ${result}`

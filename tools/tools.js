@@ -37,8 +37,6 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
                 "Content-Type": "application/x-www-form-urlencoded"
             },
         }).json();
-        console.log(this.data[0].banphraseapi)
-        console.log(this.channel)
         resolve(this.checkBanphrase);
     } catch (err) {
         console.log(err);
