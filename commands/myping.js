@@ -15,9 +15,10 @@ module.exports = {
                     if (gameusers.includes(user.username)) {
                         return 'You should do "bb remove game" first'
                     }
-                    input.splice(0, 3);
-                    console.log(input.toString())
-                    let emote = input.toString().replaceAll(',', ' ')
+                    let msg = input;
+                    msg.splice(0, 3);
+                    console.log(msg.toString())
+                    let emote = msg.toString().replaceAll(',', ' ')
                     console.log(emote)
                     let realgame = await axios.get(`https://api.twitch.tv/helix/games?name=${emote}`, {
                         headers: {
@@ -74,8 +75,9 @@ module.exports = {
                         return `Your ping list is now empty :)`
 
                     }
-                    input.splice(0, 3);
-                    let emote2 = input.toString().replaceAll(',', ' ')
+                    let msg2 = input;
+                    msg2.splice(0, 3);
+                    let emote2 = msg2.toString().replaceAll(',', ' ')
                     let realgame2 = await axios.get(`https://api.twitch.tv/helix/games?name=${emote2}`, {
                         headers: {
                             'client-id': process.env.TWITCH_CLIENTID,
@@ -83,7 +85,7 @@ module.exports = {
                         }
                     })
                     if (!realgame2.data.data[0]) {
-                        return `"${input}", is either not a twitch category, or it's not specific enough!`
+                        return `"${msg2}", is either not a twitch category, or it's not specific enough!`
                     }
                     realgame2 = realgame2.data.data[0]
                     realgame2 = realgame2["name"]
