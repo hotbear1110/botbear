@@ -4,6 +4,7 @@ const axios = require('axios');
 
 module.exports = {
     name: "myping",
+    ping: true,
     execute: async (channel, user, input) => {
         try {
             switch (input[2]) {

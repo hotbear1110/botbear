@@ -1,5 +1,6 @@
 module.exports = {
     name: "commands",
+    ping: true,
     execute: async (channel, user, input) => {
         try {
             return `List of commands: https://botbear.github.io/`;

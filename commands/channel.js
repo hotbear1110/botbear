@@ -5,6 +5,7 @@ const axios = require('axios');
 
 module.exports = {
     name: "channel",
+    ping: true,
     execute: async (channel, user, input) => {
         try {
             if (channel === "forsen") {

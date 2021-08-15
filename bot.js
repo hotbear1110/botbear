@@ -55,11 +55,15 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     let realchannel = channel.substring(1)
-    let result = await commands[input[1].toLowerCase()].execute(realchannel, user, input)
+    let result = await commands[input[1]].execute(realchannel, user, input)
 
 
     if (!result) {
         return;
+    }
+
+    if (commands[input[1]].ping == true) {
+        result = user['display-name'] + result
     }
 
     const userCD = new tools.Cooldown(user, input);

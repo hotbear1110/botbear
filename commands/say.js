@@ -2,6 +2,7 @@ const cc = require("../bot.js").cc;
 const tools = require("../tools/tools.js")
 module.exports = {
     name: "say",
+    ping: false,
     execute: async (channel, user, input) => {
         try {
             input = input.splice(2)
@@ -15,13 +16,7 @@ module.exports = {
                 return;
             }
             else {
-                const banPhrase = await tools.banphrasePass(msg, channel);
-
-                if (banPhrase.banned) {
-                    cc.say(channel, `[Banphrased] cmonBruh `);
-                    return;
-                }
-                cc.say(`#${channel}`, msg)
+                return msg;
             }
         } catch (err) {
             console.log(err);

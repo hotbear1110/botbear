@@ -3,6 +3,7 @@ const cc = require("../bot.js").cc;
 
 module.exports = {
     name: "fl",
+    ping: false,
     execute: async (channel, user, input) => {
         try {
             let username = user.username;

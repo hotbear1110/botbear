@@ -2,6 +2,7 @@ const tools = require("../tools/tools.js");
 
 module.exports = {
     name: "suggest",
+    ping: true,
     execute: async (channel, user, input) => {
         try {
             input = input.splice(2)

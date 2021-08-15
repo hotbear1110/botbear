@@ -2,6 +2,7 @@ const tools = require("../tools/tools.js");
 
 module.exports = {
     name: "notify",
+    ping: true,
     execute: async (channel, user, input) => {
         try {
             switch (input[2]) {
