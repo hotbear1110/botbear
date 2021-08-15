@@ -14,7 +14,7 @@ module.exports = {
             const fl = await got(`https://api.ivr.fi/logs/firstmessage/${channel}/${username}`).json();
 
             if (fl.status !== 404) {
-                cc.say(`#${channel}`, `FeelsDonkMan ${fl.user}'s first message here was: ${fl.message} - (${fl.time} ago)`)
+                cc.say(`#${channel}`, `nymnDank ${fl.user}'s first message here was: ${fl.message} - (${fl.time} ago)`)
             }
 
         } catch (err) {
