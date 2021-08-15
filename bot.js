@@ -7,7 +7,7 @@ const requireDir = require("require-dir");
 const cc = new tmi.client(login.options)
 
 
-cc.on("message", onMessageHandler);
+cc.on('message', onMessageHandler);
 cc.on('connected', onConnectedHandler);
 
 cc.connect()
@@ -16,7 +16,6 @@ async function onMessageHandler(channel, user, msg, self) {
     if (self) {
         return;
     }
-    const commandName = msg.toLowerCase().trim();
     let input = msg.split(" ");
     if (input[1] !== "say") {
         input = msg.toLowerCase().split(" ");
