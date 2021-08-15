@@ -47,6 +47,10 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
+    const globalCD = new tools.Cooldown(user, "global", 5000);
+
+    if ((await globalCD.setCooldown()).length) { return; }
+
     const usernamePhrase = await tools.banphrasePass(user.username, channel);
 
     if (usernamePhrase.banned) {
@@ -67,7 +71,7 @@ async function onMessageHandler(channel, user, msg, self) {
         result = `${user['display-name']} ${result}`
     }
 
-    const userCD = new tools.Cooldown(user, input);
+    const userCD = new tools.Cooldown(user, input, 5000);
 
     if ((await userCD.setCooldown()).length) { return; }
 
@@ -85,6 +89,7 @@ async function onMessageHandler(channel, user, msg, self) {
     cc.say(channel, result);
 
 };
+
 function onConnectedHandler(addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
 }
