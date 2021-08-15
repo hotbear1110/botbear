@@ -63,7 +63,7 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (commands[input[1]].ping == true) {
-        result = user['display-name'] + result
+        result = `${user['display-name']} ${result}`
     }
 
     const userCD = new tools.Cooldown(user, input);
