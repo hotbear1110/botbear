@@ -10,6 +10,9 @@ module.exports = {
             if (input[2]) {
                 username = input[2];
             }
+            if (username === "botbear1110") {
+                return;
+            }
 
             const lm = await got(`https://api.ivr.fi/logs/lastmessage/${channel}/${username}`).json();
 
