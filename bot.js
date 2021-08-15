@@ -20,7 +20,8 @@ async function onMessageHandler(channel, user, msg, self) {
         console.log("message")
     }
     let input = msg.split(" ");
-    if (input[1] !== "say") {
+    let realcommand = input[1]
+    if (realcommand !== "say") {
         input = msg.toLowerCase().split(" ");
     }
 
@@ -41,7 +42,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
     const commands = requireDir("./commands");
 
-    if (typeof commands[input[1]] === "undefined") {
+    if (typeof commands[realcommand] === "undefined") {
         console.log("undefined")
         return;
     }
@@ -55,14 +56,15 @@ async function onMessageHandler(channel, user, msg, self) {
 
 
     let realchannel = channel.substring(1)
-    let result = await commands[input[1]].execute(realchannel, user, input)
+    let result = await commands[realcommand].execute(realchannel, user, input)
 
 
     if (!result) {
         return;
     }
+    console.log(realcommand)
 
-    if (commands[input[1]].ping == true) {
+    if (commands[realcommand].ping == true) {
         result = `${user['display-name']} ${result}`
     }
 
