@@ -17,7 +17,7 @@ module.exports = {
             const lm = await got(`https://api.ivr.fi/logs/lastmessage/${channel}/${username}`).json();
 
             if (lm.status !== 404) {
-                cc.say(`#${channel}`, `FeelsDankMan ${lm.user}'s last message here was: ${lm.response} - (${lm.time} ago)`)
+                cc.say(`#${channel}`, `FeelsDonkMan ${lm.user}'s last message here was: ${lm.response} - (${lm.time} ago)`)
             }
 
         } catch (err) {

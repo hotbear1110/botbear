@@ -3,7 +3,7 @@ module.exports = {
     ping: true,
     execute: async (channel, user, input) => {
         try {
-            return `FeelsDankMan pong!`;
+            return `FeelsDonkMan pong!`;
         } catch (err) {
             console.log(err);
             return ` Error FeelsBadMan `;
