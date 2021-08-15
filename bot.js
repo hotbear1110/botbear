@@ -49,6 +49,18 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
+    if (user['user-id'] !== process.env.TWITCH_OWNERUID) {
+        if (talkedRecently.has(channel)) { return; }
+
+        talkedRecently.add(channel);
+
+        let timeout = 1000;
+
+        setTimeout(() => {
+            talkedRecently.delete(channel);
+        }, timeout);
+    }
+
     const usernamePhrase = await tools.banphrasePass(user.username, channel);
 
     if (usernamePhrase.banned) {
@@ -77,18 +89,6 @@ async function onMessageHandler(channel, user, msg, self) {
 
     if (channel === "#forsen") {
         channel = "#botbear1110"
-    }
-
-    if (user['user-id'] !== process.env.TWITCH_OWNERUID) {
-        if (talkedRecently.has(channel)) { return; }
-
-        talkedRecently.add(channel);
-
-        let timeout = 1000;
-
-        setTimeout(() => {
-            talkedRecently.delete(channel);
-        }, timeout);
     }
 
     if (banPhrase.banned) {
