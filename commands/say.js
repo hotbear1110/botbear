@@ -12,7 +12,7 @@ module.exports = {
                 channel = "botbear1110"
             }
 
-            if (user.username != "hotbear1110") {
+            if (user.username !== "hotbear1110") {
                 return;
             }
             else {
