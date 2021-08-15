@@ -16,6 +16,9 @@ async function onMessageHandler(channel, user, msg, self) {
     if (self) {
         return;
     }
+    if (channel === "#hotbear1110") {
+        console.log("message")
+    }
     let input = msg.split(" ");
     if (input[1] !== "say") {
         input = msg.toLowerCase().split(" ");
