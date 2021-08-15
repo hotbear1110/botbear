@@ -38,14 +38,6 @@ async function onMessageHandler(channel, user, msg, self) {
     if (channel === "#botbear1110") {
         channel = "#forsen"
     }
-    
-    const usernamePhrase = await tools.banphrasePass(user.username, channel);
-
-    if (usernamePhrase.banned) {
-        cc.say(channel, `[Banphrased Username] cmonBruh `);
-        return;
-    }
-
 
     const commands = requireDir("./commands");
 
@@ -53,6 +45,14 @@ async function onMessageHandler(channel, user, msg, self) {
         console.log("undefined")
         return;
     }
+
+    const usernamePhrase = await tools.banphrasePass(user.username, channel);
+
+    if (usernamePhrase.banned) {
+        cc.say(channel, `[Banphrased Username] cmonBruh `);
+        return;
+    }
+
 
     let realchannel = channel.substring(1)
     let result = await commands[input[1]].execute(realchannel, user, input)

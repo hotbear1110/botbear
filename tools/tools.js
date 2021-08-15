@@ -89,10 +89,10 @@ exports.splitLine = (message, chars) => {
 
 let hasteoptions = {
     server: 'https://haste.zneix.eu/'
-  };
-  
-  exports.makehastebin = (message, username, channel) =>
-  hastebin(`${username}'s game list, from channel: ${channel}\n\nGame list:\n${message}`, hasteoptions).then((url) => {
-    console.log(url)
-    return url;
-  });
+};
+
+exports.makehastebin = (message, username, channel) =>
+    hastebin(`${username}'s game list, from channel: ${channel}\n\nGame list:\n${message}`, hasteoptions).then((url) => {
+        console.log(url)
+        return url;
+    });
