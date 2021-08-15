@@ -10,7 +10,7 @@ module.exports = {
             if (input[2]) {
                 username = input[2];
             }
-            if (username === "botbear1110") {
+            if (username === "botbear1110" || username === "ksyncbot") {
                 return;
             }
 
