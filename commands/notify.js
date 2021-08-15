@@ -50,7 +50,7 @@ module.exports = {
                         WHERE username=?`,
                         [`[${userchannel}]`]);
 
-                    if (alreadyJoined.length || alreadyJoined[0].game_pings == "[]") {
+                    if (alreadyJoined.length || alreadyJoined[0].game_pings !== "[]") {
                         return `You should remove all of you custom game pings first, by doing "bb myping remove all"`
                     }
                     const gameUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`)
