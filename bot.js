@@ -83,7 +83,7 @@ async function onMessageHandler(channel, user, msg, self) {
         channel = "#botbear1110"
     }
 
-    if (user['user-id'] != "process.env.TWITCH_OWNERUID") {
+    if (user['user-id'] != process.env.TWITCH_OWNERUID) {
         if (talkedRecently.has(channel)) { return; }
 
         talkedRecently.add(channel);
