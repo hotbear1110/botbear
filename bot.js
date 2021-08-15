@@ -49,10 +49,6 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
-    const globalCD = new tools.Cooldown("global", "global", 1000);
-
-    if ((await globalCD.setCooldown()).length) { return; }
-
     const usernamePhrase = await tools.banphrasePass(user.username, channel);
 
     if (usernamePhrase.banned) {
