@@ -30,7 +30,7 @@ async function onMessageHandler(channel, user, msg, self) {
     if (user['user-id'] === process.env.TWITCH_UID) { return; }
 
 
-    if (input[0] !== "bb") {
+    if (input[0] !== "bb" && input[0] !== "forsenbb") {
         return;
     }
 
