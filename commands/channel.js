@@ -92,13 +92,13 @@ module.exports = {
                         return;
                     }
 
-                    const alreadyJoined2 = await tools.query(`
+                    const alreadyJoined3 = await tools.query(`
                             SELECT *
                             FROM Streamers
                             WHERE username=?`,
                         [username3]);
 
-                    if (!alreadyJoined2.length) {
+                    if (!alreadyJoined3.length) {
                         return "I am not in your channel"
                     }
 
@@ -114,13 +114,13 @@ module.exports = {
                         return;
                     }
 
-                    const alreadyJoined2 = await tools.query(`
+                    const alreadyJoined4 = await tools.query(`
                             SELECT *
                             FROM Streamers
                             WHERE username=?`,
                         [username4]);
 
-                    if (!alreadyJoined2.length) {
+                    if (!alreadyJoined4.length) {
                         return "I am not in your channel"
                     }
 
@@ -136,13 +136,13 @@ module.exports = {
                         return;
                     }
 
-                    const alreadyJoined2 = await tools.query(`
+                    const alreadyJoined5 = await tools.query(`
                             SELECT *
                             FROM Streamers
                             WHERE username=?`,
                         [username5]);
 
-                    if (!alreadyJoined2.length) {
+                    if (!alreadyJoined5.length) {
                         return "I am not in your channel"
                     }
 
