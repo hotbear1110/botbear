@@ -11,6 +11,9 @@ module.exports = {
             if (channel === "forsen") {
                 channel = "botbear1110"
             }
+            if (user.username !== "hotbear1110" && msg.startsWith("$")) {
+                return;
+            }
 
             if (user.username !== "hotbear1110" && channel !== "nymn") {
                 return;
