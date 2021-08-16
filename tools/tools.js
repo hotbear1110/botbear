@@ -4,6 +4,7 @@ const got = require("got");
 const db = require('../connect/connect.js');
 const tools = require("./tools.js");
 const hastebin = require('better-hastebin');
+const humanize = require('humanize-duration');
 
 
 exports.query = (query, data = []) =>
@@ -95,3 +96,28 @@ exports.makehastebin = (message, username, channel) =>
         console.log(url)
         return url;
     });
+
+exports.humanizeDuration = (ms) => {
+    const options = {
+        language: "shortEn",
+        languages: {
+            shortEn: {
+                y: () => "y",
+                mo: () => "mo",
+                w: () => "w",
+                d: () => "d",
+                h: () => "h",
+                m: () => "m",
+                s: () => "s",
+                ms: () => "ms",
+            },
+        },
+        units: ['y', 'd', 'h', 'm', 's'],
+        largest: 3,
+        round: true,
+        conjunction: ' and ',
+        spacer: '',
+
+    }
+    return humanize(ms, options);
+}

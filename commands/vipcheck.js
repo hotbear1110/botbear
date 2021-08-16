@@ -1,5 +1,6 @@
 const axios = require('axios');
 const _ = require("underscore")
+const tools = require("../tools/tools.js");
 
 module.exports = {
     name: "vipcheck",
@@ -19,7 +20,8 @@ module.exports = {
             await _.each(isvip, async function (viptatus) {
                 if (viptatus.login == username) {
                     let vipdate = viptatus.grantedAt
-                    vipresponse = `that user has been a vip😬 since - (${vipdate.substring(0, 10) })`
+                    const ms = new Date().getTime() - Date.parse(vipdate);
+                    vipresponse = `that user has been a vip😬 since - (${tools.humanizeDuration(ms)})`
                 }
             })
             if (vipresponse != "") {

@@ -1,5 +1,7 @@
 const axios = require('axios');
 const _ = require("underscore")
+const tools = require("../tools/tools.js");
+
 
 module.exports = {
     name: "modcheck",
@@ -19,7 +21,8 @@ module.exports = {
             await _.each(ismod, async function (modstatus) {
                 if (modstatus.login == username) {
                     let moddate = modstatus.grantedAt
-                    modresponse = `that user has been a M OMEGALUL D since - (${moddate.substring(0, 10) })`
+                    const ms = new Date().getTime() - Date.parse(moddate);
+                    modresponse = `that user has been a M OMEGALUL D for - (${tools.humanizeDuration(ms)})`
                 }
             })
             if (modresponse != "") {
