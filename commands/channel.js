@@ -41,7 +41,7 @@ module.exports = {
                         let liveemote = "FeelsOkayMan";
                         let offlineemote = "FeelsBadMan";
 
-                        await tools.query('INSERT INTO Streamers (username, uid, islive, liveemote, offlineemote, live_ping, title_ping, game_ping) values (?, ?, ? ,?, ?, ?, ?, ?)', [username, uid, islive, liveemote, offlineemote, '[""]', '[""]', '[""]']);
+                        await tools.query('INSERT INTO Streamers (username, uid, islive, liveemote, titleemote, gameemote, offlineemote, live_ping, title_ping, game_ping) values (?, ?, ?, ?, ? ,?, ?, ?, ?, ?)', [username, uid, islive, liveemote, liveemote, liveemote, offlineemote, '[""]', '[""]', '[""]']);
                         cc.join(username).then((data) => {
                             // data returns [channel]
                         }).catch((err) => {
@@ -150,7 +150,28 @@ module.exports = {
                         await tools.query(`UPDATE Streamers SET titleemote=? WHERE username=?`, [input[3], username5])
                         return `Title emote is now set to ${input[3]}`
                     }
+                    break;
+                case "offlineemote":
+                    let username6 = user.username;
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && user.username != "hotbear1110") { return; }
+                    if (!input[3]) {
+                        return;
+                    }
 
+                    const alreadyJoined6 = await tools.query(`
+                            SELECT *
+                            FROM Streamers
+                            WHERE username=?`,
+                        [username6]);
+
+                    if (!alreadyJoined6.length) {
+                        return "I am not in your channel"
+                    }
+
+                    else {
+                        await tools.query(`UPDATE Streamers SET offlineemote=? WHERE username=?`, [input[3], username6])
+                        return `Offline emote is now set to ${input[3]}`
+                    }
                     break;
                 default:
                     return "Please specify if you want the bot to leave or join your channel, by writing either 'bb channel join' or 'bb channel leave'"

@@ -98,7 +98,7 @@ setInterval(async function () {
                     await tools.query(`UPDATE Streamers SET title=? WHERE username=?`, [newTitle, stream.username])
                     _.each(titleuserlist, function (msg, i) {
                         setTimeout(function () {
-                            cc.action(`#${proxychannel2}`, `${stream.liveemote} NEW TITLE ! ${stream.liveemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`);
+                            cc.action(`#${proxychannel2}`, `${stream.titleemote} NEW TITLE ! ${stream.titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`);
                         }, 2000 * i);
                     });
                 };
@@ -120,7 +120,7 @@ setInterval(async function () {
                     console.log(stream.username + " NEW GAME: " + newGame);
                     _.each(gameuserlist, function (msg, i) {
                         setTimeout(function () {
-                            cc.action(`#${proxychannel2}`, `${stream.liveemote} NEW GAME ! ${stream.liveemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`);
+                            cc.action(`#${proxychannel2}`, `${stream.gameemote} NEW GAME ! ${stream.gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`);
                         }, 2000 * i);
                     });
 
