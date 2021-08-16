@@ -4,7 +4,7 @@ const axios = require('axios');
 
 module.exports = {
     name: "myping",
-        ping: true,
+    ping: true,
     execute: async (channel, user, input) => {
         try {
             switch (input[2]) {
@@ -121,8 +121,15 @@ module.exports = {
                     break;
 
                 case "list":
+                    let username = user.username;
+                    if (input[3]) {
+                        if (input[3].startsWith("@")) {
+                            input[3] = input[3].substring(1)
+                        }
+                        username = input[3];
+                    }
                     let userchannel3 = []
-                    userchannel3.push(`"${user.username}"`)
+                    userchannel3.push(`"${username}"`)
                     userchannel3.push(`"${channel}"`)
 
                     const alreadyJoined3 = await tools.query(`
@@ -140,7 +147,7 @@ module.exports = {
                         let listgames = JSON.parse(gamelist[0].game_pings)
                         listgames = listgames.toString().replaceAll(',', '\n')
 
-                        let hastebinlist = await tools.makehastebin(listgames, user.username, channel)
+                        let hastebinlist = await tools.makehastebin(listgames, username, channel)
 
                         return `Game list: ${hastebinlist}.txt`
                         break;
