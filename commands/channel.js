@@ -13,7 +13,6 @@ module.exports = {
             }
             switch (input[2]) {
                 case "join":
-                    input = msg.toLowerCase().split(" ");
                     if (channel != "botbear1110" && channel != "hotbear1110" && user.username != "hotbear1110") { return; }
                     let username = user.username;
                     let uid = user['user-id'];
@@ -54,7 +53,6 @@ module.exports = {
                     }
                     break;
                 case "leave":
-                    input = msg.toLowerCase().split(" ");
                     let username2 = user.username;
                     if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && user.username != "hotbear1110") { return; }
                     if (input[3]) {
@@ -88,7 +86,6 @@ module.exports = {
                     }
                     break;
                 case "liveemote":
-                    input = msg.split(" ");
                     let username3 = user.username;
                     if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && user.username != "hotbear1110") { return; }
                     if (!input[3]) {
@@ -111,7 +108,6 @@ module.exports = {
                     }
                     break;
                 case "gameemote":
-                    input = msg.split(" ");
                     let username4 = user.username;
                     if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && user.username != "hotbear1110") { return; }
                     if (!input[3]) {
@@ -134,7 +130,6 @@ module.exports = {
                     }
                     break;
                 case "titleemote":
-                    input = msg.split(" ");
                     let username5 = user.username;
                     if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && user.username != "hotbear1110") { return; }
                     if (!input[3]) {
