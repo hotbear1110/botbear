@@ -23,7 +23,7 @@ async function onMessageHandler(channel, user, msg, self) {
     }
     let input = msg.split(" ");
     let realcommand = input[1]
-    if (realcommand !== "say" || realcommand !== "channel") {
+    if (realcommand !== "say" && realcommand !== "channel") {
         input = msg.toLowerCase().split(" ");
     }
 
