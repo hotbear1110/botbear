@@ -85,6 +85,73 @@ module.exports = {
 
                     }
                     break;
+                case "liveemote":
+                    let username3 = user.username;
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && user.username != "hotbear1110") { return; }
+                    if (!input[3]) {
+                        return;
+                    }
+
+                    const alreadyJoined2 = await tools.query(`
+                            SELECT *
+                            FROM Streamers
+                            WHERE username=?`,
+                        [username3]);
+
+                    if (!alreadyJoined2.length) {
+                        return "I am not in your channel"
+                    }
+
+                    else {
+                        await tools.query(`UPDATE Streamers SET liveemote=? WHERE username=?`, [input[3], username3])
+                        return `Live emote is now set to ${input[3]}`
+                    }
+                    break;
+                case "gameemote":
+                    let username4 = user.username;
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && user.username != "hotbear1110") { return; }
+                    if (!input[3]) {
+                        return;
+                    }
+
+                    const alreadyJoined2 = await tools.query(`
+                            SELECT *
+                            FROM Streamers
+                            WHERE username=?`,
+                        [username4]);
+
+                    if (!alreadyJoined2.length) {
+                        return "I am not in your channel"
+                    }
+
+                    else {
+                        await tools.query(`UPDATE Streamers SET gameemote=? WHERE username=?`, [input[3], username4])
+                        return `Game emote is now set to ${input[3]}`
+                    }
+                    break;
+                case "titleemote":
+                    let username5 = user.username;
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && user.username != "hotbear1110") { return; }
+                    if (!input[3]) {
+                        return;
+                    }
+
+                    const alreadyJoined2 = await tools.query(`
+                            SELECT *
+                            FROM Streamers
+                            WHERE username=?`,
+                        [username5]);
+
+                    if (!alreadyJoined2.length) {
+                        return "I am not in your channel"
+                    }
+
+                    else {
+                        await tools.query(`UPDATE Streamers SET titleemote=? WHERE username=?`, [input[3], username5])
+                        return `Title emote is now set to ${input[3]}`
+                    }
+
+                    break;
                 default:
                     return "Please specify if you want the bot to leave or join your channel, by writing either 'bb channel join' or 'bb channel leave'"
             }
