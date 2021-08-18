@@ -54,7 +54,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
     talkedRecently.add(channel);
     
-    let timeout = 1000;
+    let timeout = 1250;
     
     if (user['user-id'] === process.env.TWITCH_OWNERUID) {
         timeout = 100;
