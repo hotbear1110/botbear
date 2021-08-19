@@ -4,8 +4,6 @@ const _ = require("underscore")
 const axios = require('axios');
 const cc = require("../bot.js").cc;
 
-cc.connect()
-
 setInterval(async function () {
     const streamers = await tools.query('SELECT * FROM Streamers')
     const myping = await tools.query(`SELECT * FROM MyPing`)
