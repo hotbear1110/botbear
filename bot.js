@@ -15,6 +15,7 @@ cc.connect()
 const talkedRecently = new Set();
 
 async function onMessageHandler(channel, user, msg, self) {
+    console.log(user.username, msg)
     if (self) {
         return;
     }
