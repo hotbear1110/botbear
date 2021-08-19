@@ -50,21 +50,18 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
+    if (user['user-id'] !== process.env.TWITCH_OWNERUID) {
 
-    if (talkedRecently.has(channel)) { return; }
+        if (talkedRecently.has(channel)) { return; }
 
-    talkedRecently.add(channel);
-    
-    let timeout = 1250;
-    
-    if (user['user-id'] === process.env.TWITCH_OWNERUID) {
-        timeout = 100;
+        talkedRecently.add(channel);
+
+        let timeout = 1250;
+
+        setTimeout(() => {
+            talkedRecently.delete(channel);
+        }, timeout);
     }
-
-    setTimeout(() => {
-        talkedRecently.delete(channel);
-    }, timeout);
-
 
     const usernamePhrase = await tools.banphrasePass(user.username, channel);
 
