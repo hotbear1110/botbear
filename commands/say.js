@@ -15,9 +15,6 @@ module.exports = {
             if (user.username !== "hotbear1110" && msg.match(/^[$|/|.|?|!|-]|\bkb\b/g)) { // ignores $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
                 return;
             }
-            if (user.username !== "hotbear1110" && msg.startsWith("!")) {
-                return;
-            }
             if (user.username !== "hotbear1110" && channel !== "nymn") {
                 return;
             }
