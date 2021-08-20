@@ -10,14 +10,12 @@ module.exports = {
                 uiduser = input[2]
             }
             
-                let userID = await axios.get(`https://api.ivr.fi/twitch/resolve/${uiduser}`)
-                uid = userID.data.id
+            const userID = await axios.get(`https://api.ivr.fi/twitch/resolve/${uiduser}`);
 
-                return uid
-            
+            return userID.data.id;
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan `;
+            return `Error FeelsBadMan `;
         }
     }
 }
