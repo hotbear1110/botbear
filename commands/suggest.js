@@ -9,7 +9,7 @@ module.exports = {
 
             let msg = input.toString().replaceAll(',', ' ')
             await tools.query('INSERT INTO Suggestions (User, Suggestion) values (?, ?)', [user.username, msg]);
-            const IDs = await tools.query(`SELECT ID FROM Suggestions WHERE ID = LAST_INSERT_ID()`)
+            const IDs = await tools.query(`SELECT MAX(ID) FROM Suggestions WHERE User=?`, [user.username]);
             return `Your suggestion was saved as 'ID ${IDs[0].ID}' nymnDank 👍 `
         } catch (err) {
             console.log(err);
