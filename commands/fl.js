@@ -16,7 +16,6 @@ module.exports = {
             if (fl.status !== 404) {
                 cc.say(`#${channel}`, `nymnDank ${fl.user}'s first message here was: ${fl.message} - (${fl.time} ago)`)
             }
-
         } catch (err) {
             console.log(err);
             return ` Error FeelsBadMan : No logs for that user in this chat`;

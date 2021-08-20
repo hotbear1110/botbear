@@ -15,14 +15,14 @@ module.exports = {
                 }
                 username = input[2];
             }
-            let followcheck = await axios.get(`https://api.ivr.fi/twitch/subage/${username}/${channel}`)
+            
+            const followcheck = await axios.get(`https://api.ivr.fi/twitch/subage/${username}/${channel}`)
+            
             if(followcheck.data["followedAt"]) {
                 const ms = new Date().getTime() - Date.parse(followcheck.data["followedAt"]);
                 return `${username} has been following #${channel} for (${tools.humanizeDuration(ms)})`
             }
-            else {
-                return `${username} does not follow #${channel}.`
-            }
+            return `${username} does not follow #${channel}.`
         } catch (err) {
             console.log(err);
             return ` Error FeelsBadMan `;

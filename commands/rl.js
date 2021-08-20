@@ -16,7 +16,6 @@ module.exports = {
             if (rl.status !== 404) {
                 return `#${channel} ${rl.user}: ${rl.message} - (${rl.time} ago)`
             }
-
         } catch (err) {
             console.log(err);
             return ` Error FeelsBadMan : No logs for that user in this chat`;

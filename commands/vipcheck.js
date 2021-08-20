@@ -17,6 +17,7 @@ module.exports = {
             let vipcheck = await axios.get(`https://api.ivr.fi/twitch/modsvips/${channel}`)
             isvip = vipcheck.data["vips"]
             let vipresponse = ""
+            
             await _.each(isvip, async function (viptatus) {
                 if (viptatus.login == username) {
                     let vipdate = viptatus.grantedAt
@@ -24,13 +25,11 @@ module.exports = {
                     vipresponse = `that user has been a vip😬 since - (${tools.humanizeDuration(ms)})`
                 }
             })
+
             if (vipresponse != "") {
                 return vipresponse
             }
-            else {
-                return `That user is not a vip :)`
-            }
-
+            return `That user is not a vip :)`
         } catch (err) {
             console.log(err);
             return ` Error FeelsBadMan `;
