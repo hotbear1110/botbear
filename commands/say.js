@@ -17,7 +17,9 @@ module.exports = {
             if (user.username !== "hotbear1110" && msg.startsWith("/")) {
                 return;
             }
-
+            if (user.username !== "hotbear1110" && msg.startsWith("!")) {
+                return;
+            }
             if (user.username !== "hotbear1110" && channel !== "nymn") {
                 return;
             }

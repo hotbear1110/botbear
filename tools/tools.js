@@ -26,9 +26,14 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
           FROM Streamers
           WHERE username=?`,
         [this.channel]);
-    if (this.data[0].banphraseapi === null) {
+    try {
+        if (this.data[0].banphraseapi === null) {
+            resolve(0);
+            return;
+        }
+    } catch (err) {
+        console.log(err);
         resolve(0);
-        return;
     }
     try {
         this.checkBanphrase = await got(this.data[0].banphraseapi, {
