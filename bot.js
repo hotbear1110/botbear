@@ -2,6 +2,7 @@ require('dotenv').config()
 const tmi = require("tmi.js");
 const login = require('./connect/connect.js');
 const tools = require("./tools/tools.js")
+const regex = require('./tools/regex.js');
 const requireDir = require("require-dir");
 
 const cc = new tmi.client(login.options)
@@ -35,13 +36,13 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
-/* If yabbes chat want to disable other commands ->
-    if (channel === "#yabbe") {
-        if (realcommand !== "channel" && realcommand !== "notify" && realcommand !== "remove" && realcommand !== "myping" && realcommand !=="ping" && realcommand !== "commands" && realcommand !== "bot" && realcommand !== "suggest") {
-            return;
+    /* If yabbes chat want to disable other commands ->
+        if (channel === "#yabbe") {
+            if (realcommand !== "channel" && realcommand !== "notify" && realcommand !== "remove" && realcommand !== "myping" && realcommand !=="ping" && realcommand !== "commands" && realcommand !== "bot" && realcommand !== "suggest") {
+                return;
+            }
         }
-    }
-*/
+    */
 
     if (channel === "#forsen") {
         return;
@@ -77,6 +78,11 @@ async function onMessageHandler(channel, user, msg, self) {
         cc.say(channel, `[Banphrased Username] cmonBruh `);
         return;
     }
+    const badUsername = user.username.match(regex.racism);
+    if (badUsername != null) {
+        cc.say(channel, `[Bad username detected] cmonBruh`);
+        return;
+    }
 
 
     let realchannel = channel.substring(1)
@@ -102,7 +108,12 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (banPhrase.banned) {
-        cc.say(channel, `[Banphrased] cmonBruh `);
+        cc.say(channel, `[Banphrased] cmonBruh`);
+        return;
+    }
+    const badWord = result.match(regex.racism);
+    if (badWord != null) {
+        cc.say(channel, `[Bad word detected] cmonBruh`);
         return;
     }
 
