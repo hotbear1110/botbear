@@ -3,6 +3,7 @@ const tmi = require("tmi.js");
 const login = require('./connect/connect.js');
 const tools = require("./tools/tools.js")
 const regex = require('./tools/regex.js');
+const bannedPhrases = require('./tools/bannedPhrases.js');
 const requireDir = require("require-dir");
 
 const cc = new tmi.client(login.options)
@@ -111,6 +112,14 @@ async function onMessageHandler(channel, user, msg, self) {
         cc.say(channel, `[Banphrased] cmonBruh`);
         return;
     }
+    const notabanPhrase = await tools.notbannedPhrases(result.toLowerCase());
+    console.log(notabanPhrase)
+
+    if (notabanPhrase != `null`) {
+        cc.say(channel, notabanPhrase);
+        return;
+    }
+
     const badWord = result.match(regex.racism);
     if (badWord != null) {
         cc.say(channel, `[Bad word detected] cmonBruh`);

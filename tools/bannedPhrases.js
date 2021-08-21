@@ -1,0 +1,1 @@
+exports.bannedPhrases = ["minik germany"]

@@ -1,8 +1,10 @@
 require('dotenv').config()
+const _ = require("underscore")
 const mysql = require("mysql2");
 const got = require("got");
 const db = require('../connect/connect.js');
 const tools = require("./tools.js");
+const bannedPhrases = require("./bannedPhrases.js");
 const hastebin = require('better-hastebin');
 const humanize = require('humanize-duration');
 
@@ -125,4 +127,22 @@ exports.humanizeDuration = (ms) => {
 
     }
     return humanize(ms, options);
+}
+
+exports.notbannedPhrases = (message) => {
+
+    let banPhraseList = bannedPhrases.bannedPhrases
+    let isbanned = `null`
+    try {
+        _.each(banPhraseList, async function (phrase) {
+            if (message.includes(phrase)) {
+                isbanned = `[Bad word detected] cmonBruh`
+                return;
+            }
+        })
+        return isbanned;
+    } catch (err) {
+        console.log(err);
+        return err;
+    }
 }
