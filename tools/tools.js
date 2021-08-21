@@ -146,3 +146,22 @@ exports.notbannedPhrases = (message) => {
         return err;
     }
 }
+
+exports.massping = (message) => new Promise(async (resolve, reject) => {
+    let users = await tools.query(`SELECT username FROM Users`)
+    let pings = 0;
+
+    _.each(users, async function (user) {
+        if (message.includes(user.username)) {
+            pings++
+        }
+        if (pings > 6) {
+            resolve(0);
+        }
+    })
+    if (pings > 6) {
+        resolve(`[MASS PING]`)
+    }
+    resolve("null")
+
+})

@@ -21,6 +21,11 @@ module.exports = {
             if (userPermission < 2000 /*&& channel !== "nymn"*/) {
                 return;
             }
+            const masspinged = await tools.massping(msg.toLowerCase())
+
+            if (masspinged != "null") {
+                return "[MASS PING]"
+            }
 
             return msg;
         } catch (err) {

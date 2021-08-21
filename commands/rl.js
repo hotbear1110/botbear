@@ -16,7 +16,11 @@ module.exports = {
             }
 
             const rl = await got(`https://api.ivr.fi/logs/rq/${realchannel}/${username}`).json();
+            const masspinged = await tools.massping(rl.message.toLowerCase())
 
+            if (masspinged != "null") {
+                return "[MASS PING]"
+            }
             if (rl.status !== 404) {
                 return `#${realchannel} ${rl.user}: ${rl.message} - (${rl.time} ago)`
             }

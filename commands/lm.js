@@ -19,7 +19,11 @@ module.exports = {
             }
 
             const lm = await got(`https://api.ivr.fi/logs/lastmessage/${realchannel}/${username}`).json();
+            const masspinged = await tools.massping(lm.response.toLowerCase())
 
+            if (masspinged != "null") {
+                return "[MASS PING]"
+            }
             if (lm.status !== 404) {
                 return `nymnDank ${lm.user}'s last message in #${realchannel} was: ${lm.response} - (${lm.time} ago)`
             }

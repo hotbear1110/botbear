@@ -120,7 +120,6 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
     const notabanPhrase = await tools.notbannedPhrases(result.toLowerCase());
-    console.log(notabanPhrase)
 
     if (notabanPhrase != `null`) {
         cc.say(channel, notabanPhrase);
