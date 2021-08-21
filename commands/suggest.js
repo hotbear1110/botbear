@@ -13,7 +13,7 @@ module.exports = {
             
             const IDs = await tools.query(`SELECT MAX(ID) FROM Suggestions WHERE User=?`, [user.username])
             
-            return `Your suggestion was saved as 'ID ${IDs[0].ID}' nymnDank 👍 `
+            return `Your suggestion was saved as 'ID ${IDs}' nymnDank 👍 `
         } catch (err) {
             console.log(err);
             return ` Error FeelsBadMan `;
