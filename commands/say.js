@@ -5,6 +5,9 @@ module.exports = {
     ping: false,
     execute: async (channel, user, input) => {
         try {
+            let userPermission = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username])
+            userPermission = JSON.parse(userPermission[0].permission)
+
             input = input.splice(2)
             let msg = input.toString().replaceAll(',', ' ')
 
@@ -12,10 +15,10 @@ module.exports = {
                 channel = "botbear1110"
             }
 
-            if (user.username !== "hotbear1110" && msg.match(/^[$|/|.|?|!|-]|\bkb\b/g)) { // ignores $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
+            if (userPermission < 2000 && msg.match(/^[$|/|.|?|!|-]|\bkb\b/g)) { // ignores $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
                 return;
             }
-            if (user.username !== "hotbear1110" /*&& channel !== "nymn"*/) {
+            if (userPermission < 2000 /*&& channel !== "nymn"*/) {
                 return;
             }
 

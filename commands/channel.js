@@ -11,9 +11,12 @@ module.exports = {
             if (channel === "forsen") {
                 channel = "botbear1110"
             }
+            let userPermission = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username])
+            userPermission = JSON.parse(userPermission[0].permission)
+
             switch (input[2]) {
                 case "join":
-                    if (channel != "botbear1110" && channel != "hotbear1110" && user.username != "hotbear1110") { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && userPermission < 2000) { return; }
                     let username = user.username;
                     let uid = user['user-id'];
 
@@ -54,7 +57,7 @@ module.exports = {
                     break;
                 case "leave":
                     let username2 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && user.username != "hotbear1110") { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && userPermission < 2000) { return; }
                     if (input[3]) {
                         username2 = input[3];
                     }
@@ -87,7 +90,7 @@ module.exports = {
                     break;
                 case "liveemote":
                     let username3 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && user.username != "hotbear1110") { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && userPermission < 2000) { return; }
                     if (!input[3]) {
                         return;
                     }
@@ -109,7 +112,7 @@ module.exports = {
                     break;
                 case "gameemote":
                     let username4 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && user.username != "hotbear1110") { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && userPermission < 2000) { return; }
                     if (!input[3]) {
                         return;
                     }
@@ -131,7 +134,7 @@ module.exports = {
                     break;
                 case "titleemote":
                     let username5 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && user.username != "hotbear1110") { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && userPermission < 2000) { return; }
                     if (!input[3]) {
                         return;
                     }
@@ -153,7 +156,7 @@ module.exports = {
                     break;
                 case "offlineemote":
                     let username6 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && user.username != "hotbear1110") { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && userPermission < 2000) { return; }
                     if (!input[3]) {
                         return;
                     }
