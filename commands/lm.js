@@ -10,14 +10,18 @@ module.exports = {
             if (input[2]) {
                 username = input[2];
             }
+            let realchannel = channel;
+            if (input[3]) {
+                realchannel = input[3]
+            }
             if (username === "botbear1110" || username === "ksyncbot") {
                 return;
             }
 
-            const lm = await got(`https://api.ivr.fi/logs/lastmessage/${channel}/${username}`).json();
+            const lm = await got(`https://api.ivr.fi/logs/lastmessage/${realchannel}/${username}`).json();
 
             if (lm.status !== 404) {
-                cc.say(`#${channel}`, `nymnDank ${lm.user}'s last message here was: ${lm.response} - (${lm.time} ago)`)
+                return `nymnDank ${lm.user}'s last message in #${realchannel} was: ${lm.response} - (${lm.time} ago)`
             }
 
         } catch (err) {

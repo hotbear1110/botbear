@@ -15,21 +15,25 @@ module.exports = {
                 }
                 username = input[2];
             }
-            let modcheck = await axios.get(`https://api.ivr.fi/twitch/modsvips/${channel}`)
+            let realchannel = channel;
+            if (input[3]) {
+                realchannel = input[3]
+            }
+            let modcheck = await axios.get(`https://api.ivr.fi/twitch/modsvips/${realchannel}`)
             ismod = modcheck.data["mods"]
             let modresponse = ""
             await _.each(ismod, async function (modstatus) {
                 if (modstatus.login == username) {
                     let moddate = modstatus.grantedAt
                     const ms = new Date().getTime() - Date.parse(moddate);
-                    modresponse = `that user has been a M OMEGALUL D for - (${tools.humanizeDuration(ms)})`
+                    modresponse = `that user has been a M OMEGALUL D in #${realchannel} for - (${tools.humanizeDuration(ms)})`
                 }
             })
             if (modresponse != "") {
                 return modresponse
             }
             else {
-                return `That user is not a mod :)`
+                return `That user is not a mod in #${realchannel} :)`
             }
 
         } catch (err) {

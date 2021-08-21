@@ -14,25 +14,29 @@ module.exports = {
                 }
                 username = input[2];
             }
-            let vipcheck = await axios.get(`https://api.ivr.fi/twitch/modsvips/${channel}`)
+            let realchannel = channel;
+            if (input[3]) {
+                realchannel = input[3]
+            }
+            let vipcheck = await axios.get(`https://api.ivr.fi/twitch/modsvips/${realchannel}`)
             isvip = vipcheck.data["vips"]
             let vipresponse = ""
-            
+
             await _.each(isvip, async function (viptatus) {
                 if (viptatus.login == username) {
                     let vipdate = viptatus.grantedAt
                     const ms = new Date().getTime() - Date.parse(vipdate);
-                    vipresponse = `that user has been a vip😬 since - (${tools.humanizeDuration(ms)})`
+                    vipresponse = `that user has been a vip😬 in #${realchannel} for - (${tools.humanizeDuration(ms)})`
                 }
             })
 
             if (vipresponse != "") {
                 return vipresponse
             }
-            return `That user is not a vip :)`
+            return `That user is not a vip in #${realchannel} :) `
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan `;
+            return `Error FeelsBadMan`
         }
     }
 }

@@ -15,14 +15,18 @@ module.exports = {
                 }
                 username = input[2];
             }
-            
-            const followcheck = await axios.get(`https://api.ivr.fi/twitch/subage/${username}/${channel}`)
-            
-            if(followcheck.data["followedAt"]) {
-                const ms = new Date().getTime() - Date.parse(followcheck.data["followedAt"]);
-                return `${username} has been following #${channel} for (${tools.humanizeDuration(ms)})`
+            let realchannel = channel;
+            if (input[3]) {
+                realchannel = input[3]
             }
-            return `${username} does not follow #${channel}.`
+
+            const followcheck = await axios.get(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`)
+
+            if (followcheck.data["followedAt"]) {
+                const ms = new Date().getTime() - Date.parse(followcheck.data["followedAt"]);
+                return `${username} has been following #${realchannel} for (${tools.humanizeDuration(ms)})`
+            }
+            return `${username} does not follow #${realchannel}.`
         } catch (err) {
             console.log(err);
             return ` Error FeelsBadMan `;

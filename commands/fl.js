@@ -10,11 +10,16 @@ module.exports = {
             if (input[2]) {
                 username = input[2];
             }
+            let realchannel = channel;
+            if (input[3]) {
+                realchannel = input[3]
+            }
 
-            const fl = await got(`https://api.ivr.fi/logs/firstmessage/${channel}/${username}`).json();
+
+            const fl = await got(`https://api.ivr.fi/logs/firstmessage/${realchannel}/${username}`).json();
 
             if (fl.status !== 404) {
-                cc.say(`#${channel}`, `nymnDank ${fl.user}'s first message here was: ${fl.message} - (${fl.time} ago)`)
+                return `nymnDank ${fl.user}'s first message in #${realchannel} was: ${fl.message} - (${fl.time} ago)`
             }
         } catch (err) {
             console.log(err);
