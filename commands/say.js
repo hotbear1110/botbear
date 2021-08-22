@@ -18,7 +18,7 @@ module.exports = {
             if (userPermission < 2000 && msg.match(/^[$|/|.|?|!|-]|\bkb\b/g)) { // ignores $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
                 return;
             }
-            if (userPermission < 2000 /*&& channel !== "nymn"*/) {
+            if (userPermission < 2000 && channel !== "nymn") {
                 return;
             }
             const masspinged = await tools.massping(msg.toLowerCase())

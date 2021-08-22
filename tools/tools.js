@@ -155,13 +155,26 @@ exports.massping = (message) => new Promise(async (resolve, reject) => {
         if (message.includes(user.username)) {
             pings++
         }
-        if (pings > 6) {
+        if (pings > 7) {
             resolve(0);
         }
     })
-    if (pings > 6) {
+    if (pings > 7) {
         resolve(`[MASS PING]`)
     }
     resolve("null")
 
 })
+
+exports.asciiLength = (message) => {
+    const msgarray = message.split(" ");
+    let emojicount = 0
+
+    _.each(msgarray, async function (word) {
+        if (/\p{Emoji}/u.test(word)) {
+        emojicount++
+        }
+    })
+    return emojicount
+
+}

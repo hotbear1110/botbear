@@ -43,7 +43,6 @@ async function onMessageHandler(channel, user, msg, self) {
     if (input[0] !== "bb" && input[0].toLowerCase() !== "forsenbb") {
         return;
     }
-
     /* If yabbes chat want to disable other commands ->
         if (channel === "#yabbe") {
             if (realcommand !== "channel" && realcommand !== "notify" && realcommand !== "remove" && realcommand !== "myping" && realcommand !=="ping" && realcommand !== "commands" && realcommand !== "bot" && realcommand !== "suggest") {
@@ -129,6 +128,12 @@ async function onMessageHandler(channel, user, msg, self) {
     const badWord = result.match(regex.racism);
     if (badWord != null) {
         cc.say(channel, `[Bad word detected] cmonBruh`);
+        return;
+    }
+
+    const reallength = await tools.asciiLength(result);
+    if (reallength > 30) {
+        cc.say(channel, "[Too many emojis]");
         return;
     }
 
