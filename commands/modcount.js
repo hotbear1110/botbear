@@ -16,8 +16,6 @@ module.exports = {
                 username = input[2];
             }
             let modcount = await axios.get(`https://modlookup.3v.fi/api/user-totals/${username}`)
-            console.log(modcount.data)
-            console.log(modcount.data.total)
             ismod = modcount.data["total"]
             if (ismod === 0) {
                 return `That user is not a mod in any channel :)`
