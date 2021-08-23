@@ -118,6 +118,11 @@ async function onMessageHandler(channel, user, msg, self) {
         cc.say(channel, `[Banphrased] cmonBruh`);
         return;
     }
+    if (banPhrase === 0) {
+        cc.say(channel, "FeelsDankMan error!!")
+        return;
+    }
+
     const notabanPhrase = await tools.notbannedPhrases(result.toLowerCase());
 
     if (notabanPhrase != `null`) {
