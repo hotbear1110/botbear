@@ -43,8 +43,9 @@ module.exports = {
                         let islive = 0;
                         let liveemote = "FeelsOkayMan";
                         let offlineemote = "FeelsBadMan";
+                        let banphraseapi = "https://pajlada.pajbot.com/api/v1/banphrases/test;"
 
-                        await tools.query('INSERT INTO Streamers (username, uid, islive, liveemote, titleemote, gameemote, offlineemote, live_ping, title_ping, game_ping) values (?, ?, ?, ?, ? ,?, ?, ?, ?, ?)', [username, uid, islive, liveemote, liveemote, liveemote, offlineemote, '[""]', '[""]', '[""]']);
+                        await tools.query('INSERT INTO Streamers (username, uid, islive, liveemote, banphraseapi, titleemote, gameemote, offlineemote, live_ping, title_ping, game_ping) values (?, ?, ?, ?, ? ,?, ?, ?, ?, ?)', [username, uid, islive, liveemote, banphraseapi, liveemote, liveemote, offlineemote, '[""]', '[""]', '[""]']);
                         cc.join(username).then((data) => {
                             // data returns [channel]
                         }).catch((err) => {
