@@ -7,6 +7,7 @@ const tools = require("./tools.js");
 const bannedPhrases = require("./bannedPhrases.js");
 const hastebin = require('better-hastebin');
 const humanize = require('humanize-duration');
+const axios = require('axios');
 
 
 exports.query = (query, data = []) =>
@@ -46,6 +47,27 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
             },
         }).json();
         resolve(this.checkBanphrase);
+    } catch (err) {
+        console.log(err);
+        resolve(0);
+    }
+
+});
+
+exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reject) => {
+    this.channel = channel.replace("#", '')
+    this.message = message.replaceAll(' ', '%20')
+    this.data = await tools.query(`
+          SELECT uid
+          FROM Streamers
+          WHERE username=?`,
+        [this.channel]);
+    try {
+        this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/${this.data[0].uid}/moderation/check_message?message=${this.message}`)
+        if (this.checkBanphrase.data["banned"] == true) {
+            resolve(true)
+        }
+        resolve(false);
     } catch (err) {
         console.log(err);
         resolve(0);
@@ -172,7 +194,7 @@ exports.asciiLength = (message) => {
 
     _.each(msgarray, async function (word) {
         if (/\p{Emoji}/u.test(word)) {
-        emojicount++
+            emojicount++
         }
     })
     return emojicount

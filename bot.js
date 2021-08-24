@@ -110,16 +110,24 @@ async function onMessageHandler(channel, user, msg, self) {
 
     if ((await userCD.setCooldown()).length) { return; }
 
-    const banPhrase = await tools.banphrasePass(result, channel);
-
     if (channel === "#forsen") {
         channel = "#botbear1110"
     }
+
+    const banPhrase = await tools.banphrasePass(result, channel);
 
     if (banPhrase.banned) {
         cc.say(channel, `[Banphrased] cmonBruh`);
         return;
     }
+
+    const banPhraseV2 = await tools.banphrasePassV2(result, channel);
+
+    if (banPhraseV2 == true) {
+        cc.say(channel, `[Banphrased] cmonBruh`);
+        return;
+    }
+
     if (banPhrase === 0) {
         cc.say(channel, "FeelsDankMan error!!")
         return;
