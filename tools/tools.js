@@ -29,9 +29,10 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
           FROM Streamers
           WHERE username=?`,
         [this.channel]);
+        this.banphraseapi = this.data[0].banphraseapi;
     try {
-        if (this.data[0].banphraseapi === null) {
-            resolve(0);
+        if (this.banphraseapi === null) {
+            this.banphraseapi = "https://pajlada.pajbot.com/api/v1/banphrases/test"
             return;
         }
     } catch (err) {
@@ -39,7 +40,7 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
         resolve(0);
     }
     try {
-        this.checkBanphrase = await got(this.data[0].banphraseapi, {
+        this.checkBanphrase = await got(this.banphraseapi, {
             method: "POST",
             body: "message=" + message,
             headers: {
