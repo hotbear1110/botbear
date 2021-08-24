@@ -178,3 +178,33 @@ exports.asciiLength = (message) => {
     return emojicount
 
 }
+
+const aliasList = require('./aliases.json');
+
+exports.Alias = class Alias {
+    constructor(message) {
+        this.command = message
+            .split(' ')
+            .splice(1)
+            .filter(Boolean)[0];
+        this.alias = aliasList.filter(i => i[this.command]);
+    }
+
+    convertToRegexp(input) {
+        return new RegExp(`\\b${input}\\b`, "i")
+    }
+
+    getRegex() {
+        if (this.alias.length) {
+            return this.convertToRegexp(Object.keys(this.alias[0]));
+        }
+        return '';
+    }
+
+    getReplacement() {
+        if (this.alias.length) {
+            return Object.values(this.alias[0])[0];
+        }
+        return '';
+    }
+}

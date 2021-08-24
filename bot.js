@@ -32,6 +32,8 @@ async function onMessageHandler(channel, user, msg, self) {
         console.log("message")
     }
     let input = msg.split(" ");
+    const Alias = new tools.Alias(msg);
+    input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
     let realcommand = input[1]
     if (realcommand !== "say" && realcommand !== "channel") {
         input = msg.toLowerCase().split(" ");
@@ -104,7 +106,7 @@ async function onMessageHandler(channel, user, msg, self) {
         result = `${user['display-name']} ${result}`
     }
 
-    const userCD = new tools.Cooldown(user, input, 5000);
+    const userCD = new tools.Cooldown(user, realcommand, 5000);
 
     if ((await userCD.setCooldown()).length) { return; }
 
