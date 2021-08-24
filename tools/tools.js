@@ -30,13 +30,10 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
           WHERE username=?`,
         [this.channel]);
         this.banphraseapi = this.data[0].banphraseapi;
-        console.log(this.banphraseapi)
     try {
-        if (!this.banphraseapi == null) {
+        if (this.banphraseapi == null) {
             this.banphraseapi = "https://pajlada.pajbot.com/api/v1/banphrases/test"
-            return;
         }
-        console.log(this.banphraseapi)
     } catch (err) {
         console.log(err);
         resolve(0);
