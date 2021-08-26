@@ -27,7 +27,7 @@ module.exports = {
                 return "[MASS PING]"
             }
             if (lm.status !== 404) {
-                return `nymnDank ${lm.user}'s last message inﾠ#${realchannel} was: ${lm.response} - (${lm.time} ago)`
+                return `nymnDank ${lm.user}'s last message in #${realchannel}ﾠwas: ${lm.response} - (${lm.time} ago)`
             }
 
         } catch (err) {
