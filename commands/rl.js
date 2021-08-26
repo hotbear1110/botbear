@@ -24,7 +24,7 @@ module.exports = {
                 return "[MASS PING]"
             }
             if (rl.status !== 404) {
-                return `#${realchannel} ${rl.user}: ${rl.message} - (${rl.time} ago)`
+                return `ㅤ#${realchannel}ㅤ${rl.user}: ${rl.message} - (${rl.time} ago)`
             }
         } catch (err) {
             console.log(err);
