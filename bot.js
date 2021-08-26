@@ -45,13 +45,13 @@ async function onMessageHandler(channel, user, msg, self) {
     if (input[0] !== "bb" && input[0].toLowerCase() !== "forsenbb") {
         return;
     }
-    /* If yabbes chat want to disable other commands ->
+    // If yabbes chat want to disable other commands ->
         if (channel === "#yabbe") {
             if (realcommand !== "channel" && realcommand !== "notify" && realcommand !== "remove" && realcommand !== "myping" && realcommand !=="ping" && realcommand !== "commands" && realcommand !== "bot" && realcommand !== "suggest") {
                 return;
             }
         }
-    */
+    
 
     if (channel === "#forsen") {
         return;
