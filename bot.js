@@ -47,7 +47,7 @@ async function onMessageHandler(channel, user, msg, self) {
     }
     // If yabbes chat want to disable other commands ->
         if (channel === "#yabbe") {
-            if (realcommand !== "channel" && realcommand !== "notify" && realcommand !== "remove" && realcommand !== "myping" && realcommand !=="ping" && realcommand !== "commands" && realcommand !== "bot" && realcommand !== "suggest") {
+            if (realcommand !== "gametime" && realcommand !== "channel" && realcommand !== "notify" && realcommand !== "remove" && realcommand !== "myping" && realcommand !=="ping" && realcommand !== "commands" && realcommand !== "bot" && realcommand !== "suggest") {
                 return;
             }
         }
