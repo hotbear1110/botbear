@@ -31,11 +31,13 @@ setInterval(async function () {
                 }
 
                 if (twitchdata['data'].length !== 0 && stream.islive == 0) {
+                    /*
                     if (stream.username === "hotbear1110") {
                         console.log("RECORDING")
                         let date = new Date().getTime()
                         record.recordStream(date)
                     }
+                    */
                     console.log(stream.username + " IS NOW LIVE");
                     await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`)
                     _.each(userlist, function (msg, i) {
