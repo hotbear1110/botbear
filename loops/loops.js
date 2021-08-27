@@ -101,8 +101,9 @@ setInterval(async function () {
                     });
                 };
                 if (newGame != stream.game) {
+                    let gameTime = new Date().getTime()
 
-                    await tools.query(`UPDATE Streamers SET game=? WHERE username=?`, [newGame, stream.username])
+                    await tools.query(`UPDATE Streamers SET game=?, game_time=? WHERE username=?`, [newGame, gameTime, stream.username])
 
                     if (newTitle != stream.title) {
                         function sleep(milliseconds) {
