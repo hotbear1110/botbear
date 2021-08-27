@@ -32,6 +32,7 @@ setInterval(async function () {
 
                 if (twitchdata['data'].length !== 0 && stream.islive == 0) {
                     if (stream.username === "hotbear1110") {
+                        console.log("RECORDING")
                         let date = new Date().getTime()
                         record.recordStream(date)
                     }
