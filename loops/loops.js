@@ -3,6 +3,7 @@ const tools = require("../tools/tools.js")
 const _ = require("underscore")
 const axios = require('axios');
 const cc = require("../bot.js").cc;
+const record = require("../tools/recordStream.js")
 
 setInterval(async function () {
     const streamers = await tools.query('SELECT * FROM Streamers')
@@ -30,6 +31,10 @@ setInterval(async function () {
                 }
 
                 if (twitchdata['data'].length !== 0 && stream.islive == 0) {
+                    if (stream.username === "hotbear1110") {
+                        let date = new Date().getTime()
+                        record.recordStream(date)
+                    }
                     console.log(stream.username + " IS NOW LIVE");
                     await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`)
                     _.each(userlist, function (msg, i) {
