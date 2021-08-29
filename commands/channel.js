@@ -16,7 +16,8 @@ module.exports = {
 
             switch (input[2]) {
                 case "join":
-                    if (channel != "botbear1110" && channel != "hotbear1110" && userPermission < 2000) { return; }
+                    console.log(channel)
+                    if (channel !== "botbear1110" && channel !== "hotbear1110" && userPermission < 2000) { return; }
                     let username = user.username;
                     let uid = user['user-id'];
 
