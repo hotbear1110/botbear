@@ -17,8 +17,9 @@ cc.connect()
 const talkedRecently = new Set();
 
 async function onMessageHandler(channel, user, msg, self) {
-   // console.log(`${user.username}: ${msg}`)
-
+    if (channel == "#botbear1110") {
+         console.log(`${user.username}: ${msg}`)
+    }
     const userList = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username])
 
     if (!userList.length && user.username != null) {
@@ -46,12 +47,12 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
     // If yabbes chat want to disable other commands ->
-        if (channel === "#yabbe") {
-            if (realcommand !== "gametime" && realcommand !== "channel" && realcommand !== "notify" && realcommand !== "remove" && realcommand !== "myping" && realcommand !=="ping" && realcommand !== "commands" && realcommand !== "bot" && realcommand !== "suggest") {
-                return;
-            }
+    if (channel === "#yabbe") {
+        if (realcommand !== "gametime" && realcommand !== "channel" && realcommand !== "notify" && realcommand !== "remove" && realcommand !== "myping" && realcommand !== "ping" && realcommand !== "commands" && realcommand !== "bot" && realcommand !== "suggest") {
+            return;
         }
-    
+    }
+
 
     if (channel === "#forsen") {
         return;
