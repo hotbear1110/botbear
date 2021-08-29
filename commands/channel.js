@@ -21,7 +21,7 @@ module.exports = {
                     let username = user.username;
                     let uid = user['user-id'];
 
-                    if (input[3] && user.username !== input[3] && user['user-id'] != process.env.TWITCH_OWNERUID) {
+                    if (input[3] && user.username !== input[3].toLowerCase() && user['user-id'] != process.env.TWITCH_OWNERUID) {
                         return "I can only join your channel!";
                     }
                     if (input[3]) {
