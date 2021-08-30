@@ -156,7 +156,6 @@ async function onMessageHandler(channel, user, msg, self) {
     if (result === oldmessage) {
         result = `${result} `
     }
-
     cc.say(channel, result);
     oldmessage = result
 
