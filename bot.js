@@ -14,6 +14,7 @@ cc.on('connected', onConnectedHandler);
 cc.connect()
 
 const talkedRecently = new Set();
+let oldmessage = ""
 
 async function onMessageHandler(channel, user, msg, self) {
     try {
@@ -152,8 +153,12 @@ async function onMessageHandler(channel, user, msg, self) {
         cc.say(channel, "[Too many emojis]");
         return;
     }
+    if (result = oldmessage) {
+        result = result + "ﾠ"
+    }
 
     cc.say(channel, result);
+    oldmessage = result
 
 } catch (err) {
     console.log(err);
