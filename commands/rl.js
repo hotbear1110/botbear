@@ -28,7 +28,7 @@ module.exports = {
             }
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan : No logs for that user in this chat`;
+            return ` Error FeelsBadMan`;
         }
     }
 }
