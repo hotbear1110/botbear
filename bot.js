@@ -153,8 +153,9 @@ async function onMessageHandler(channel, user, msg, self) {
         cc.say(channel, "[Too many emojis]");
         return;
     }
+
     if (result === oldmessage) {
-        result = `${result} `
+        result = `${result}ﾠ`
     }
     cc.say(channel, result);
     oldmessage = result
