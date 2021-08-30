@@ -3,8 +3,8 @@ const tmi = require("tmi.js");
 const login = require('./connect/connect.js');
 const tools = require("./tools/tools.js")
 const regex = require('./tools/regex.js');
-const bannedPhrases = require('./tools/bannedPhrases.js');
 const requireDir = require("require-dir");
+const _ = require("underscore")
 
 const cc = new tmi.client(login.options)
 
