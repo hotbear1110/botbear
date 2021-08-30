@@ -154,7 +154,7 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
     if (result = oldmessage) {
-        result = result + "ﾠ"
+        result = `${result}ﾠ`
     }
 
     cc.say(channel, result);
