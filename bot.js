@@ -162,7 +162,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
 } catch (err) {
     console.log(err);
-    resolve(0);
+    return;
 }}
 
 function onConnectedHandler(addr, port) {
