@@ -158,6 +158,7 @@ async function onMessageHandler(channel, user, msg, self) {
     }
     cc.say(channel, result);
     oldmessage = result
+}
 
 function onConnectedHandler(addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
