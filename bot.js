@@ -17,7 +17,6 @@ const talkedRecently = new Set();
 let oldmessage = ""
 
 async function onMessageHandler(channel, user, msg, self) {
-    try {
     if (channel == "#botbear1110") {
          console.log(`${user.username}: ${msg}`)
     }
@@ -159,11 +158,6 @@ async function onMessageHandler(channel, user, msg, self) {
     }
     cc.say(channel, result);
     oldmessage = result
-
-} catch (err) {
-    console.log(err);
-    return;
-}}
 
 function onConnectedHandler(addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
