@@ -233,9 +233,9 @@ exports.Alias = class Alias {
 
 exports.getPerm = (user) => new Promise(async (resolve, reject) => {
     try {
-    let userPermission = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username])
+    let userPermission = await tools.query(`SELECT * FROM Users WHERE username=?`, [user])
         userPermission = JSON.parse(userPermission[0].permission)
-        
+
         resolve(userPermission)
     } catch (err) {
         console.log(err);
