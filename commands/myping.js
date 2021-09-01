@@ -5,7 +5,7 @@ const axios = require('axios');
 module.exports = {
     name: "myping",
     ping: true,
-    execute: async (channel, user, input) => {
+    execute: async (channel, user, input, perm) => {
         try {
             switch (input[2]) {
                 case "add":

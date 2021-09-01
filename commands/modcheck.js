@@ -6,7 +6,7 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "modcheck",
     ping: true,
-    execute: async (channel, user, input) => {
+    execute: async (channel, user, input, perm) => {
         try {
             let username = user.username;
             if (input[2]) {

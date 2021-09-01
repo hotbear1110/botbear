@@ -6,7 +6,7 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "modcheck",
     ping: true,
-    execute: async (channel, user, input) => {
+    execute: async (channel, user, input, perm) => {
         try {
             let chatters = await axios.get(`http://tmi.twitch.tv/group/user/${channel}/chatters`)
             chattercount = chatters.data["chatter_count"]

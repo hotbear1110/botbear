@@ -6,18 +6,15 @@ const axios = require('axios');
 module.exports = {
     name: "channel",
     ping: true,
-    execute: async (channel, user, input) => {
+    execute: async (channel, user, input, perm) => {
         try {
             if (channel === "forsen") {
                 channel = "botbear1110"
             }
-            let userPermission = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username])
-            userPermission = JSON.parse(userPermission[0].permission)
-
             switch (input[2]) {
                 case "join":
                     console.log(channel)
-                    if (channel !== "botbear1110" && channel !== "hotbear1110" && userPermission < 2000) { return; }
+                    if (channel !== "botbear1110" && channel !== "hotbear1110" && perm < 2000) { return; }
                     let username = user.username;
                     let uid = user['user-id'];
 
@@ -56,7 +53,7 @@ module.exports = {
                     break;
                 case "leave":
                     let username2 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && userPermission < 2000) { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000) { return; }
                     if (input[3]) {
                         username2 = input[3];
                     }
@@ -89,7 +86,7 @@ module.exports = {
                     break;
                 case "liveemote":
                     let username3 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && userPermission < 2000) { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000) { return; }
                     if (!input[3]) {
                         return;
                     }
@@ -111,7 +108,7 @@ module.exports = {
                     break;
                 case "gameemote":
                     let username4 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && userPermission < 2000) { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000) { return; }
                     if (!input[3]) {
                         return;
                     }
@@ -133,7 +130,7 @@ module.exports = {
                     break;
                 case "titleemote":
                     let username5 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && userPermission < 2000) { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000) { return; }
                     if (!input[3]) {
                         return;
                     }
@@ -155,7 +152,7 @@ module.exports = {
                     break;
                 case "offlineemote":
                     let username6 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && userPermission < 2000) { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000) { return; }
                     if (!input[3]) {
                         return;
                     }

@@ -18,7 +18,7 @@ let oldmessage = ""
 
 async function onMessageHandler(channel, user, msg, self) {
     if (channel == "#botbear1110") {
-         console.log(`${user.username}: ${msg}`)
+        console.log(`${user.username}: ${msg}`)
     }
     const userList = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username])
 
@@ -29,9 +29,7 @@ async function onMessageHandler(channel, user, msg, self) {
     if (self) {
         return;
     }
-    if (channel === "#hotbear1110") {
-        console.log("message")
-    }
+
     let input = msg.split(" ");
     const Alias = new tools.Alias(msg);
     input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
@@ -39,9 +37,6 @@ async function onMessageHandler(channel, user, msg, self) {
     if (realcommand !== "say" && realcommand !== "channel") {
         input = msg.toLowerCase().split(" ");
     }
-
-    if (user['user-id'] === process.env.TWITCH_UID) { return; }
-
 
     if (input[0] !== "bb" && input[0].toLowerCase() !== "forsenbb") {
         return;
@@ -69,6 +64,17 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
+    const perm = tools.getPerm(user.username)
+
+    if (perm < 100) {
+        return
+    }
+
+    const userCD = new tools.Cooldown(user, realcommand, 5000);
+
+    if ((await userCD.setCooldown()).length) { return; }
+
+
     if (user['user-id'] !== process.env.TWITCH_OWNERUID) {
 
         if (talkedRecently.has(channel)) { return; }
@@ -94,9 +100,8 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
-
     let realchannel = channel.substring(1)
-    let result = await commands[realcommand].execute(realchannel, user, input)
+    let result = await commands[realcommand].execute(realchannel, user, input, perm)
 
 
     if (!result) {
@@ -106,10 +111,6 @@ async function onMessageHandler(channel, user, msg, self) {
     if (commands[realcommand].ping == true) {
         result = `${user['display-name']} ${result}`
     }
-
-    const userCD = new tools.Cooldown(user, realcommand, 5000);
-
-    if ((await userCD.setCooldown()).length) { return; }
 
     if (channel === "#forsen") {
         channel = "#botbear1110"

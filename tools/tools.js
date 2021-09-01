@@ -230,3 +230,15 @@ exports.Alias = class Alias {
         return '';
     }
 }
+
+exports.getPerm = (user) => {
+    try {
+    let userPermission = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username])
+        userPermission = JSON.parse(userPermission[0].permission)
+
+        return userPermission
+    } catch (err) {
+        console.log(err);
+        return err;
+    }
+}

@@ -4,7 +4,7 @@ const _ = require("underscore")
 module.exports = {
     name: "subage",
     ping: false,
-    execute: async (channel, user, input) => {
+    execute: async (channel, user, input, perm) => {
         try {
             let username = user.username;
             if (input[2]) {

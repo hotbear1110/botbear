@@ -3,7 +3,7 @@ const axios = require('axios');
 module.exports = {
     name: "uid",
     ping: true,
-    execute: async (channel, user, input) => {
+    execute: async (channel, user, input, perm) => {
         try {
             let uiduser = user.username;
             if (input[2]) {

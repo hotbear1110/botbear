@@ -3,11 +3,8 @@ const tools = require("../tools/tools.js")
 module.exports = {
     name: "say",
     ping: false,
-    execute: async (channel, user, input) => {
+    execute: async (channel, user, input, perm) => {
         try {
-            let userPermission = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username])
-            userPermission = JSON.parse(userPermission[0].permission)
-
             input = input.splice(2)
             let msg = input.toString().replaceAll(',', ' ')
 
@@ -15,10 +12,10 @@ module.exports = {
                 channel = "botbear1110"
             }
 
-            if (userPermission < 2000 && msg.match(/^[$|/|.|?|!|-]|\bkb\b/g)) { // ignores $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
+            if (perm < 2000 && msg.match(/^[$|/|.|?|!|-]|\bkb\b/g)) { // ignores $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
                 return;
             }
-            if (userPermission < 1500 && channel !== "nymn") {
+            if (perm < 1500 && channel !== "nymn") {
                 return;
             }
             const masspinged = await tools.massping(msg.toLowerCase())

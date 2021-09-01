@@ -3,12 +3,9 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "permission",
     ping: false,
-    execute: async (channel, user, input) => {
+    execute: async (channel, user, input, perm) => {
         try {
-            let userPermission = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username])
-            userPermission = JSON.parse(userPermission[0].permission)
-
-            if (userPermission < 2000) {
+            if (perm < 2000) {
                 return;
             }
 
