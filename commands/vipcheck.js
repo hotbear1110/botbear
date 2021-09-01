@@ -26,14 +26,14 @@ module.exports = {
                 if (viptatus.login == username) {
                     let vipdate = viptatus.grantedAt
                     const ms = new Date().getTime() - Date.parse(vipdate);
-                    vipresponse = `that user has been a vip😬 in #${realchannel} for - (${tools.humanizeDuration(ms)})`
+                    vipresponse = `that user has been a vip😬 in #${realchannel}ﾠfor - (${tools.humanizeDuration(ms)})`
                 }
             })
 
             if (vipresponse != "") {
                 return vipresponse
             }
-            return `That user is not a vip in #${realchannel} :) `
+            return `That user is not a vip in #${realchannel}ﾠ:) `
         } catch (err) {
             console.log(err);
             return `Error FeelsBadMan`
