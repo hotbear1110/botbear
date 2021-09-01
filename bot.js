@@ -65,7 +65,6 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     const perm = await tools.getPerm(user.username)
-    console.log(perm)
 
     if (perm < 100) {
         return
