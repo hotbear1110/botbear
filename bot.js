@@ -109,7 +109,7 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (commands[realcommand].ping == true) {
-        result = `${user['display-name']} ${result}`
+        result = `${user['display-name']}, ${result}`
     }
 
     if (channel === "#forsen") {
