@@ -8,7 +8,7 @@ module.exports = {
             if (!input[2]) {
                 return 'List of commands: https://botbear.github.io/ - If you want help with a command, write: "bb help *command*"'
             }
-            const Alias = new tools.Alias(input[2]);
+            const Alias = new tools.Alias(`bb ${input[2]}`);
             input[2] = input[2].replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
             const commandlist = await tools.query(`SELECT * FROM Commands WHERE Name=?`, [input[2]])
 
