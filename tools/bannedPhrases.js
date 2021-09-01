@@ -1,1 +1,1 @@
-exports.bannedPhrases = ["nik ger", "nig ker", "nig ger", "nig germany", "minik germany", "nik germany", "sputnik germany", "nik ker"]
+exports.bannedPhrases = ["nik ger", "nig ker", "nig ger", "nik ker"]
