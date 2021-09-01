@@ -239,6 +239,6 @@ exports.getPerm = (user) => new Promise(async (resolve, reject) => {
         resolve(userPermission)
     } catch (err) {
         console.log(err);
-        resolve(err);
+        resolve(0);
     }
 })
