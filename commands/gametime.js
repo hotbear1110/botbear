@@ -11,7 +11,7 @@ module.exports = {
 
             let game = gameTimedata[0].game
 
-            return `, #${channel}ﾠhas been in the category: (${game}), for ${tools.humanizeDuration(ms)}`
+            return `#${channel}ﾠhas been in the category: (${game}), for ${tools.humanizeDuration(ms)}`
         } catch (err) {
             console.log(err);
             return ` Error FeelsBadMan `;
