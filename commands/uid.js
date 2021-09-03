@@ -12,6 +12,10 @@ module.exports = {
             
             const userID = await axios.get(`https://api.ivr.fi/twitch/resolve/${uiduser}`);
 
+            if (userID.data.banned = true) {
+                return `${userID.data.id} - cmonBruh [BANNED USER]`
+            }
+
             return userID.data.id;
         } catch (err) {
             console.log(err);
