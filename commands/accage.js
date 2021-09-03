@@ -3,7 +3,7 @@ const tools = require("../tools/tools.js")
 const axios = require('axios');
 
 module.exports = {
-    name: "bot",
+    name: "accage",
     ping: true,
     execute: async (channel, user, input, perm) => {
         try {
