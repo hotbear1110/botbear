@@ -10,7 +10,7 @@ const cc = new tmi.client(login.options);
 
 cc.on('message', onMessageHandler);
 cc.on('connected', onConnectedHandler);
-cc.on("pong", (latency) => {
+cc.on("pong", (latency) => async function() {
     console.log(latency)
     await tools.query('INSERT INTO Latency (Latency, Time) values (?, ?)', [latency, Date().getTime()]);
 
