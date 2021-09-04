@@ -3,7 +3,6 @@ const tools = require("../tools/tools.js");
 const _ = require("underscore");
 const axios = require('axios');
 const cc = require("../bot.js").cc;
-const record = require("../tools/recordStream.js");
 
 setInterval(async function () {
     const streamers = await tools.query('SELECT * FROM Streamers');
