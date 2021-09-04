@@ -32,7 +32,7 @@ module.exports = {
                 let subdata = subcheck.data["meta"];
                 let sublength = subcheck.data["cumulative"];
                 let substreak = subcheck.data["streak"]; 
-                const ms = new Date.parse(subdata["endsAt"]) - Date().getTime();
+                const ms = new Date().getTime() - Date.parse(subdata["endsAt"]);
 
                 if (subdata["type"] === "prime") {
                     return `${username} is currently subbed to #${realchannel}ﾠwith a tier 1 prime sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}`;
