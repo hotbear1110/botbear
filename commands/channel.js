@@ -18,7 +18,11 @@ module.exports = {
                     let username = user.username;
                     let uid = user['user-id'];
 
-                    if (input[3] && user['user-id'] === process.env.TWITCH_OWNERUID) {
+                    if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID) {
+                        return;
+                    }
+
+                    if (input[3]) {
                         let streamer = await axios.get(`https://api.ivr.fi/twitch/resolve/${input[3]}`);
                         uid = streamer.data.id;
                         username = input[3];
