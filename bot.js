@@ -12,7 +12,7 @@ cc.on('message', onMessageHandler);
 cc.on('connected', onConnectedHandler);
 cc.on("pong", async (latency) => {
     console.log(latency)
-    await tools.query('INSERT INTO Latency (Latency, Time) values (?, ?)', [latency, Date().getTime()]);
+    await tools.query('INSERT INTO Latency (Latency, Time) values (?, ?)', [latency, CURRENT_TIMESTAMP]);
 
 });
 
