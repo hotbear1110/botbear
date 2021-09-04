@@ -1,5 +1,5 @@
-require('dotenv').config()
-const _ = require("underscore")
+require('dotenv').config();
+const _ = require("underscore");
 const mysql = require("mysql2");
 const got = require("got");
 const db = require('../connect/connect.js');
@@ -23,16 +23,16 @@ exports.query = (query, data = []) =>
     });
 
 exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject) => {
-    this.channel = channel.replace("#", '')
+    this.channel = channel.replace("#", '');
     this.data = await tools.query(`
           SELECT banphraseapi
           FROM Streamers
           WHERE username=?`,
         [this.channel]);
-        this.banphraseapi = this.data[0].banphraseapi;
+    this.banphraseapi = this.data[0].banphraseapi;
     try {
         if (this.banphraseapi == null) {
-            this.banphraseapi = "https://pajlada.pajbot.com/api/v1/banphrases/test"
+            this.banphraseapi = "https://pajlada.pajbot.com/api/v1/banphrases/test";
         }
     } catch (err) {
         console.log(err);
@@ -55,17 +55,17 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
 });
 
 exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reject) => {
-    this.channel = channel.replace("#", '')
-    this.message = message.replaceAll(' ', '%20')
+    this.channel = channel.replace("#", '');
+    this.message = message.replaceAll(' ', '%20');
     this.data = await tools.query(`
           SELECT uid
           FROM Streamers
           WHERE username=?`,
         [this.channel]);
     try {
-        this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/${this.data[0].uid}/moderation/check_message?message=${this.message}`)
+        this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/${this.data[0].uid}/moderation/check_message?message=${this.message}`);
         if (this.checkBanphrase.data["banned"] == true) {
-            resolve(true)
+            resolve(true);
         }
         resolve(false);
     } catch (err) {
@@ -80,7 +80,7 @@ hasCooldown = new Set();
 
 exports.Cooldown = class Cooldown {
     constructor(user, command, CD) {
-        this.cooldown = CD
+        this.cooldown = CD;
         this.userId = user['user-id'];
         this.command = command;
         this.key = `${this.userId}_${this.command}`;
@@ -111,9 +111,9 @@ exports.splitLine = (message, chars) => {
     let messages = [];
     for (let i = 0; i < Math.ceil(message.length / chars); i++) {
         const multipy = i + 1;
-        messages.push(message.substring(i * chars, multipy * chars))
+        messages.push(message.substring(i * chars, multipy * chars));
     }
-    return messages
+    return messages;
 }
 
 let hasteoptions = {
@@ -122,7 +122,7 @@ let hasteoptions = {
 
 exports.makehastebin = (message, username, channel) =>
     hastebin(`${username}'s game list, from channel: ${channel}\n\nGame list:\n${message}`, hasteoptions).then((url) => {
-        console.log(url)
+        console.log(url);
         return url;
     });
 
@@ -153,12 +153,12 @@ exports.humanizeDuration = (ms) => {
 
 exports.notbannedPhrases = (message) => {
 
-    let banPhraseList = bannedPhrases.bannedPhrases
-    let isbanned = `null`
+    let banPhraseList = bannedPhrases.bannedPhrases;
+    let isbanned = `null`;
     try {
         _.each(banPhraseList, async function (phrase) {
             if (message.includes(phrase)) {
-                isbanned = `[Bad word detected] cmonBruh`
+                isbanned = `[Bad word detected] cmonBruh`;
                 return;
             }
         })
@@ -170,34 +170,34 @@ exports.notbannedPhrases = (message) => {
 }
 
 exports.massping = (message) => new Promise(async (resolve, reject) => {
-    let users = await tools.query(`SELECT username FROM Users`)
+    let users = await tools.query(`SELECT username FROM Users`);
     let pings = 0;
 
     _.each(users, async function (user) {
         if (message.includes(user.username)) {
-            pings++
+            pings++;
         }
         if (pings > 7) {
             resolve(0);
         }
     })
     if (pings > 7) {
-        resolve(`[MASS PING]`)
+        resolve(`[MASS PING]`);
     }
-    resolve("null")
+    resolve("null");
 
 })
 
 exports.asciiLength = (message) => {
     const msgarray = message.split(" ");
-    let emojicount = 0
+    let emojicount = 0;
 
     _.each(msgarray, async function (word) {
         if (/\p{Emoji}/u.test(word)) {
-            emojicount++
+            emojicount++;
         }
     })
-    return emojicount
+    return emojicount;
 
 }
 
@@ -213,7 +213,7 @@ exports.Alias = class Alias {
     }
 
     convertToRegexp(input) {
-        return new RegExp(`\\b${input}\\b`, "i")
+        return new RegExp(`\\b${input}\\b`, "i");
     }
 
     getRegex() {
@@ -233,10 +233,10 @@ exports.Alias = class Alias {
 
 exports.getPerm = (user) => new Promise(async (resolve, reject) => {
     try {
-    let userPermission = await tools.query(`SELECT * FROM Users WHERE username=?`, [user])
-        userPermission = JSON.parse(userPermission[0].permission)
+        let userPermission = await tools.query(`SELECT * FROM Users WHERE username=?`, [user]);
+        userPermission = JSON.parse(userPermission[0].permission);
 
-        resolve(userPermission)
+        resolve(userPermission);
     } catch (err) {
         console.log(err);
         resolve(0);

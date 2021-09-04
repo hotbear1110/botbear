@@ -1,6 +1,6 @@
 const got = require("got");
 const cc = require("../bot.js").cc;
-const tools = require("../tools/tools.js")
+const tools = require("../tools/tools.js");
 
 
 module.exports = {
@@ -11,24 +11,24 @@ module.exports = {
             let username = user.username;
             if (input[2]) {
                 if (input[2].startsWith("@")) {
-                    input[2] = input[2].substring(1)
+                    input[2] = input[2].substring(1);
                 }
                 username = input[2];
             }
             let realchannel = channel;
             if (input[3]) {
-                realchannel = input[3]
+                realchannel = input[3];
             }
 
 
             const fl = await got(`https://api.ivr.fi/logs/firstmessage/${realchannel}/${username}`).json();
-            const masspinged = await tools.massping(fl.message.toLowerCase())
+            const masspinged = await tools.massping(fl.message.toLowerCase());
 
             if (masspinged != "null") {
-                return "[MASS PING]"
+                return "[MASS PING]";
             }
             if (fl.status !== 404) {
-                return `nymnDank ${fl.user}'s first message in #${realchannel}ﾠwas: ${fl.message} - (${fl.time} ago)`
+                return `nymnDank ${fl.user}'s first message in #${realchannel}ﾠwas: ${fl.message} - (${fl.time} ago)`;
             }
         } catch (err) {
             console.log(err);

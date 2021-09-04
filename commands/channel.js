@@ -1,5 +1,5 @@
-require('dotenv').config()
-const tools = require("../tools/tools.js")
+require('dotenv').config();
+const tools = require("../tools/tools.js");
 const cc = require("../bot.js").cc;
 const axios = require('axios');
 
@@ -9,18 +9,18 @@ module.exports = {
     execute: async (channel, user, input, perm) => {
         try {
             if (channel === "forsen") {
-                channel = "botbear1110"
+                channel = "botbear1110";
             }
             switch (input[2]) {
                 case "join":
-                    console.log(channel)
+                    console.log(channel);
                     if (channel !== "botbear1110" && channel !== "hotbear1110" && perm < 2000) { return; }
                     let username = user.username;
                     let uid = user['user-id'];
 
                     if (input[3] && user['user-id'] === process.env.TWITCH_OWNERUID) {
-                        let streamer = await axios.get(`https://api.ivr.fi/twitch/resolve/${input[3]}`)
-                        uid = streamer.data.id
+                        let streamer = await axios.get(`https://api.ivr.fi/twitch/resolve/${input[3]}`);
+                        uid = streamer.data.id;
                         username = input[3];
                     }
 
@@ -31,23 +31,23 @@ module.exports = {
                         [username]);
 
                     if (alreadyJoined.length) {
-                        return "I am already in your channel :)"
+                        return "I am already in your channel :)";
                     }
 
                     else {
                         let islive = 0;
                         let liveemote = "FeelsOkayMan";
                         let offlineemote = "FeelsBadMan";
-                        let gameTime = new Date().getTime()
+                        let gameTime = new Date().getTime();
 
                         await tools.query('INSERT INTO Streamers (username, uid, islive, liveemote, titleemote, gameemote, offlineemote, live_ping, title_ping, game_ping, game_time) values (?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?)', [username, uid, islive, liveemote, liveemote, liveemote, offlineemote, '[""]', '[""]', '[""]', gameTime]);
                         cc.join(username).then((data) => {
                             // data returns [channel]
                         }).catch((err) => {
-                            console.log(err)
+                            console.log(err);
                         });
                         cc.say(`#${username}`, '👋 nymnDank Hello!');
-                        return `Joined channel: ${username}`
+                        return `Joined channel: ${username}`;
 
                     }
                     break;
@@ -69,7 +69,7 @@ module.exports = {
                         [username2]);
 
                     if (!alreadyJoined2.length) {
-                        return "I am not in your channel"
+                        return "I am not in your channel";
                     }
 
                     else {
@@ -78,9 +78,9 @@ module.exports = {
                         cc.part(username2).then((data) => {
                             // data returns [channel]
                         }).catch((err) => {
-                            console.log(err)
+                            console.log(err);
                         });
-                        return `Left channel: ${username2}`
+                        return `Left channel: ${username2}`;
 
                     }
                     break;
@@ -98,12 +98,12 @@ module.exports = {
                         [username3]);
 
                     if (!alreadyJoined3.length) {
-                        return "I am not in your channel"
+                        return "I am not in your channel";
                     }
 
                     else {
                         await tools.query(`UPDATE Streamers SET liveemote=? WHERE username=?`, [input[3], username3])
-                        return `Live emote is now set to ${input[3]}`
+                        return `Live emote is now set to ${input[3]}`;
                     }
                     break;
                 case "gameemote":
@@ -120,12 +120,12 @@ module.exports = {
                         [username4]);
 
                     if (!alreadyJoined4.length) {
-                        return "I am not in your channel"
+                        return "I am not in your channel";
                     }
 
                     else {
                         await tools.query(`UPDATE Streamers SET gameemote=? WHERE username=?`, [input[3], username4])
-                        return `Game emote is now set to ${input[3]}`
+                        return `Game emote is now set to ${input[3]}`;
                     }
                     break;
                 case "titleemote":
@@ -142,12 +142,12 @@ module.exports = {
                         [username5]);
 
                     if (!alreadyJoined5.length) {
-                        return "I am not in your channel"
+                        return "I am not in your channel";
                     }
 
                     else {
                         await tools.query(`UPDATE Streamers SET titleemote=? WHERE username=?`, [input[3], username5])
-                        return `Title emote is now set to ${input[3]}`
+                        return `Title emote is now set to ${input[3]}`;
                     }
                     break;
                 case "offlineemote":
@@ -164,16 +164,16 @@ module.exports = {
                         [username6]);
 
                     if (!alreadyJoined6.length) {
-                        return "I am not in your channel"
+                        return "I am not in your channel";
                     }
 
                     else {
                         await tools.query(`UPDATE Streamers SET offlineemote=? WHERE username=?`, [input[3], username6])
-                        return `Offline emote is now set to ${input[3]}`
+                        return `Offline emote is now set to ${input[3]}`;
                     }
                     break;
                 default:
-                    return "Please specify if you want the bot to leave or join your channel, by writing either 'bb channel join' or 'bb channel leave'"
+                    return "Please specify if you want the bot to leave or join your channel, by writing either 'bb channel join' or 'bb channel leave'";
             }
         } catch (err) {
             console.log(err);

@@ -35,7 +35,7 @@ async function res() {
   console.log(`Imported channels from database: ${channelOptions}`);
 }
 
-res()
+res();
 
 let options = {
   options: {

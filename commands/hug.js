@@ -4,7 +4,7 @@ module.exports = {
     execute: async (channel, user, input, perm) => {
         try {
             if (input[2]) {
-                return `${input[2]} dankHug`
+                return `${input[2]} dankHug`;
             }
             return `${user.username} dankHug`;
 

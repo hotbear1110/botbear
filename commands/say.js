@@ -1,5 +1,5 @@
 const cc = require("../bot.js").cc;
-const tools = require("../tools/tools.js")
+const tools = require("../tools/tools.js");
 const regex = require('../tools/regex.js');
 
 module.exports = {
@@ -7,14 +7,14 @@ module.exports = {
     ping: false,
     execute: async (channel, user, input, perm) => {
         try {
-            input = input.splice(2)
-            let msg = input.toString().replaceAll(',', ' ')
+            input = input.splice(2);
+            let msg = input.toString().replaceAll(',', ' ');
 
             if (channel === "forsen") {
-                channel = "botbear1110"
+                channel = "botbear1110";
             }
 
-            msg.replace(regex.invisChar, '')
+            msg.replace(regex.invisChar, '');
 
 
             if (perm < 2000 && msg.match(/[$|/|.|?|!|-]|\bkb\b/g)) { // ignores $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
@@ -23,10 +23,10 @@ module.exports = {
             if (perm < 1500 && channel !== "nymn") {
                 return;
             }
-            const masspinged = await tools.massping(msg.toLowerCase())
+            const masspinged = await tools.massping(msg.toLowerCase());
 
             if (masspinged != "null") {
-                return "[MASS PING]"
+                return "[MASS PING]";
             }
 
             return msg;

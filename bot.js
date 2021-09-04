@@ -1,26 +1,26 @@
-require('dotenv').config()
+require('dotenv').config();
 const tmi = require("tmi.js");
 const login = require('./connect/connect.js');
-const tools = require("./tools/tools.js")
+const tools = require("./tools/tools.js");
 const regex = require('./tools/regex.js');
 const requireDir = require("require-dir");
 
-const cc = new tmi.client(login.options)
+const cc = new tmi.client(login.options);
 
 
 cc.on('message', onMessageHandler);
 cc.on('connected', onConnectedHandler);
 
-cc.connect()
+cc.connect();
 
 const talkedRecently = new Set();
-let oldmessage = ""
+let oldmessage = "";
 
 async function onMessageHandler(channel, user, msg, self) {
     if (channel == "#botbear1110") {
-        console.log(`${user.username}: ${msg}`)
+        console.log(`${user.username}: ${msg}`);
     }
-    const userList = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username])
+    const userList = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username]);
 
     if (!userList.length && user.username != null) {
         await tools.query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
@@ -33,7 +33,7 @@ async function onMessageHandler(channel, user, msg, self) {
     let input = msg.split(" ");
     const Alias = new tools.Alias(msg);
     input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
-    let realcommand = input[1]
+    let realcommand = input[1];
     if (realcommand !== "say" && realcommand !== "channel") {
         input = msg.toLowerCase().split(" ");
     }
@@ -54,20 +54,20 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (channel === "#botbear1110") {
-        channel = "#forsen"
+        channel = "#forsen";
     }
 
     const commands = requireDir("./commands");
 
     if (typeof commands[realcommand] === "undefined") {
-        console.log("undefined")
+        console.log("undefined");
         return;
     }
 
-    const perm = await tools.getPerm(user.username)
+    const perm = await tools.getPerm(user.username);
 
     if (perm < 100) {
-        return
+        return;
     }
 
     const userCD = new tools.Cooldown(user, realcommand, 5000);
@@ -100,8 +100,8 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
-    let realchannel = channel.substring(1)
-    let result = await commands[realcommand].execute(realchannel, user, input, perm)
+    let realchannel = channel.substring(1);
+    let result = await commands[realcommand].execute(realchannel, user, input, perm);
 
 
     if (!result) {
@@ -109,11 +109,11 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (commands[realcommand].ping == true) {
-        result = `${user['display-name']}, ${result}`
+        result = `${user['display-name']}, ${result}`;
     }
 
     if (channel === "#forsen") {
-        channel = "#botbear1110"
+        channel = "#botbear1110";
     }
 
     const banPhrase = await tools.banphrasePass(result, channel);
@@ -131,7 +131,7 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (banPhrase === 0) {
-        cc.say(channel, "FeelsDankMan error!!")
+        cc.say(channel, "FeelsDankMan error!!");
         return;
     }
 
@@ -155,13 +155,13 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (result === oldmessage) {
-        result = result + " 󠀀 "
+        result = result + " 󠀀 ";
     }
     cc.say(channel, result);
-    oldmessage = result
+    oldmessage = result;
 }
 
 function onConnectedHandler(addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
 }
-module.exports = { cc }
+module.exports = { cc };

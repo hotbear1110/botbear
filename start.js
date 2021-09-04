@@ -1,2 +1,2 @@
-require("./bot.js")
-require("./loops/loops.js")
+require("./bot.js");
+require("./loops/loops.js");

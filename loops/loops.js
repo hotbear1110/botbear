@@ -1,16 +1,16 @@
-require('dotenv').config()
-const tools = require("../tools/tools.js")
-const _ = require("underscore")
+require('dotenv').config();
+const tools = require("../tools/tools.js");
+const _ = require("underscore");
 const axios = require('axios');
 const cc = require("../bot.js").cc;
-const record = require("../tools/recordStream.js")
+const record = require("../tools/recordStream.js");
 
 setInterval(async function () {
-    const streamers = await tools.query('SELECT * FROM Streamers')
-    const myping = await tools.query(`SELECT * FROM MyPing`)
+    const streamers = await tools.query('SELECT * FROM Streamers');
+    const myping = await tools.query(`SELECT * FROM MyPing`);
 
     _.each(streamers, async function (stream) {
-        setTimeout(function () { }, 100)
+        setTimeout(function () { }, 100);
         await axios.get(`https://api.twitch.tv/helix/streams?user_login=${stream.username}`, {
             headers: {
                 'client-id': process.env.TWITCH_CLIENTID,
@@ -20,26 +20,19 @@ setInterval(async function () {
             .then(async function (response) {
                 // handle success
                 const twitchdata = response.data;
-                let users = JSON.parse(stream.live_ping)
-                users = users.toString().replaceAll(',', ' ')
+                let users = JSON.parse(stream.live_ping);
+                users = users.toString().replaceAll(',', ' ');
 
 
-                let userlist = tools.splitLine(users, 350)
-                let proxychannel = stream.username
+                let userlist = tools.splitLine(users, 350);
+                let proxychannel = stream.username;
                 if (stream.username === "forsen") {
                     proxychannel = "botbear1110";
                 }
 
                 if (twitchdata['data'].length !== 0 && stream.islive == 0) {
-                    /*
-                    if (stream.username === "hotbear1110") {
-                        console.log("RECORDING")
-                        let date = new Date().getTime()
-                        record.recordStream(date)
-                    }
-                    */
                     console.log(stream.username + " IS NOW LIVE");
-                    await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`)
+                    await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`);
                     _.each(userlist, function (msg, i) {
                         setTimeout(function () {
                             cc.action(`#${proxychannel}`, `${stream.liveemote} ${stream.username} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`);
@@ -48,7 +41,7 @@ setInterval(async function () {
                 };
                 if (twitchdata['data'].length === 0 && stream.islive == 1) {
                     console.log(stream.username + " IS NOW OFFLINE");
-                    await tools.query(`UPDATE Streamers SET islive = 0 WHERE username ="${stream.username}"`)
+                    await tools.query(`UPDATE Streamers SET islive = 0 WHERE username ="${stream.username}"`);
                     _.each(userlist, function (msg, i) {
                         setTimeout(function () {
                             cc.action(`#${proxychannel}`, `${stream.offlineemote} ${stream.username} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`);
@@ -65,7 +58,7 @@ setInterval(async function () {
             });
     })
     _.each(streamers, async function (stream) {
-        setTimeout(function () { }, 100)
+        setTimeout(function () { }, 100);
         await axios.get(`https://api.twitch.tv/helix/channels?broadcaster_id=${stream.uid}`, {
             headers: {
                 'client-id': process.env.TWITCH_CLIENTID,
@@ -75,33 +68,33 @@ setInterval(async function () {
             .then(async function (response) {
                 // handle success
                 const twitchdata = response.data;
-                let newTitle = twitchdata.data[0].title
-                let titleusers = JSON.parse(stream.title_ping)
-                titleusers = titleusers.toString().replaceAll(',', ' ')
+                let newTitle = twitchdata.data[0].title;
+                let titleusers = JSON.parse(stream.title_ping);
+                titleusers = titleusers.toString().replaceAll(',', ' ');
 
-                let newGame = twitchdata.data[0].game_name
-                let gameusers = JSON.parse(stream.game_ping)
+                let newGame = twitchdata.data[0].game_name;
+                let gameusers = JSON.parse(stream.game_ping);
                 _.each(myping, async function (userchanel) {
-                    let pingname = JSON.parse(userchanel.username)
-                    let gamename = userchanel.game_pings
+                    let pingname = JSON.parse(userchanel.username);
+                    let gamename = userchanel.game_pings;
                     if (pingname.includes(stream.username) && gamename.includes(newGame)) {
-                        gameusers.push(pingname[0])
+                        gameusers.push(pingname[0]);
                     }
                 })
-                gameusers = gameusers.toString().replaceAll(',', ' ')
+                gameusers = gameusers.toString().replaceAll(',', ' ');
 
 
-                let titleuserlist = tools.splitLine(titleusers, 350)
-                let gameuserlist = tools.splitLine(gameusers, 350)
+                let titleuserlist = tools.splitLine(titleusers, 350);
+                let gameuserlist = tools.splitLine(gameusers, 350);
 
-                let proxychannel2 = stream.username
+                let proxychannel2 = stream.username;
                 if (stream.username === "forsen") {
                     proxychannel2 = "botbear1110";
                 }
 
                 if (newTitle != stream.title) {
                     console.log(stream.username + " NEW TITLE: " + newTitle);
-                    await tools.query(`UPDATE Streamers SET title=? WHERE username=?`, [newTitle, stream.username])
+                    await tools.query(`UPDATE Streamers SET title=? WHERE username=?`, [newTitle, stream.username]);
                     _.each(titleuserlist, function (msg, i) {
                         setTimeout(function () {
                             cc.action(`#${proxychannel2}`, `${stream.titleemote} NEW TITLE ! ${stream.titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`);
@@ -109,9 +102,9 @@ setInterval(async function () {
                     });
                 };
                 if (newGame != stream.game) {
-                    let gameTime = new Date().getTime()
+                    let gameTime = new Date().getTime();
 
-                    await tools.query(`UPDATE Streamers SET game=?, game_time=? WHERE username=?`, [newGame, gameTime, stream.username])
+                    await tools.query(`UPDATE Streamers SET game=?, game_time=? WHERE username=?`, [newGame, gameTime, stream.username]);
 
                     if (newTitle != stream.title) {
                         function sleep(milliseconds) {
@@ -122,7 +115,7 @@ setInterval(async function () {
                                 }
                             }
                         }
-                        sleep(1500)
+                        sleep(1500);
                     }
                     console.log(stream.username + " NEW GAME: " + newGame);
                     _.each(gameuserlist, function (msg, i) {
@@ -141,4 +134,4 @@ setInterval(async function () {
                 // always executed
             });
     })
-}, 10000)
+}, 10000);

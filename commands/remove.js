@@ -9,14 +9,14 @@ module.exports = {
         try {
             switch (input[2]) {
                 case "live":
-                    const liveUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`)
-                    let liveusers = JSON.parse(liveUsers[0].live_ping)
+                    const liveUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+                    let liveusers = JSON.parse(liveUsers[0].live_ping);
 
                     if (liveusers.includes(user.username)) {
                         liveusers.splice(liveusers.indexOf(user.username), 1);
-                        liveusers = JSON.stringify(liveusers)
+                        liveusers = JSON.stringify(liveusers);
 
-                        tools.query(`UPDATE Streamers SET live_ping=? WHERE username=?`, [liveusers, channel])
+                        tools.query(`UPDATE Streamers SET live_ping=? WHERE username=?`, [liveusers, channel]);
 
                         return `You are now unsubscribed from the event "live"`;
                     }
@@ -25,14 +25,14 @@ module.exports = {
                     }
                     break;
                 case "title":
-                    const titleUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`)
-                    let titleusers = JSON.parse(titleUsers[0].title_ping)
+                    const titleUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+                    let titleusers = JSON.parse(titleUsers[0].title_ping);
 
                     if (titleusers.includes(user.username)) {
                         titleusers.splice(titleusers.indexOf(user.username), 1);
-                        titleusers = JSON.stringify(titleusers)
+                        titleusers = JSON.stringify(titleusers);
 
-                        tools.query(`UPDATE Streamers SET title_ping=? WHERE username=?`, [titleusers, channel])
+                        tools.query(`UPDATE Streamers SET title_ping=? WHERE username=?`, [titleusers, channel]);
 
                         return `You are now unsubscribed from the event "title"`;
                     }
@@ -41,14 +41,14 @@ module.exports = {
                     }
                     break;
                 case "game":
-                    const gameUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`)
-                    let gameusers = JSON.parse(gameUsers[0].game_ping)
+                    const gameUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+                    let gameusers = JSON.parse(gameUsers[0].game_ping);
 
                     if (gameusers.includes(user.username)) {
                         gameusers.splice(gameusers.indexOf(user.username), 1);
-                        gameusers = JSON.stringify(gameusers)
+                        gameusers = JSON.stringify(gameusers);
 
-                        tools.query(`UPDATE Streamers SET game_ping=? WHERE username=?`, [gameusers, channel])
+                        tools.query(`UPDATE Streamers SET game_ping=? WHERE username=?`, [gameusers, channel]);
 
                         return `You are now unsubscribed from the event "game"`;
                     }
