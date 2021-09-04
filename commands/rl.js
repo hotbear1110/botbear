@@ -10,6 +10,9 @@ module.exports = {
         try {
             let username = user.username;
             if (input[2]) {
+                if (input[2].startsWith("@")) {
+                    input[2] = input[2].substring(1)
+                }
                 username = input[2];
             }
             let realchannel = channel;

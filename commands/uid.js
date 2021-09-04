@@ -7,7 +7,10 @@ module.exports = {
         try {
             let uiduser = user.username;
             if (input[2]) {
-                uiduser = input[2]
+                if (input[2].startsWith("@")) {
+                    input[2] = input[2].substring(1)
+                }
+                username = input[2];
             }
             
             const userID = await axios.get(`https://api.ivr.fi/twitch/resolve/${uiduser}`);
