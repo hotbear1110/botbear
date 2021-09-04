@@ -1,4 +1,4 @@
-const axios = require('axios');
+const got = require("got");
 
 module.exports = {
     name: "uid",
@@ -12,10 +12,13 @@ module.exports = {
                 }
                 username = input[2];
             }
-            
-            const userColor = await axios.get(`https://api.ivr.fi/twitch/resolve/${username}`);
 
-            return `That user has the color: ${userColor.data.chatColor}`;
+            const userColor = await got(`https://api.ivr.fi/twitch/resolve/${username}`).json();
+            console.log(userColor)
+
+            const colorName = await got(`https://www.thecolorapi.com/id?hex=${userColor.chatColor.replace('#', '')}`).json();
+
+            return `That user has the color: ${colorName.name.value} ${userColor.chatColor}`;
         } catch (err) {
             console.log(err);
             return `Error FeelsBadMan `;
