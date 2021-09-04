@@ -10,6 +10,9 @@ const cc = new tmi.client(login.options);
 
 cc.on('message', onMessageHandler);
 cc.on('connected', onConnectedHandler);
+cc.on("pong", (latency) => {
+    console.log(latency)
+});
 
 cc.connect();
 
