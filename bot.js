@@ -12,6 +12,8 @@ cc.on('message', onMessageHandler);
 cc.on('connected', onConnectedHandler);
 cc.on("pong", (latency) => {
     console.log(latency)
+    await tools.query('INSERT INTO Latency (Latency, Time) values (?, ?)', [latency, Date().getTime()]);
+
 });
 
 cc.connect();
