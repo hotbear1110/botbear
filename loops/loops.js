@@ -3,6 +3,7 @@ const tools = require("../tools/tools.js");
 const _ = require("underscore");
 const axios = require('axios');
 const cc = require("../bot.js").cc;
+const got = require("got");
 
 setInterval(async function () {
     const streamers = await tools.query('SELECT * FROM Streamers');
@@ -133,4 +134,46 @@ setInterval(async function () {
                 // always executed
             });
     })
+}, 10000);
+
+setInterval(async function () {
+    const streamers = await tools.query('SELECT * FROM Streamers');
+
+    _.each(streamers, async function (stream) {
+        try {
+
+            let Emote_list = JSON.parse(stream.Emote_list);
+
+            let errors = 0;
+
+
+            const FFZ = await got(`https://api.frankerfacez.com/v1/room/id/${stream.uid}`).json();
+
+
+            if (errors === 0) {
+                let set = FFZ.room.set;
+                let FFZ_list = FFZ.sets[`${set}`].emoticons;
+                //console.log(FFZ.sets[`${set}`].emoticons);
+
+                _.each(FFZ_list, async function (emote) {
+                    emotecheck = Emote_list.toString().replaceAll(',', ' ');
+
+                    emotecheck = emotecheck.split(' ');
+                    if (!emotecheck.includes(emote["name"])) {
+                        let time = new Date().getTime();
+
+                        Emote_list.push(`${emote["name"]} ${time}`);
+                    }
+                });
+                Emote_list = JSON.stringify(Emote_list)
+                await tools.query(`UPDATE Streamers SET Emote_list=? WHERE username=?`, [Emote_list, stream.username]);
+
+
+                //console.log(Emote_list)
+            }
+        } catch (err) {
+
+        }
+
+    });
 }, 10000);
