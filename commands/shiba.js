@@ -1,7 +1,7 @@
 const got = require("got");
 
 module.exports = {
-    name: "shibu",
+    name: "shiba",
     ping: true,
     execute: async (channel, user, input, perm) => {
         try {
