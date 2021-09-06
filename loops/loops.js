@@ -141,7 +141,7 @@ setInterval(async function () {
 
     _.each(streamers, async function (streamer) {
         try {
-            setTimeout(function () {
+            setTimeout(async function () {
 
                 let Emote_list = JSON.parse(streamer.emote_list);
                 let Emote_removed = JSON.parse(streamer.emote_removed);
