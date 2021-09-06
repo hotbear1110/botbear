@@ -2,18 +2,18 @@ const tools = require("../tools/tools.js");
 const _ = require("underscore");
 
 module.exports = {
-    name: "emotes",
+    name: "removed",
     ping: true,
     execute: async (channel, user, input, perm) => {
         try {
             const streamer = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
-            let emotes = JSON.parse(streamer[0].emote_list);
+            let emotes = JSON.parse(streamer[0].emote_removed);
 
             if (!emotes.length) {
-                return `there are no 3rd party emotes in this channel.`
+                return `there are no removed emotes in this channel yet.`
             }
 
-            emotes = emotes.slice(-6).reverse();
+            emotes = emotes.reverse();
 
             console.log(emotes)
 
@@ -30,7 +30,7 @@ module.exports = {
 
             emotes = emotes.toString().replaceAll(',', ' ');
 
-            return `the latest added emotes are: ${emotes}`;
+            return `the latest removed emotes are: ${emotes}`;
 
         } catch (err) {
             console.log(err);
