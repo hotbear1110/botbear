@@ -202,9 +202,6 @@ setInterval(async function () {
                     }
 
                 });
-                if (streamer.username === "nymn2") {
-                    console.log(BTTV)
-                }
             } catch (err) {
                 noBTTV = 1;
 
