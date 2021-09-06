@@ -249,7 +249,7 @@ setInterval(async function () {
                 await tools.query(`UPDATE Streamers SET emote_removed=? WHERE username=?`, [Emote_removed, streamer.username]);
 
 
-            }, 2000);
+            }, 200);
         } catch (err) {
 
         }
