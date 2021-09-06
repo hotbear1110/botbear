@@ -140,17 +140,25 @@ setInterval(async function () {
     const streamers = await tools.query('SELECT * FROM Streamers');
 
     _.each(streamers, async function (streamer) {
-        try {
-            setTimeout(async function () {
+            //setTimeout(async function () {
 
-                let Emote_list = JSON.parse(streamer.emote_list);
-                let Emote_removed = JSON.parse(streamer.emote_removed);
+            let Emote_list = JSON.parse(streamer.emote_list);
+            let Emote_removed = JSON.parse(streamer.emote_removed);
+            let noFFZ = 0;
+            let noBTTV = 0;
+            let noSTV = 0;
 
+            let FFZ_list = "";
+            let BTTV_list = "";
+            let STV_list = "";
+
+
+            try {
                 const FFZ = await got(`https://api.frankerfacez.com/v1/room/id/${streamer.uid}`).json();
 
 
                 let set = FFZ.room.set;
-                let FFZ_list = FFZ.sets[`${set}`].emoticons;
+                FFZ_list = FFZ.sets[`${set}`].emoticons;
 
                 _.each(FFZ_list, async function (emote) {
                     let inlist = 0;
@@ -167,10 +175,14 @@ setInterval(async function () {
 
                 });
 
+            } catch (err) {
+                noFFZ = 1;
 
+            }
+            try {
                 const BTTV = await got(`https://api.betterttv.net/3/cached/users/twitch/${streamer.uid}`).json();
 
-                let BTTV_list = BTTV["channelEmotes"]
+                BTTV_list = BTTV["channelEmotes"]
 
                 _.each(BTTV_list, async function (emote) {
                     let inlist = 0;
@@ -186,11 +198,14 @@ setInterval(async function () {
                     }
 
                 });
+            } catch (err) {
+                noBTTV = 1;
 
-
+            }
+            try {
                 const STV = await got(`https://api.7tv.app/v2/users/${streamer.uid}/emotes`).json();
 
-                let STV_list = STV
+                STV_list = STV
 
                 _.each(STV_list, async function (emote) {
                     //console.log(emote)
@@ -207,52 +222,62 @@ setInterval(async function () {
                     }
 
                 });
+            } catch (err) {
+                noSTV = 1;
 
+            }
 
-                _.each(Emote_list, async function (emote) {
-                    let inlist = 0;
+            _.each(Emote_list, async function (emote) {
+                let inlist = 0;
+
+                if (noFFZ === 0) {
                     _.each(FFZ_list, async function (emotecheck) {
                         if (emotecheck["id"] == emote[1]) {
                             inlist = 1;
                             return;
                         }
                     })
+                }
+
+                if (noBTTV === 0) {
                     _.each(BTTV_list, async function (emotecheck) {
                         if (emotecheck["id"] == emote[1]) {
                             inlist = 1;
                             return;
                         }
                     })
+                }
+
+                if (noSTV === 0) {
                     _.each(STV_list, async function (emotecheck) {
                         if (emotecheck["id"] == emote[1]) {
                             inlist = 1;
                             return;
                         }
                     })
-                    if (inlist === 0) {
-                        let time = new Date().getTime();
+                }
 
-                        Emote_removed.push([emote[0], emote[1], time]);
+                if (inlist === 0) {
+                    let time = new Date().getTime();
 
-                        if (Emote_removed.length > 6) {
-                            Emote_removed.shift();
-                        }
+                    Emote_removed.push([emote[0], emote[1], time]);
 
-                        Emote_list = _.without(Emote_list, emote)
+                    if (Emote_removed.length > 6) {
+                        Emote_removed.shift();
                     }
 
-                });
+                    Emote_list = _.without(Emote_list, emote)
+                }
 
-                Emote_list = JSON.stringify(Emote_list)
-                Emote_removed = JSON.stringify(Emote_removed)
-                await tools.query(`UPDATE Streamers SET emote_list=? WHERE username=?`, [Emote_list, streamer.username]);
-                await tools.query(`UPDATE Streamers SET emote_removed=? WHERE username=?`, [Emote_removed, streamer.username]);
+            });
+
+            Emote_list = JSON.stringify(Emote_list)
+            Emote_removed = JSON.stringify(Emote_removed)
+            await tools.query(`UPDATE Streamers SET emote_list=? WHERE username=?`, [Emote_list, streamer.username]);
+            await tools.query(`UPDATE Streamers SET emote_removed=? WHERE username=?`, [Emote_removed, streamer.username]);
 
 
-            }, 200);
-        } catch (err) {
-
-        }
+            //   }, 200);
 
     });
 }, 60000);
