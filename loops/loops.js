@@ -171,7 +171,7 @@ setInterval(async function () {
                         let time = new Date().getTime();
 
                         Emote_list.push([emote["name"], emote["id"], time]);
-                    }
+                    }   
 
                 });
 
@@ -183,6 +183,10 @@ setInterval(async function () {
                 const BTTV = await got(`https://api.betterttv.net/3/cached/users/twitch/${streamer.uid}`).json();
 
                 BTTV_list = BTTV["channelEmotes"]
+                _.each(BTTV["sharedEmotes"], async function (emote) {
+                    BTTV_list.push(emote)
+                });
+
 
                 _.each(BTTV_list, async function (emote) {
                     let inlist = 0;
@@ -198,6 +202,9 @@ setInterval(async function () {
                     }
 
                 });
+                if (streamer.username === "nymn2") {
+                    console.log(BTTV)
+                }
             } catch (err) {
                 noBTTV = 1;
 
@@ -280,4 +287,4 @@ setInterval(async function () {
             //   }, 200);
 
     });
-}, 60000);
+}, 10000);
