@@ -139,41 +139,82 @@ setInterval(async function () {
 setInterval(async function () {
     const streamers = await tools.query('SELECT * FROM Streamers');
 
-    _.each(streamers, async function (stream) {
+    _.each(streamers, async function (streamer) {
         try {
 
-            let Emote_list = JSON.parse(stream.Emote_list);
+            let Emote_list = JSON.parse(streamer.Emote_list);
 
-            let errors = 0;
-
-
-            const FFZ = await got(`https://api.frankerfacez.com/v1/room/id/${stream.uid}`).json();
+            const FFZ = await got(`https://api.frankerfacez.com/v1/room/id/${streamer.uid}`).json();
 
 
-            if (errors === 0) {
-                let set = FFZ.room.set;
-                let FFZ_list = FFZ.sets[`${set}`].emoticons;
-                //console.log(FFZ.sets[`${set}`].emoticons);
+            let set = FFZ.room.set;
+            let FFZ_list = FFZ.sets[`${set}`].emoticons;
 
-                _.each(FFZ_list, async function (emote) {
-                    emotecheck = Emote_list.toString().replaceAll(',', ' ');
-
-                    emotecheck = emotecheck.split(' ');
-                    if (!emotecheck.includes(emote["name"])) {
-                        let time = new Date().getTime();
-
-                        Emote_list.push(`${emote["name"]} ${time}`);
+            _.each(FFZ_list, async function (emote) {
+                let inlist = 0;
+                _.each(Emote_list, async function (emotecheck) {
+                    if (emotecheck.includes(emote["id"])) {
+                        inlist = 1;
                     }
-                });
-                Emote_list = JSON.stringify(Emote_list)
-                await tools.query(`UPDATE Streamers SET Emote_list=? WHERE username=?`, [Emote_list, stream.username]);
+                })
+                if (inlist === 0) {
+                    let time = new Date().getTime();
+
+                    Emote_list.push([emote["name"], emote["id"], time]);
+                }
+
+            });
 
 
-                //console.log(Emote_list)
-            }
+
+            const BTTV = await got(`https://api.betterttv.net/3/cached/users/twitch/${streamer.uid}`).json();
+
+            let BTTV_list = BTTV["channelEmotes"]
+
+            _.each(BTTV_list, async function (emote) {
+                let inlist = 0;
+                _.each(Emote_list, async function (emotecheck) {
+                    if (emotecheck.includes(emote["id"])) {
+                        inlist = 1;
+                    }
+                })
+                if (inlist === 0) {
+                    let time = new Date().getTime();
+
+                    Emote_list.push([emote["code"], emote["id"], time]);
+                }
+
+            });
+
+
+            const STV = await got(`https://api.7tv.app/v2/users/${streamer.uid}/emotes`).json();
+
+            let STV_list = STV
+
+            _.each(STV_list, async function (emote) {
+                //console.log(emote)
+                let inlist = 0;
+                _.each(Emote_list, async function (emotecheck) {
+                    if (emotecheck.includes(emote["id"])) {
+                        inlist = 1;
+                    }
+                })
+                if (inlist === 0) {
+                    let time = new Date().getTime();
+
+                    Emote_list.push([emote["name"], emote["id"], time]);
+                }
+
+            });
+
+            Emote_list = JSON.stringify(Emote_list)
+            await tools.query(`UPDATE Streamers SET Emote_list=? WHERE username=?`, [Emote_list, streamer.username]);
+
+
+
         } catch (err) {
 
         }
 
     });
-}, 10000);
+}, 60000);
