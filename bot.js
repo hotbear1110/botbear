@@ -46,7 +46,6 @@ async function onMessageHandler(channel, user, msg, self) {
     if (input[0] !== "bb" && input[0].toLowerCase() !== "forsenbb") {
         return;
     }
-    realcommand = realcommand.toLowerCase();
     // If yabbes chat want to disable other commands ->
     if (channel === "#yabbe") {
         if (realcommand !== "gametime" && realcommand !== "channel" && realcommand !== "notify" && realcommand !== "remove" && realcommand !== "myping" && realcommand !== "ping" && realcommand !== "commands" && realcommand !== "bot" && realcommand !== "suggest") {
