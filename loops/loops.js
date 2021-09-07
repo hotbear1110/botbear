@@ -11,7 +11,7 @@ setInterval(async function () {
     const myping = await tools.query(`SELECT * FROM MyPing`);
 
     _.each(streamers, async function (stream) {
-        setTimeout(function () {
+        setTimeout(async function () {
             await axios.get(`https://api.twitch.tv/helix/streams?user_login=${stream.username}`, {
                 headers: {
                     'client-id': process.env.TWITCH_CLIENTID,
@@ -60,7 +60,7 @@ setInterval(async function () {
         }, 200);
     })
     _.each(streamers, async function (stream) {
-        setTimeout(function () {
+        setTimeout(async function () {
             await axios.get(`https://api.twitch.tv/helix/channels?broadcaster_id=${stream.uid}`, {
                 headers: {
                     'client-id': process.env.TWITCH_CLIENTID,
