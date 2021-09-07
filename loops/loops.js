@@ -11,14 +11,14 @@ setInterval(async function () {
     const myping = await tools.query(`SELECT * FROM MyPing`);
 
     _.each(streamers, async function (stream) {
-        setTimeout(async function () { }, 200);
+        setTimeout(function () { }, 200);
             await axios.get(`https://api.twitch.tv/helix/streams?user_login=${stream.username}`, {
                 headers: {
                     'client-id': process.env.TWITCH_CLIENTID,
                     'Authorization': process.env.TWITCH_AUTH
                 }
             })
-                .then(function (response) {
+                .then(async function (response) {
                     // handle success
                     const twitchdata = response.data;
                     let users = JSON.parse(stream.live_ping);
