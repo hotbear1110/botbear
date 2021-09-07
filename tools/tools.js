@@ -57,13 +57,8 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
 exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reject) => {
     this.channel = channel.replace("#", '');
     this.message = message.replaceAll(' ', '%20');
-    this.data = await tools.query(`
-          SELECT uid
-          FROM Streamers
-          WHERE username=?`,
-        [this.channel]);
     try {
-        this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/${this.data[0].uid}/moderation/check_message?message=${this.message}`);
+        this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=${this.message}`);
         if (this.checkBanphrase.data["banned"] == true) {
             resolve(true);
         }
