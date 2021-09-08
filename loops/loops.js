@@ -116,12 +116,12 @@ setInterval(async function () {
                                         }
                                     }
                                 }
-                                sleep(1500);
+                                sleep(1500)
                             }
                             console.log(stream.username + " NEW GAME: " + newGame);
                             _.each(gameuserlist, function (msg, i) {
                                 setTimeout(function () {
-                                    cc.action(`#${proxychannel2}`, `${stream.gameemote} NEW GAME ! ${stream.gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`);
+                                    cc.action(`#${proxychannel2}`, `${stream.gameemote} NEW GAME ! ${stream.gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`)
                                 }, 2000 * i);
                             });
 
