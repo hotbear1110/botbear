@@ -107,7 +107,7 @@ setInterval(async function () {
 
                             await tools.query(`UPDATE Streamers SET game=?, game_time=? WHERE username=?`, [newGame, gameTime, stream.username]);
 
-                            if (newTitle != stream.title) {
+                            if (newTitle !== stream.title) {
                                 function sleep(milliseconds) {
                                     var start = new Date().getTime();
                                     for (var i = 0; i < 1e7; i++) {
