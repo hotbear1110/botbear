@@ -25,11 +25,13 @@ async function onMessageHandler(channel, user, msg, self) {
     if (channel == "#botbear1110") {
         console.log(`${user.username}: ${msg}`);
     }
+    /*
     const userList = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username]);
 
     if (!userList.length && user.username != null) {
         await tools.query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
     }
+    */
 
     if (self) {
         return;
