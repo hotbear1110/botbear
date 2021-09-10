@@ -1,3 +1,5 @@
+const tools = require("../tools/tools.js");
+
 module.exports = {
     name: "emotecount",
     ping: true,
