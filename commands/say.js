@@ -17,7 +17,7 @@ module.exports = {
             msg.replace(regex.invisChar, '');
 
 
-            if (perm < 2000 && msg.match(/[$|/|.|?|!|-]|\bkb\b/g)) { // ignores $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
+            if (user.mod === false && perm < 2000 && msg.match(/[$|/|.|?|!|-]|\bkb\b/g)) { // ignores $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
                 return;
             }
             if (perm < 1500 && channel !== "nymn") {
