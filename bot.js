@@ -41,7 +41,7 @@ async function onMessageHandler(channel, user, msg, self) {
     const Alias = new tools.Alias(msg);
     input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
     let realcommand = input[1];
-    if (realcommand !== "say" && realcommand !== "channel") {
+    if (realcommand !== "say" && realcommand !== "channel" && realcommand !== "emotecheck") {
         input = msg.toLowerCase().split(" ");
     }
 
