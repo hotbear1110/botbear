@@ -16,6 +16,11 @@ module.exports = {
                 let tier = emotecheck.data["tier"]
                 let url = emotecheck.data["emoteurl_3x"]
 
+                if (emotechannel === null) {
+                    return `${input[2]} is a Twitch global emote - ${url}`;
+
+                }
+
                 return `${input[2]} is a tier ${tier} emote, from the channel (#${emotechannel}) - ${url}`;
             }
             
