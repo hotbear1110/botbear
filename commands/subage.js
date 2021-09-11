@@ -21,7 +21,7 @@ module.exports = {
             let subcheck = await axios.get(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`);
             if (subcheck.data["subscribed"] == false) {
                 let oldsub = subcheck.data["cumulative"];
-                const subend = Date.parse(oldsub["end"] -  new Date().getTime());
+                const subend = new Date().getTime() - Date.parse(oldsub["end"]);
 
 
                 if (oldsub["months"] === 0) {
