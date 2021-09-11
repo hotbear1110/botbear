@@ -21,6 +21,11 @@ module.exports = {
 
                 }
 
+                if (emotechannel === "qa_TW_Partner") {
+                    return `${input[2]} is a (Limited time) Twitch global emote - ${url}`;
+
+                }
+
                 return `${input[2]} is a tier ${tier} emote, from the channel (#${emotechannel}) - ${url}`;
             }
             
