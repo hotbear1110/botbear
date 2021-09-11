@@ -21,18 +21,21 @@ module.exports = {
             let subcheck = await axios.get(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`);
             if (subcheck.data["subscribed"] == false) {
                 let oldsub = subcheck.data["cumulative"];
+                const subend = Date.parse(oldsub["end"] -  new Date().getTime());
+
 
                 if (oldsub["months"] === 0) {
                     return `${username} is not subbed to #${realchannel}ﾠand never has been.`;
                 }
                 else {
-                    return `${username} is not subbed to #${realchannel}ﾠbut has been previously for a total of ${oldsub["months"]} months!`;
+                    return `${username} is not subbed to #${realchannel}ﾠbut has been previously for a total of ${oldsub["months"]} months! Sub ended ${tools.humanizeDuration(subend)} ago`;
                 }
             }
             else {
                 let subdata = subcheck.data["meta"];
                 let sublength = subcheck.data["cumulative"];
                 let substreak = subcheck.data["streak"]; 
+                
                 const ms = new Date().getTime() - Date.parse(subdata["endsAt"]);
 
                 if (subdata["type"] === "prime") {
