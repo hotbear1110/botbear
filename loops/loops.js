@@ -223,6 +223,7 @@ setInterval(async function () {
                     _.each(Emote_list, async function (emotecheck) {
                         if (emotecheck.includes(emote["id"])) {
                             inlist = 1;
+                            return;
                         }
                     })
                     if (inlist === 0) {
