@@ -70,11 +70,20 @@ module.exports = {
             let response = "";
 
             const emotecount = await axios.get(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`);
-                let bttv = emotecount.data["bttvEmotes"]
-                let ffz = emotecount.data["ffzEmotes"]
-                let ecount = 0;
-                let foundemote = 0;
-                _.each(bttv, async function (emote) {
+            let bttv = emotecount.data["bttvEmotes"]
+            let ffz = emotecount.data["ffzEmotes"]
+            let ecount = 0;
+            let foundemote = 0;
+            _.each(bttv, async function (emote) {
+                console.log(emote["emote"], emote["amount"])
+                if (emote["emote"] === input[2]) {
+                    ecount = emote["amount"]
+                    foundemote = 1
+                    return;
+                }
+            })
+            if (foundemote === 0) {
+                _.each(ffz, async function (emote) {
                     console.log(emote["emote"], emote["amount"])
                     if (emote["emote"] === input[2]) {
                         ecount = emote["amount"]
@@ -82,16 +91,7 @@ module.exports = {
                         return;
                     }
                 })
-                if (foundemote === 0) {
-                    _.each(ffz, async function (emote) {
-                        console.log(emote["emote"], emote["amount"])
-                        if (emote["emote"] === input[2]) {
-                            ecount = emote["amount"]
-                            foundemote = 1
-                            return;
-                        }
-                    })
-                }
+            }
 
 
             _.each(emotes, async function (emote) {
@@ -100,9 +100,13 @@ module.exports = {
                     emote[2] = `(${tools.humanizeDuration(now - emote[2])})`;
 
                     found = 1;
+                    if (ecount !== 0) {
+                        response = `${input[2]} is a 3rd party emote, the emote was added to the channel ${emote[2]} ago, and has been used ${ecount} times in this chat. The emote was uploaded by the user "${emote[3]}" - ${emote[4]}`;
+                    }
+                    else {
+                        response = `${input[2]} is a 3rd party emote, the emote was added to the channel ${emote[2]} ago. The emote was uploaded by the user "${emote[3]}" - ${emote[4]}`;
 
-                    response = `${input[2]} is a 3rd party emote, the emote was added to the channel ${emote[2]} ago, and has been used ${ecount} times in this chat. The emote was uploaded by the user "${emote[3]}" - ${emote[4]}`;
-
+                    }
                     return;
                 }
 
