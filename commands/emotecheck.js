@@ -59,6 +59,11 @@ module.exports = {
             console.log(err);
         }
         try {
+
+        } catch (err) {
+            console.log(err)
+        }
+        try {
             const streamer = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
             let emotes = JSON.parse(streamer[0].emote_list);
 
@@ -93,7 +98,6 @@ module.exports = {
                 })
             }
 
-
             _.each(emotes, async function (emote) {
                 if (emote[0] === input[2]) {
 
@@ -111,10 +115,79 @@ module.exports = {
                 }
 
             })
+
+            if (found === 0) {
+                const ffzglobal = await axios.get(`https://api.frankerfacez.com/v1/set/global`);
+                const bttvglobal = await axios.get(`https://api.betterttv.net/3/cached/emotes/global`);
+                const stvglobal = await axios.get(`https://api.7tv.app/v2/emotes/global`);
+
+                let ffzemotes = ffzglobal.data["sets"];
+                ffzemotes = ffzemotes["3"];
+                ffzemotes = ffzemotes["emoticons"];
+
+                _.each(ffzemotes, async function (emote) {
+                    if (emote["name"] === input[2]) {
+                        found = 1;
+                        let url = emote["urls"]
+                        let owner = emote["owner"]
+                        if (ecount !== 0) {
+                            response = `${input[2]} is a global ffz emote by ${owner["name"]}, the emote has been used ${ecount} times in this chat. - ${url["1"]}`;
+                        }
+                        else {
+                            response = `${input[2]} is a global ffz emote by ${owner["name"]}  - https:${url["1"]}`;
+
+                        }
+                        return;
+                    }
+                })
+                if (found === 1) {
+                    return response;
+                }
+
+                let bttvemotes = bttvglobal.data;
+
+                _.each(bttvemotes, async function (emote) {
+                    if (emote["code"] === input[2]) {
+                        found = 1;
+                        if (ecount !== 0) {
+                            response = `${input[2]} is a global bttv emote, the emote has been used ${ecount} times in this chat.`;
+                        }
+                        else {
+                            response = `${input[2]} is a global bttv emote.`;
+
+                        }
+                        return;
+                    }
+                })
+
+                if (found === 1) {
+                    return response;
+                }
+
+                let svtemotes = stvglobal.data;
+
+                _.each(svtemotes, async function (emote) {
+                    if (emote["name"] === input[2]) {
+                        found = 1;
+                        let url = emote["urls"]
+                        url = url[3]
+
+                        if (ecount !== 0) {
+                            response = `${input[2]} is a global 7tv emote, the emote has been used ${ecount} times in this chat - ${url[1]}`;
+                        }
+                        else {
+                            response = `${input[2]} is a global 7tv emote - ${url[1]}`;
+
+                        }
+                        return;
+                    }
+                })
+
+            }
+
             if (found === 1) {
                 return response;
-            }
-            else {
+            } else {
                 return `Error FeelsBadMan - Emote was not found`;
             }
 

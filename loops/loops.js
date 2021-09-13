@@ -78,7 +78,7 @@ setInterval(async function () {
                 _.each(myping, async function (userchanel) {
                     let pingname = JSON.parse(userchanel.username);
                     let gamename = userchanel.game_pings;
-                    if (pingname.includes(stream.username) && gamename.includes(newGame)) {
+                    if (pingname.includes(stream.username) && gamename.includes(newGame) && newGame !== "") {
                         gameusers.push(pingname[0]);
                     }
                 })
