@@ -51,14 +51,14 @@ module.exports = {
                     let game_list = JSON.parse(alreadyJoined[0].game_pings);
 
                     if (game_list.includes(realgame)) {
-                        return "That game is already in your ping list :)";
+                        return "That game is already in your ping list :) You can do 'bb myping list' to see your list.";
                     }
                     game_list.push(realgame);
                     game_list = JSON.stringify(game_list);
                     console.log(game_list);
 
                     await tools.query(`UPDATE MyPing SET game_pings=? WHERE username=?`, [game_list, `[${userchannel}]`])
-                    return `The game ${realgame} has been added to your ping list :)`;
+                    return `The game ${realgame} has been added to your ping list :) You can do 'bb myping list' to see your list.`;
 
 
                     break;
@@ -102,7 +102,7 @@ module.exports = {
                     let game_list2 = JSON.parse(alreadyJoined2[0].game_pings);
 
                     if (!game_list2.includes(realgame2)) {
-                        return "FeelsDankMan That game is not in your ping list!";
+                        return "FeelsDankMan That game is not in your ping list! You can do 'bb myping list' to see your list.";
                     }
 
                     for (var i = 0; i < game_list2.length; i++) {
