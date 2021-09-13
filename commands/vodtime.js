@@ -31,15 +31,33 @@ module.exports = {
 
             let duration = response.data.data[0].duration;
             console.log(duration)
-            duration = duration.split("h");
 
-            let hours = duration[0];
+            let hours = "";
 
-            duration = duration[1].split("m");
+            let minutes = "";
 
-            let minutes = duration[0];
+            let seconds = "";
 
-            let seconds = duration[1];
+            if (duration.includes("h")) {
+                duration = duration.split("h");
+
+                hours = duration[0];
+
+                duration = duration[1].split("m");
+
+                minutes = duration[0];
+
+                seconds = duration[1];
+
+            } else {
+
+                duration = duration.split("m");
+
+                minutes = duration[0];
+
+                seconds = duration[1];
+
+            }
 
             seconds = seconds.replaceAll("s", "");
 
