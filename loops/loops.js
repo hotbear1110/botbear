@@ -202,9 +202,10 @@ setInterval(async function () {
                         let owner = streamer.username;
                         if (emote["user"]) {
                             owner = emote["user"];
+                            owner = owner["name"];
                         }
 
-                        Emote_list.push([emote["code"], emote["id"], time, owner["name"], `https://betterttv.com/emotes/${emote["id"]}`]);
+                        Emote_list.push([emote["code"], emote["id"], time, owner, `https://betterttv.com/emotes/${emote["id"]}`]);
                     }
 
                 });
