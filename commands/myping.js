@@ -148,7 +148,7 @@ module.exports = {
                         listgames = listgames.toString().replaceAll(',', '\n');
                         let user = "";
                         if (input[3]) {
-                            user = input[3];
+                            user = `${input[3]}'s'`;
                         }
 
                         let hastebinlist = await tools.makehastebin(listgames, username, channel);
