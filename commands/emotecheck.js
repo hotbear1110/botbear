@@ -12,13 +12,23 @@ module.exports = {
             console.log(err)
         }
         try {
+            let emoteId = input[2];
+            if (user.emotes) {
+                console.log(user.emotes.toString())
+                emoteId = JSON.stringify(user.emotes).split(":")[0]
+                emoteId = emoteId.substring(2)
+                console.log(emoteId.slice(0, -1))
+                emoteId = `${emoteId.slice(0, -1)}?id=true`;
+            }
 
-            const emotecheck = await axios.get(`https://api.ivr.fi/twitch/emotes/${input[2]}`);
+            const emotecheck = await axios.get(`https://api.ivr.fi/v2/twitch/emotes/${emoteId}`);
+            console.log(emotecheck.data)
 
-            if (emotecheck.data["status"] = 200) {
-                let emotechannel = emotecheck.data["channel"]
-                let tier = emotecheck.data["tier"]
-                let url = emotecheck.data["emoteurl_3x"]
+            if (!emotecheck.data["error"]) {
+                let emotechannel = emotecheck.data["channelName"];
+                let tier = emotecheck.data["emoteTier"];
+                let url = `https://static-cdn.jtvnw.net/emoticons/v2/${emotecheck.data["emoteID"]}/default/dark/3.0`;
+                let emoteType = emotecheck.data["emoteType"];
 
                 const emotecount = await axios.get(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`);
                 let count = emotecount.data["twitchEmotes"]
@@ -48,11 +58,19 @@ module.exports = {
                     return `${input[2]} is a (Limited time) Twitch global emote - ${url}`;
 
                 }
-                if (ecount !== 0) {
-                    return `${input[2]} is a tier ${tier} emote, from the channel (#${emotechannel}), the emote has been used ${ecount} times in this chat - ${url}`;
-                }
-                return `${input[2]} is a tier ${tier} emote, from the channel (#${emotechannel}) - ${url}`;
-
+                if (tier !== null) {
+                    if (ecount !== 0) {
+                        return `${input[2]} is a tier ${tier} emote, from the channel (#${emotechannel}), the emote has been used ${ecount} times in this chat - ${url}`;
+                    }
+                    return `${input[2]} is a tier ${tier} emote, from the channel (#${emotechannel}) - ${url}`;
+                } else {
+                    if (emoteType === "BITS_BADGE_TIERS") {
+                        if (ecount !== 0) {
+                            return `${input[2]} is a bit emote, from the channel (#${emotechannel}), the emote has been used ${ecount} times in this chat - ${url}`;
+                        }
+                        return `${input[2]} is a bit emote, from the channel (#${emotechannel}) - ${url}`;
+                    }
+            }
             }
 
         } catch (err) {
