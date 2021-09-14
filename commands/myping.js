@@ -146,10 +146,14 @@ module.exports = {
                         const gamelist = await tools.query(`SELECT * FROM MyPing WHERE username=?`, [`[${userchannel3}]`]);
                         let listgames = JSON.parse(gamelist[0].game_pings);
                         listgames = listgames.toString().replaceAll(',', '\n');
+                        let user = "";
+                        if (input[3]) {
+                            user = input[3];
+                        }
 
                         let hastebinlist = await tools.makehastebin(listgames, username, channel);
 
-                        return `Game list: ${hastebinlist}.txt`;
+                        return `${user} Game list: ${hastebinlist}.txt`;
                         break;
                     }
             }
