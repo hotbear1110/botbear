@@ -164,16 +164,26 @@ exports.notbannedPhrases = (message) => {
     }
 }
 
-exports.massping = (message) => new Promise(async (resolve, reject) => {
-    let users = await tools.query(`SELECT username FROM Users`);
+exports.massping = (message, channel) => new Promise(async (resolve, reject) => {
+    let users = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`).json();
+    let userlist = users.chatters["broadcaster"];
+    userlist = userlist.concat(users.chatters["vips"]);
+    userlist = userlist.concat(users.chatters["moderators"]);
+    userlist = userlist.concat(users.chatters["staff"]);
+    userlist = userlist.concat(users.chatters["admins"]);
+    userlist = userlist.concat(users.chatters["global_mods"]);
+    userlist = userlist.concat(users.chatters["viewers"]);
+
+    console.log(userlist)
+
     let pings = 0;
 
-    _.each(users, async function (user) {
-        if (message.includes(user.username)) {
+    _.each(userlist, async function (user) {
+        if (message.includes(user)) {
             pings++;
         }
         if (pings > 7) {
-            resolve(0);
+            return;
         }
     })
     if (pings > 7) {

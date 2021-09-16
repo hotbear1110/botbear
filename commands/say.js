@@ -23,7 +23,7 @@ module.exports = {
             if (perm < 1500 && channel !== "nymn") {
                 return;
             }
-            const masspinged = await tools.massping(msg.toLowerCase());
+            const masspinged = await tools.massping(msg.toLowerCase(), channel);
 
             if (masspinged != "null") {
                 return "[MASS PING]";

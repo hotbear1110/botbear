@@ -21,7 +21,7 @@ module.exports = {
             }
 
             const rl = await got(`https://api.ivr.fi/logs/rq/${realchannel}/${username}`).json();
-            const masspinged = await tools.massping(rl.message.toLowerCase());
+            const masspinged = await tools.massping(rl.message.toLowerCase(), channel);
 
             if (masspinged != "null") {
                 return "[MASS PING]";

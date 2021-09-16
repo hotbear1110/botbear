@@ -8,7 +8,7 @@ module.exports = {
     ping: true,
     execute: async (channel, user, input, perm) => {
         try {
-            let chatters = await axios.get(`http://tmi.twitch.tv/group/user/${channel}/chatters`);
+            let chatters = await axios.get(`https://tmi.twitch.tv/group/user/${channel}/chatters`);
             chattercount = chatters.data["chatter_count"];
             return `There are ${chattercount} users in chat rn :O`;
         } catch (err) {
