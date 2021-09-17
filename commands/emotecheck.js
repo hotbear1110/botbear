@@ -29,6 +29,8 @@ module.exports = {
                 let tier = emotecheck.data["emoteTier"];
                 let url = `https://static-cdn.jtvnw.net/emoticons/v2/${emotecheck.data["emoteID"]}/default/dark/3.0`;
                 let emoteType = emotecheck.data["emoteType"];
+                let realid = emotecheck.data["emoteID"];
+                let emoteType = emotecheck.data["emoteAssetType"].toLowerCase();
 
                 const emotecount = await axios.get(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`);
                 let count = emotecount.data["twitchEmotes"]
@@ -44,31 +46,31 @@ module.exports = {
 
                 if (emotechannel === null) {
                     if (ecount !== 0) {
-                        return `${input[2]} is a Twitch global emote, the emote has been used ${ecount} times in this chat - ${url}`;
+                        return `${input[2]} (ID ${realid}) is a Twitch global ${emoteType} emote, the emote has been used ${ecount} times in this chat - ${url}`;
                     }
                     else {
-                        return `${input[2]} is a Twitch global emote - ${url}`;
+                        return `${input[2]} (ID ${realid}) is a Twitch global ${emoteType} emote - ${url}`;
                     }
                 }
 
                 if (emotechannel === "qa_TW_Partner") {
                     if (ecount !== 0) {
-                        return `${input[2]} is a (Limited time) Twitch global emote, the emote has been used ${ecount} times in this chat - ${url}`;
+                        return `${input[2]} (ID ${realid}) is a (Limited time) Twitch global ${emoteType} emote, the emote has been used ${ecount} times in this chat - ${url}`;
                     }
-                    return `${input[2]} is a (Limited time) Twitch global emote - ${url}`;
+                    return `${input[2]} (ID ${realid}) is a (Limited time) Twitch global ${emoteType} emote - ${url}`;
 
                 }
                 if (tier !== null) {
                     if (ecount !== 0) {
-                        return `${input[2]} is a tier ${tier} emote, from the channel (#${emotechannel}), the emote has been used ${ecount} times in this chat - ${url}`;
+                        return `${input[2]} (ID ${realid}) is a tier ${tier} ${emoteType} emote, from the channel (#${emotechannel}), the emote has been used ${ecount} times in this chat - ${url}`;
                     }
-                    return `${input[2]} is a tier ${tier} emote, from the channel (#${emotechannel}) - ${url}`;
+                    return `${input[2]} (ID ${realid}) is a tier ${tier} ${emoteType} emote, from the channel (#${emotechannel}) - ${url}`;
                 } else {
                     if (emoteType === "BITS_BADGE_TIERS") {
                         if (ecount !== 0) {
-                            return `${input[2]} is a bit emote, from the channel (#${emotechannel}), the emote has been used ${ecount} times in this chat - ${url}`;
+                            return `${input[2]} (ID ${realid}) is a bit emote (${emoteType}), from the channel (#${emotechannel}), the emote has been used ${ecount} times in this chat - ${url}`;
                         }
-                        return `${input[2]} is a bit emote, from the channel (#${emotechannel}) - ${url}`;
+                        return `${input[2]} (ID ${realid}) is a bit emote (${emoteType}), from the channel (#${emotechannel}) - ${url}`;
                     }
             }
             }
