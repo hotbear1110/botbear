@@ -7,16 +7,16 @@ module.exports = {
     ping: true,
     execute: async (channel, user, input, perm) => {
         try {
-
-        } catch (err) {
-            console.log(err)
-        }
-        try {
             let emoteId = input[2];
             if (user.emotes) {
-                console.log(user.emotes.toString())
-                emoteId = JSON.stringify(user.emotes).split(":")[0]
-                emoteId = emoteId.substring(2)
+                if (input[0].toLowerCase() === "forsenbb") {
+                    emoteId = JSON.stringify(user.emotes).split(",")[1].split(":")[0];
+                    emoteId = emoteId.substring(1)
+                } else {
+                    emoteId = JSON.stringify(user.emotes).split(":")[0]
+                    emoteId = emoteId.substring(2)
+                }
+                console.log(user.emotes)
                 console.log(emoteId.slice(0, -1))
                 emoteId = `${emoteId.slice(0, -1)}?id=true`;
             }
