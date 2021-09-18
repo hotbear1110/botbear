@@ -254,8 +254,10 @@ exports.cookies = (user, command) => new Promise(async (resolve, reject) => {
     let users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [command[2]]);
     let Time = new Date().getTime();
     let RemindTime = Time + 7200000;
+    let realuser = command[2];
     if (!users.length) {
         users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [command[1].slice(0, -1)]);
+        realuser = command[1].slice(0, -1);
     }
     if (!users.length) {
         resolve(0)
@@ -267,8 +269,8 @@ exports.cookies = (user, command) => new Promise(async (resolve, reject) => {
             response === "Confirmed2";
         }
 
-        await tools.query(`UPDATE Cookies SET Status=?, RemindTime=? WHERE User=?`, ["Confirmed", RemindTime, command[2]]);
-        resolve([response, command[2]]);
+        await tools.query(`UPDATE Cookies SET Status=?, RemindTime=? WHERE User=?`, ["Confirmed", RemindTime, realuser]);
+        resolve([response, realuser]);
     }
 
 })
