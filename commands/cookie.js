@@ -37,7 +37,7 @@ module.exports = {
                             let cd = status[0].RemindTime - new Date().getTime();
                             cd = tools.humanizeDuration(cd);
 
-                            return `There is no cookie for you right not, your next cookie is available in ${cd}`
+                            return `There is no cookie for you right now, your next cookie is available in ${cd}`
                         } else {
                             return 'You have a cookie wating for you :)';
                         }
