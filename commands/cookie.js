@@ -22,7 +22,7 @@ module.exports = {
                     const unregister = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
 
                     if (unregister.length) {
-                        await tools.query(`DELETE * FROM Cookies WHERE User=?`, [user.username]);
+                        await tools.query(`DELETE FROM Cookies WHERE User=?`, [user.username]);
 
                         return 'You are now unregistered for cookie notifications';
                     } else {
