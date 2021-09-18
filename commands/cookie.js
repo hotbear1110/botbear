@@ -7,9 +7,9 @@ module.exports = {
         try {
             switch (input[2]) {
                 case "register":
-                    const users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
+                    const register = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
 
-                    if (!users.length) {
+                    if (!register.length) {
                         await tools.query('INSERT INTO Cookies (User) values (?)', [user.username]);
 
                         return 'You are now registered for cookie notifications';
@@ -19,9 +19,9 @@ module.exports = {
                     }
                     break;
                 case "unregister":
-                    const users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
+                    const unregister = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
 
-                    if (users.length) {
+                    if (unregister.length) {
                         await tools.query(`DELETE * FROM Cookies WHERE User=?`, [user.username]);
 
                         return 'You are now unregistered for cookie notifications';
@@ -30,11 +30,11 @@ module.exports = {
                     }
                     break;
                 case "status":
-                    const users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
+                    const status = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
 
-                    if (users.length) {
-                        if (users[0].RemindTime !== null) {
-                            let cd = users[0].RemindTime - new Date().getTime();
+                    if (status.length) {
+                        if (status[0].RemindTime !== null) {
+                            let cd = status[0].RemindTime - new Date().getTime();
                             cd = tools.humanizeDuration(cd);
 
                             return `There is no cookie for you right not, your next cookie is available in ${cd}`
