@@ -41,18 +41,12 @@ async function onMessageHandler(channel, user, msg, self) {
     const Alias = new tools.Alias(msg);
     input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
     let realcommand = input[1];
+    
     if (realcommand !== "say" && realcommand !== "channel" && realcommand !== "emotecheck") {
         input = msg.toLowerCase().split(" ");
     }
 
     if (input[0] === "[cookies]" && user["user-id"] == 425363834) {
-        console.log("works");
-        console.log(input[3], input[5]);
-        /*
-        if (input[3] !== "->" && input[5] !== "new") {
-            return;
-        }
-*/
         const cookieStatus = await tools.cookies(user, input, channel);
         console.log(cookieStatus)
 
