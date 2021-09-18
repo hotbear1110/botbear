@@ -83,7 +83,7 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
-    const userCD = new tools.Cooldown(user, realcommand, 5000);
+    const userCD = new tools.Cooldown(user, realcommand, 3000);
 
     if ((await userCD.setCooldown()).length) { return; }
 
