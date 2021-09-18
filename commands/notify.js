@@ -67,6 +67,18 @@ module.exports = {
 
                         return 'You are now subscribed to the event "game"';
                     }
+                    break;
+                case "cookie":
+                    const users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
+
+                    if (!users.length) {
+                    await tools.query('INSERT INTO Cookies (User) values (?)', [user.username]);
+
+                    return 'You will now get notified, when a cookie is available';
+
+                    } else {
+                        return "You already get notified, when a cookie is available. You can do 'bb remove cookie', if you don't want to be notified"
+                    }
                 default:
                     return `Please specify an event to subscribe to. The following events are available: live, title, game`;
             }

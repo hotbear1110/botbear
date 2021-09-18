@@ -45,6 +45,21 @@ async function onMessageHandler(channel, user, msg, self) {
         input = msg.toLowerCase().split(" ");
     }
 
+    if (input[0] === "?cookie" || input[0] === "!cookie" || input[0] === "?cookies" || input[0] === "!cookies" || input[0] === "[Cookies]") {
+        if (input[0] === "[Cookies]" && user["user-id"] !== 425363834) {
+            return;
+        }
+        const cookieStatus = await tools.cookies(user, input);
+
+        if (cookieStatus[0] === "Confirmed") {
+            cc.whisper(cookieStatus[1], "I will remind you, to eat your cookie in 2 hours nymnOkay")
+        }
+        if (cookieStatus[0] === "Confirmed2") {
+            cc.whisper(cookieStatus[1], "I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay")
+        }
+
+    }
+
     if (input[0] !== "bb" && input[0].toLowerCase() !== "forsenbb") {
         return;
     }

@@ -307,3 +307,18 @@ setInterval(async function () {
 
     });
 }, 60000);
+
+setInterval(async function () {
+    const users = await tools.query(`SELECT * FROM Cookies`);
+    let Time = new Date().getTime();
+
+    _.each(users, async function (User) {
+        if (User.RemindTime < Time) {
+            cc.whisper(User.User, "Reminder to eat your cookie nymnOkay")
+            await tools.query(`UPDATE Cookies SET Status=?, RemindTime=? WHERE User=?`, [null, null, User.User]);
+
+        }
+
+    })
+
+}, 60000);

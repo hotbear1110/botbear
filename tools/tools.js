@@ -8,6 +8,7 @@ const bannedPhrases = require("./bannedPhrases.js");
 const hastebin = require('better-hastebin');
 const humanize = require('humanize-duration');
 const axios = require('axios');
+const date = require('date-and-time');
 
 
 exports.query = (query, data = []) =>
@@ -245,5 +246,37 @@ exports.getPerm = (user) => new Promise(async (resolve, reject) => {
     } catch (err) {
         console.log(err);
         resolve(0);
+    }
+})
+
+exports.cookies = (user, command) => new Promise(async (resolve, reject) => {
+
+    if (command[0] !== "[Cookies]") {
+        const users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
+        let Time = new Date().getTime();
+        let RemindTime = Time + 7200000;
+
+        if (!users.length && user.username !== null) {
+            resolve(0);
+        } else if (user.username !== null) {
+            await tools.query(`UPDATE Cookies SET Status=?, RemindTime=? WHERE User=?`, ["Pending", RemindTime, user.username]);
+            resolve("Pending");
+        }
+        resolve(0);
+    } else {
+        const users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [command[2]]);
+        let Time = new Date().getTime();
+        let RemindTime = Time + 7200000;
+        if (!users.length) {
+            resolve(0);
+        } else if (user.username !== null) {
+            let reponse = "Confirmed";
+            if (users.Status === "Confirmed") {
+                response === "Confirmed2";
+            }
+
+            await tools.query(`UPDATE Cookies SET Status=?, RemindTime=? WHERE User=?`, ["Confirmed", RemindTime, command[2]]);
+            resolve([response, command[2]]);
+        }
     }
 })
