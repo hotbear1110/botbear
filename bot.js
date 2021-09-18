@@ -50,13 +50,13 @@ async function onMessageHandler(channel, user, msg, self) {
             return;
         }
 
-        const cookieStatus = await tools.cookies(user, input);
+        const cookieStatus = await tools.cookies(user, input, channel);
 
         if (cookieStatus[0] === "Confirmed") {
-            cc.whisper(cookieStatus[1], "I will remind you, to eat your cookie in 2 hours nymnOkay")
+            cc.whisper(cookieStatus[2], `${cookieStatus[1]} I will remind you, to eat your cookie in 2 hours nymnOkay`)
         }
         if (cookieStatus[0] === "Confirmed2") {
-            cc.whisper(cookieStatus[1], "I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay")
+            cc.whisper(cookieStatus[2], `${cookieStatus[2]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`)
         }
 
     }

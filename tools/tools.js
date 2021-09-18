@@ -249,7 +249,7 @@ exports.getPerm = (user) => new Promise(async (resolve, reject) => {
     }
 })
 
-exports.cookies = (user, command) => new Promise(async (resolve, reject) => {
+exports.cookies = (user, command, channel) => new Promise(async (resolve, reject) => {
 
     let users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [command[2]]);
     let Time = new Date().getTime();
@@ -269,8 +269,8 @@ exports.cookies = (user, command) => new Promise(async (resolve, reject) => {
             response === "Confirmed2";
         }
 
-        await tools.query(`UPDATE Cookies SET Status=?, RemindTime=? WHERE User=?`, ["Confirmed", RemindTime, realuser]);
-        resolve([response, realuser]);
+        await tools.query(`UPDATE Cookies SET Status=?, Channel=? RemindTime=? WHERE User=?`, ["Confirmed", channel, RemindTime, realuser]);
+        resolve([response, realuser, channel]);
     }
 
 })

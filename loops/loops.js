@@ -314,7 +314,7 @@ setInterval(async function () {
 
     _.each(users, async function (User) {
         if (User.RemindTime < Time) {
-            await tools.query(`UPDATE Cookies SET Status=?, RemindTime=? WHERE User=?`, [null, null, User.User]);
+            await tools.query(`UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
             cc.whisper(User.User, "Reminder to eat your cookie nymnOkay")
         }
 
