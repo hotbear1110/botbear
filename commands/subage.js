@@ -38,18 +38,27 @@ module.exports = {
                 
                 const ms = new Date().getTime() - Date.parse(subdata["endsAt"]);
 
-                if (subdata["tier"] === "Custom") {
-                    return `${username} is subbed to #${realchannel}ﾠwith a permanent sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak.`;
-
-                }
+                
                 if (subdata["type"] === "prime") {
+                    if (subdata["tier"] === "Custom") {
+                        return `${username} is subbed to #${realchannel}ﾠwith a permanent prime sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak.`;
+    
+                    }
                     return `${username} is currently subbed to #${realchannel}ﾠwith a tier 1 prime sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}`;
                 }
                 if (subdata["type"] === "paid") {
+                    if (subdata["tier"] === "Custom") {
+                        return `${username} is subbed to #${realchannel}ﾠwith a permanent paid sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak.`;
+    
+                    }
                     return `${username} is currently subbed to #${realchannel}ﾠwith a tier ${subdata["tier"]} sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}`;
                 }
                 if (subdata["type"] === "gift") {
                     let gifta = subdata["gift"]["name"];
+                    if (subdata["tier"] === "Custom") {
+                        return `${username} is subbed to #${realchannel}ﾠwith a permanent sub, gifted by ${gifta} and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak.`;
+    
+                    }
                     return `${username} is currently subbed to #${realchannel}ﾠwith a tier ${subdata["tier"]} sub, gifted by ${gifta} and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}`;
                 }
             }
