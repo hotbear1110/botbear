@@ -45,18 +45,25 @@ async function onMessageHandler(channel, user, msg, self) {
         input = msg.toLowerCase().split(" ");
     }
 
-    if (input[0] === "[Cookies]" && user["user-id"] == 425363834) {
-        if (input[3] !== "->" || input[5] !== "new") {
+    if (input[0] === "[cookies]" && user["user-id"] == 425363834) {
+        console.log("works");
+        console.log(input[3], input[5]);
+        /*
+        if (input[3] !== "->" && input[5] !== "new") {
             return;
         }
-
+*/
         const cookieStatus = await tools.cookies(user, input, channel);
+        console.log(cookieStatus)
 
         if (cookieStatus[0] === "Confirmed") {
             cc.say(cookieStatus[2], `${cookieStatus[1]} I will remind you, to eat your cookie in 2 hours nymnOkay`)
         }
         if (cookieStatus[0] === "Confirmed2") {
-            cc.say(cookieStatus[2], `${cookieStatus[2]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`)
+            cc.say(cookieStatus[2], `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`)
+        }
+        if (cookieStatus[0] === "CD") {
+            cc.say(cookieStatus[2], `${cookieStatus[1]} Your cookie is still on cooldown, it will be available in ${cookieStatus[3]}`)
         }
 
     }

@@ -250,26 +250,40 @@ exports.getPerm = (user) => new Promise(async (resolve, reject) => {
 })
 
 exports.cookies = (user, command, channel) => new Promise(async (resolve, reject) => {
-
-    let users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [command[2]]);
+    let users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [command[3]]);
     let Time = new Date().getTime();
     let RemindTime = Time + 7200000;
-    let realuser = command[2];
+    let realuser = command[3];
+    if (!users.length) {
+        users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [command[2]]);
+        console.log(command[2])
+        realuser = command[2];
+    }
     if (!users.length) {
         users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [command[1].slice(0, -1)]);
+        console.log(command[1].slice(0, -1))
         realuser = command[1].slice(0, -1);
     }
     if (!users.length) {
         resolve(0)
+        return;
     }
     
+    let msg = command.toString().replaceAll(",", " ")
+
     if (user.username !== null) {
         let response = "Confirmed";
-        if (users.Status === "Confirmed") {
-            response === "Confirmed2";
+        if (msg.includes("you have already claimed a cookie")) {
+            let cd = users[0].RemindTime - new Date().getTime()
+            cd = tools.humanizeDuration(cd)
+            response = "Confirmed2"
+            resolve(["CD", realuser, channel, cd]);
+        }
+        if (users[0].Status === "Confirmed") {
+            response = "Confirmed2";
         }
 
-        await tools.query(`UPDATE Cookies SET Status=?, Channel=? RemindTime=? WHERE User=?`, ["Confirmed", channel, RemindTime, realuser]);
+        await tools.query(`UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [response, channel, RemindTime, realuser]);
         resolve([response, realuser, channel]);
     }
 
