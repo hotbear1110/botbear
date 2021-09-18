@@ -45,10 +45,8 @@ async function onMessageHandler(channel, user, msg, self) {
         input = msg.toLowerCase().split(" ");
     }
 
-    if (input[0] === "?cookie" || input[0] === "!cookie" || input[0] === "?cookies" || input[0] === "!cookies" || input[0] === "[Cookies]") {
-        if (input[0] === "[Cookies]" && user["user-id"] !== 425363834) {
-            return;
-        }
+    if (input[0] === "[Cookies]" && user["user-id"] == 425363834) {
+        
         const cookieStatus = await tools.cookies(user, input);
 
         if (cookieStatus[0] === "Confirmed") {

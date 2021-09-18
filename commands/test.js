@@ -6,6 +6,7 @@ module.exports = {
             let Time = new Date().getTime();
             let RemindTime = Time + 7200000;
 
+
             return RemindTime;
         } catch (err) {
             console.log(err);
