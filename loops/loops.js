@@ -17,7 +17,6 @@ setInterval(async function () {
                 'client-id': process.env.TWITCH_CLIENTID,
                 'Authorization': process.env.TWITCH_AUTH
             },
-            timeout: 60000
         })
             .then(async function (response) {
                 // handle success
@@ -66,7 +65,6 @@ setInterval(async function () {
                 'client-id': process.env.TWITCH_CLIENTID,
                 'Authorization': process.env.TWITCH_AUTH
             },
-            timeout: 60000
         })
             .then(async function (response) {
                 // handle success
