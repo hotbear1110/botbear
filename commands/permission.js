@@ -3,6 +3,8 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "permission",
     ping: false,
+    description: "Changes the permission of a given user",
+    permission: 2000,
     execute: async (channel, user, input, perm) => {
         try {
             if (perm < 2000) {

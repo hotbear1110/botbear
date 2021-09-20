@@ -3,6 +3,8 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "help",
     ping: true,
+    description: "Gives information about a given command",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             if (!input[2]) {

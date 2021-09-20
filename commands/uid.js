@@ -3,6 +3,8 @@ const axios = require('axios');
 module.exports = {
     name: "uid",
     ping: true,
+    description: "Reponds with the user id of a given user",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             let uiduser = user.username;
@@ -13,7 +15,7 @@ module.exports = {
                 uiduser = input[2];
             }
             
-            const userID = await axios.get(`https://api.ivr.fi/twitch/resolve/${uiduser}`);
+            const userID = await axios.get(`https://api.ivr.fi/twitch/resolve/${uiduser}`, {timeout: 10000});
 
             if (userID.data.banned === true) {
                 return `${userID.data.id} - cmonBruh [BANNED USER]`;

@@ -16,7 +16,8 @@ setInterval(async function () {
             headers: {
                 'client-id': process.env.TWITCH_CLIENTID,
                 'Authorization': process.env.TWITCH_AUTH
-            }
+            },
+            timeout: 10000
         })
             .then(async function (response) {
                 // handle success
@@ -64,7 +65,8 @@ setInterval(async function () {
             headers: {
                 'client-id': process.env.TWITCH_CLIENTID,
                 'Authorization': process.env.TWITCH_AUTH
-            }
+            },
+            timeout: 10000
         })
             .then(async function (response) {
                 // handle success
@@ -155,7 +157,7 @@ setInterval(async function () {
 
 
             try {
-                const FFZ = await got(`https://api.frankerfacez.com/v1/room/id/${streamer.uid}`).json();
+                const FFZ = await got(`https://api.frankerfacez.com/v1/room/id/${streamer.uid}`, {timeout: 10000}).json();
 
 
                 let set = FFZ.room.set;
@@ -182,7 +184,7 @@ setInterval(async function () {
 
             }
             try {
-                const BTTV = await got(`https://api.betterttv.net/3/cached/users/twitch/${streamer.uid}`).json();
+                const BTTV = await got(`https://api.betterttv.net/3/cached/users/twitch/${streamer.uid}`, {timeout: 10000}).json();
 
                 BTTV_list = BTTV["channelEmotes"]
                 _.each(BTTV["sharedEmotes"], async function (emote) {
@@ -214,7 +216,7 @@ setInterval(async function () {
 
             }
             try {
-                const STV = await got(`https://api.7tv.app/v2/users/${streamer.uid}/emotes`).json();
+                const STV = await got(`https://api.7tv.app/v2/users/${streamer.uid}/emotes`, {timeout: 10000}).json();
 
                 STV_list = STV
 

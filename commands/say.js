@@ -5,6 +5,8 @@ const regex = require('../tools/regex.js');
 module.exports = {
     name: "say",
     ping: false,
+    description: "Reponds with whatever the input is (only works in nymn's chat)",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             input = input.splice(2);

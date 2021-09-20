@@ -3,6 +3,8 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "ping",
     ping: true,
+    description: "The bot responds 'pong' if it is online",
+    permission: 100,
     showDelay: true,
     execute: async (channel, user, input, perm) => {
         try {

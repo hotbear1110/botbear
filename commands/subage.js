@@ -5,6 +5,8 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "subage",
     ping: false,
+    description: "Responds with sub information about a given user",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             let username = user.username;
@@ -18,7 +20,7 @@ module.exports = {
             if (input[3]) {
                 realchannel = input[3];
             }
-            let subcheck = await axios.get(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`);
+            let subcheck = await axios.get(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`, {timeout: 10000});
             if (subcheck.data["subscribed"] == false) {
                 let oldsub = subcheck.data["cumulative"];
                 const subend = new Date().getTime() - Date.parse(oldsub["end"]);

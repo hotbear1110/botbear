@@ -5,6 +5,8 @@ const _ = require("underscore");
 module.exports = {
     name: "emotecheck",
     ping: true,
+    description: "Responds with the origin info of that emote",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             let emoteId = input[2];
@@ -21,7 +23,7 @@ module.exports = {
                 emoteId = `${emoteId.slice(0, -1)}?id=true`;
             }
 
-            const emotecheck = await axios.get(`https://api.ivr.fi/v2/twitch/emotes/${emoteId}`);
+            const emotecheck = await axios.get(`https://api.ivr.fi/v2/twitch/emotes/${emoteId}`, {timeout: 10000});
             console.log(emotecheck.data)
 
             if (!emotecheck.data["error"]) {
@@ -32,7 +34,7 @@ module.exports = {
                 let realid = emotecheck.data["emoteID"];
                 let emoteStatus = emotecheck.data["emoteAssetType"].toLowerCase();
 
-                const emotecount = await axios.get(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`);
+                const emotecount = await axios.get(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, {timeout: 10000});
                 let count = emotecount.data["twitchEmotes"]
                 let ecount = 0;
                 _.each(count, async function (emote) {
@@ -94,7 +96,7 @@ module.exports = {
 
             let response = "";
 
-            const emotecount = await axios.get(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`);
+            const emotecount = await axios.get(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, {timeout: 10000});
             let bttv = emotecount.data["bttvEmotes"]
             let ffz = emotecount.data["ffzEmotes"]
             let ecount = 0;
@@ -137,9 +139,9 @@ module.exports = {
             })
 
             if (found === 0) {
-                const ffzglobal = await axios.get(`https://api.frankerfacez.com/v1/set/global`);
-                const bttvglobal = await axios.get(`https://api.betterttv.net/3/cached/emotes/global`);
-                const stvglobal = await axios.get(`https://api.7tv.app/v2/emotes/global`);
+                const ffzglobal = await axios.get(`https://api.frankerfacez.com/v1/set/global`, {timeout: 10000});
+                const bttvglobal = await axios.get(`https://api.betterttv.net/3/cached/emotes/global`, {timeout: 10000});
+                const stvglobal = await axios.get(`https://api.7tv.app/v2/emotes/global`, {timeout: 10000});
 
                 let ffzemotes = ffzglobal.data["sets"];
                 ffzemotes = ffzemotes["3"];

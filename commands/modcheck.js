@@ -6,6 +6,8 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "modcheck",
     ping: true,
+    description: "Responds with the users mod status",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             let username = user.username;
@@ -19,7 +21,7 @@ module.exports = {
             if (input[3]) {
                 realchannel = input[3];
             }
-            let modcheck = await axios.get(`https://api.ivr.fi/twitch/modsvips/${realchannel}`);
+            let modcheck = await axios.get(`https://api.ivr.fi/twitch/modsvips/${realchannel}`, {timeout: 10000});
             ismod = modcheck.data["mods"];
             let modresponse = "";
             await _.each(ismod, async function (modstatus) {

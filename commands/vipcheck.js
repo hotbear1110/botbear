@@ -5,6 +5,8 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "vipcheck",
     ping: true,
+    description: "Responds with the users vip status",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             let username = user.username;
@@ -18,7 +20,7 @@ module.exports = {
             if (input[3]) {
                 realchannel = input[3];
             }
-            let vipcheck = await axios.get(`https://api.ivr.fi/twitch/modsvips/${realchannel}`);
+            let vipcheck = await axios.get(`https://api.ivr.fi/twitch/modsvips/${realchannel}`, {timeout: 10000});
             isvip = vipcheck.data["vips"];
             let vipresponse = "";
 

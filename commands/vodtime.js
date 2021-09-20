@@ -6,6 +6,8 @@ const date = require('date-and-time');
 module.exports = {
     name: "vodtime",
     ping: true,
+    description: "Input should be: 'bb vodtime *vodlink* *time in CET*'. Responds with a vod timestamp that correlates to the given time input.",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             let vodid = input[2].split('/');
@@ -16,7 +18,8 @@ module.exports = {
                 headers: {
                     'client-id': process.env.TWITCH_CLIENTID,
                     'Authorization': process.env.TWITCH_AUTH
-                }
+                },
+                timeout: 10000
             })
 
             let starttime = response.data.data[0].created_at;

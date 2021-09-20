@@ -6,6 +6,8 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "followage",
     ping: false,
+    description: "Responds with how long a give user has followed the channel",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             let username = user.username;
@@ -20,7 +22,7 @@ module.exports = {
                 realchannel = input[3];
             }
 
-            const followcheck = await axios.get(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`);
+            const followcheck = await axios.get(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`, {timeout: 10000});
 
             if (followcheck.data["followedAt"]) {
                 const ms = new Date().getTime() - Date.parse(followcheck.data["followedAt"]);

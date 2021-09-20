@@ -3,6 +3,8 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "cookie",
     ping: true,
+    description: "Notifies you when you have a cookie availavle from 'ThePositiveBot'",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             switch (input[2]) {

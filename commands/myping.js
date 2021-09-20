@@ -5,6 +5,8 @@ const axios = require('axios');
 module.exports = {
     name: "myping",
     ping: true,
+    description: "Makes the bot ping you, when the streamer is playing specific games",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             switch (input[2]) {
@@ -23,7 +25,8 @@ module.exports = {
                         headers: {
                             'client-id': process.env.TWITCH_CLIENTID,
                             'Authorization': process.env.TWITCH_AUTH
-                        }
+                        },
+                        timeout: 10000
                     });
                     if (!realgame.data.data[0]) {
                         return `"${emote}", is either not a twitch category, or it's not specific enough!`;
@@ -80,7 +83,8 @@ module.exports = {
                         headers: {
                             'client-id': process.env.TWITCH_CLIENTID,
                             'Authorization': process.env.TWITCH_AUTH
-                        }
+                        },
+                        timeout: 10000
                     });
                     if (!realgame2.data.data[0]) {
                         return `"${input}", is either not a twitch category, or it's not specific enough!`;

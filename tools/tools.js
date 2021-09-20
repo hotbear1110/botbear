@@ -8,8 +8,6 @@ const bannedPhrases = require("./bannedPhrases.js");
 const hastebin = require('better-hastebin');
 const humanize = require('humanize-duration');
 const axios = require('axios');
-const date = require('date-and-time');
-
 
 exports.query = (query, data = []) =>
     new Promise((resolve, reject) => {
@@ -46,6 +44,7 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
+            timeout: 10000
         }).json();
         resolve(this.checkBanphrase);
     } catch (err) {
@@ -59,7 +58,7 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
     this.channel = channel.replace("#", '');
     this.message = message.replaceAll(' ', '%20');
     try {
-        this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=${this.message}`);
+        this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=${this.message}`, {timeout: 10000});
         if (this.checkBanphrase.data["banned"] == true) {
             resolve(true);
         }
@@ -166,7 +165,7 @@ exports.notbannedPhrases = (message) => {
 }
 
 exports.massping = (message, channel) => new Promise(async (resolve, reject) => {
-    let users = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`).json();
+    let users = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, {timeout: 10000}).json();
     let userlist = users.chatters["broadcaster"];
     userlist = userlist.concat(users.chatters["vips"]);
     userlist = userlist.concat(users.chatters["moderators"]);

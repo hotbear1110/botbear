@@ -1,6 +1,8 @@
 module.exports = {
     name: "github",
     ping: true,
+    description: "Responds with a link to my github",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             return `https://github.com/hotbear1110/botbear`;

@@ -4,6 +4,8 @@ const _ = require("underscore");
 module.exports = {
     name: "emotes",
     ping: true,
+    description: "Responds with the last 6 added 3rd party emotes",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             const streamer = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);

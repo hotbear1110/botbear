@@ -3,6 +3,8 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "emotecount",
     ping: true,
+    description: "Responds with the amount of 3rd party emotes active in the channel",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             const streamer = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);

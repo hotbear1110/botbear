@@ -3,6 +3,8 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "notify",
     ping: true,
+    description: "Makes the bot ping you in chat, when the streamer, goes live, changes title or changes game.",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             switch (input[2]) {

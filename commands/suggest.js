@@ -3,6 +3,8 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "suggest",
     ping: true,
+    description: "Make a suggestion for the bot, could be a new feature etc.",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             input = input.splice(2);

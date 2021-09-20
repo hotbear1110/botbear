@@ -3,6 +3,7 @@ const tmi = require("tmi.js");
 const login = require('./connect/connect.js');
 const tools = require("./tools/tools.js");
 const regex = require('./tools/regex.js');
+const _ = require("underscore");
 const requireDir = require("require-dir");
 
 const cc = new tmi.client(login.options);
@@ -198,7 +199,18 @@ async function onMessageHandler(channel, user, msg, self) {
     oldmessage = result;
 }
 
-function onConnectedHandler(addr, port) {
+async function onConnectedHandler(addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
+
+    const commands = requireDir("./commands");
+    const dbCommands = await tools.query(`SELECT * FROM Commands`);
+
+    _.each(commands, async function(command) {
+        if (dbCommands[0].Name !== command.name) {
+            await tools.query('INSERT INTO Commands (Name, Command, Perm) values (?, ?, ?)', [command.name, command.description, command.permission]);
+
+        }
+
+    })
 }
 module.exports = { cc };

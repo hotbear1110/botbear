@@ -6,6 +6,8 @@ const axios = require('axios');
 module.exports = {
     name: "channel",
     ping: true,
+    description: "Make the bot leave or join your channel. (Only works in hotbear1110 and botbear1110's channels). FeelsOkayMan When joined, you can do 'bb channel liveemote, offlineemote, gameemote or titleemote' to change the emote in the notification",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             if (channel === "forsen") {
@@ -23,7 +25,7 @@ module.exports = {
                     }
 
                     if (input[3]) {
-                        let streamer = await axios.get(`https://api.ivr.fi/twitch/resolve/${input[3]}`);
+                        let streamer = await axios.get(`https://api.ivr.fi/twitch/resolve/${input[3]}`, {timeout: 10000});
                         uid = streamer.data.id;
                         username = input[3];
                     }

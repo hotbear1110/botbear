@@ -5,6 +5,8 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "remove",
     ping: true,
+    description: "Removes you from the ping list, for when the streamer, goes live, changes title or changes game.",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             switch (input[2]) {

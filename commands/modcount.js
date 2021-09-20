@@ -4,8 +4,10 @@ const tools = require("../tools/tools.js");
 
 
 module.exports = {
-    name: "modcheck",
+    name: "modcount",
     ping: true,
+    description: "Responds with the amount of channels, that user is a mod in",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             let username = user.username;
@@ -15,7 +17,7 @@ module.exports = {
                 }
                 username = input[2];
             }
-            let modcount = await axios.get(`https://modlookup.3v.fi/api/user-totals/${username}`);
+            let modcount = await axios.get(`https://modlookup.3v.fi/api/user-totals/${username}`, {timeout: 10000});
             ismod = modcount.data["total"];
             if (ismod === 0) {
                 return `That user is not a mod in any channel :)`;

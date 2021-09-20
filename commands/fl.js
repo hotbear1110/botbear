@@ -6,6 +6,8 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "fl",
     ping: false,
+    description: "Responds with the first line from a given user",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             let username = user.username;
@@ -21,7 +23,7 @@ module.exports = {
             }
 
 
-            const fl = await got(`https://api.ivr.fi/logs/firstmessage/${realchannel}/${username}`).json();
+            const fl = await got(`https://api.ivr.fi/logs/firstmessage/${realchannel}/${username}`, {timeout: 10000}).json();
             const masspinged = await tools.massping(fl.message.toLowerCase(), channel);
 
             if (masspinged != "null") {

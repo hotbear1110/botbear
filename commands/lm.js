@@ -6,6 +6,8 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "lm",
     ping: true,
+    description: "Responds with the last message from a given user",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             let username = user.username;
@@ -23,7 +25,7 @@ module.exports = {
                 return;
             }
 
-            const lm = await got(`https://api.ivr.fi/logs/lastmessage/${realchannel}/${username}`).json();
+            const lm = await got(`https://api.ivr.fi/logs/lastmessage/${realchannel}/${username}`, {timeout: 10000}).json();
             const masspinged = await tools.massping(lm.response.toLowerCase(), channel);
 
             if (masspinged != "null") {

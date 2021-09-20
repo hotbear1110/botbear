@@ -3,6 +3,8 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "gametime",
     ping: true,
+    description: "Responds with the amount of time, the streamer has been in the current category",
+    permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
             const gameTimedata = await tools.query(`SELECT * FROM Streamers WHERE username=?`, [channel]);
