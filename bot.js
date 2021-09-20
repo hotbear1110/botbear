@@ -21,7 +21,9 @@ cc.connect();
 const talkedRecently = new Set();
 let oldmessage = "";
 
+
 async function onMessageHandler(channel, user, msg, self) {
+    let start = new Date().getTime();
     if (channel == "#botbear1110") {
         console.log(`${user.username}: ${msg}`);
     }
@@ -48,7 +50,6 @@ async function onMessageHandler(channel, user, msg, self) {
 
     if (input[0] === "[cookies]" && user["user-id"] == 425363834) {
         const cookieStatus = await tools.cookies(user, input, channel);
-        console.log(cookieStatus)
 
         if (cookieStatus[0] === "Confirmed") {
             cc.say(cookieStatus[2], `${cookieStatus[1]} I will remind you, to eat your cookie in 2 hours nymnOkay`)
@@ -187,6 +188,12 @@ async function onMessageHandler(channel, user, msg, self) {
     if (result === oldmessage) {
         result = result + " 󠀀 ";
     }
+    let end = new Date().getTime();
+
+    if (commands[realcommand].showDelay == true) {
+        result = `${result} ${end - start}ms`;
+    }
+
     cc.say(channel, result);
     oldmessage = result;
 }
