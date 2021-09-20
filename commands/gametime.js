@@ -7,6 +7,9 @@ module.exports = {
     permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
+            if (this.permission > perm) {
+                return;
+            }
             const gameTimedata = await tools.query(`SELECT * FROM Streamers WHERE username=?`, [channel]);
             let oldgameTime = JSON.parse(gameTimedata[0].game_time);
             const ms =  new Date().getTime() - oldgameTime;

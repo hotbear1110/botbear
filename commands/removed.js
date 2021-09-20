@@ -8,6 +8,9 @@ module.exports = {
     permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
+            if (this.permission > perm) {
+                return;
+            }
             const streamer = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
             let emotes = JSON.parse(streamer[0].emote_removed);
 

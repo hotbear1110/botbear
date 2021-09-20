@@ -7,10 +7,9 @@ module.exports = {
     permission: 2000,
     execute: async (channel, user, input, perm) => {
         try {
-            if (perm < 2000) {
+            if (this.permission > perm) {
                 return;
             }
-
             await tools.query(`UPDATE Users SET permission=? WHERE username=?`, [input[3], input[2]]);
             return `${input[2]} now has permission ${input[3]}`;
 

@@ -98,10 +98,6 @@ async function onMessageHandler(channel, user, msg, self) {
 
     const perm = await tools.getPerm(user.username);
 
-    if (perm < 100) {
-        return;
-    }
-
     const userCD = new tools.Cooldown(user, realcommand, 3000);
 
     if ((await userCD.setCooldown()).length) { return; }

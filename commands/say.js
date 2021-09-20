@@ -9,6 +9,9 @@ module.exports = {
     permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
+            if (this.permission > perm) {
+                return;
+            }
             input = input.splice(2);
             let msg = input.toString().replaceAll(',', ' ');
 

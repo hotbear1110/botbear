@@ -5,6 +5,9 @@ module.exports = {
     permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
+            if (this.permission > perm) {
+                return;
+            }
             let bmi = (input[3]**2)/10000
             return input[2]/bmi
         } catch (err) {

@@ -9,6 +9,9 @@ module.exports = {
     permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
+            if (this.permission > perm) {
+                return;
+            }
             let emoteId = input[2];
             if (user.emotes) {
                 if (input[0].toLowerCase() === "forsenbb") {

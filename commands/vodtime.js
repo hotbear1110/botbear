@@ -10,6 +10,9 @@ module.exports = {
     permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
+            if (this.permission > perm) {
+                return;
+            }
             let vodid = input[2].split('/');
             vodid = vodid[vodid.length - 1];
 

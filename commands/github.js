@@ -5,6 +5,9 @@ module.exports = {
     permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
+            if (this.permission > perm) {
+                return;
+            }
             return `https://github.com/hotbear1110/botbear`;
         } catch (err) {
             console.log(err);

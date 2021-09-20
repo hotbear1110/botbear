@@ -9,6 +9,9 @@ module.exports = {
     permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
+            if (this.permission > perm) {
+                return;
+            }
             switch (input[2]) {
                 case "live":
                     const liveUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);

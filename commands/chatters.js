@@ -10,6 +10,9 @@ module.exports = {
     permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
+            if (this.permission > perm) {
+                return;
+            }
             let chatters = await axios.get(`https://tmi.twitch.tv/group/user/${channel}/chatters`, {timeout: 10000});
             chattercount = chatters.data["chatter_count"];
             return `There are ${chattercount} users in chat rn :O`;

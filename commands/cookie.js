@@ -7,6 +7,9 @@ module.exports = {
     permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
+            if (this.permission > perm) {
+                return;
+            }
             switch (input[2]) {
                 case "register":
                     const register = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);

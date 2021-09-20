@@ -7,6 +7,9 @@ module.exports = {
     permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
+            if (this.permission > perm) {
+                return;
+            }
             if (!input[2]) {
                 return 'List of commands: https://botbear.github.io/ - If you want help with a command, write: "bb help *command*"';
             }

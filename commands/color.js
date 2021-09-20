@@ -7,6 +7,9 @@ module.exports = {
     permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
+            if (this.permission > perm) {
+                return;
+            }
             let username = user.username;
             if (input[2]) {
                 if (input[2].startsWith("@")) {

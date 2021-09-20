@@ -7,6 +7,9 @@ module.exports = {
     permission: 2000,
     execute: async (channel, user, input, perm) => {
         try {
+            if (this.permission > perm) {
+                return;
+            }
             console.log(user.username)
             cc.whisper(user.username, "test")
         } catch (err) {
