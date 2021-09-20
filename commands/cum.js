@@ -8,7 +8,12 @@ module.exports = {
             if (this.permission > perm) {
                 return;
             }
-            return `I came`;
+
+            let msg = input.tostring();
+            msg = msg.replaceAll("me", "you")
+            msg = msg.replaceAll("my", "your")
+
+            return `I came ${msg}`;
         } catch (err) {
             console.log(err);
             return ` Error FeelsBadMan `;
