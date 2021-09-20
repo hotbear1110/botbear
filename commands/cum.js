@@ -1,3 +1,6 @@
+const tools = require("../tools/tools.js");
+const regex = require('../tools/regex.js');
+
 module.exports = {
     name: "cum",
     ping: false,
@@ -8,10 +11,19 @@ module.exports = {
             if (this.permission > perm) {
                 return;
             }
+            input.shift()
+            input.shift()
 
-            let msg = input.tostring();
-            msg = msg.replaceAll("me", "you")
-            msg = msg.replaceAll("my", "your")
+            let msg = input.toString();
+            msg = msg.replaceAll(",", " ")
+            msg = msg.replaceAll(/(?:^|\W)me(?:$|\W)/g, " you ")
+            msg = msg.replaceAll(/(?:^|\W)my(?:$|\W)/g, " your ")
+
+            const masspinged = await tools.massping(msg.toLowerCase(), channel);
+
+            if (masspinged != "null") {
+                return "[MASS PING]";
+            }
 
             return `I came ${msg}`;
         } catch (err) {

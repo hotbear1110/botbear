@@ -174,8 +174,6 @@ exports.massping = (message, channel) => new Promise(async (resolve, reject) => 
     userlist = userlist.concat(users.chatters["global_mods"]);
     userlist = userlist.concat(users.chatters["viewers"]);
 
-    console.log(userlist)
-
     let pings = 0;
 
     _.each(userlist, async function (user) {
