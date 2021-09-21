@@ -11,6 +11,7 @@ module.exports = {
             if (this.permission > perm) {
                 return;
             }
+            input = input.split(' ')
             input.shift()
             input.shift()
 
