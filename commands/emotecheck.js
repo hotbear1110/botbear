@@ -49,12 +49,20 @@ module.exports = {
                 })
 
 
-                if (emotechannel === null) {
+                if (emotechannel === null && emoteType !== "SUBSCRIPTIONS") {
                     if (ecount !== 0) {
                         return `${input[2]} (ID ${realid}) is a Twitch global ${emoteStatus} emote, the emote has been used ${ecount} times in this chat - ${url}`;
                     }
                     else {
                         return `${input[2]} (ID ${realid}) is a Twitch global ${emoteStatus} emote - ${url}`;
+                    }
+                }
+                if (emotechannel === null && emoteType === "SUBSCRIPTIONS") {
+                    if (ecount !== 0) {
+                        return `${input[2]} (ID ${realid}) is an emote (${emoteStatus}) from an unknown channel, the emote has been used ${ecount} times in this chat - ${url}`;
+                    }
+                    else {
+                        return `${input[2]} (ID ${realid}) is an emote (${emoteStatus}) from an unknown channel- ${url}`;
                     }
                 }
 
