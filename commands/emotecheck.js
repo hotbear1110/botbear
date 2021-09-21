@@ -59,10 +59,10 @@ module.exports = {
                 }
                 if (emotechannel === null && emoteType === "SUBSCRIPTIONS") {
                     if (ecount !== 0) {
-                        return `${input[2]} (ID ${realid}) is an emote (${emoteStatus}) from an unknown channel, the emote has been used ${ecount} times in this chat - ${url}`;
+                        return `${input[2]} (ID ${realid}) is an emote (${emoteStatus}) from an unknown banned/deleted channel, the emote has been used ${ecount} times in this chat - ${url}`;
                     }
                     else {
-                        return `${input[2]} (ID ${realid}) is an emote (${emoteStatus}) from an unknown channel- ${url}`;
+                        return `${input[2]} (ID ${realid}) is an emote (${emoteStatus}) from an unknown banned/deleted channel- ${url}`;
                     }
                 }
 
