@@ -44,7 +44,7 @@ async function onMessageHandler(channel, user, msg, self) {
     const Alias = new tools.Alias(msg);
     input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
     let realcommand = input[1];
-    
+
     if (realcommand !== "say" && realcommand !== "channel" && realcommand !== "emotecheck" && realcommand !== "cum") {
         input = msg.toLowerCase().split(" ");
     }
@@ -73,7 +73,7 @@ async function onMessageHandler(channel, user, msg, self) {
             return;
         }
     }
-    
+
     const userList = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username]);
 
     if (!userList.length && user.username != null) {
@@ -201,11 +201,18 @@ async function onConnectedHandler(addr, port) {
     const commands = requireDir("./commands");
     const dbCommands = await tools.query(`SELECT * FROM Commands`);
 
-    _.each(commands, async function(command) {
-        if (dbCommands[0].Name !== command.name) {
+    _.each(commands, async function (command) {
+        let iscommand = 0;
+        _.each(dbCommands[0].Name, async function (dbcommand) {
+            if (dbcommand === command.name) {
+                iscommand = 1;
+                return;
+            }
+        })
+        if (iscommand === 0) {
             await tools.query('INSERT INTO Commands (Name, Command, Perm) values (?, ?, ?)', [command.name, command.description, command.permission]);
-
         }
+
 
     })
 }
