@@ -202,10 +202,9 @@ async function onConnectedHandler(addr, port) {
     const dbCommands = await tools.query(`SELECT * FROM Commands`);
 
     _.each(commands, async function (command) {
-        console.log(command.name)
         let iscommand = 0;
-        _.each(dbCommands[0].Name, async function (dbcommand) {
-            if (dbcommand === command.name) {
+        _.each(dbCommands, async function (dbcommand) {
+            if (dbcommand.Name === command.name) {
                 iscommand = 1;
                 return;
             }
