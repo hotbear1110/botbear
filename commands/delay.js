@@ -15,6 +15,7 @@ module.exports = {
 
             const Alias = new tools.Alias(input[2]);
             input[2] = input[2].replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
+            console.log(input[2])
 
             if (input[2] === "ping" || input[2] === "delay")  {
                 return;
