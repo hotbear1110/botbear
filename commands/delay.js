@@ -35,7 +35,7 @@ module.exports = {
                 return;
             }
 
-            let result = await commands[realcommand].execute(channel, user, input, perm);
+            let result = await commands[realcommand].execute(channel, user, realcommand, perm);
 
 
             if (!result) {
