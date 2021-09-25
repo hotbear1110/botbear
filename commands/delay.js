@@ -10,7 +10,7 @@ module.exports = {
                 return;
             }
 
-            if (input[2].tolowercase() === "ping" || input[2].tolowercase() === "delay")  {
+            if (input[2].toLowerCase() === "ping" || input[2].toLowerCase() === "delay")  {
                 return;
             }
 
