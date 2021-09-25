@@ -1,3 +1,5 @@
+const requireDir = require("require-dir");
+
 module.exports = {
     name: "delay",
     ping: true,
@@ -14,7 +16,7 @@ module.exports = {
                 return;
             }
 
-            const commands = requireDir("./commands");
+            const commands = requireDir("../commands");
 
             if (typeof commands[input[2]] === "undefined") {
                 console.log("undefined");
