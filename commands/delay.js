@@ -15,7 +15,7 @@ module.exports = {
 
             let realcommand = input.toString().toLowerCase()
 
-            const Alias = new tools.Alias();
+            const Alias = new tools.Alias(realcommand);
             realcommand = realcommand.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
             realcommand = realcommand[2]
             console.log(realcommand)
