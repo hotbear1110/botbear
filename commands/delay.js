@@ -13,11 +13,11 @@ module.exports = {
                 return;
             }
 
-            let realcommand = input[2].toString().toLowerCase()
+            let realcommand = input.toString().toLowerCase()
 
-            const Alias = new tools.Alias(realcommand);
+            const Alias = new tools.Alias();
             realcommand = realcommand.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
-            realcommand = realcommand[0]
+            realcommand = realcommand[2]
             console.log(realcommand)
 
             if (realcommand === "ping" || realcommand === "delay")  {
