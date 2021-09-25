@@ -1,5 +1,4 @@
 const got = require("got");
-const cc = require("../bot.js").cc;
 const tools = require("../tools/tools.js");
 
 

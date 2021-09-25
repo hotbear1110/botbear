@@ -1,4 +1,5 @@
 const tools = require("../tools/tools.js");
+const got = require("got");
 
 module.exports = {
     name: "cookie",
@@ -47,10 +48,21 @@ module.exports = {
                             return 'You have a cookie wating for you :)';
                         }
                     } else {
-                        return 'You are not registered for cookie notifications, you can write "bb cookie register" in chat for that.'
+                        let cookieCD = await got(`https://api.roaringiron.com/cooldown/${user.username}`, {timeout: 10000});
+
+                        if (cookieCD["error"]) {
+                            return cookieCD["error"];
+                        }
+
+                        if (cookieCD["can_claim"] === true) {
+                            return 'You have a cookie wating for you :)';
+                        } else {
+                            let cd = cookieCD["seconds_left"] * 1000;
+                            cd = tools.humanizeDuration(cd);
+
+                            return `There is no cookie for you right now, your next cookie is available in ${cd}`;
+                        }
                     }
-
-
                 default:
                     return 'Available cookie commands: "bb cookie register", "bb cookie unregister", "bb cookie status"'
             }
