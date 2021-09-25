@@ -48,7 +48,7 @@ module.exports = {
                             return 'You have a cookie wating for you :)';
                         }
                     } else {
-                        let cookieCD = await got(`https://api.roaringiron.com/cooldown/${user.username}`, { timeout: 10000 });
+                        let cookieCD = await got(`https://api.roaringiron.com/cooldown/${user.username}`, { timeout: 10000 }).json();
 
                         if (cookieCD["error"]) {
                             return cookieCD["error"];
