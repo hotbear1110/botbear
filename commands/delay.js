@@ -12,18 +12,18 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-
-            let realcommand = input.toString().toLowerCase()
-            realcommand = realcommand.replaceAll(",", " ")
-            console.log(realcommand)
+            let realcommand = input[0] + input[2];
+            realcommand = realcommand.toString().toLowerCase();
+            realcommand = realcommand.replaceAll(",", " ");
+            console.log(realcommand);
 
 
             const Alias = new tools.Alias(realcommand);
             realcommand = realcommand.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
-            console.log(realcommand)
+            console.log(realcommand);
 
-            realcommand = realcommand[2]
-            console.log(realcommand)
+            realcommand = realcommand[2];
+            console.log(realcommand);
 
             if (realcommand === "ping" || realcommand === "delay")  {
                 return;
