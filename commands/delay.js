@@ -12,9 +12,8 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            let realcommand = input[0] + input[2];
+            let realcommand = input[0] + " " + input[2];
             realcommand = realcommand.toString().toLowerCase();
-            realcommand = realcommand.replaceAll(",", " ");
             console.log(realcommand);
 
 
