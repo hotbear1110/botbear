@@ -14,15 +14,10 @@ module.exports = {
             }
             let realcommand = input[0] + " " + input[2];
             realcommand = realcommand.toString().toLowerCase();
-            console.log(realcommand);
-
 
             const Alias = new tools.Alias(realcommand);
             realcommand = realcommand.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
-            console.log(realcommand);
-
             realcommand = realcommand[1];
-            console.log(realcommand);
 
             if (realcommand === "ping" || realcommand === "delay")  {
                 return;
