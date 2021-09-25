@@ -7,7 +7,7 @@ module.exports = {
     permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
-            if (this.permission > perm) {
+            if (module.exports.permission > perm) {
                 return;
             }
             const image = await got(`http://shibe.online/api/shibes?count=1&urls=true&httpsUrls=true`, {timeout: 10000}).json();

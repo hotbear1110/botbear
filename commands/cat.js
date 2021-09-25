@@ -7,7 +7,7 @@ module.exports = {
     permission: 100,
     execute: async (channel, user, input, perm) => {
         try {
-            if (this.permission > perm) {
+            if (module.exports.permission > perm) {
                 return;
             }
             const image = await got(`https://api.thecatapi.com/v1/images/search`, {timeout: 10000}).json();

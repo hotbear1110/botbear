@@ -7,7 +7,7 @@ module.exports = {
     permission: 1500,
     execute: async (channel, user, input, perm) => {
         try {
-            if (this.permission > perm) {
+            if (module.exports.permission > perm) {
                 return;
             }
             const randomuser = await axios.get(`https://decapi.me/twitch/random_user/${channel}`, {timeout: 10000});

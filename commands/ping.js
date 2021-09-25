@@ -8,7 +8,7 @@ module.exports = {
     showDelay: true,
     execute: async (channel, user, input, perm) => {
         try {
-            if (this.permission > perm) {
+            if (module.exports.permission > perm) {
                 return;
             }
             const latency = await tools.query(`SELECT Latency FROM Latency ORDER BY id DESC LIMIT 1`);
