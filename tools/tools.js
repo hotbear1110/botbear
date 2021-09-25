@@ -271,10 +271,10 @@ exports.cookies = (user, command, channel) => new Promise(async (resolve, reject
         if (msg.includes("you have already claimed a cookie")) {
             let cd = users[0].RemindTime - new Date().getTime();
             cd = tools.humanizeDuration(cd);
-            response = "Confirmed2";
             resolve(["CD", realuser, channel, cd]);
+            return;
         }
-        if (users[0].Status === "Confirmed") {
+        if (users[0].Status === "Confirmed" || users[0].Status === "Confirmed2") {
             response = "Confirmed2";
         }
 
