@@ -3,11 +3,17 @@ module.exports = {
     ping: true,
     description: "Test the delay of commands",
     permission: 2000,
+    showDelay: true,
     execute: async (channel, user, input, perm) => {
         try {
             if (this.permission > perm) {
                 return;
             }
+
+            if (input[2].tolowercase() === "ping" || input[2].tolowercase() === "delay")  {
+                return;
+            }
+
             const commands = requireDir("./commands");
 
             if (typeof commands[input[2]] === "undefined") {
