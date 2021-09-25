@@ -8,7 +8,7 @@ module.exports = {
     showDelay: true,
     execute: async (channel, user, input, perm) => {
         try {
-            if (this.permission > perm) {
+            if (permission > perm) {
                 return;
             }
 
