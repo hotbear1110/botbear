@@ -13,7 +13,7 @@ module.exports = {
                 return;
             }
 
-            const Alias = new tools.Alias(input[2]);
+            const Alias = new tools.Alias(input[2].toString());
             input[2] = input[2].replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
 
             if (input[2].toLowerCase() === "ping" || input[2].toLowerCase() === "delay")  {
