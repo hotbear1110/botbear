@@ -14,9 +14,13 @@ module.exports = {
             }
 
             let realcommand = input.toString().toLowerCase()
+            console.log(realcommand)
+
 
             const Alias = new tools.Alias(realcommand);
             realcommand = realcommand.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
+            console.log(realcommand)
+
             realcommand = realcommand[2]
             console.log(realcommand)
 
