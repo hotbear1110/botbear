@@ -17,20 +17,21 @@ module.exports = {
 
             const Alias = new tools.Alias(realcommand);
             realcommand = realcommand.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
+            realcommand = realcommand[0]
             console.log(realcommand)
 
-            if (input[2] === "ping" || input[2] === "delay")  {
+            if (realcommand === "ping" || realcommand === "delay")  {
                 return;
             }
 
             const commands = requireDir("../commands");
 
-            if (typeof commands[input[2]] === "undefined") {
+            if (typeof commands[realcommand] === "undefined") {
                 console.log("undefined");
                 return;
             }
 
-            let result = await commands[input[2]].execute(channel, user, input, perm);
+            let result = await commands[realcommand].execute(channel, user, input, perm);
 
 
             if (!result) {
