@@ -14,6 +14,7 @@ module.exports = {
             }
 
             let realcommand = input.toString().toLowerCase()
+            realcommand = realcommand.replaceAll(",", " ")
             console.log(realcommand)
 
 
