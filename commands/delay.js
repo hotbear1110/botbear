@@ -21,7 +21,7 @@ module.exports = {
             realcommand = realcommand.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
             console.log(realcommand);
 
-            realcommand = realcommand[2];
+            realcommand = realcommand[1];
             console.log(realcommand);
 
             if (realcommand === "ping" || realcommand === "delay")  {
