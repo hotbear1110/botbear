@@ -53,7 +53,6 @@ module.exports = {
                         if (cookieCD["error"]) {
                             return cookieCD["error"];
                         }
-                        console.log(cookieCD["can_claim"])
                         if (cookieCD["can_claim"] === true) {
                             return 'You have a cookie wating for you :)';
                         } else {
