@@ -1,3 +1,4 @@
+const { convertToString } = require("dank-twitch-irc");
 const requireDir = require("require-dir");
 const tools = require("../tools/tools.js");
 
@@ -12,12 +13,13 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            let realcommand = input[0] + " " + input[2];
-            realcommand = realcommand.toString().toLowerCase();
+            input.splice(1,1);
 
-            const Alias = new tools.Alias(realcommand);
-            realcommand = realcommand.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
-            realcommand = realcommand[1];
+            console.log(input)
+            let msg = input.toString().replaceAll(",", " ")
+            const Alias = new tools.Alias(msg);
+            input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
+            let realcommand = input[1];
 
             if (realcommand === "ping" || realcommand === "delay")  {
                 return;
@@ -30,7 +32,7 @@ module.exports = {
                 return;
             }
 
-            let result = await commands[realcommand].execute(channel, user, realcommand, perm);
+            let result = await commands[realcommand].execute(channel, user, input, perm);
 
 
             if (!result) {
