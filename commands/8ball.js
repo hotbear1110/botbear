@@ -8,8 +8,15 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
+            function getRandomInt(max) {
+                return Math.floor(Math.random() * max);
+              }
 
+            let responses = ["You could say that", "NOIDONTTHINKSO", "YES!", "NO!", "maybe", "Why not"]
             
+
+            return responses[getRandomInt(responses.length - 1)];
+
         } catch (err) {
             console.log(err);
             return ` Error FeelsBadMan `;
