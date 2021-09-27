@@ -49,14 +49,7 @@ module.exports = {
                 })
 
 
-                if (emotechannel === null && emoteType !== "SUBSCRIPTIONS") {
-                    if (ecount !== 0) {
-                        return `${input[2]} (ID ${realid}) is a Twitch global ${emoteStatus} emote, the emote has been used ${ecount} times in this chat - ${url}`;
-                    }
-                    else {
-                        return `${input[2]} (ID ${realid}) is a Twitch global ${emoteStatus} emote - ${url}`;
-                    }
-                }
+
                 if (emotechannel === null && emoteType === "SUBSCRIPTIONS") {
                     if (ecount !== 0) {
                         return `${input[2]} (ID ${realid}) is an emote (${emoteStatus}) from an unknown banned/deleted channel, the emote has been used ${ecount} times in this chat - ${url}`;
@@ -65,7 +58,30 @@ module.exports = {
                         return `${input[2]} (ID ${realid}) is an emote (${emoteStatus}) from an unknown banned/deleted channel- ${url}`;
                     }
                 }
-
+                if (emotechannel === null && emoteType === "PRIME") {
+                    if (ecount !== 0) {
+                        return `${input[2]} (ID ${realid}) is a Twitch prime global ${emoteStatus} emote, the emote has been used ${ecount} times in this chat - ${url}`;
+                    }
+                    else {
+                        return `${input[2]} (ID ${realid}) is a Twitch prime global ${emoteStatus} emote - ${url}`;
+                    }
+                }
+                if (emotechannel === null && emoteType === "TURBO") {
+                    if (ecount !== 0) {
+                        return `${input[2]} (ID ${realid}) is a Twitch turbo global ${emoteStatus} emote, the emote has been used ${ecount} times in this chat - ${url}`;
+                    }
+                    else {
+                        return `${input[2]} (ID ${realid}) is a Twitch turbo global ${emoteStatus} emote - ${url}`;
+                    }
+                }
+                if (emotechannel === null) {
+                    if (ecount !== 0) {
+                        return `${input[2]} (ID ${realid}) is a Twitch global ${emoteStatus} emote, the emote has been used ${ecount} times in this chat - ${url}`;
+                    }
+                    else {
+                        return `${input[2]} (ID ${realid}) is a Twitch global ${emoteStatus} emote - ${url}`;
+                    }
+                }
                 if (emotechannel === "qa_TW_Partner") {
                     if (ecount !== 0) {
                         return `${input[2]} (ID ${realid}) is a (Limited time) Twitch global ${emoteStatus} emote, the emote has been used ${ecount} times in this chat - ${url}`;
