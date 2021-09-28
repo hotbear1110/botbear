@@ -58,7 +58,7 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
     this.channel = channel.replace("#", '');
     this.message = message.replaceAll(' ', '%20');
     try {
-        this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=${this.message}`, {timeout: 10000});
+        this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=${this.message}`, { timeout: 10000 });
         if (this.checkBanphrase.data["banned"] == true) {
             resolve(true);
         }
@@ -165,7 +165,7 @@ exports.notbannedPhrases = (message) => {
 }
 
 exports.massping = (message, channel) => new Promise(async (resolve, reject) => {
-    let users = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, {timeout: 10000}).json();
+    let users = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 }).json();
     let userlist = users.chatters["broadcaster"];
     userlist = userlist.concat(users.chatters["vips"]);
     userlist = userlist.concat(users.chatters["moderators"]);
@@ -263,14 +263,26 @@ exports.cookies = (user, command, channel) => new Promise(async (resolve, reject
         resolve(0);
         return;
     }
-    
+
     let msg = command.toString().replaceAll(",", " ");
 
     if (user.username !== null) {
         let response = "Confirmed";
         if (msg.includes("you have already claimed a cookie")) {
-            if (users.RemindTime === null) {
-                return;
+            if (users[0].RemindTime === null) {
+                let cookieCD = await got(`https://api.roaringiron.com/cooldown/${realuser}`, { timeout: 10000 }).json();
+
+                if (cookieCD["error"]) {
+                    resolve(0);
+                    return;
+                } else {
+                    let cd = cookieCD["seconds_left"] * 1000;
+                    cd = tools.humanizeDuration(cd);
+                    console.log(cd)
+
+                    resolve(["CD", realuser, channel, cd]);
+                    return;
+                }
             }
             let cd = users[0].RemindTime - new Date().getTime();
             cd = tools.humanizeDuration(cd);
