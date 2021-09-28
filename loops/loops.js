@@ -157,6 +157,9 @@ setInterval(async function () {
             try {
                 const FFZ = await got(`https://api.frankerfacez.com/v1/room/id/${streamer.uid}`, {timeout: 10000}).json();
 
+                if (!FFZ.room) {
+                    return;
+                }
 
                 let set = FFZ.room.set;
                 FFZ_list = FFZ.sets[`${set}`].emoticons;
@@ -183,6 +186,10 @@ setInterval(async function () {
             }
             try {
                 const BTTV = await got(`https://api.betterttv.net/3/cached/users/twitch/${streamer.uid}`, {timeout: 10000}).json();
+
+                if (!BTTV["id"]) {
+                    return;
+                }
 
                 BTTV_list = BTTV["channelEmotes"]
                 _.each(BTTV["sharedEmotes"], async function (emote) {
@@ -217,6 +224,10 @@ setInterval(async function () {
                 const STV = await got(`https://api.7tv.app/v2/users/${streamer.uid}/emotes`, {timeout: 10000}).json();
 
                 STV_list = STV
+
+                if(!STV_list[0]["id"]) {
+                    return;
+                }
 
                 _.each(STV_list, async function (emote) {
                     //console.log(emote)
