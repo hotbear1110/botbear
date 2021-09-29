@@ -48,7 +48,7 @@ module.exports = {
                     return `${username} is subbed to #${realchannel}ﾠwith a permanent sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak.`;
 
                 }
-                if (ms === 0) {
+                if (tools.humanizeDuration(ms) === "0s") {
                     return `${username} is currently subbed to #${realchannel}ﾠwith a tier ${subdata["tier"]} sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. This is a permanent sub.`;
                 }
                 if (subdata["type"] === "prime") {
