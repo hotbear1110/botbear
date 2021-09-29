@@ -6,8 +6,9 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "modcheck",
     ping: true,
-    description: "Responds with the users mod status",
+    description: 'This command will tell you if a given user is a mod in a given channel. And for how long. Example: "bb modcheck Fawcan NymN"(this will check Fawcan´s mod status in Nymn´s channel)',
     permission: 100,
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

@@ -5,8 +5,9 @@ const regex = require('../tools/regex.js');
 module.exports = {
     name: "say",
     ping: false,
-    description: "Reponds with whatever the input is (only works in nymn's chat)",
+    description: 'This command will let you make the bot say anything in chat. (The command only works in Nymn´s chat and the message gets checked for massping, banphrases etc.). Example: "bb say NymN is soy lole"',
     permission: 100,
+    category: "Random command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

@@ -6,8 +6,9 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "modcount",
     ping: true,
-    description: "Responds with the amount of channels, that user is a mod in",
+    description: 'This command will give you the number of channels a given user is a mod in. Example: "bb modcount NymN"',
     permission: 100,
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

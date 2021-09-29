@@ -4,8 +4,9 @@ const _ = require("underscore");
 module.exports = {
     name: "emotes",
     ping: true,
-    description: "Responds with the last 6 added 3rd party emotes",
+    description: 'This command will give you a list of the last 6 added 3rd part emotes.',
     permission: 100,
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

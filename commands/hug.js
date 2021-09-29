@@ -1,8 +1,9 @@
 module.exports = {
     name: "hug",
     ping: false,
-    description: "Bot hugs the user",
+    description: 'This command will hug a given user. Example: "bb hug NymN"',
     permission: 100,
+    category: "Random command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

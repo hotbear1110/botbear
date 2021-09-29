@@ -3,8 +3,9 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "gametime",
     ping: true,
-    description: "Responds with the amount of time, the streamer has been in the current category",
+    description: "This command gives you the amount a time the streamer has been in the current category",
     permission: 100,
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

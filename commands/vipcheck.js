@@ -5,8 +5,9 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "vipcheck",
     ping: true,
-    description: "Responds with the users vip status",
+    description: 'This command will tell you if a given user is a vip in a given channel. And for how long. Example: "bb vipcheck HotBear1110 NymN"(this will check HotBear1110´s vip status in Nymn´s channel)',
     permission: 100,
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

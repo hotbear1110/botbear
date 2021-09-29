@@ -6,8 +6,9 @@ const date = require('date-and-time');
 module.exports = {
     name: "vodtime",
     ping: true,
-    description: "Input should be: 'bb vodtime *vodlink* *time in CET*'. Responds with a vod timestamp that correlates to the given time input.",
+    description: 'This command will give you a vod timestamp that correlates to the given time in the input. Input should be: "bb vodtime *vodlink* *time in CET*". Example: bb vodtime https://www.twitch.tv/videos/1162493551 15:00',
     permission: 100,
+    category: "Random command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

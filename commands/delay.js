@@ -5,8 +5,9 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "delay",
     ping: true,
-    description: "Test the delay of commands",
+    description: 'This command will add the bot´s internal delay, to the end of the response. Example: "bb delay randomline NymN"',
     permission: 2000,
+    category: "Dev command",
     showDelay: true,
     execute: async (channel, user, input, perm) => {
         try {

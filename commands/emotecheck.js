@@ -5,8 +5,9 @@ const _ = require("underscore");
 module.exports = {
     name: "emotecheck",
     ping: true,
-    description: "Responds with the origin info of that emote",
+    description: 'This command will give you information about Twitch and 3rd party emotes. Example: "bb emotecheck TriHard"',
     permission: 100,
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

@@ -5,8 +5,9 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "subage",
     ping: false,
-    description: "Responds with sub information about a given user",
+    description: 'This command will give you the time a given user has subbed to a given channel, along with a bunch of info about the sub. Example: "bb subage HotBear1110 NymN"',
     permission: 100,
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

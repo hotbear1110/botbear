@@ -3,8 +3,9 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "permission",
     ping: false,
-    description: "Changes the permission of a given user",
+    description: 'This command will change a gived users permission. This will allow/disallow the user to do certain commands. Example: "bb permission NymN 2000"(will change Nymn´s permission to 2000)',
     permission: 2000,
+    category: "Bot command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

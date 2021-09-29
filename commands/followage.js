@@ -6,8 +6,9 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "followage",
     ping: false,
-    description: "Responds with how long a give user has followed the channel",
+    description: 'This command will give you the time a given user has followed a given channel. Example: "bb followage HotBear1110 NymN"',
     permission: 100,
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

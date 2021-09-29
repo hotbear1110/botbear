@@ -5,8 +5,9 @@ const axios = require('axios');
 module.exports = {
     name: "myping",
     ping: true,
-    description: "Makes the bot ping you, when the streamer is playing specific games",
+    description: 'This command will register you for game notifications for certain games. Available myping commands: "bb myping [add/remove]"(will add/remove a game from your ping list), "bb myping list"(will give you a list of the games you will get notified by)',
     permission: 100,
+    category: "Notify command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

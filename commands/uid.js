@@ -3,8 +3,9 @@ const axios = require('axios');
 module.exports = {
     name: "uid",
     ping: true,
-    description: "Reponds with the user id of a given user",
+    description: 'This command will give you the user-id of a specified user. Example: "bb uid NymN"',
     permission: 100,
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

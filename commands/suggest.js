@@ -3,8 +3,9 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "suggest",
     ping: true,
-    description: "Make a suggestion for the bot, could be a new feature etc.",
+    description: 'This command will add a suggestion to my database, so I can read them and maybe add them. Example: "bb suggest Please add this command :) "',
     permission: 100,
+    category: "Bot command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

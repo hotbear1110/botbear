@@ -3,8 +3,9 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "notify",
     ping: true,
-    description: "Makes the bot ping you in chat, when the streamer, goes live, changes title or changes game.",
+    description: 'This command will register you for chat notifications. Available notify commands: "bb notify [live/title/game]"(you will get notified when the streamer goes live/changes title/switches category)',
     permission: 100,
+    category: "Notify command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

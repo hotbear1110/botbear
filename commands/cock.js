@@ -1,8 +1,9 @@
 module.exports = {
     name: "cock",
     ping: true,
-    description: "Responds 'Okayge cock!'",
+    description: 'This command will make the bot respond with: "Okayge cock!"',
     permission: 100,
+    category: "Random command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

@@ -3,8 +3,9 @@ const axios = require('axios');
 module.exports = {
     name: "followcount",
     ping: true,
-    description: "Responds with the amount of followers for a given channel",
+    description: 'This command will give you the amount of followers a specified channel has. Example: "bb followcount NymN"',
     permission: 100,
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

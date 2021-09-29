@@ -3,8 +3,9 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "check",
     ping: true,
-    description: "Check for information about other users",
+    description: 'This command will check info about other users. Available check commands: "bb check permission NymN"(gives you the permission lvl)',
     permission: 100,
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

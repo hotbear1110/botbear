@@ -4,8 +4,9 @@ const regex = require('../tools/regex.js');
 module.exports = {
     name: "cum",
     ping: false,
-    description: "Responds 'I came'",
+    description: 'This command will make the bot cum in different ways. Example: "bb cum on NymN"',
     permission: 100,
+    category: "Random command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

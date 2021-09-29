@@ -3,8 +3,9 @@ const cc = require("../bot.js").cc;
 module.exports = {
     name: "test",
     ping: true,
-    description: "A test command for testing new features, before making a deticated command",
+    description: "This is just a dev command for testing purposes",
     permission: 2000,
+    category: "Dev command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

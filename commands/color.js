@@ -3,8 +3,9 @@ const got = require("got");
 module.exports = {
     name: "color",
     ping: true,
-    description: "Responds with the color that user has in chat",
+    description: 'This command will give you the color name and hex of a given users username color. Example: "bb color NymN"',
     permission: 100,
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

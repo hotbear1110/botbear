@@ -3,8 +3,9 @@ const got = require("got");
 module.exports = {
     name: "cat",
     ping: true,
-    description: "Responds with a random picture of a cat",
+    description: 'This command will give you a link to a picture of a random cat',
     permission: 100,
+    category: "Random command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

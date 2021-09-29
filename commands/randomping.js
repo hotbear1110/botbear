@@ -3,8 +3,9 @@ const axios = require('axios');
 module.exports = {
     name: "randomping",
     ping: false,
-    description: "Pings a random chatter",
+    description: 'This command will make the bot ping a random user in chat.',
     permission: 1500,
+    category: "Random command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

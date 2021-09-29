@@ -6,8 +6,9 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "rl",
     ping: false,
-    description: "Responds with a random line from a given user",
+    description: 'This command will give you a random logged line from a specific user in the chat (Only works if logs are available in the channel, logs used: "https://logs.ivr.fi/"). Example: "bb rl NymN"',
     permission: 100,
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

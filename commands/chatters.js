@@ -6,8 +6,9 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "chatters",
     ping: true,
-    description: "Responds with the number of users, that currently are in the chat",
+    description: 'This command will give you the number of users, that are currently in the chat',
     permission: 100,
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission> perm) {

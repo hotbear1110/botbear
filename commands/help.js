@@ -3,8 +3,9 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "help",
     ping: true,
-    description: "Gives information about a given command",
+    description: 'This command will give you information about any onther command. Example: "bb help followage"',
     permission: 100,
+    category: "Bot command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {
@@ -21,7 +22,7 @@ module.exports = {
                 return;
             }
             
-            return `bb ${input[2]}: ${commandlist[0].Command}`;
+            return `Command name: ${commandlist[0].Name}. Category: ${commandlist[0].Category}. Description: ${commandlist[0].Command} - Permission lvl: ${commandlist[0].Perm}`;
         } catch (err) {
             console.log(err);
             return ` Error FeelsBadMan `;

@@ -5,8 +5,9 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "remove",
     ping: true,
-    description: "Removes you from the ping list, for when the streamer, goes live, changes title or changes game.",
+    description: 'This command will unregister you from chat notifications. Available notify commands: "bb remove [live/title/game]"(you will now not get notified when the streamer goes live/changes title/switches category)',
     permission: 100,
+    category: "Notify command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

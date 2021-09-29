@@ -3,8 +3,9 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "ping",
     ping: true,
-    description: "The bot responds 'pong' if it is online",
+    description: 'This command will make the bot respond with "pong!" and the tmi delay aswell as the internal delay, if the bot is online.',
     permission: 100,
+    category: "Bot command",
     showDelay: true,
     execute: async (channel, user, input, perm) => {
         try {

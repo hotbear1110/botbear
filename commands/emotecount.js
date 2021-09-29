@@ -3,8 +3,9 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "emotecount",
     ping: true,
-    description: "Responds with the amount of 3rd party emotes active in the channel",
+    description: 'This command will give you the number of 3rd party emtoes, that are currently activated in the chat.',
     permission: 100,
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

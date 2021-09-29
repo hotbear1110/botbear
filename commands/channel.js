@@ -6,8 +6,9 @@ const axios = require('axios');
 module.exports = {
     name: "channel",
     ping: true,
-    description: "Make the bot leave or join your channel. (Only works in hotbear1110 and botbear1110's channels). FeelsOkayMan When joined, you can do 'bb channel liveemote, offlineemote, gameemote or titleemote' to change the emote in the notification",
+    description: 'This command will make the bot leave or join your channel. (The command only works in hotbear1110 and botbear1110´s channels). Available channel commands: "bb channel join"(bot joins your channel), "bb channel leave"(bot leaves your channel), "bb channel [live/offline/title/game]emote"(will change the emote in the chat notifications)',
     permission: 100,
+    category: "Bot command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {
