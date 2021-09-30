@@ -58,7 +58,7 @@ module.exports = {
                 }
             })
             if (vodfound === 0) {
-                return `No vod was found on that date (date format should be "yyyy-mm-dd")`;
+                return `No vod was found on that date [only the last 100 vods are available] (date format should be "yyyy-mm-dd")`;
             }
 
             if (vodtime === null) {
