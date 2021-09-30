@@ -276,10 +276,6 @@ setInterval(async function () {
 
                 if (noBTTV === 0 && inlist === 0) {
                     _.each(BTTV_list, async function (emotecheck) {
-                        if ((typeof BTTV.message != "undefined") || !BTTV) {
-                            inlist = 1;
-                            break;
-                        }
                         if (emotecheck["id"] == emote[1]) {
                             inlist = 1;
                             test2 = 1;
