@@ -1,6 +1,7 @@
 const axios = require('axios');
 const _ = require("underscore");
 const requireDir = require("require-dir");
+const date = require('date-and-time');
 
 
 module.exports = {
@@ -51,7 +52,11 @@ module.exports = {
 
 
             _.each(vodList.data, async function (vod) {
-                if (vod.created_at.split("T")[0] === voddate) {
+                let newCreatedat = new Date(vod.created_at);
+                newCreatedat = date.addHours(newCreatedat, 2);
+                newCreatedat = newCreatedat.toISOString();
+
+                if (newCreatedat.split("T")[0] === voddate) {
                     vodfound = 1;
                     urls.push(vod.url);
                     return;
