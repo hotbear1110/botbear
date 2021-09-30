@@ -78,12 +78,11 @@ module.exports = {
 
             if (date.subtract(endtime, starttime).toDays() > 0) {
                 newgiventime = date.addDays(giventime, 1);
-                newgiventime = newgiventime.toString().split("T");
+                newgiventime = newgiventime.toISOString().split("T");
                 newgiventime = newgiventime[0];
 
-                let newgiventime2 = giventime.toString().split("T");
+                let newgiventime2 = giventime.toISOString().split("T");
                 newgiventime2 = newgiventime2[1];
-
                 newgiventime = `${newgiventime}T${newgiventime2}`;
             }
 
@@ -105,6 +104,8 @@ module.exports = {
             } else if (Date.parse(giventime) < Date.parse(starttime)) {
                 return `${input[3]} is before stream start.`;
             }
+
+            console.log(giventime, starttime)
 
 
 

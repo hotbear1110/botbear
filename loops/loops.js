@@ -158,6 +158,7 @@ setInterval(async function () {
                 const FFZ = await got(`https://api.frankerfacez.com/v1/room/id/${streamer.uid}`, {timeout: 10000}).json();
 
                 if (!FFZ.room) {
+                    noFFZ = 1;
                     return;
                 }
 
@@ -188,6 +189,7 @@ setInterval(async function () {
                 const BTTV = await got(`https://api.betterttv.net/3/cached/users/twitch/${streamer.uid}`, {timeout: 10000}).json();
 
                 if (!BTTV["id"]) {
+                    noBTTV = 1;
                     return;
                 }
 
@@ -225,7 +227,8 @@ setInterval(async function () {
 
                 STV_list = STV
 
-                if(!STV_list[0]["id"]) {
+                if (!STV_list.length) {
+                    noSTV = 1
                     return;
                 }
 
@@ -294,7 +297,8 @@ setInterval(async function () {
                     })
                 }
                 if (inlist === 0) {
-                    console.log("wtf")
+                    console.log(STV_list)
+
                     let time = new Date().getTime();
 
                     Emote_removed.push([emote[0], emote[1], time]);

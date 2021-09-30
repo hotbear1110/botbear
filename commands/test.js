@@ -1,4 +1,5 @@
 const cc = require("../bot.js").cc;
+const got = require("got");
 
 module.exports = {
     name: "test",
@@ -11,8 +12,15 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            console.log(user.username)
-            cc.whisper(user.username, "test")
+            const STV = await got(`https://api.7tv.app/v2/users/135186096/emotes`, {timeout: 10000}).json();
+
+                STV_list = STV
+
+                console.log(STV_list[0]["id"])
+
+                if(!STV_list[0]["id"]) {
+                    return;
+                }
         } catch (err) {
             console.log(err);
             return ` Error FeelsBadMan `;
