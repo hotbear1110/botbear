@@ -6,7 +6,7 @@ const requireDir = require("require-dir");
 module.exports = {
     name: "vodsearch",
     ping: true,
-    description: '',
+    description: 'This command will give you a list of vods that correlates to the given date and time input. Input should be: "bb vodsearch yyyy-mm-dd time=*time in CET*"(The time is not needed if you just wish to find the vod with no timestamp). Example: "bb vodsearch nymn 2021-09-30 time=16:00" or  "bb vodsearch nymn 2021-09-30"',
     permission: 100,
     category: "Info command",
     execute: async (channel, user, input, perm) => {
