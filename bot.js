@@ -53,7 +53,7 @@ async function onMessageHandler(channel, user, msg, self) {
         const cookieStatus = await tools.cookies(user, input, channel);
 
         if (cookieStatus[0] === "Confirmed") {
-            cc.say(cookieStatus[2], `${cookieStatus[1]} I will remind you, to eat your cookie in 2 hours nymnOkay`)
+            cc.say(cookieStatus[2], `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay`)
         }
         if (cookieStatus[0] === "Confirmed2") {
             cc.say(cookieStatus[2], `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`)
