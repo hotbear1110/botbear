@@ -155,9 +155,9 @@ setInterval(async function () {
 
 
             try {
-                const FFZ = await got(`https://api.frankerfacez.com/v1/room/id/${streamer.uid}`, {timeout: 10000}).json();
+                const FFZ = await got(`https://api.frankerfacez.com/v1/room/id/${streamer.uid}`, { timeout: 10000 }).json();
 
-                if (!FFZ.room) {
+                if (!FFZ.room || (typeof ffzEmotes.error != "undefined") || !ffzEmotes) {
                     noFFZ = 1;
                     return;
                 }
@@ -186,9 +186,9 @@ setInterval(async function () {
 
             }
             try {
-                const BTTV = await got(`https://api.betterttv.net/3/cached/users/twitch/${streamer.uid}`, {timeout: 10000}).json();
+                const BTTV = await got(`https://api.betterttv.net/3/cached/users/twitch/${streamer.uid}`, { timeout: 10000 }).json();
 
-                if (!BTTV["id"]) {
+                if ((typeof BTTV.message != "undefined") || !BTTV) {
                     noBTTV = 1;
                     return;
                 }
@@ -223,7 +223,7 @@ setInterval(async function () {
 
             }
             try {
-                const STV = await got(`https://api.7tv.app/v2/users/${streamer.uid}/emotes`, {timeout: 10000}).json();
+                const STV = await got(`https://api.7tv.app/v2/users/${streamer.uid}/emotes`, { timeout: 10000 }).json();
 
                 STV_list = STV
 
