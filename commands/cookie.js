@@ -45,6 +45,21 @@ module.exports = {
                             cd = tools.humanizeDuration(cd);
 
                             return `There is no cookie for you right now, your next cookie is available in ${cd}`
+                        }
+                        if (users[0].RemindTime === null) {
+                            let cookieCD = await got(`https://api.roaringiron.com/cooldown/${user.username}`, { timeout: 10000 }).json();
+
+                            if (cookieCD["error"]) {
+                                return cookieCD["error"];
+                            }
+                            if (cookieCD["can_claim"] === true) {
+                                return 'You have a cookie wating for you :)';
+                            } else {
+                                let cd = cookieCD["seconds_left"] * 1000;
+                                cd = tools.humanizeDuration(cd);
+
+                                return `There is no cookie for you right now, your next cookie is available in ${cd}`;
+                            }
                         } else {
                             return 'You have a cookie wating for you :)';
                         }
