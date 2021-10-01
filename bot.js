@@ -19,6 +19,8 @@ cc.on("pong", async (latency) => {
 
 cc.connect();
 
+let uptime = new Date().getTime();
+
 const talkedRecently = new Set();
 let oldmessage = "";
 
@@ -219,4 +221,4 @@ async function onConnectedHandler(addr, port) {
 
     })
 }
-module.exports = { cc };
+module.exports = { cc , uptime};
