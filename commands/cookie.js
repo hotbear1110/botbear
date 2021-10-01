@@ -46,7 +46,7 @@ module.exports = {
 
                             return `There is no cookie for you right now, your next cookie is available in ${cd}`
                         }
-                        if (users[0].RemindTime === null) {
+                        if (status[0].RemindTime === null) {
                             let cookieCD = await got(`https://api.roaringiron.com/cooldown/${user.username}`, { timeout: 10000 }).json();
 
                             if (cookieCD["error"]) {
@@ -66,7 +66,7 @@ module.exports = {
                     } else {
                         let cookieCD = await got(`https://api.roaringiron.com/cooldown/${user.username}`, { timeout: 10000 }).json();
 
-                        if (cookieCD["error"]) {
+                        if (cookieCD["error"]) { 
                             return cookieCD["error"];
                         }
                         if (cookieCD["can_claim"] === true) {
