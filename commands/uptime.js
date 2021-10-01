@@ -2,9 +2,9 @@ const uptime = require("../bot.js").uptime;
 const tools = require("../tools/tools.js");
 
 module.exports = {
-    name: "bot",
+    name: "uptime",
     ping: true,
-    description: 'This command will give a short explanation of the bot',
+    description: 'This command will tell you how long the bot has been live for',
     permission: 100,
     category: "Bot command",
     execute: async (channel, user, input, perm) => {
