@@ -18,6 +18,7 @@ module.exports = {
                 }
                 username = input[2];
             }
+            console.log(user["color"])
 
             const userColor = await got(`https://api.ivr.fi/twitch/resolve/${username}`, {timeout: 10000}).json();
             console.log(userColor)
