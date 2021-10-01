@@ -18,14 +18,18 @@ module.exports = {
                 }
                 username = input[2];
             }
-            console.log(user["color"])
 
-            const userColor = await got(`https://api.ivr.fi/twitch/resolve/${username}`, {timeout: 10000}).json();
-            console.log(userColor)
+            let userColor = await got(`https://api.ivr.fi/twitch/resolve/${username}`, {timeout: 10000}).json();
 
-            const colorName = await got(`https://www.thecolorapi.com/id?hex=${userColor.chatColor.replace('#', '')}`, {timeout: 10000}).json();
+            let color = userColor.chatColor;
 
-            return `That user has the color: ${colorName.name.value} ${userColor.chatColor}`;
+            if (username === user.username) {
+                color = user["color"];
+            }
+
+            const colorName = await got(`https://www.thecolorapi.com/id?hex=${color.replace('#', '')}`, {timeout: 10000}).json();
+
+            return `That user has the color: ${colorName.name.value} ${color}`;
         } catch (err) {
             console.log(err);
             return `Error FeelsBadMan `;
