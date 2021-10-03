@@ -289,14 +289,7 @@ setInterval(async function () {
                         }
                     })
                 }
-                if (inlist === 0) {
-                    console.log(emote)
-                    console.log(noFFZ)
-                    _.each(FFZ_list, async function (emotecheck) {
-                        //console.log(emotecheck["id"], emote[1])
-                    })
-                }
-                if (inlist === 0) {
+                if (inlist === 0 && noFFZ === 0 && noBTTV === 0 && noSTV === 0) {
                     console.log(STV_list)
 
                     let time = new Date().getTime();
