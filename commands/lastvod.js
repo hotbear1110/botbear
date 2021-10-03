@@ -11,7 +11,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            let realchannel = input[2];
+            let realchannel = channel;
 
             if (input[2]) {
                 if (input[2].startsWith("@")) {
