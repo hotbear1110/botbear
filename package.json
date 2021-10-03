@@ -17,17 +17,18 @@
   },
   "homepage": "https://github.com/hotbear1110/botbear#readme",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "better-hastebin": "^1.0.0",
     "dank-twitch-irc": "^4.3.0",
     "date-and-time": "^2.0.0",
     "dotenv": "^10.0.0",
     "got": "^11.8.2",
     "humanize-duration": "^3.27.0",
-    "mysql2": "^2.2.5",
+    "mysql2": "^2.3.0",
     "pastebin-js": "^1.0.6",
     "require-dir": "^1.2.0",
-    "tmi.js": "^1.8.3",
+    "tmi": "^2.0.0",
+    "tmi.js": "^1.8.5",
     "underscore": "^1.13.1"
   }
 }
