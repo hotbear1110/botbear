@@ -21,9 +21,15 @@ module.exports = {
                 realchannel = input[2];
             }
 
+
+
             if (input[3]) {
-                vodNumber = input[3];
+                if (isNaN(input[3])) {
+                    return;
+                }
+                vodNumber = parseInt(input[3]) - 1;
             }
+
             const userID = await axios.get(`https://api.ivr.fi/twitch/resolve/${realchannel}`, { timeout: 10000 });
 
             if (userID.status === 404) {
@@ -45,7 +51,7 @@ module.exports = {
             } else if (!vodList.data[vodNumber]) {
                 return `That channel only has ${vodList.data.length} vod(s)`;
             } else {
-                return `Here is the latest vod from #${realchannel} - ${vodList.data[vodNumber].url}?t=0s`;
+                return `${vodList.data[vodNumber].url}?t=0s`;
             }
         } catch (err) {
             console.log(err);
