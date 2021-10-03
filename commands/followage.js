@@ -30,7 +30,7 @@ module.exports = {
 
             if (followcheck.data["followedAt"]) {
                 const ms = new Date().getTime() - Date.parse(followcheck.data["followedAt"]);
-                return `${username} has been following #${realchannel}ﾠfor (${tools.humanizeDuration(ms)})`;
+                return `${username} has been following #${realchannel} for (${tools.humanizeDuration(ms)})`;
             }
             return `${username} does not follow #${realchannel}.`;
         } catch (err) {

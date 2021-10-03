@@ -31,10 +31,10 @@ module.exports = {
 
 
                 if (oldsub["months"] === 0) {
-                    return `${username} is not subbed to #${realchannel}ﾠand never has been.`;
+                    return `${username} is not subbed to #${realchannel} and never has been.`;
                 }
                 else {
-                    return `${username} is not subbed to #${realchannel}ﾠbut has been previously for a total of ${oldsub["months"]} months! Sub ended ${tools.humanizeDuration(subend)} ago`;
+                    return `${username} is not subbed to #${realchannel} but has been previously for a total of ${oldsub["months"]} months! Sub ended ${tools.humanizeDuration(subend)} ago`;
                 }
             }
             else {
@@ -45,21 +45,21 @@ module.exports = {
                 const ms = new Date().getTime() - Date.parse(subdata["endsAt"]);
 
                 if (subdata["tier"] === "Custom") {
-                    return `${username} is subbed to #${realchannel}ﾠwith a permanent sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak.`;
+                    return `${username} is subbed to #${realchannel} with a permanent sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak.`;
 
                 }
                 if (subdata["endsAt"] === null) {
-                    return `${username} is currently subbed to #${realchannel}ﾠwith a tier ${subdata["tier"]} sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. This is a permanent sub.`;
+                    return `${username} is currently subbed to #${realchannel} with a tier ${subdata["tier"]} sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. This is a permanent sub.`;
                 }
                 if (subdata["type"] === "prime") {
-                    return `${username} is currently subbed to #${realchannel}ﾠwith a tier 1 prime sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}`;
+                    return `${username} is currently subbed to #${realchannel} with a tier 1 prime sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}`;
                 }
                 if (subdata["type"] === "paid") {
-                    return `${username} is currently subbed to #${realchannel}ﾠwith a tier ${subdata["tier"]} sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}`;
+                    return `${username} is currently subbed to #${realchannel} with a tier ${subdata["tier"]} sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}`;
                 }
                 if (subdata["type"] === "gift") {
                     let gifta = subdata["gift"]["name"];
-                    return `${username} is currently subbed to #${realchannel}ﾠwith a tier ${subdata["tier"]} sub, gifted by ${gifta} and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}`;
+                    return `${username} is currently subbed to #${realchannel} with a tier ${subdata["tier"]} sub, gifted by ${gifta} and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}`;
                 }
             }
         } catch (err) {

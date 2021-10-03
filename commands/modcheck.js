@@ -32,14 +32,14 @@ module.exports = {
                 if (modstatus.login == username) {
                     let moddate = modstatus.grantedAt;
                     const ms = new Date().getTime() - Date.parse(moddate);
-                    modresponse = `that user has been a M OMEGALUL D in #${realchannel}ﾠfor - (${tools.humanizeDuration(ms)})`;
+                    modresponse = `that user has been a M OMEGALUL D in #${realchannel} for - (${tools.humanizeDuration(ms)})`;
                 }
             })
             if (modresponse != "") {
                 return modresponse;
             }
             else {
-                return `That user is not a mod in #${realchannel}ﾠ:)`;
+                return `That user is not a mod in #${realchannel} :)`;
             }
 
         } catch (err) {

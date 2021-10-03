@@ -32,7 +32,7 @@ module.exports = {
                 if (viptatus.login == username) {
                     let vipdate = viptatus.grantedAt;
                     const ms = new Date().getTime() - Date.parse(vipdate);
-                    vipresponse = `that user has been a vip😬 in #${realchannel}ﾠfor - (${tools.humanizeDuration(ms)})`;
+                    vipresponse = `that user has been a vip😬 in #${realchannel} for - (${tools.humanizeDuration(ms)})`;
                 }
             })
 

@@ -34,7 +34,7 @@ module.exports = {
                 return "[MASS PING]";
             }
             if (fl.status !== 404) {
-                return `nymnDank ${fl.user}'s first message in #${realchannel}ﾠwas: ${fl.message} - (${fl.time} ago)`;
+                return `nymnDank ${fl.user}'s first message in #${realchannel} was: ${fl.message} - (${fl.time} ago)`;
             }
         } catch (err) {
             console.log(err);
