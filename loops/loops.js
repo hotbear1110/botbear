@@ -157,7 +157,7 @@ setInterval(async function () {
             try {
                 const FFZ = await got(`https://api.frankerfacez.com/v1/room/id/${streamer.uid}`, { timeout: 10000 }).json();
 
-                if (!FFZ.room || (typeof ffzEmotes.error != "undefined") || !ffzEmotes) {
+                if (!FFZ.room || (typeof FFZ.error != "undefined") || !FFZ) {
                     noFFZ = 1;
                     return;
                 }
@@ -225,12 +225,13 @@ setInterval(async function () {
             try {
                 const STV = await got(`https://api.7tv.app/v2/users/${streamer.uid}/emotes`, { timeout: 10000 }).json();
 
-                STV_list = STV
 
-                if (!STV_list.length) {
+                if ((typeof STV.message != "undefined") || !STV) {
                     noSTV = 1
                     return;
                 }
+
+                STV_list = STV
 
                 _.each(STV_list, async function (emote) {
                     //console.log(emote)
