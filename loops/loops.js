@@ -325,7 +325,7 @@ setInterval(async function () {
         }, 200);
 
     });
-}, 300000);
+}, 60000);
 
 setInterval(async function () {
     const users = await tools.query(`SELECT * FROM Cookies`);
