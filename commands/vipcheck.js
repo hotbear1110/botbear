@@ -39,7 +39,7 @@ module.exports = {
             if (vipresponse != "") {
                 return vipresponse;
             }
-            return `That user is not a vip in #${realchannel}ﾠ:) `;
+            return `That user is not a vip in #${realchannel} :) `;
         } catch (err) {
             console.log(err);
             return `Error FeelsBadMan`
