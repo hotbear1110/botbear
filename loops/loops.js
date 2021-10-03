@@ -260,10 +260,6 @@ setInterval(async function () {
                 let test2 = 0;
                 let test3 = 0;
 
-                if (noFFZ === 1 || noBTTV === 1 || noSTV === 1) {
-                    inlist = 1;
-                }
-
                 if (noFFZ === 0) {
                     _.each(FFZ_list, async function (emotecheck) {
                         if (emotecheck["id"] == emote[1]) {
