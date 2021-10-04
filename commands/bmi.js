@@ -18,13 +18,13 @@ console.log(bmi)
             if (bmi <= 18.5) {
                 text = "Underweight";
             }
-            if (24.9 >= bmi >= 18.5) {
+            if (bmi >= 18.5 && 24.9 >= bmi) {
                 text = "Normal weight";
             }
-            if (29.9 >= bmi >= 25) {
+            if (bmi >= 25 && 29.9 >= bmi) {
                 text = "Overweight";
             }
-            if (34.9 >= bmi >= 30) {
+            if (bmi >= 30 && 34.9 >= bmi) {
                 text = "Obese";
             }
             if (bmi >= 35) {
