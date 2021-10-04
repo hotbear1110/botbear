@@ -9,8 +9,25 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
+            let text = "";
             let bmi = (input[3]**2)/10000
-            return input[2]/bmi
+
+            if (bmi <= 18.5) {
+                text = "Underweight";
+            }
+            if (24.9 >= bmi >= 18.5) {
+                text = "Normal weight";
+            }
+            if (29.9 >= bmi >= 25) {
+                text = "Overweight";
+            }
+            if (34.9 >= bmi >= 30) {
+                text = "Obese";
+            }
+            if (bmi >= 35) {
+                text = "Extremly obese";
+            }
+            return `${input[2]/bmi} - ${text}`
         } catch (err) {
             console.log(err);
             return ` Error FeelsBadMan `;
