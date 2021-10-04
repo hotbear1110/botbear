@@ -13,8 +13,6 @@ module.exports = {
             let bmi = (input[3]**2)/10000;
             bmi = input[2]/bmi;
 
-console.log(24.9 >= bmi >= 18.5)
-console.log(bmi)
             if (bmi <= 18.5) {
                 text = "Underweight";
             }
@@ -30,6 +28,8 @@ console.log(bmi)
             if (bmi >= 35) {
                 text = "Extremly obese";
             }
+
+            bmi = bmi.toString().substring(0, 5);
 
             return `${bmi} - ${text}`
 
