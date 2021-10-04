@@ -10,11 +10,9 @@ module.exports = {
                 return;
             }
             let text = "";
-            let bmi = (input[3]**2)/10000
+            let bmi = (input[3]**2)/10000;
+            bmi = input[2]/bmi;
 
-            bmi = Math.round((bmi + Number.EPSILON) * 100) / 100;
-
-            console.log(bmi)
 
             if (bmi <= 18.5) {
                 text = "Underweight";
@@ -32,7 +30,7 @@ module.exports = {
                 text = "Extremly obese";
             }
 
-            return `${input[2]/bmi} - ${text}`
+            return `${bmi} - ${text}`
 
         } catch (err) {
             console.log(err);
