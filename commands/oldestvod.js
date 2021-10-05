@@ -39,7 +39,7 @@ module.exports = {
             if (!vodList.data.length) {
                 return `That channel has no vods`;
             } else {
-                return `${vodList.data[vodList.data.length].url}?t=0s`;
+                return `${vodList.data[vodList.data.length - 1].url}?t=0s`;
             }
         } catch (err) {
             console.log(err);
