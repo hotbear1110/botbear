@@ -39,7 +39,7 @@ module.exports = {
             if (!vodList.data.length) {
                 return `That channel has no vods`;
             } else if (vodList.data.length === 100) {
-                return `${vodList.data[vodList.data.length - 1].url}?t=0s (This is vod number 100, i can only go 100 vods back so this might not be the oldest vod.)`;
+                return `${vodList.data[vodList.data.length - 1].url}?t=0s (This is vod number 100, I can only go 100 vods back so this might not be the oldest vod.)`;
             } else {
                 return `${vodList.data[vodList.data.length - 1].url}?t=0s`;
             }
