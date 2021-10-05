@@ -1,9 +1,9 @@
 const axios = require('axios');
 
 module.exports = {
-    name: "lastvod",
+    name: "getvod",
     ping: true,
-    description: 'This command will give you a link to the latest twitch vod for a given channel, if available',
+    description: 'This command will give you a link to the latest twitch vod for a given channel, if available. Or you can input a number to get a specific vod. Example: "bb getvod nymn 5"(will get the 5th vod[lower number = newer]])',
     permission: 100,
     category: "Info command",
     execute: async (channel, user, input, perm) => {
