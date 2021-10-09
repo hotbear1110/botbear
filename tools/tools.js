@@ -102,7 +102,7 @@ exports.Cooldown = class Cooldown {
         }, await this.cooldownReduction());
         return [];
     }
-}
+};
 
 exports.splitLine = (message, chars) => {
     let messages = [];
@@ -111,7 +111,7 @@ exports.splitLine = (message, chars) => {
         messages.push(message.substring(i * chars, multipy * chars));
     }
     return messages;
-}
+};
 
 let hasteoptions = {
     server: 'https://haste.zneix.eu/'
@@ -146,7 +146,7 @@ exports.humanizeDuration = (ms) => {
 
     }
     return humanize(ms, options);
-}
+};
 
 exports.notbannedPhrases = (message) => {
 
@@ -164,7 +164,7 @@ exports.notbannedPhrases = (message) => {
         console.log(err);
         return err;
     }
-}
+};
 
 exports.massping = (message, channel) => new Promise(async (resolve, reject) => {
     let users = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 }).json();
@@ -191,7 +191,7 @@ exports.massping = (message, channel) => new Promise(async (resolve, reject) => 
     }
     resolve("null");
 
-})
+});
 
 exports.asciiLength = (message) => {
     const msgarray = message.split(" ");
@@ -204,7 +204,7 @@ exports.asciiLength = (message) => {
     })
     return emojicount;
 
-}
+};
 
 const aliasList = require('./aliases.json');
 
@@ -234,7 +234,7 @@ exports.Alias = class Alias {
         }
         return '';
     }
-}
+};
 
 exports.getPerm = (user) => new Promise(async (resolve, reject) => {
     try {
@@ -246,7 +246,7 @@ exports.getPerm = (user) => new Promise(async (resolve, reject) => {
         console.log(err);
         resolve(0);
     }
-})
+});
 
 exports.cookies = (user, command, channel) => new Promise(async (resolve, reject) => {
     let users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [command[3]]);
@@ -299,7 +299,7 @@ exports.cookies = (user, command, channel) => new Promise(async (resolve, reject
         resolve([response, realuser, channel]);
     }
 
-})
+});
 
 exports.refreshCommands = async function () {
     const commands = requireDir("../commands");
@@ -315,16 +315,16 @@ exports.refreshCommands = async function () {
                 iscommand = 1;
                 return;
             }
-        })
+        });
         if (iscommand === 0) {
             await tools.query('INSERT INTO Commands (Name, Command, Perm, Category) values (?, ?, ?, ?)', [command.name, command.description, command.permission, command.category]);
         }
 
 
-    })
-}
+    });
+};
 
-exports.nameChanges = new Promise(async (resolve, reject) => {
+exports.nameChanges = () => new Promise(async (resolve, reject) => {
     let streamers = await tools.query(`SELECT * FROM Streamers`);
 
     let changed = [];
@@ -353,9 +353,9 @@ exports.nameChanges = new Promise(async (resolve, reject) => {
     })
 
     resolve(changed);
-})
+});
 
-exports.bannedStreamer = new Promise(async (resolve, reject) =>  {
+exports.bannedStreamer = () => new Promise(async (resolve, reject) =>  {
     let streamers = await tools.query(`SELECT * FROM Streamers`);
     let bannedUsers = [];
 
@@ -375,4 +375,4 @@ exports.bannedStreamer = new Promise(async (resolve, reject) =>  {
     })
 
     resolve(bannedUsers);
-})
+});

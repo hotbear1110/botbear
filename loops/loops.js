@@ -331,10 +331,11 @@ setInterval(async function () {
 
 }, 10000);
 
+/*
 setInterval(async function () {
     await tools.refreshCommands();
 
-let bannedUsers = await tools.bannedStreamer;
+let bannedUsers = await tools.bannedStreamer();
 
 if (await bannedUsers.length) {
 _.each(bannedUsers, async function (user) {
@@ -347,7 +348,7 @@ _.each(bannedUsers, async function (user) {
 })
 }
 
-let namechange = await tools.nameChanges;
+let namechange = await tools.nameChanges();
 
 if (await namechange.length) {
 _.each(namechange, async function (name) {
@@ -369,3 +370,4 @@ _.each(namechange, async function (name) {
 }
 }, 3600000);
 
+*/
