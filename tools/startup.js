@@ -1,4 +1,4 @@
-const tools = require("./tools/tools.js");
+const tools = require("../tools/tools.js");
 const _ = require("underscore");
 const cc = require("../bot.js").cc;
 
