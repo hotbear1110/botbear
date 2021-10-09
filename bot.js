@@ -200,25 +200,40 @@ async function onMessageHandler(channel, user, msg, self) {
 async function onConnectedHandler(addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
 
-    const commands = requireDir("./commands");
-    const dbCommands = await tools.query(`SELECT * FROM Commands`);
+    await tools.refreshCommands();
 
-    _.each(commands, async function (command) {
-        let iscommand = 0;
-        _.each(dbCommands, async function (dbcommand) {
-            if (dbcommand.Name === command.name) {
-                if (dbcommand.Command !== command.description || dbcommand.Perm !== command.permission || dbcommand.Category !== command.category) {
-                    tools.query(`UPDATE Commands SET Command=?, Perm=?, Category=? WHERE Name=?`, [command.description, command.permission, command.category, command.name]);
-                }
-                iscommand = 1;
-                return;
-            }
+    let bannedUsers = await tools.bannedStreamer;
+
+    if (await bannedUsers.length) {
+        _.each(bannedUsers, async function (user) {
+            cc.part(user).then((data) => {
+                // data returns [channel]
+            }).catch((err) => {
+                console.log(err);
+            });
+            cc.say("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`)
         })
-        if (iscommand === 0) {
-            await tools.query('INSERT INTO Commands (Name, Command, Perm, Category) values (?, ?, ?, ?)', [command.name, command.description, command.permission, command.category]);
-        }
+    }
 
+    let namechange = await tools.nameChanges;
 
-    })
+    if (await namechange.length) {
+        _.each(namechange, async function (name) {
+            cc.join(name[0]).then((data) => {
+                // data returns [channel]
+            }).catch((err) => {
+                console.log(err);
+            });
+    
+            cc.part(name[1]).then((data) => {
+                // data returns [channel]
+            }).catch((err) => {
+                console.log(err);
+            });
+    
+            cc.say(`#${name[0]}`, `Name change detected, ${name[1]} -> ${name[0]}`)
+            cc.say("#botbear1110", `Left channel ${name[1]}. Reason: Name change detected, ${name[1]} -> ${name[0]}`)
+        })
+    }
 }
 module.exports = { cc , uptime};
