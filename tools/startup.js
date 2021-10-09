@@ -1,3 +1,8 @@
+const tools = require("./tools/tools.js");
+const _ = require("underscore");
+const cc = require("../bot.js").cc;
+
+start = async function () {
 await tools.refreshCommands();
 
 let bannedUsers = await tools.bannedStreamer;
@@ -33,3 +38,6 @@ if (await namechange.length) {
         cc.say("#botbear1110", `Left channel ${name[1]}. Reason: Name change detected, ${name[1]} -> ${name[0]}`)
     })
 }
+}
+
+start()
