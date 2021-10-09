@@ -20,6 +20,8 @@ cc.connect();
 
 let uptime = new Date().getTime();
 
+let started = false;
+
 const talkedRecently = new Set();
 let oldmessage = "";
 
@@ -199,8 +201,9 @@ async function onConnectedHandler(addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
 
     await tools.refreshCommands();
+    if (started === false) {
 
-let bannedUsers = await tools.bannedStreamer();
+let bannedUsers = await tools.bannedStreamer;
 
 if (await bannedUsers.length) {
 _.each(bannedUsers, async function (user) {
@@ -213,7 +216,7 @@ _.each(bannedUsers, async function (user) {
 })
 }
 
-let namechange = await tools.nameChanges();
+let namechange = await tools.nameChanges;
 
 if (await namechange.length) {
 _.each(namechange, async function (name) {
@@ -233,6 +236,8 @@ _.each(namechange, async function (name) {
     cc.say("#botbear1110", `Left channel ${name[1]}. Reason: Name change detected, ${name[1]} -> ${name[0]}`)
 })
 }
+started = true;
+    }
 
 }
 module.exports = { cc , uptime};

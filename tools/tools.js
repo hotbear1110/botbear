@@ -324,7 +324,7 @@ exports.refreshCommands = async function () {
     });
 };
 
-exports.nameChanges = () => new Promise(async (resolve, reject) => {
+exports.nameChanges = new Promise(async (resolve, reject) => {
     let streamers = await tools.query(`SELECT * FROM Streamers`);
 
     let changed = [];
@@ -355,7 +355,7 @@ exports.nameChanges = () => new Promise(async (resolve, reject) => {
     resolve(changed);
 });
 
-exports.bannedStreamer = () => new Promise(async (resolve, reject) =>  {
+exports.bannedStreamer = new Promise(async (resolve, reject) =>  {
     let streamers = await tools.query(`SELECT * FROM Streamers`);
     let bannedUsers = [];
 
