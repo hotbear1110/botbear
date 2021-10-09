@@ -1,3 +1,3 @@
 # botbear
-Dank bot, idk
+Dank bot that does stuff, idk
  test
