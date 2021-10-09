@@ -198,5 +198,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
 async function onConnectedHandler(addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
+
+
 }
 module.exports = { cc , uptime};
