@@ -20,7 +20,7 @@ module.exports = {
                 realchannel = input[2];
             }
             const gameTimedata = await tools.query(`SELECT * FROM Streamers WHERE username=?`, [realchannel]);
-            if (!gameTimedata) {
+            if (!gameTimedata[0]) {
                 return "That streamer is not in my database";
             }
             let oldgameTime = JSON.parse(gameTimedata[0].game_time);
