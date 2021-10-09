@@ -9,6 +9,7 @@ const hastebin = require('better-hastebin');
 const humanize = require('humanize-duration');
 const axios = require('axios');
 const requireDir = require("require-dir");
+const cc = require("../bot.js").cc;
 
 
 exports.query = (query, data = []) =>
@@ -322,15 +323,39 @@ exports.refreshCommands = async function () {
 
 
     });
+}
+
+exports.refreshCommands = async function () {
+    const commands = requireDir("../commands");
+    const dbCommands = await tools.query(`SELECT * FROM Commands`);
+
+    _.each(commands, async function (command) {
+        let iscommand = 0;
+        _.each(dbCommands, async function (dbcommand) {
+            if (dbcommand.Name === command.name) {
+                if (dbcommand.Command !== command.description || dbcommand.Perm !== command.permission || dbcommand.Category !== command.category) {
+                    tools.query(`UPDATE Commands SET Command=?, Perm=?, Category=? WHERE Name=?`, [command.description, command.permission, command.category, command.name]);
+                }
+                iscommand = 1;
+                return;
+            }
+        })
+        if (iscommand === 0) {
+            await tools.query('INSERT INTO Commands (Name, Command, Perm, Category) values (?, ?, ?, ?)', [command.name, command.description, command.permission, command.category]);
+        }
+
+
+    })
 };
 
-exports.nameChanges = () => new Promise(async (resolve, reject) => {
+exports.nameChanges = async function () {
+    try {
+
     let streamers = await tools.query(`SELECT * FROM Streamers`);
 
     let changed = [];
 
     _.each(streamers, async function (streamer) {
-        try {
         let realUser = await axios.get(`https://api.twitch.tv/helix/users?id=${streamer.uid}`, {
             headers: {
                 'client-id': process.env.TWITCH_CLIENTID,
@@ -347,21 +372,38 @@ exports.nameChanges = () => new Promise(async (resolve, reject) => {
 
             changed.push([realUser, streamer.username]);
         }
-    } catch (err) {
-        console.log(err);
-    }
     })
 
-    resolve(changed);
-});
+    if (changed.length) {
+        _.each(changed, async function (name) {
+            cc.join(name[0]).then((data) => {
+                // data returns [channel]
+            }).catch((err) => {
+                console.log(err);
+            });
+    
+            cc.part(name[1]).then((data) => {
+                // data returns [channel]
+            }).catch((err) => {
+                console.log(err);
+            });
+    
+            cc.say(`#${name[0]}`, `Name change detected, ${name[1]} -> ${name[0]}`)
+            cc.say("#botbear1110", `Left channel ${name[1]}. Reason: Name change detected, ${name[1]} -> ${name[0]}`)
+        })
+    }
+    } catch (err) {
+        console.log(err)
+    }
+};
 
 exports.bannedStreamer = () => new Promise(async (resolve, reject) =>  {
+    try {
     let streamers = await tools.query(`SELECT * FROM Streamers`);
     let bannedUsers = [];
 
 
     _.each(streamers, async function (streamer) {
-        try {
     const isBanned = await axios.get(`https://api.ivr.fi/twitch/resolve/${streamer.username}`, {timeout: 10000});
 
     if (isBanned.data.banned === true) {
@@ -369,10 +411,21 @@ exports.bannedStreamer = () => new Promise(async (resolve, reject) =>  {
 
         bannedUsers.push(streamer.username);
     }
-} catch (err) {
-    console.log(err);
-}
+
     })
 
-    resolve(bannedUsers);
+    if (bannedUsers.length) {
+        _.each(bannedUsers, async function (user) {
+            cc.part(user).then((data) => {
+                // data returns [channel]
+            }).catch((err) => {
+                console.log(err);
+            });
+            cc.say("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`)
+
+        })
+    }
+} catch (err) {
+    console.log(err)
+}
 });
