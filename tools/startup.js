@@ -1,8 +1,3 @@
-let uptime = new Date().getTime();
-
-const talkedRecently = new Set();
-let oldmessage = "";
-
 await tools.refreshCommands();
 
 let bannedUsers = await tools.bannedStreamer;

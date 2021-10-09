@@ -19,6 +19,11 @@ cc.on("pong", async (latency) => {
 
 cc.connect();
 
+let uptime = new Date().getTime();
+
+const talkedRecently = new Set();
+let oldmessage = "";
+
 async function onMessageHandler(channel, user, msg, self) {
     let start = new Date().getTime();
     if (channel == "#botbear1110") {
