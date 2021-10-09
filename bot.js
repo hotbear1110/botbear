@@ -19,6 +19,7 @@ cc.on("pong", async (latency) => {
 
 cc.connect();
 
+startup = async function () {
 let uptime = new Date().getTime();
 
 const talkedRecently = new Set();
@@ -59,6 +60,9 @@ if (await namechange.length) {
         cc.say("#botbear1110", `Left channel ${name[1]}. Reason: Name change detected, ${name[1]} -> ${name[0]}`)
     })
 }
+}
+
+startup()
 
 async function onMessageHandler(channel, user, msg, self) {
     let start = new Date().getTime();
