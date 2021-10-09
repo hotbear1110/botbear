@@ -40,4 +40,4 @@ if (await namechange.length) {
 }
 }
 
-await start()
+start()
