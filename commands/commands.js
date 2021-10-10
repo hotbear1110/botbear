@@ -9,7 +9,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            return `List of commands: https://botbear.github.io/`;
+            return `List of commands: http://hotbear.xyz:5000/`;
         } catch (err) {
             console.log(err);
             return ` Error FeelsBadMan `;
