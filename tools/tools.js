@@ -342,7 +342,7 @@ exports.nameChanges = new Promise(async (resolve, reject) => {
         realUser = realUser.data.data[0];
         realUser = realUser["login"];
 
-        if (realUser !== streamer.username) {
+        if (realUser.data.data[0] && realUser !== streamer.username) {
             tools.query(`UPDATE Streamers SET username=? WHERE uid=?`, [realUser, streamer.uid]);
 
             changed.push([realUser, streamer.username]);
