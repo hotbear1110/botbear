@@ -331,7 +331,7 @@ exports.nameChanges = new Promise(async (resolve, reject) => {
 
     _.each(streamers, async function (streamer) {
         try {
-        let realUser = await axios.get(`https://api.twitch.tv/helix/users?id=${streamer.uid}`, {
+        const realUser = await axios.get(`https://api.twitch.tv/helix/users?id=${streamer.uid}`, {
             headers: {
                 'client-id': process.env.TWITCH_CLIENTID,
                 'Authorization': process.env.TWITCH_AUTH
@@ -342,7 +342,7 @@ exports.nameChanges = new Promise(async (resolve, reject) => {
         realUser = realUser.data.data[0];
         realUser = realUser["login"];
 
-        if (realUser.data.data[0] && realUser !== streamer.username) {
+        if (realUser.data && realUser !== streamer.username) {
             tools.query(`UPDATE Streamers SET username=? WHERE uid=?`, [realUser, streamer.uid]);
 
             changed.push([realUser, streamer.username]);
