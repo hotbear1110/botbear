@@ -19,7 +19,7 @@ module.exports = {
                     let gameusers = JSON.parse(gameUsers[0].game_ping);
 
                     if (gameusers.includes(user.username)) {
-                        return 'You should do "bb remove game" first';
+                        return 'You should remove your "global" game notification, by doing "bb remove game" first';
                     }
                     input.splice(0, 3);
                     console.log(input.toString());
