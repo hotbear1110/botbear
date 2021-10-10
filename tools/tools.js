@@ -331,7 +331,7 @@ exports.nameChanges = new Promise(async (resolve, reject) => {
 
     _.each(streamers, async function (streamer) {
         try {
-        const realUser = await axios.get(`https://api.twitch.tv/helix/users?id=${streamer.uid}`, {
+        const userData = await axios.get(`https://api.twitch.tv/helix/users?id=${streamer.uid}`, {
             headers: {
                 'client-id': process.env.TWITCH_CLIENTID,
                 'Authorization': process.env.TWITCH_AUTH
@@ -339,7 +339,7 @@ exports.nameChanges = new Promise(async (resolve, reject) => {
             timeout: 10000
         })
 
-        realUser = realUser.data.data[0];
+        realUser = userData.data.data[0];
         realUser = realUser["login"];
 
         if (realUser.data && realUser !== streamer.username) {
