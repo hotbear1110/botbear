@@ -322,6 +322,20 @@ exports.refreshCommands = async function () {
 
 
     });
+    _.each(dbCommands, async function (dbcommand) {
+        let isnotcommand = 0;
+        _.each(commands, async function (command) {
+            if (dbcommand.Name === command.name) {
+                isnotcommand = 1;
+                return;
+            }
+        });
+        if (isnotcommand === 0) {
+            await tools.query('DELETE FROM Commands WHERE Name=?', [dbcommand.Name]);
+        }
+
+
+    });
 };
 
 exports.nameChanges = new Promise(async (resolve, reject) => {
