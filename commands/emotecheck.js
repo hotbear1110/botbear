@@ -38,6 +38,10 @@ module.exports = {
                 let realid = emotecheck.data["emoteID"];
                 let emoteStatus = emotecheck.data["emoteAssetType"].toLowerCase();
 
+                if (emotecheck.data[channelName.toLowerCase() !== emotecheck.data["channelLogin"]]) {
+                    emotechannel = `${emotecheck.data["channelLogin"]}(${emotecheck.data["channelName"]})`;
+                }
+
                 const emotecount = await axios.get(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, {timeout: 10000});
                 let count = emotecount.data["twitchEmotes"]
                 let ecount = 0;
