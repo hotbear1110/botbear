@@ -24,6 +24,12 @@ module.exports = {
             if (input[3]) {
                 realchannel = input[3];
             }
+
+            let naniresponse = "";
+            if (realchannel === "nani") {
+                naniresponse = " Copege This channel is real";
+            }
+
             let subcheck = await axios.get(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`, {timeout: 10000});
             if (subcheck.data["subscribed"] == false) {
                 let oldsub = subcheck.data["cumulative"];
@@ -45,24 +51,27 @@ module.exports = {
                 const ms = new Date().getTime() - Date.parse(subdata["endsAt"]);
 
                 if (subdata["tier"] === "Custom") {
-                    return `${username} is subbed to #${realchannel} with a permanent sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak.`;
+                    return `${username} is subbed to #${realchannel} with a permanent sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak.` + naniresponse;
 
                 }
                 if (subdata["endsAt"] === null) {
-                    return `${username} is currently subbed to #${realchannel} with a tier ${subdata["tier"]} sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. This is a permanent sub.`;
+                    return `${username} is currently subbed to #${realchannel} with a tier ${subdata["tier"]} sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. This is a permanent sub.` + naniresponse;
                 }
                 if (subdata["type"] === "prime") {
-                    return `${username} is currently subbed to #${realchannel} with a tier 1 prime sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}`;
+                    return `${username} is currently subbed to #${realchannel} with a tier 1 prime sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}` + naniresponse;
                 }
                 if (subdata["type"] === "paid") {
-                    return `${username} is currently subbed to #${realchannel} with a tier ${subdata["tier"]} sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}`;
+                    return `${username} is currently subbed to #${realchannel} with a tier ${subdata["tier"]} sub and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}` + naniresponse;
                 }
                 if (subdata["type"] === "gift") {
                     let gifta = subdata["gift"]["name"];
-                    return `${username} is currently subbed to #${realchannel} with a tier ${subdata["tier"]} sub, gifted by ${gifta} and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}`;
+                    return `${username} is currently subbed to #${realchannel} with a tier ${subdata["tier"]} sub, gifted by ${gifta} and has been subbed for a total of ${sublength["months"]} months! They are currently on a ${substreak["months"]} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}` + naniresponse;
                 }
             }
         } catch (err) {
+            if (err.response.data.error) {
+                return `${err.response.data.error} (${err.response.data.username})`;
+            }
             console.log(err);
             return ` Error FeelsBadMan `;
         }

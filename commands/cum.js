@@ -26,7 +26,7 @@ module.exports = {
                 return "[MASS PING]";
             }
 
-            return `I came ${msg}`;
+            return `/me I came ${msg}`;
         } catch (err) {
             console.log(err);
             return ` Error FeelsBadMan `;
