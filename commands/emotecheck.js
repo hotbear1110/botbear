@@ -42,10 +42,13 @@ module.exports = {
                 if (emotecheck.data["channelName"].toLowerCase() !== emotecheck.data["channelLogin"]) {
                     emotechannel = `${emotecheck.data["channelLogin"]}(${emotecheck.data["channelName"]})`;
                 }
+                
+                let ecount = 0;
+
+                try {
 
                 const emotecount = await axios.get(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, {timeout: 10000});
                 let count = emotecount.data["twitchEmotes"]
-                let ecount = 0;
                 _.each(count, async function (emote) {
                     console.log(emote["emote"], emote["amount"])
                     if (emote["emote"] === realemote) {
@@ -53,6 +56,9 @@ module.exports = {
                         return;
                     }
                 })
+            } catch (err) {
+                console.log(err)
+            }
 
 
 
