@@ -42,7 +42,7 @@ module.exports = {
                 if (emotecheck.data["channelName"].toLowerCase() !== emotecheck.data["channelLogin"]) {
                     emotechannel = `${emotecheck.data["channelLogin"]}(${emotecheck.data["channelName"]})`;
                 }
-                
+
                 let ecount = 0;
 
                 try {
@@ -134,12 +134,13 @@ module.exports = {
             let found = 0;
 
             let response = "";
+            let ecount = 0;
+            let foundemote = 0;
 
+            try {
             const emotecount = await axios.get(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, {timeout: 10000});
             let bttv = emotecount.data["bttvEmotes"]
             let ffz = emotecount.data["ffzEmotes"]
-            let ecount = 0;
-            let foundemote = 0;
             _.each(bttv, async function (emote) {
                 console.log(emote["emote"], emote["amount"])
                 if (emote["emote"] === input[2]) {
@@ -158,7 +159,9 @@ module.exports = {
                     }
                 })
             }
-
+        } catch (err) {
+            console.log(err)
+        }
             _.each(emotes, async function (emote) {
                 if (emote[0] === input[2]) {
 
