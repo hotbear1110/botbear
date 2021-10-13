@@ -333,7 +333,8 @@ setInterval(async function () {
 
 setInterval(async function () {
     try {
-        await got(`https://supinic.com/api/bot/active?auth_user=${process.env.SUPI_USERID}&auth_key=${process.env.SUPI_AUTH}`, {
+        await got(`https://supinic.com/api/bot-program/bot/active`, {
+            headers: { Authorization: `Basic ${process.env.SUPI_USERID}:${process.env.SUPI_AUTH}` },
             method: 'PUT'
         }).json();
     } catch (err) {
