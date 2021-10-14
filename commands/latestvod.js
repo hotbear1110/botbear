@@ -25,7 +25,7 @@ module.exports = {
 
             if (input[3]) {
                 try {
-                vodNumber = parseInt(input[3]);
+                vodNumber = parseInt(input[3] - 1);
                 } catch (err) {
                     console.log(err);
                     return "Last input should be a number";
