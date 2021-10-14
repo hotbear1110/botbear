@@ -57,7 +57,7 @@ module.exports = {
             vodDate = vodDate.split("T")[0];
                 return `That channel only has ${vodList.data.length} vod(s), here is the oldest vod - ${vodList.data[vodList.data.length - 1].url} - ${vodDate}`;
             } else {
-                let vodDate = vodList.data[0].created_at;
+                let vodDate = vodList.data[vodNumber].created_at;
             vodDate = vodDate.split("T")[0];
                 return `${vodList.data[vodNumber].url}?t=0s - ${vodDate}`;
             }
