@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 module.exports = {
-    name: "getvod",
+    name: "latestvod",
     ping: true,
     description: 'This command will give you a link to the latest twitch vod for a given channel, if available. Or you can input a number to get a specific vod. Example: "bb getvod nymn 5"(will get the 5th vod[lower number = newer]])',
     permission: 100,
@@ -46,14 +46,17 @@ module.exports = {
 
             vodList = vodList.data
 
+            let vodDate = vodList.data[vodList.length - 1].created_at;
+            vodDate = vodDate.split("T")[0];
+
             if (!vodList.data.length) {
                 return `That channel has no vods`;
             } else if (vodNumber > 99) {
-                return `I can only go 100 vods back, but here is the oldest available vod - ${vodList.data[vodList.data.length - 1].url} (${vodList.data.length})`
+                return `I can only go 100 vods back, but here is the oldest available vod - ${vodList.data[vodList.data.length - 1].url} (${vodList.data.length} - ${vodDate})`
             } else if (!vodList.data[vodNumber]) {
-                return `That channel only has ${vodList.data.length} vod(s), here is the oldest vod - ${vodList.data[vodList.data.length - 1].url}`;
+                return `That channel only has ${vodList.data.length} vod(s), here is the oldest vod - ${vodList.data[vodList.data.length - 1].url} - ${vodDate}`;
             } else {
-                return `${vodList.data[vodNumber].url}?t=0s`;
+                return `${vodList.data[vodNumber].url}?t=0s - ${vodDate}`;
             }
         } catch (err) {
             console.log(err);
