@@ -24,10 +24,12 @@ module.exports = {
 
 
             if (input[3]) {
-                if (isNaN(input[3])) {
-                    return;
-                }
+                try {
                 vodNumber = parseInt(input[3]) - 1;
+                } catch (err) {
+                    console.log(err);
+                    return "Last input should be a number";
+                }
             }
 
             const userID = await axios.get(`https://api.ivr.fi/twitch/resolve/${realchannel}`, { timeout: 10000 });
