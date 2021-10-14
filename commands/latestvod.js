@@ -46,16 +46,19 @@ module.exports = {
 
             vodList = vodList.data
 
-            let vodDate = vodList.data[vodList.data.length - 1].created_at;
-            vodDate = vodDate.split("T")[0];
-
             if (!vodList.data.length) {
                 return `That channel has no vods`;
             } else if (vodNumber > 99) {
+                let vodDate = vodList.data[vodList.data.length - 1].created_at;
+            vodDate = vodDate.split("T")[0];
                 return `I can only go 100 vods back, but here is the oldest available vod - ${vodList.data[vodList.data.length - 1].url} (${vodList.data.length} - ${vodDate})`
             } else if (!vodList.data[vodNumber]) {
+                let vodDate = vodList.data[vodList.data.length - 1].created_at;
+            vodDate = vodDate.split("T")[0];
                 return `That channel only has ${vodList.data.length} vod(s), here is the oldest vod - ${vodList.data[vodList.data.length - 1].url} - ${vodDate}`;
             } else {
+                let vodDate = vodList.data[0].created_at;
+            vodDate = vodDate.split("T")[0];
                 return `${vodList.data[vodNumber].url}?t=0s - ${vodDate}`;
             }
         } catch (err) {
