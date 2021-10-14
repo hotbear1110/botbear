@@ -46,7 +46,7 @@ module.exports = {
 
             vodList = vodList.data
 
-            let vodDate = vodList.data[vodList.length - 1].created_at;
+            let vodDate = vodList.data[vodList.data.length - 1].created_at;
             vodDate = vodDate.split("T")[0];
 
             if (!vodList.data.length) {
