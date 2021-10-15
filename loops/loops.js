@@ -6,6 +6,17 @@ const cc = require("../bot.js").cc;
 const got = require("got");
 const { isDnsLookupIpVersion } = require('got/dist/source/core/utils/dns-ip-version');
 
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds) {
+            break;
+        }
+    }
+}
+
+sleep(10000);
+
 setInterval(async function () {
     const streamers = await tools.query('SELECT * FROM Streamers');
     const myping = await tools.query(`SELECT * FROM MyPing`);
@@ -109,14 +120,6 @@ setInterval(async function () {
                     await tools.query(`UPDATE Streamers SET game=?, game_time=? WHERE username=?`, [newGame, gameTime, stream.username]);
 
                     if (newTitle !== stream.title) {
-                        function sleep(milliseconds) {
-                            var start = new Date().getTime();
-                            for (var i = 0; i < 1e7; i++) {
-                                if ((new Date().getTime() - start) > milliseconds) {
-                                    break;
-                                }
-                            }
-                        }
                         sleep(1500)
                     }
                     console.log(stream.username + " NEW GAME: " + newGame);

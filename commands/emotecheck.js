@@ -15,16 +15,18 @@ module.exports = {
             }
             let emoteId = input[2];
             if (user.emotes) {
-                if (input[0].toLowerCase() === "forsenbb") {
+                if (emoteId.startsWith("emotesv2_ ")) {
+
+                } else if (input[0].toLowerCase() === "forsenbb") {
                     emoteId = JSON.stringify(user.emotes).split(",")[1].split(":")[0];
-                    emoteId = emoteId.substring(1)
+                    emoteId = emoteId.substring(1);
+                    emoteId = emoteId.slice(0, -1);
                 } else {
-                    emoteId = JSON.stringify(user.emotes).split(":")[0]
-                    emoteId = emoteId.substring(2)
+                    emoteId = JSON.stringify(user.emotes).split(":")[0];
+                    emoteId = emoteId.substring(2);
+                    emoteId = emoteId.slice(0, -1);
                 }
-                console.log(user.emotes)
-                console.log(emoteId.slice(0, -1))
-                emoteId = `${emoteId.slice(0, -1)}?id=true`;
+                emoteId = `${emoteId}?id=true`;
             }
 
             const emotecheck = await axios.get(`https://api.ivr.fi/v2/twitch/emotes/${emoteId}`, {timeout: 10000});
