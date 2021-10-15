@@ -14,8 +14,8 @@ module.exports = {
                 return;
             }
             let emoteId = input[2];
+            console.log(emoteId)
             if (user.emotes) {
-                console.log("yes")
                  if (input[0].toLowerCase() === "forsenbb") {
                     emoteId = JSON.stringify(user.emotes).split(",")[1].split(":")[0];
                     emoteId = emoteId.substring(1);
@@ -26,7 +26,6 @@ module.exports = {
                 emoteId = emoteId.slice(0, -1);
                 emoteId = `${emoteId}?id=true`;
             } else if (emoteId.startsWith("emotesv2_ ")) {
-                console.log(emoteId)
                 emoteId = `${emoteId}?id=true`;
             }
 
