@@ -4,7 +4,7 @@ const _ = require("underscore");
 module.exports = {
     name: "trivia",
     ping: false,
-    description: 'This command will start a new trivia in chat (The cooldown is 5 minute and the trivia times out after 60 seconds.)',
+    description: 'This command will start a new trivia in chat (The cooldown is 5 minutes and the trivia times out after 60 seconds.)',
     permission: 100,
     category: "Random command",
     execute: async (channel, user, input, perm) => {
