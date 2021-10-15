@@ -14,18 +14,17 @@ module.exports = {
                 return;
             }
             let emoteId = input[2];
-            if (user.emotes) {
-                if (emoteId.startsWith("emotesv2_ ")) {
-
-                } else if (input[0].toLowerCase() === "forsenbb") {
+            if (user.emotes.lenght) {
+                 if (input[0].toLowerCase() === "forsenbb") {
                     emoteId = JSON.stringify(user.emotes).split(",")[1].split(":")[0];
                     emoteId = emoteId.substring(1);
-                    emoteId = emoteId.slice(0, -1);
                 } else {
                     emoteId = JSON.stringify(user.emotes).split(":")[0];
                     emoteId = emoteId.substring(2);
-                    emoteId = emoteId.slice(0, -1);
                 }
+                emoteId = emoteId.slice(0, -1);
+                emoteId = `${emoteId}?id=true`;
+            } else if (emoteId.startsWith("emotesv2_ ")) {
                 emoteId = `${emoteId}?id=true`;
             }
 
