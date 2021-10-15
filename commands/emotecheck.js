@@ -14,7 +14,7 @@ module.exports = {
                 return;
             }
             let emoteId = input[2];
-            if (user.emotes.length) {
+            if (user.emotes) {
                  if (input[0].toLowerCase() === "forsenbb") {
                     emoteId = JSON.stringify(user.emotes).split(",")[1].split(":")[0];
                     emoteId = emoteId.substring(1);
