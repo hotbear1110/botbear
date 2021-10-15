@@ -6,7 +6,7 @@ module.exports = {
     ping: false,
     description: 'This command will start a new trivia in chat (The cooldown is 5 minute and the trivia times out after 60 seconds.)',
     permission: 100,
-    category: "Bot command",
+    category: "Random command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {
