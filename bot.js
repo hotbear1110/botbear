@@ -113,13 +113,10 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     const perm = await tools.getPerm(user.username);
-    console.log("test0")
 
     const userCD = new tools.Cooldown(user, realcommand, 3000);
 
     if ((await userCD.setCooldown()).length) { return; }
-
-    console.log("test00")
 
 
     if (user['user-id'] !== process.env.TWITCH_OWNERUID) {
@@ -150,7 +147,6 @@ async function onMessageHandler(channel, user, msg, self) {
     let realchannel = channel.substring(1);
 
     if (realcommand === "trivia") {
-        console.log("test1")
         if (activetrivia.has(channel)) {
             if (channel === "#forsen") {
                 channel = "#botbear1110";
@@ -167,8 +163,6 @@ async function onMessageHandler(channel, user, msg, self) {
         const triviaCD = new tools.Cooldown(realchannel, realcommand, cd);
 
         if ((await triviaCD.setCooldown()).length) { return; }
-
-        console.log("test2")
 
         let result = await commands[realcommand].execute(realchannel, user, input, perm);
 
@@ -196,8 +190,6 @@ async function onMessageHandler(channel, user, msg, self) {
         if (channel === "#forsen") {
             channel = "#botbear1110";
         }
-        console.log("test3")
-
 
         const banPhrase = await tools.banphrasePass(response, channel);
 
@@ -240,8 +232,6 @@ async function onMessageHandler(channel, user, msg, self) {
     if (response === oldmessage) {
         response = response + " 󠀀 ";
     }
-    console.log("test4")
-
 
     cc.say(channel, response);
     return;
