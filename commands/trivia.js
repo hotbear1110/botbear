@@ -41,6 +41,7 @@ module.exports = {
             })
 
             fixedanswers = fixedanswers.toString().replaceAll(",", ", ");
+            fixedanswers = fixedanswers.replaceAll("%2C", ",");
             question = question.replaceAll("%3F", "?");
             question = question.replaceAll("%2C", ",");
 
