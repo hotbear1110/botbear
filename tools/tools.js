@@ -78,7 +78,11 @@ hasCooldown = new Set();
 exports.Cooldown = class Cooldown {
     constructor(user, command, CD) {
         this.cooldown = CD;
+        if (!user['user-id']) {
+            this.userId = user
+        } else {
         this.userId = user['user-id'];
+        }
         this.command = command;
         this.key = `${this.userId}_${this.command}`;
     }
