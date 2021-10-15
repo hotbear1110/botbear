@@ -30,7 +30,6 @@ module.exports = {
             }
 
             const emotecheck = await axios.get(`https://api.ivr.fi/v2/twitch/emotes/${emoteId}`, {timeout: 10000});
-            console.log(emotecheck.data)
 
             if (!emotecheck.data["error"]) {
                 let emotechannel = emotecheck.data["channelName"];
@@ -50,16 +49,16 @@ module.exports = {
                 try {
 
                 const emotecount = await axios.get(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, {timeout: 10000});
-                let count = emotecount.data["twitchEmotes"]
+                let count = emotecount.data["twitchEmotes"];
                 _.each(count, async function (emote) {
-                    console.log(emote["emote"], emote["amount"])
+                    console.log(emote["emote"], emote["amount"]);
                     if (emote["emote"] === realemote) {
-                        ecount = emote["amount"]
+                        ecount = emote["amount"];
                         return;
                     }
                 })
             } catch (err) {
-                console.log(err)
+                console.log(err);
             }
 
 
@@ -122,11 +121,6 @@ module.exports = {
             console.log(err);
         }
         try {
-
-        } catch (err) {
-            console.log(err)
-        }
-        try {
             const streamer = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
             let emotes = JSON.parse(streamer[0].emote_list);
 
@@ -141,28 +135,26 @@ module.exports = {
 
             try {
             const emotecount = await axios.get(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, {timeout: 10000});
-            let bttv = emotecount.data["bttvEmotes"]
-            let ffz = emotecount.data["ffzEmotes"]
+            let bttv = emotecount.data["bttvEmotes"];
+            let ffz = emotecount.data["ffzEmotes"];
             _.each(bttv, async function (emote) {
-                console.log(emote["emote"], emote["amount"])
                 if (emote["emote"] === input[2]) {
-                    ecount = emote["amount"]
-                    foundemote = 1
+                    ecount = emote["amount"];
+                    foundemote = 1;
                     return;
                 }
             })
             if (foundemote === 0) {
                 _.each(ffz, async function (emote) {
-                    console.log(emote["emote"], emote["amount"])
                     if (emote["emote"] === input[2]) {
-                        ecount = emote["amount"]
-                        foundemote = 1
+                        ecount = emote["amount"];
+                        foundemote = 1;
                         return;
                     }
                 })
             }
         } catch (err) {
-            console.log(err)
+            console.log(err);
         }
             _.each(emotes, async function (emote) {
                 if (emote[0] === input[2]) {
@@ -194,7 +186,7 @@ module.exports = {
                 _.each(ffzemotes, async function (emote) {
                     if (emote["name"] === input[2]) {
                         found = 1;
-                        let url = emote["urls"]
+                        let url = emote["urls"];
                         let owner = emote["owner"]
                         if (ecount !== 0) {
                             response = `${input[2]} is a global ffz emote by ${owner["name"]}, the emote has been used ${ecount} times in this chat. - ${url["1"]}`;
@@ -235,8 +227,8 @@ module.exports = {
                 _.each(svtemotes, async function (emote) {
                     if (emote["name"] === input[2]) {
                         found = 1;
-                        let url = emote["urls"]
-                        url = url[3]
+                        let url = emote["urls"];
+                        url = url[3];
 
                         if (ecount !== 0) {
                             response = `${input[2]} is a global 7tv emote, the emote has been used ${ecount} times in this chat - ${url[1]}`;
@@ -259,7 +251,7 @@ module.exports = {
 
 
         } catch (err) {
-            console.log(err)
+            console.log(err);
             return ` Error FeelsBadMan - Emote was not found`;
         }
     }
