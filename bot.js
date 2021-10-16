@@ -162,7 +162,11 @@ async function onMessageHandler(channel, user, msg, self) {
 
         const triviaCD = new tools.Cooldown(realchannel, realcommand, cd);
 
-        if ((await triviaCD.setCooldown()).length) { return; }
+        if ((await triviaCD.setCooldown()).length) { 
+            cc.say(channel, "Trivia is still on cooldown!")
+            
+            return; 
+        }
 
         let result = await commands[realcommand].execute(realchannel, user, input, perm);
 

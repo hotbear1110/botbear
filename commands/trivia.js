@@ -42,9 +42,12 @@ module.exports = {
             })
 
             fixedanswers = fixedanswers.toString().replaceAll(",", ", ");
-            fixedanswers = fixedanswers.replaceAll("%2C", ",");
+            fixedanswers = fixedanswers.replaceAll("%26", ",");
+            fixedanswers = fixedanswers.replaceAll("%2C", "&");
+
             question = question.replaceAll("%3F", "?");
             question = question.replaceAll("%2C", ",");
+            question = question.replaceAll("%26", "&");
 
             console.log(shuffled)
             return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} | Answers: ${fixedanswers}`, decodeURI(correct_answer)];
