@@ -1,0 +1,24 @@
+const got = require("got");
+
+module.exports = {
+    name: "dog",
+    ping: true,
+    description: 'This command will give you a link to a picture of a random dog',
+    permission: 100,
+    category: "Random command",
+    execute: async (channel, user, input, perm) => {
+        try {
+            if (module.exports.permission > perm) {
+                return;
+            }
+            const image = await got(`https://dog.ceo/api/breeds/image/random`, {timeout: 10000}).json();
+            console.log(image)
+
+            return `OhMyDog ${image.message}`;
+
+        } catch (err) {
+            console.log(err);
+            return ` Error FeelsBadMan `;
+        }
+    }
+}
