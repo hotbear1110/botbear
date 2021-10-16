@@ -5,7 +5,7 @@ const regex = require('../tools/regex.js');
 module.exports = {
     name: "say",
     ping: false,
-    description: 'This command will let you make the bot say anything in chat. (The command only works in Nymn´s chat and the message gets checked for massping, banphrases etc.). Example: "bb say NymN is soy lole"',
+    description: 'This command will let you make the bot say anything in chat. (The message gets checked for massping, banphrases etc.). Example: "bb say NymN is soy lole"',
     permission: 100,
     category: "Random command",
     execute: async (channel, user, input, perm) => {
@@ -26,9 +26,7 @@ module.exports = {
             if (user.mod === false && perm < 2000 && msg.match(/[$|/|.|?|!|-]|\bkb\b/g)) { // ignores $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
                 return;
             }
-            if (perm < 1500 && channel !== "nymn") {
-                return;
-            }
+
             const masspinged = await tools.massping(msg.toLowerCase(), channel);
 
             if (masspinged != "null") {

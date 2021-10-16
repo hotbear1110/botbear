@@ -84,11 +84,13 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
     // If yabbes chat want to disable other commands ->
+    /*
     if (channel === "#yabbe") {
         if (realcommand !== "gametime" && realcommand !== "channel" && realcommand !== "notify" && realcommand !== "remove" && realcommand !== "myping" && realcommand !== "ping" && realcommand !== "commands" && realcommand !== "bot" && realcommand !== "suggest") {
             return;
         }
     }
+    */
 
     const userList = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username]);
 
@@ -104,6 +106,18 @@ async function onMessageHandler(channel, user, msg, self) {
     if (channel === "#botbear1110") {
         channel = "#forsen";
     }
+
+    let disabledCheck = await tools.query(`
+    SELECT disabled_commands
+    FROM Streamers
+    WHERE username=?`,
+            [channel.substring(1)]);
+
+        disabledCheck = JSON.parse(disabledCheck[0].disabled_commands);
+
+        if (disabledCheck.includes(realcommand)) {
+            return;
+        }
 
     const commands = requireDir("./commands");
 

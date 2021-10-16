@@ -5,7 +5,7 @@ module.exports = {
     ping: true,
     description: 'This command will make the bot respond with "pong!" and the tmi delay aswell as the internal delay, if the bot is online.',
     permission: 100,
-    category: "Bot command",
+    category: "Core command",
     showDelay: true,
     execute: async (channel, user, input, perm) => {
         try {

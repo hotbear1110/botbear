@@ -8,7 +8,7 @@ module.exports = {
     ping: true,
     description: 'This command will make the bot leave or join your channel, or a channel you are mod in. (The command only works in hotbear1110 and botbear1110´s channels). Available channel commands: "bb channel join"(bot joins your channel), "bb channel leave"(bot leaves your channel), "bb channel [live/offline/title/game]emote"(will change the emote in the chat notifications)',
     permission: 100,
-    category: "Bot command",
+    category: "Core command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {
@@ -50,7 +50,7 @@ module.exports = {
                         let offlineemote = "FeelsBadMan";
                         let gameTime = new Date().getTime();
 
-                        await tools.query('INSERT INTO Streamers (username, uid, islive, liveemote, titleemote, gameemote, offlineemote, live_ping, title_ping, game_ping, game_time, emote_list, emote_removed) values (?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?)', [username, uid, islive, liveemote, liveemote, liveemote, offlineemote, '[""]', '[""]', '[""]', gameTime,'[]', '[]']);
+                        await tools.query('INSERT INTO Streamers (username, uid, islive, liveemote, titleemote, gameemote, offlineemote, live_ping, title_ping, game_ping, game_time, emote_list, emote_removed, disabled_commands) values (?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?)', [username, uid, islive, liveemote, liveemote, liveemote, offlineemote, '[""]', '[""]', '[""]', gameTime,'[]', '[]', '[]']);
                         cc.join(username).then((data) => {
                             // data returns [channel]
                         }).catch((err) => {

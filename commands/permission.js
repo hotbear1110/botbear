@@ -5,7 +5,7 @@ module.exports = {
     ping: false,
     description: 'This command will change a given users permission. This will allow/disallow the user to do certain commands. Example: "bb permission NymN 2000"(will change Nymn´s permission to 2000)',
     permission: 2000,
-    category: "Bot command",
+    category: "Core command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {
