@@ -25,7 +25,9 @@ module.exports = {
                     let uid = user['user-id'];
 
                     if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !cc.isMod(`#${input[3]}`, user.username)) {
+                        if (input[3] !== username) {
                         return;
+                        }
                     }
 
                     if (input[3]) {
