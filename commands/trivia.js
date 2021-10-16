@@ -37,6 +37,7 @@ module.exports = {
             let fixedanswers = [];
 
             _.each(shuffled, function (answer) {
+                answer = `(${answer})`;
                 fixedanswers.push(decodeURI(answer));
             })
 
