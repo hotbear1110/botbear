@@ -158,8 +158,8 @@ module.exports = {
                         if (input[3]) {
                             user = `${input[3]}'s'`;
                         }
-
-                        let hastebinlist = await tools.makehastebin(listgames, username, channel);
+                        
+                        let hastebinlist = await tools.makehastebin(`${username}'s game list, from channel: ${channel}\n\nGame list:\n${listgames}`);
 
                         return `${user} Game list: ${hastebinlist}.txt`;
                         break;
