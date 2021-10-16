@@ -49,8 +49,14 @@ module.exports = {
             question = question.replaceAll("%2C", ",");
             question = question.replaceAll("%26", "&");
 
+            correct_answer = decodeURI(correct_answer);
+
+            correct_answer = correct_answer.replaceAll("%3F", "?");
+            correct_answer = correct_answer.replaceAll("%2C", ",");
+            correct_answer = correct_answer.replaceAll("%26", "&");
+
             console.log(shuffled)
-            return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} | Answers: ${fixedanswers}`, decodeURI(correct_answer)];
+            return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} | Answers: ${fixedanswers}`, correct_answer];
         } catch (err) {
             console.log(err);
             return ` Error FeelsBadMan `;
