@@ -183,7 +183,7 @@ module.exports = {
                     }
 
                     if (user.mod) {
-                        username4 = channel;
+                        username6 = channel;
                     }
 
                     const alreadyJoined6 = await tools.query(`
