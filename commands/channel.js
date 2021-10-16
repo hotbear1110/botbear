@@ -6,7 +6,7 @@ const axios = require('axios');
 module.exports = {
     name: "channel",
     ping: true,
-    description: 'This command will make the bot leave or join your channel. (The command only works in hotbear1110 and botbear1110´s channels). Available channel commands: "bb channel join"(bot joins your channel), "bb channel leave"(bot leaves your channel), "bb channel [live/offline/title/game]emote"(will change the emote in the chat notifications)',
+    description: 'This command will make the bot leave or join your channel, or a channel you are mod in. (The command only works in hotbear1110 and botbear1110´s channels). Available channel commands: "bb channel join"(bot joins your channel), "bb channel leave"(bot leaves your channel), "bb channel [live/offline/title/game]emote"(will change the emote in the chat notifications)',
     permission: 100,
     category: "Bot command",
     execute: async (channel, user, input, perm) => {
@@ -24,7 +24,7 @@ module.exports = {
                     let username = user.username;
                     let uid = user['user-id'];
 
-                    if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID) {
+                    if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !cc.isMod(`#${input[3]}`, user.username)) {
                         return;
                     }
 
@@ -68,8 +68,8 @@ module.exports = {
                         username2 = input[3];
                     }
 
-                    if (input[3] && user.username !== input[3] && user['user-id'] != process.env.TWITCH_OWNERUID) {
-                        return "You can only make me leave your own channel";
+                    if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !cc.isMod(`#${input[3]}`, user.username)) {
+                        return "You can only make me leave your own channel, or a channel you are mod in.";
                     }
 
                     const alreadyJoined2 = await tools.query(`
@@ -100,6 +100,14 @@ module.exports = {
                     if (!input[3]) {
                         return;
                     }
+                    if (input[4]) {
+                        username3 = input[4];
+                    }
+
+                    if (input[4] && user['user-id'] != process.env.TWITCH_OWNERUID && !cc.isMod(`#${input[3]}`, user.username)) {
+                        return "You can only change emote in your own channel, or a channel you are mod in.";
+                    }
+
 
                     const alreadyJoined3 = await tools.query(`
                             SELECT *
@@ -121,6 +129,13 @@ module.exports = {
                     if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000) { return; }
                     if (!input[3]) {
                         return;
+                    }
+                    if (input[4]) {
+                        username4 = input[4];
+                    }
+
+                    if (input[4] && user['user-id'] != process.env.TWITCH_OWNERUID && !cc.isMod(`#${input[3]}`, user.username)) {
+                        return "You can only change emote in your own channel, or a channel you are mod in.";
                     }
 
                     const alreadyJoined4 = await tools.query(`
@@ -145,6 +160,14 @@ module.exports = {
                         return;
                     }
 
+                    if (input[4]) {
+                        username5 = input[4];
+                    }
+
+                    if (input[4] && user['user-id'] != process.env.TWITCH_OWNERUID && !cc.isMod(`#${input[3]}`, user.username)) {
+                        return "You can only change emote in your own channel, or a channel you are mod in.";
+                    }
+
                     const alreadyJoined5 = await tools.query(`
                             SELECT *
                             FROM Streamers
@@ -165,6 +188,14 @@ module.exports = {
                     if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000) { return; }
                     if (!input[3]) {
                         return;
+                    }
+
+                    if (input[4]) {
+                        username6 = input[4];
+                    }
+
+                    if (input[4] && user['user-id'] != process.env.TWITCH_OWNERUID && !cc.isMod(`#${input[3]}`, user.username)) {
+                        return "You can only change emote in your own channel, or a channel you are mod in.";
                     }
 
                     const alreadyJoined6 = await tools.query(`
