@@ -96,16 +96,13 @@ module.exports = {
                     break;
                 case "liveemote":
                     let username3 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000) { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000 && !user.mod) { return; }
                     if (!input[3]) {
                         return;
                     }
-                    if (input[4]) {
-                        username3 = input[4];
-                    }
 
-                    if (input[4] && user['user-id'] != process.env.TWITCH_OWNERUID && !cc.isMod(`#${input[3]}`, user.username)) {
-                        return "You can only change emote in your own channel, or a channel you are mod in.";
+                    if (user.mod) {
+                        username3 = channel;
                     }
 
 
@@ -126,17 +123,15 @@ module.exports = {
                     break;
                 case "gameemote":
                     let username4 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000) { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000 && !user.mod) { return; }
                     if (!input[3]) {
                         return;
                     }
-                    if (input[4]) {
-                        username4 = input[4];
+
+                    if (user.mod) {
+                        username4 = channel;
                     }
 
-                    if (input[4] && user['user-id'] != process.env.TWITCH_OWNERUID && !cc.isMod(`#${input[3]}`, user.username)) {
-                        return "You can only change emote in your own channel, or a channel you are mod in.";
-                    }
 
                     const alreadyJoined4 = await tools.query(`
                             SELECT *
@@ -155,18 +150,15 @@ module.exports = {
                     break;
                 case "titleemote":
                     let username5 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000) { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000 && !user.mod) { return; }
                     if (!input[3]) {
                         return;
                     }
 
-                    if (input[4]) {
-                        username5 = input[4];
+                    if (user.mod) {
+                        username5 = channel;
                     }
 
-                    if (input[4] && user['user-id'] != process.env.TWITCH_OWNERUID && !cc.isMod(`#${input[3]}`, user.username)) {
-                        return "You can only change emote in your own channel, or a channel you are mod in.";
-                    }
 
                     const alreadyJoined5 = await tools.query(`
                             SELECT *
@@ -185,17 +177,13 @@ module.exports = {
                     break;
                 case "offlineemote":
                     let username6 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000) { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000 && !user.mod) { return; }
                     if (!input[3]) {
                         return;
                     }
 
-                    if (input[4]) {
-                        username6 = input[4];
-                    }
-
-                    if (input[4] && user['user-id'] != process.env.TWITCH_OWNERUID && !cc.isMod(`#${input[3]}`, user.username)) {
-                        return "You can only change emote in your own channel, or a channel you are mod in.";
+                    if (user.mod) {
+                        username4 = channel;
                     }
 
                     const alreadyJoined6 = await tools.query(`
