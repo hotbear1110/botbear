@@ -44,16 +44,19 @@ module.exports = {
             fixedanswers = fixedanswers.toString().replaceAll(",", ", ");
             fixedanswers = fixedanswers.replaceAll("%2C", ",");
             fixedanswers = fixedanswers.replaceAll("%26", "&");
+            fixedanswers = fixedanswers.replaceAll("%3A", ":");
 
             question = question.replaceAll("%3F", "?");
             question = question.replaceAll("%2C", ",");
             question = question.replaceAll("%26", "&");
+            question = question.replaceAll("%3A", ":");
 
             correct_answer = decodeURI(correct_answer);
 
             correct_answer = correct_answer.replaceAll("%3F", "?");
             correct_answer = correct_answer.replaceAll("%2C", ",");
             correct_answer = correct_answer.replaceAll("%26", "&");
+            correct_answer = correct_answer.replaceAll("%3A", ":");
 
             console.log(shuffled)
             return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} | Answers: ${fixedanswers}`, correct_answer];
