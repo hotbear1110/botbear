@@ -11,9 +11,11 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            input = input.substring(11);
+            input = input.splice(2);
 
-            await tools.query('INSERT INTO Suggestions (User, Suggestion) values (?, ?)', [user.username, input]);
+            const msg = input.toString().replaceAll(',', ' ');
+
+            await tools.query('INSERT INTO Suggestions (User, Suggestion) values (?, ?)', [user.username, msg]);
             
             const IDs = await tools.query(`SELECT MAX(ID) FROM Suggestions WHERE User=?`, [user.username]);
             console.log(IDs[0]['MAX(ID)']);
