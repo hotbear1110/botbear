@@ -173,7 +173,7 @@ setInterval(async function () {
                 _.each(FFZ_list, async function (emote) {
                     let inlist = 0;
                     _.each(Emote_list, async function (emotecheck) {
-                        if (emotecheck.includes(emote["id"])) {
+                        if (emotecheck.includes(emote["name"])) {
                             inlist = 1;
                         }
                     })
@@ -207,7 +207,7 @@ setInterval(async function () {
                 _.each(BTTV_list, async function (emote) {
                     let inlist = 0;
                     _.each(Emote_list, async function (emotecheck) {
-                        if (emotecheck.includes(emote["id"])) {
+                        if (emotecheck.includes(emote["code"])) {
                             inlist = 1;
                         }
                     })
@@ -242,7 +242,7 @@ setInterval(async function () {
                     //console.log(emote)
                     let inlist = 0;
                     _.each(Emote_list, async function (emotecheck) {
-                        if (emotecheck.includes(emote["id"])) {
+                        if (emotecheck.includes(emote["name"])) {
                             inlist = 1;
                             return;
                         }
