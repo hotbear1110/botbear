@@ -11,7 +11,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            let input = input.substring(11);
+            input = input.substring(11);
 
             await tools.query('INSERT INTO Suggestions (User, Suggestion) values (?, ?)', [user.username, input]);
             
