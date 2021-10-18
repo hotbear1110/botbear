@@ -37,11 +37,10 @@ module.exports = {
             let fixedanswers = [];
 
             _.each(shuffled, function (answer) {
-                answer = `(${answer})`;
                 fixedanswers.push(decodeURI(answer));
             })
 
-            fixedanswers = fixedanswers.toString().replaceAll(",", ", ");
+            fixedanswers = fixedanswers.toString().replaceAll(",", " | ");
             fixedanswers = fixedanswers.replaceAll("%2C", ",");
             fixedanswers = fixedanswers.replaceAll("%26", "&");
             fixedanswers = fixedanswers.replaceAll("%3A", ":");
@@ -65,7 +64,7 @@ module.exports = {
             correct_answer = correct_answer.replaceAll("%24", "$");
 
             console.log(shuffled)
-            return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} | Answers: ${fixedanswers}`, correct_answer];
+            return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} | Do "bb hint" if you are nab and need a hint!`, fixedanswers , correct_answer];
         } catch (err) {
             console.log(err);
             return ` Error FeelsBadMan `;

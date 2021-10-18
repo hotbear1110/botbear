@@ -22,6 +22,8 @@ let uptime = new Date().getTime();
 
 const triviaanswer = new Set();
 const activetrivia = new Set();
+let triviaHints = {};
+let gothint = false;
 
 let started = false;
 
@@ -47,10 +49,14 @@ async function onMessageHandler(channel, user, msg, self) {
 
     if (activetrivia.has(channel)) { 
         if (triviaanswer.has(`${channel}${msg.toLowerCase()}`)) {
+            if (channel === "#forsen") {
+                channel = "#botbear1110";
+            }
             cc.say(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${msg}"! OMGScoots`);
 
             activetrivia.delete(channel);
             triviaanswer.delete(`${channel}${msg.toLowerCase()}`);
+            delete triviaHints[channel];
             return;
         }
 
@@ -83,14 +89,6 @@ async function onMessageHandler(channel, user, msg, self) {
     if (input[0] !== "bb" && input[0].toLowerCase() !== "forsenbb") {
         return;
     }
-    // If yabbes chat want to disable other commands ->
-    /*
-    if (channel === "#yabbe") {
-        if (realcommand !== "gametime" && realcommand !== "channel" && realcommand !== "notify" && realcommand !== "remove" && realcommand !== "myping" && realcommand !== "ping" && realcommand !== "commands" && realcommand !== "bot" && realcommand !== "suggest") {
-            return;
-        }
-    }
-    */
 
     const userList = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username]);
 
@@ -135,10 +133,6 @@ async function onMessageHandler(channel, user, msg, self) {
 
     if (user['user-id'] !== process.env.TWITCH_OWNERUID) {
 
-        if (talkedRecently.has(channel)) { return; }
-
-        talkedRecently.add(channel);
-
         let timeout = 1250;
 
         setTimeout(() => {
@@ -160,11 +154,63 @@ async function onMessageHandler(channel, user, msg, self) {
 
     let realchannel = channel.substring(1);
 
+    if (realcommand === "hint" && activetrivia.has(channel) && gothint === false) {
+        gothint = true;
+
+        let hint = triviaHints[channel];
+
+        const banPhrase = await tools.banphrasePass(hint, channel);
+
+    if (banPhrase.banned) {
+        cc.say(channel, `[Banphrased] cmonBruh`);
+        return;
+    }
+
+    const banPhraseV2 = await tools.banphrasePassV2(hint, channel);
+
+    if (banPhraseV2 == true) {
+        cc.say(channel, `[Banphrased] cmonBruh`);
+        return;
+    }
+
+    if (banPhrase === 0) {
+        cc.say(channel, "FeelsDankMan error!!");
+        return;
+    }
+
+    const notabanPhrase = await tools.notbannedPhrases(hint.toLowerCase());
+
+    if (notabanPhrase != `null`) {
+        cc.say(channel, notabanPhrase);
+        return;
+    }
+
+    const badWord = hint.match(regex.racism);
+    if (badWord != null) {
+        cc.say(channel, `[Bad word detected] cmonBruh`);
+        return;
+    }
+
+    const reallength = await tools.asciiLength(hint);
+    if (reallength > 30) {
+        cc.say(channel, "[Too many emojis]");
+        return;
+    }
+
+    if (hint === oldmessage) {
+        hint = hint + " 󠀀 ";
+    }
+
+    cc.say(channel, `(Trivia) ${user.username}, Hint: ${hint}`)
+    oldmessage = `(Trivia) ${user.username}, Hint: ${hint}`;
+    return;
+    }
+
     if (realcommand === "trivia") {
+        if (channel === "#forsen") {
+            channel = "#botbear1110";
+        }
         if (activetrivia.has(channel)) {
-            if (channel === "#forsen") {
-                channel = "#botbear1110";
-            }
             cc.say(channel, "There is already an active trivia");
             return;
         }
@@ -188,26 +234,27 @@ async function onMessageHandler(channel, user, msg, self) {
             return;
         }    
 
-        triviaanswer.add(`${channel}${result[1].toLowerCase()}`);
+        triviaanswer.add(`${channel}${result[2].toLowerCase()}`);
         
 
         activetrivia.add(channel);
 
-        setTimeout(() => {
-            if (triviaanswer.has(`${channel}${result[1].toLowerCase()}`)) {
-            activetrivia.delete(channel);
-            triviaanswer.delete(`${channel}${result[1].toLowerCase()}`);
+        triviaHints[channel] = result[1];
 
-            cc.say(channel, `The trivia timed out after 60 seconds. The answer was: "${result[1]}"`)
+        gothint = false;
+
+        setTimeout(() => {
+            if (triviaanswer.has(`${channel}${result[2].toLowerCase()}`)) {
+            activetrivia.delete(channel);
+            triviaanswer.delete(`${channel}${result[2].toLowerCase()}`);
+            delete triviaHints[channel];
+
+            cc.say(channel, `The trivia timed out after 60 seconds. The answer was: "${result[2]}"`)
             }
         }, 60000);
 
 
         let response = result[0];
-
-        if (channel === "#forsen") {
-            channel = "#botbear1110";
-        }
 
         const banPhrase = await tools.banphrasePass(response, channel);
 
@@ -320,6 +367,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
     cc.say(channel, result);
     oldmessage = result;
+    return;
 }
 
 async function onConnectedHandler(addr, port) {
