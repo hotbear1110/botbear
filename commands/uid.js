@@ -1,4 +1,5 @@
 const axios = require('axios');
+require('dotenv').config();
 
 module.exports = {
     name: "uid",
@@ -12,20 +13,49 @@ module.exports = {
                 return;
             }
             let uiduser = user.username;
+
+            let isuid = !isNaN(input[2]);
+
             if (input[2]) {
-                if (input[2].startsWith("@")) {
-                    input[2] = input[2].substring(1);
+                if (isuid) {
+                    try {
+                        const userData = await axios.get(`https://api.twitch.tv/helix/users?id=${input[2]}`, {
+                            headers: {
+                                'client-id': process.env.TWITCH_CLIENTID,
+                                'Authorization': process.env.TWITCH_AUTH
+                            },
+                            timeout: 10000
+                        })
+                        if (userData.data.data.length) {
+                        uiduser = userData.data.data[0];
+                        uiduser = uiduser["login"];
+
                 }
-                uiduser = input[2];
+            } catch (err) {
+                console.log(err);
             }
-            
+        } else {
+            if (input[2].startsWith("@")) {
+                input[2] = input[2].substring(1);
+            }
+            uiduser = input[2];
+        }
+    }
             const userID = await axios.get(`https://api.ivr.fi/twitch/resolve/${uiduser}`, {timeout: 10000});
 
-            if (userID.data.banned === true) {
-                return `${userID.data.id} - cmonBruh [BANNED USER]`;
+            if (isuid) {
+                if (userID.data.banned === true) {
+                    return `${uiduser} - cmonBruh [BANNED USER]`;
+                }
+    
+                return uiduser;
+            } else {
+                if (userID.data.banned === true) {
+                    return `${userID.data.id} - cmonBruh [BANNED USER]`;
+                }
+    
+                return userID.data.id;
             }
-
-            return userID.data.id;
         } catch (err) {
             console.log(err);
             return `Error FeelsBadMan `;
