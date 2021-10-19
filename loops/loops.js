@@ -173,7 +173,7 @@ setInterval(async function () {
                 _.each(FFZ_list, async function (emote) {
                     let inlist = 0;
                     _.each(Emote_list, async function (emotecheck) {
-                        if (emotecheck.includes(emote["name"])) {
+                        if (emotecheck.includes(emote["name"]) && emotecheck.includes(emote["id"])) {
                             inlist = 1;
                         }
                     })
@@ -207,7 +207,7 @@ setInterval(async function () {
                 _.each(BTTV_list, async function (emote) {
                     let inlist = 0;
                     _.each(Emote_list, async function (emotecheck) {
-                        if (emotecheck.includes(emote["code"])) {
+                        if (emotecheck.includes(emote["code"]) && emotecheck.includes(emote["id"])) {
                             inlist = 1;
                         }
                     })
@@ -242,7 +242,7 @@ setInterval(async function () {
                     //console.log(emote)
                     let inlist = 0;
                     _.each(Emote_list, async function (emotecheck) {
-                        if (emotecheck.includes(emote["name"])) {
+                        if (emotecheck.includes(emote["name"]) && emotecheck.includes(emote["id"])) {
                             inlist = 1;
                             return;
                         }
@@ -268,7 +268,7 @@ setInterval(async function () {
 
                 if (noFFZ === 0) {
                     _.each(FFZ_list, async function (emotecheck) {
-                        if (emotecheck["id"] == emote[1]) {
+                        if (emotecheck["id"] == emote[1] && emotecheck["name"] === emote[0]) {
                             inlist = 1;
                             test1 = 1;
                             return;
@@ -278,7 +278,7 @@ setInterval(async function () {
 
                 if (noBTTV === 0 && inlist === 0) {
                     _.each(BTTV_list, async function (emotecheck) {
-                        if (emotecheck["id"] == emote[1]) {
+                        if (emotecheck["id"] == emote[1] && emotecheck["code"] === emote[0]) {
                             inlist = 1;
                             test2 = 1;
                             return;
@@ -288,7 +288,7 @@ setInterval(async function () {
 
                 if (noSTV === 0 && inlist === 0) {
                     _.each(STV_list, async function (emotecheck) {
-                        if (emotecheck["id"] == emote[1]) {
+                        if (emotecheck["id"] == emote[1] && emotecheck["name"] === emote[0]) {
                             inlist = 1;
                             test3 = 1
                             return;
