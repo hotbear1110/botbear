@@ -356,7 +356,7 @@ exports.nameChanges = new Promise(async (resolve, reject) => {
             },
             timeout: 10000
         })
-
+        if (userData.data.data.length) {
         realUser = userData.data.data[0];
         realUser = realUser["login"];
 
@@ -365,6 +365,7 @@ exports.nameChanges = new Promise(async (resolve, reject) => {
 
             changed.push([realUser, streamer.username]);
         }
+    }
     } catch (err) {
         console.log(err);
     }
