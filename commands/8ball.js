@@ -20,7 +20,7 @@ module.exports = {
 
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan `;
+            return `FeelsDankMan Error`;        
         }
     }
 }

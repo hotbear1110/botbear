@@ -42,7 +42,10 @@ module.exports = {
             return `That user is not a vip in #${realchannel} :) `;
         } catch (err) {
             console.log(err);
-            return `Error FeelsBadMan`
+            if (err.name === "TimeoutError") {
+                return `FeelsDankMan Banphrase api error: ${err.name}`;
+            }
+            return `FeelsDankMan Error`;
         }
     }
 }

@@ -25,7 +25,7 @@ module.exports = {
             return `Command name: ${commandlist[0].Name}. Category: ${commandlist[0].Category}. Description: ${commandlist[0].Command} - Permission lvl: ${commandlist[0].Perm}`;
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan `;
+            return `FeelsDankMan Sql error: ${err.sqlMessage}`;        
         }
     }
 }

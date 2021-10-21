@@ -23,7 +23,7 @@ module.exports = {
             return `Your suggestion was saved as 'ID ${IDs[0]['MAX(ID)']}' nymnDank 👍 `;
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan `;
+            return `FeelsDankMan Sql error: ${err.sqlMessage}`;
         }
     }
 }

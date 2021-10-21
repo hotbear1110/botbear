@@ -67,7 +67,10 @@ module.exports = {
             return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} | Do "bb hint" if you are nab and need a hint!`, fixedanswers , correct_answer];
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan `;
+            if (err.name === "TimeoutError") {
+                return `FeelsDankMan Banphrase api error: ${err.name}`;
+            }
+            return `FeelsDankMan Error`;
         }
     }
 }

@@ -29,7 +29,7 @@ module.exports = {
             return `/me I came ${msg}`;
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan `;
+            return `FeelsDankMan Error`;        
         }
     }
 }

@@ -31,7 +31,7 @@ module.exports = {
             return `#${realchannel} has been in the category: (${game}), for ${tools.humanizeDuration(ms)}`;
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan `;
+            return `FeelsDankMan Sql error: ${err.sqlMessage}`;        
         }
     }
 }

@@ -168,7 +168,15 @@ module.exports = {
 
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan `;
+            if (err.name) {
+                if (err.name === "TimeoutError") {
+                    return `FeelsDankMan Banphrase api error: ${err.name}`;
+                }
+            }
+            if (err.sqlMessage) {
+                return `FeelsDankMan Sql error: ${err.sqlMessage}`;
+            }
+            return `FeelsDankMan Error: ${err.response.data.error}`;    
         }
     }
 }

@@ -18,7 +18,7 @@ module.exports = {
             return `nymnDank pong! - Tmi delay: ${delay * 1000}ms - Internal delay:`;
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan `;
+            return `FeelsDankMan Sql error: ${err.sqlMessage}`;        
         }
     }
 }

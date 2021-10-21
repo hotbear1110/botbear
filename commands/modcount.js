@@ -29,7 +29,12 @@ module.exports = {
             return `That user is a m OMEGALUL d in ${ismod} channel('s)`;
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan `;
+            if (err.name) {
+                if (err.name === "TimeoutError") {
+                    return `FeelsDankMan Banphrase api error: ${err.name}`;
+                }
+            }
+            return `FeelsDankMan Error`;    
         }
     }
 }

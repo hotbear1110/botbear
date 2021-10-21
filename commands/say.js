@@ -36,7 +36,7 @@ module.exports = {
             return msg;
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan `;
+            return `FeelsDankMan Error`;
         }
     }
 }

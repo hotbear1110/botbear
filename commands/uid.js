@@ -33,6 +33,8 @@ module.exports = {
                 }
             } catch (err) {
                 console.log(err);
+                return `FeelsDankMan Error: ${err.response.data.error}`;
+
             }
         } else {
             if (input[2].startsWith("@")) {
@@ -58,7 +60,10 @@ module.exports = {
             }
         } catch (err) {
             console.log(err);
-            return `Error FeelsBadMan `;
+            if (err.name === "TimeoutError") {
+                return `FeelsDankMan Banphrase api error: ${err.name}`;
+            }
         }
+        return `FeelsDankMan Error: ${err.response.data.error}`;   
     }
 }

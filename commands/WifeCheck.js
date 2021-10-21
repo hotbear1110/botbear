@@ -12,7 +12,7 @@ module.exports = {
             return "doctorWTF";
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan `;
+            return `FeelsDankMan Error`;
         }
     }
 }

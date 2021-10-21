@@ -73,7 +73,10 @@ module.exports = {
                 return `${err.response.data.error} (${err.response.data.username})`;
             }
             console.log(err);
-            return ` Error FeelsBadMan `;
+            if (err.name === "TimeoutError") {
+                return `FeelsDankMan Banphrase api error: ${err.name}`;
+            }
+            return `FeelsDankMan Error`;
         }
     }
 }

@@ -12,7 +12,7 @@ module.exports = {
             return `https://github.com/hotbear1110/botbear`;
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan `;
+            return `FeelsDankMan Error`;
         }
     }
 }

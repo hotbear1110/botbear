@@ -245,13 +245,17 @@ module.exports = {
             if (found === 1) {
                 return response;
             } else {
-                return `Error FeelsBadMan - Emote was not found`;
+                return `FeelsDankMan Error: Emote was not found`;
             }
 
 
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan - Emote was not found`;
-        }
+            if (err.name) {
+                if (err.name === "TimeoutError") {
+                    return `FeelsDankMan Banphrase api error: ${err.name}`;
+                }
+            }
+            return `FeelsDankMan Error: ${err.response.data.error}`;                }
     }
 }

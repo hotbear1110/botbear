@@ -9,6 +9,10 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
+
+            if (!input[3]) {
+                return `Format should be: "bb bmi weight(kg) height(bm)"`;
+            }
             let text = "";
             let bmi = (input[3]**2)/10000;
             bmi = input[2]/bmi;
@@ -35,7 +39,7 @@ module.exports = {
 
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan `;
+            return `FeelsDankMan Error`;        
         }
     }
 }

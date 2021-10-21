@@ -166,7 +166,7 @@ exports.notbannedPhrases = (message) => {
         return isbanned;
     } catch (err) {
         console.log(err);
-        return err;
+        return;
     }
 };
 
