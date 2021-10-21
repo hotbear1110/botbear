@@ -15,16 +15,15 @@ module.exports = {
                 return;
             }
             let username = user.username;
-            let realchannel = channel;
             if (input[2]) {
                 if (input[2].startsWith("@")) {
                     input[2] = input[2].substring(1);
                 }
-                if (input[3]) {
-                    realchannel = input[3];
-                }
-    
                 username = input[2];
+            }
+            let realchannel = channel;
+            if (input[3]) {
+                realchannel = input[3];
             }
 
             const followcheck = await axios.get(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`, {timeout: 10000});
