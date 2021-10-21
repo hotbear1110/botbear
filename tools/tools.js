@@ -37,7 +37,7 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
         }
     } catch (err) {
         console.log(err);
-        resolve(0);
+        resolve(["error", `FeelsDankMan Banphrase api error: ${err.name}`]);
     }
     try {
         this.checkBanphrase = await got(this.banphraseapi, {
@@ -51,7 +51,7 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
         resolve(this.checkBanphrase);
     } catch (err) {
         console.log(err);
-        resolve(0);
+        resolve(["error", `FeelsDankMan Banphrase api error: ${err.name}`]);
     }
 
 });
@@ -67,7 +67,7 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
         resolve(false);
     } catch (err) {
         console.log(err);
-        resolve(0);
+        resolve(["error", `FeelsDankMan Banphrase api error: ${err.name}`]);
     }
 
 });

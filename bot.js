@@ -166,6 +166,11 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
+    if (banPhrase[0] === "error") {
+        cc.say(channel, banPhrase[1]);
+        return;
+    }
+
     const banPhraseV2 = await tools.banphrasePassV2(hint, channel);
 
     if (banPhraseV2 == true) {
@@ -173,8 +178,8 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
-    if (banPhrase === 0) {
-        cc.say(channel, "FeelsDankMan error!!");
+    if (banPhraseV2[0] === "error") {
+        cc.say(channel, banPhrase[1]);
         return;
     }
 
@@ -324,6 +329,11 @@ async function onMessageHandler(channel, user, msg, self) {
         cc.say(channel, `[Banphrased] cmonBruh`);
         return;
     }
+    
+    if (banPhrase[0] === "error") {
+        cc.say(channel, banPhrase[1]);
+        return;
+    }
 
     const banPhraseV2 = await tools.banphrasePassV2(result, channel);
 
@@ -332,8 +342,8 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
-    if (banPhrase === 0) {
-        cc.say(channel, "FeelsDankMan error!!");
+    if (banPhraseV2[0] === "error") {
+        cc.say(channel, banPhrase[1]);
         return;
     }
 
