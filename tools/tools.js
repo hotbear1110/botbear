@@ -67,14 +67,7 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
         resolve(false);
     } catch (err) {
         console.log(err);
-<<<<<<< HEAD
-        if (err.name) {
-            resolve(["error", `FeelsDankMan Banphrase api error: ${err.name}`]);
-        }
-        resolve(["error", `FeelsDankMan Banphrase api error: ${err}`]);
-=======
         resolve(0);
->>>>>>> parent of db2e507 (Fixed error response on the banphrase apis)
     }
 
 });
