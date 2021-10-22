@@ -37,7 +37,7 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
         }
     } catch (err) {
         console.log(err);
-        resolve(["error", `FeelsDankMan Banphrase api error: ${err.name}`]);
+        resolve(0);
     }
     try {
         this.checkBanphrase = await got(this.banphraseapi, {
@@ -51,7 +51,7 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
         resolve(this.checkBanphrase);
     } catch (err) {
         console.log(err);
-        resolve(["error", `FeelsDankMan Banphrase api error: ${err.name}`]);
+        resolve(0);
     }
 
 });
@@ -67,10 +67,14 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
         resolve(false);
     } catch (err) {
         console.log(err);
+<<<<<<< HEAD
         if (err.name) {
             resolve(["error", `FeelsDankMan Banphrase api error: ${err.name}`]);
         }
         resolve(["error", `FeelsDankMan Banphrase api error: ${err}`]);
+=======
+        resolve(0);
+>>>>>>> parent of db2e507 (Fixed error response on the banphrase apis)
     }
 
 });
