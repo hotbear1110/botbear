@@ -37,7 +37,7 @@ module.exports = {
             }
         } catch (err) {
             console.log(err);
-            if (err.name === "TimeoutError") {
+            if (err.name) {
                 return `FeelsDankMan Banphrase api error: ${err.name}`;
             }
             return `FeelsDankMan Error`;
