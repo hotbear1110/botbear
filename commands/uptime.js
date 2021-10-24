@@ -1,5 +1,7 @@
 const uptime = require("../bot.js").uptime;
 const tools = require("../tools/tools.js");
+const shell = require("child_process")
+
 
 module.exports = {
     name: "uptime",
@@ -16,7 +18,9 @@ module.exports = {
 
             let ms =  now - uptime;
 
-            return `Uptime: ${tools.humanizeDuration(ms)}`;
+            const commitCount = shell.execSync("git rev-list --all --count")
+
+            return `Uptime: ${tools.humanizeDuration(ms)} - commit: ${commitCount}`;
 
         } catch (err) {
             console.log(err);
