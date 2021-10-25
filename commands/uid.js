@@ -63,7 +63,7 @@ module.exports = {
             if (err.name === "TimeoutError") {
                 return `FeelsDankMan Banphrase api error: ${err.name}`;
             }
+            return `FeelsDankMan Error: ${err.response.data.error}`;   
         }
-        return `FeelsDankMan Error: ${err.response.data.error}`;   
     }
 }
