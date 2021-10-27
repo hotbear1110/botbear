@@ -26,7 +26,7 @@ module.exports = {
 
             trivia = trivia["results"];
 
-            let question = decodeURI(trivia[0].question);
+            let question = decodeURIComponent(trivia[0].question);
             let correct_answer = trivia[0].correct_answer;
             let incorrect_answers = trivia[0].incorrect_answers;
             let allanswers = incorrect_answers;
@@ -37,10 +37,11 @@ module.exports = {
             let fixedanswers = [];
 
             _.each(shuffled, function (answer) {
-                fixedanswers.push(decodeURI(answer));
+                fixedanswers.push(decodeURIComponent(answer));
             })
 
             fixedanswers = fixedanswers.toString().replaceAll(",", " | ");
+            /*
             fixedanswers = fixedanswers.replaceAll("%2C", ",");
             fixedanswers = fixedanswers.replaceAll("%26", "&");
             fixedanswers = fixedanswers.replaceAll("%3A", ":");
@@ -53,9 +54,11 @@ module.exports = {
             question = question.replaceAll("%3A", ":");
             question = question.replaceAll("%2F", "/");
             question = question.replaceAll("%24", "$");
+            */
 
-            correct_answer = decodeURI(correct_answer);
+            correct_answer = decodeURIComponent(correct_answer);
 
+            /*
             correct_answer = correct_answer.replaceAll("%3F", "?");
             correct_answer = correct_answer.replaceAll("%2C", ",");
             correct_answer = correct_answer.replaceAll("%26", "&");
@@ -63,6 +66,7 @@ module.exports = {
             correct_answer = correct_answer.replaceAll("%2F", "/");
             correct_answer = correct_answer.replaceAll("%24", "$");
 
+            */
             console.log(shuffled)
             return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} | Do "bb hint" if you are nab and need a hint!`, fixedanswers , correct_answer];
         } catch (err) {
