@@ -4,7 +4,7 @@ const got = require("got");
 module.exports = {
     name: "cookie",
     ping: true,
-    description: 'This command will register/unregiter you for notifications for "ThePositiveBot´s" cookies. Available commands: "bb cookie [register/unregister", "bb cookie status"(will tell you the time remaining until you can eat your next cookie)',
+    description: 'This command will register/unregiter you for notifications for "ThePositiveBot´s" cookies. Available commands: "bb cookie [register/unregister]", "bb cookie status"(will tell you the time remaining until you can eat your next cookie)',
     permission: 100,
     category: "Notify command",
     execute: async (channel, user, input, perm) => {
