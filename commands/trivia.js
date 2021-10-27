@@ -37,10 +37,12 @@ module.exports = {
             let fixedanswers = [];
 
             _.each(shuffled, function (answer) {
-                fixedanswers.push(decodeURIComponent(answer));
+                fixedanswers.push(answer);
             })
 
             fixedanswers = fixedanswers.toString().replaceAll(",", " | ");
+
+            fixedanswers = decodeURIComponent(fixedanswers);
 
             correct_answer = decodeURIComponent(correct_answer);
 
