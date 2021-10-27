@@ -41,32 +41,9 @@ module.exports = {
             })
 
             fixedanswers = fixedanswers.toString().replaceAll(",", " | ");
-            /*
-            fixedanswers = fixedanswers.replaceAll("%2C", ",");
-            fixedanswers = fixedanswers.replaceAll("%26", "&");
-            fixedanswers = fixedanswers.replaceAll("%3A", ":");
-            fixedanswers = fixedanswers.replaceAll("%2F", "/");
-            fixedanswers = fixedanswers.replaceAll("%24", "$");
-
-            question = question.replaceAll("%3F", "?");
-            question = question.replaceAll("%2C", ",");
-            question = question.replaceAll("%26", "&");
-            question = question.replaceAll("%3A", ":");
-            question = question.replaceAll("%2F", "/");
-            question = question.replaceAll("%24", "$");
-            */
 
             correct_answer = decodeURIComponent(correct_answer);
 
-            /*
-            correct_answer = correct_answer.replaceAll("%3F", "?");
-            correct_answer = correct_answer.replaceAll("%2C", ",");
-            correct_answer = correct_answer.replaceAll("%26", "&");
-            correct_answer = correct_answer.replaceAll("%3A", ":");
-            correct_answer = correct_answer.replaceAll("%2F", "/");
-            correct_answer = correct_answer.replaceAll("%24", "$");
-
-            */
             console.log(shuffled)
             return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} | Do "bb hint" if you are nab and need a hint!`, fixedanswers , correct_answer];
         } catch (err) {
