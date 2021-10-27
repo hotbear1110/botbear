@@ -84,6 +84,7 @@ module.exports = {
                         resolve(timeFound);
                     }
                 })
+                resolve(timeFound);
             })
 
             if (await results === null) {
