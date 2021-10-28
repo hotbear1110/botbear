@@ -73,7 +73,11 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
 });
 
 
+// Contains information wether or not there is an ongoing event in the classified channel and command.
 hasCooldown = new Set();
+
+// Contains hasCooldown [key: process uptime in seconds]
+let cooldownTime = {}
 
 exports.Cooldown = class Cooldown {
     constructor(user, command, CD) {
@@ -94,11 +98,33 @@ exports.Cooldown = class Cooldown {
         if (hasCooldown.has(this.key)) { return [this.key]; }
 
         hasCooldown.add(this.key);
+        
+        cooldownTime[this.key] = process.uptime();
 
         setTimeout(() => {
             hasCooldown.delete(this.key);
+            delete cooldownTime[this.key];
         }, this.cooldown);
         return [];
+    }
+
+    /**
+     * @returns {String}: MM:SS
+     */
+    formattedTime() {
+        try {
+            const timeInSeconds = (this.cooldown[this.key] - process.uptime());
+            const sec = parseInt(timeInSeconds, 10); // convert value to number if it's string
+            let hours   = Math.floor(sec / 3600); // get hours
+            let minutes = Math.floor((sec - (hours * 3600)) / 60); // get minutes
+            let seconds = sec - (hours * 3600) - (minutes * 60); //  get seconds
+            // add 0 if value < 10; Example: 2 => 02
+            if (minutes < 10) {minutes = "0"+minutes;}
+            if (seconds < 10) {seconds = "0"+seconds;}
+            return minutes+':'+seconds;
+        } catch (err) {
+            console.error(err)
+        }
     }
 };
 
