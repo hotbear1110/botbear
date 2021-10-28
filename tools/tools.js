@@ -87,12 +87,6 @@ exports.Cooldown = class Cooldown {
         this.key = `${this.userId}_${this.command}`;
     }
 
-    async cooldownReduction() {
-        const cooldown = this.cooldown;
-
-        return cooldown;
-    }
-
     // command cooldown
     async setCooldown() {
         if (this.userId === process.env.TWITCH_OWNERUID) { return [] }; // Your user ID
@@ -103,7 +97,7 @@ exports.Cooldown = class Cooldown {
 
         setTimeout(() => {
             hasCooldown.delete(this.key);
-        }, await this.cooldownReduction());
+        }, this.cooldown);
         return [];
     }
 };
