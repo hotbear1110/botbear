@@ -75,6 +75,8 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
 
 hasCooldown = new Set();
 
+let cooldownTime = {}
+
 exports.Cooldown = class Cooldown {
     constructor(user, command, CD) {
         this.cooldown = CD;
@@ -101,10 +103,22 @@ exports.Cooldown = class Cooldown {
 
         hasCooldown.add(this.key);
 
+        cooldownTime[this.key] = new Date().getTime();
+
+
         setTimeout(() => {
             hasCooldown.delete(this.key);
+            delete cooldownTime[this.key];
+
         }, await this.cooldownReduction());
         return [];
+    }
+
+    /**
+     * @returns {String}: String formatted time left.
+     */
+     formattedTime() {
+        return exports.humanizeDuration(this.cooldown - (new Date().getTime() - cooldownTime[this.key]));
     }
 };
 
