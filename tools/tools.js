@@ -73,7 +73,11 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
 });
 
 
+// Contains information wether or not there is an ongoing event in the classified channel and command.
 hasCooldown = new Set();
+
+// Contains hasCooldown [key: process uptime in seconds]
+let cooldownTime = {}
 
 exports.Cooldown = class Cooldown {
     constructor(user, command, CD) {
@@ -87,12 +91,6 @@ exports.Cooldown = class Cooldown {
         this.key = `${this.userId}_${this.command}`;
     }
 
-    async cooldownReduction() {
-        const cooldown = this.cooldown;
-
-        return cooldown;
-    }
-
     // command cooldown
     async setCooldown() {
         if (this.userId === process.env.TWITCH_OWNERUID) { return [] }; // Your user ID
@@ -100,11 +98,21 @@ exports.Cooldown = class Cooldown {
         if (hasCooldown.has(this.key)) { return [this.key]; }
 
         hasCooldown.add(this.key);
+        
+        cooldownTime[this.key] = process.uptime();
 
         setTimeout(() => {
             hasCooldown.delete(this.key);
-        }, await this.cooldownReduction());
+            delete cooldownTime[this.key];
+        }, this.cooldown);
         return [];
+    }
+
+    /**
+     * @returns {String}: String formatted time left.
+     */
+    formattedTime() {
+        return exports.humanizeDuration(this.cooldown[this.key] - process.uptime());
     }
 };
 
