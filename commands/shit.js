@@ -2,7 +2,7 @@ const tools = require("../tools/tools.js");
 const regex = require('../tools/regex.js');
 
 module.exports = {
-    name: "cum",
+    name: "shit",
     ping: false,
     description: 'This command will make the bot shit in different ways. Example: "bb shit on NymN"',
     permission: 100,
