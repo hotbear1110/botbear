@@ -50,7 +50,7 @@ module.exports = {
 
             console.log(shuffled)
             if (question.toLowerCase().includes("which of these") || question.toLowerCase().includes("which one of these")) {
-                return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} - [${fixedanswers}]`, "FeelsDankMan you already got the hint." , correct_answer];
+                return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} - [ ${fixedanswers} ]`, "FeelsDankMan you already got the hint." , correct_answer];
             } else {
             return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} | Do "bb hint" if you are nab and need a hint!`, fixedanswers , correct_answer];
             }
