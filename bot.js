@@ -222,7 +222,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
         const triviaCD = new tools.Cooldown(realchannel, realcommand, cd);
 
-        if ((await triviaCD.setCooldown()).length) { 
+        if ((await triviaCD.setCooldown()).length && !user.mod) { 
             cc.say(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`)
             
             return; 
