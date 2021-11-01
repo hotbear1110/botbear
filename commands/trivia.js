@@ -50,7 +50,6 @@ async function getTrivia(genre) {
     }
 }
 
-=======
 module.exports = {
     name: "trivia",
     ping: false,
@@ -73,7 +72,6 @@ module.exports = {
 
             const a = await getTrivia(genre(input[0]));
             const trivia = await a["results"];
-=======
 
             }
 
@@ -108,7 +106,6 @@ module.exports = {
 
             if (question.toLowerCase().includes("which of these") || question.toLowerCase().includes("which one of these")) {
                 return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} - [${answerToString}]`, "FeelsDankMan you already got the hint." , correct_answer];
-=======
 
 
             console.log(shuffled)
