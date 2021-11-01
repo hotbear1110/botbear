@@ -70,7 +70,7 @@ module.exports = {
                 return array;
             }
 
-            const a = await getTrivia(genre(input[0]));
+            const a = await getTrivia(genre(input[2]));
             const trivia = await a["results"];
 
             let question = decodeURIComponent(trivia[0].question);
