@@ -50,10 +50,11 @@ async function getTrivia(genre) {
     }
 }
 
+=======
 module.exports = {
     name: "trivia",
     ping: false,
-    description: 'This command will start a new trivia in chat (The cooldown is 5 minutes and the trivia times out after 60 seconds.). Specific category: "bb trivia sports". Categories: [ https://hotbear.xyz:2053 ]',
+    description: 'This command will start a new trivia in chat (The cooldown is 5 minutes and the trivia times out after 60 seconds.)',
     permission: 100,
     category: "Random command",
     execute: async (channel, user, input, perm) => {
@@ -72,6 +73,13 @@ module.exports = {
 
             const a = await getTrivia(genre(input[0]));
             const trivia = await a["results"];
+=======
+
+            }
+
+            let trivia = await got(`https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986`, {timeout: 10000}).json();
+
+            trivia = trivia["results"];
 
             let question = decodeURIComponent(trivia[0].question);
             let correct_answer = trivia[0].correct_answer;
@@ -100,6 +108,12 @@ module.exports = {
 
             if (question.toLowerCase().includes("which of these") || question.toLowerCase().includes("which one of these")) {
                 return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} - [${answerToString}]`, "FeelsDankMan you already got the hint." , correct_answer];
+=======
+
+
+            console.log(shuffled)
+            if (question.toLowerCase().includes("which of these") || question.toLowerCase().includes("which one of these") || question.toLowerCase().includes("which of the following")) {
+                return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} - [${fixedanswers}]`, "FeelsDankMan you already got the hint." , correct_answer];
             } else {
                 return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} | Do "bb hint" if you are nab and need a hint!`, answerToString , correct_answer];
             }
