@@ -4,6 +4,7 @@ const _ = require("underscore");
 const axios = require('axios');
 const cc = require("../bot.js").cc;
 const got = require("got");
+const { isDnsLookupIpVersion } = require('got/dist/source/core/utils/dns-ip-version');
 
 function sleep(milliseconds) {
     var start = new Date().getTime();
