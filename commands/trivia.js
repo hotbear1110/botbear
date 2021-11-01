@@ -34,11 +34,19 @@ const OTDB_Categories = {
     "cartoons": 32
 }
 
-const genre = (category) => {
+function genre(category) {
     if (category === undefined) {
         return undefined;
     } else {
         return OTDB_Categories[category];
+    }
+}
+
+async function getTrivia(genre) {
+    if (genre === undefined) {
+        return await got(`https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986`, {timeout: 10000}).json();
+    } else {
+        return await got(`https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&category=${genre}`, {timeout: 10000}).json();
     }
 }
 
@@ -62,20 +70,8 @@ module.exports = {
                 return array;
             }
 
-
-            const trivia = async () => {
-                const a = genre();
-                if (a === undefined) {
-                    return await got(`https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986`, {timeout: 10000}).json();
-                } else {
-                    return await got(`https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&category=${a}`, {timeout: 10000}).json();
-                }
-
-            }
-
-            console.log(trivia)
-
-            trivia = trivia["results"];
+            const a = await getTrivia(genre(input[0]));
+            const trivia = await a["results"];
 
             let question = decodeURIComponent(trivia[0].question);
             let correct_answer = trivia[0].correct_answer;
@@ -87,30 +83,32 @@ module.exports = {
             let shuffled = arrayShuffle(allanswers);
             let fixedanswers = [];
 
-            _.each(shuffled, function (answer) {
+            _.each(shuffled, (answer) => {
                 fixedanswers.push(answer);
             })
 
-            fixedanswers = fixedanswers.toString().replaceAll(",", " | ");
+            let answerToString = "";
+            fixedanswers.forEach((a) => {
+                answerToString += ` ${a} |`
+            })
 
-            fixedanswers = decodeURIComponent(fixedanswers);
-
+            answerToString = answerToString.replace(/.$/, '')
+            answerToString = decodeURIComponent(answerToString);
+            
             correct_answer = decodeURIComponent(correct_answer);
+            console.log(answerToString)
 
-
-
-            console.log(shuffled)
-            if (question.toLowerCase().includes("which of these") || question.toLowerCase().includes("which one of these") || question.toLowerCase().includes("which of the following")) {
-                return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} - [ ${fixedanswers} ]`, "FeelsDankMan you already got the hint." , correct_answer];
+            if (question.toLowerCase().includes("which of these") || question.toLowerCase().includes("which one of these")) {
+                return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} - [${answerToString}]`, "FeelsDankMan you already got the hint." , correct_answer];
             } else {
-            return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} | Do "bb hint" if you are nab and need a hint!`, fixedanswers , correct_answer];
+                return [`(Trivia) ${user.username} has started a trivia :) Question: ${question} | Do "bb hint" if you are nab and need a hint!`, answerToString , correct_answer];
             }
         } catch (err) {
             console.log(err);
             if (err.name === "TimeoutError") {
                 return `FeelsDankMan Banphrase api error: ${err.name}`;
             }
-            return `FeelsDankMan Error`;
+            return `FeelsDankMan Error, ${err}`;
         }
     }
 }
