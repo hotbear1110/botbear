@@ -4,7 +4,7 @@ module.exports = {
     name: "randomping",
     ping: false,
     description: 'This command will make the bot ping a random user in chat.',
-    permission: 1500,
+    permission: 100,
     category: "Random command",
     execute: async (channel, user, input, perm) => {
         try {
