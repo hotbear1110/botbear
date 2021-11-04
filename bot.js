@@ -68,7 +68,7 @@ async function onMessageHandler(channel, user, msg, self) {
     input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
     let realcommand = input[1];
 
-    if (realcommand !== "say" && realcommand !== "channel" && realcommand !== "emotecheck" && realcommand !== "cum" && realcommand !== "suggest" && realcommand !== "shit") {
+    if (realcommand !== "say" && realcommand !== "channel" && realcommand !== "emotecheck" && realcommand !== "cum" && realcommand !== "suggest" && realcommand !== "shit" && realcommand !== "code") {
         input = msg.toLowerCase().split(" ");
     }
 
