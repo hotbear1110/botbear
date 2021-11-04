@@ -93,7 +93,8 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (user.username === "supibot") {
-        return ":tf: no";
+        cc.say(channel, ":tf: no");
+        return;
     }
 
     const userList = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username]);
