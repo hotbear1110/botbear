@@ -20,8 +20,8 @@ cc.connect();
 
 let uptime = new Date().getTime();
 
-const triviaanswer = new Set();
 const activetrivia = new Set();
+let triviaanswer = {};
 let triviaHints = {};
 let gothint = false;
 
@@ -48,14 +48,18 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (activetrivia.has(channel)) { 
-        if (triviaanswer.has(`${channel}${msg.toLowerCase()}`)) {
+        let similarity = await tools.similarity(msg.toLowerCase(), triviaanswer[channel])
+        console.log(similarity)
+        console.log(triviaanswer[channel])
+        console.log(msg.toLowerCase())
+        if (await similarity >= 0.8) {
             if (channel === "#forsen") {
                 channel = "#botbear1110";
             }
-            cc.say(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${msg}"! OMGScoots`);
+            cc.say(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity * 100}% similarity) OMGScoots`);
 
             activetrivia.delete(channel);
-            triviaanswer.delete(`${channel}${msg.toLowerCase()}`);
+            delete triviaanswer[channel];
             delete triviaHints[channel];
             return;
         }
@@ -234,7 +238,7 @@ async function onMessageHandler(channel, user, msg, self) {
             return;
         }    
 
-        triviaanswer.add(`${channel}${result[2].toLowerCase()}`);
+        triviaanswer[channel] = result[2].toLowerCase();
         
 
         activetrivia.add(channel);
@@ -244,9 +248,9 @@ async function onMessageHandler(channel, user, msg, self) {
         gothint = false;
 
         setTimeout(() => {
-            if (triviaanswer.has(`${channel}${result[2].toLowerCase()}`)) {
+            if (activetrivia.has(channel)) {
             activetrivia.delete(channel);
-            triviaanswer.delete(`${channel}${result[2].toLowerCase()}`);
+            delete triviaanswer[channel];
             delete triviaHints[channel];
 
             cc.say(channel, `The trivia timed out after 60 seconds. The answer was: "${result[2]}"`)
