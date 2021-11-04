@@ -47,6 +47,7 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
+
     if (activetrivia.has(channel)) { 
         let similarity = await tools.similarity(msg.toLowerCase(), triviaanswer[channel])
         if (await similarity >= 0.8) {
@@ -89,6 +90,10 @@ async function onMessageHandler(channel, user, msg, self) {
 
     if (input[0] !== "bb" && input[0].toLowerCase() !== "forsenbb") {
         return;
+    }
+
+    if (user.username === "supibot") {
+        return ":tf: no";
     }
 
     const userList = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username]);
