@@ -49,7 +49,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
 
     if (activetrivia.has(channel)) { 
-        let similarity = await tools.similarity(msg.toLowerCase(), triviaanswer[channel])
+        let similarity = await tools.similarity(msg.toLowerCase(), triviaanswer[channel].toLowerCase())
         if (await similarity >= 0.8) {
             if (channel === "#forsen") {
                 channel = "#botbear1110";
@@ -241,7 +241,7 @@ async function onMessageHandler(channel, user, msg, self) {
             return;
         }    
 
-        triviaanswer[channel] = result[2].toLowerCase();
+        triviaanswer[channel] = result[2];
         
 
         activetrivia.add(channel);
