@@ -31,7 +31,7 @@ module.exports = {
 
             let temp = shell.execSync("vcgencmd measure_temp");
 
-            temp = temp.split("=")[1];
+            temp = temp.toString().split("=")[1];
 
 
             return `CPU: ${cpuused}% - Memory: ${used}/${total}B - Temperature: ${temp}`;
