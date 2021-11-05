@@ -34,7 +34,7 @@ module.exports = {
             temp = temp.toString().split("=")[1];
 
 
-            return `CPU: ${cpuused}% - Memory: ${used}/${total}B - Temperature: ${temp}`;
+            return `CPU: ${cpuused}% - Memory: ${used}MB/${total}B - Temperature: ${temp}`;
 
         } catch (err) {
             console.log(err);
