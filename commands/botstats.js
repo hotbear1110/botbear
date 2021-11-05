@@ -1,9 +1,9 @@
 const shell = require("child_process")
 
 module.exports = {
-    name: "uptime",
+    name: "botstats",
     ping: true,
-    description: 'This command will tell you how long the bot has been live for',
+    description: 'This command will give you some info about the bot',
     permission: 100,
     category: "Bot command",
     execute: async (channel, user, input, perm) => {
