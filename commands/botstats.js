@@ -19,8 +19,8 @@ module.exports = {
             total = total.split(" ")
             console.log(total)
 
-            let used = total[18];
-            total = total[11];
+            let used = total[17];
+            total = total[10];
 
             used = used.slice(0, -2);
             total = total.slice(0, -1);
@@ -29,7 +29,7 @@ module.exports = {
 
             let cpuused = cpu.toString().split("all")[1]
             console.log(cpuused = cpuused.split(" "))
-            cpuused = cpuused.split(" ")[3]
+            cpuused = cpuused.split(" ")[4]
 
             let temp = shell.execSync("vcgencmd measure_temp");
 
