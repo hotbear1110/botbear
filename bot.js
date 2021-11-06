@@ -54,8 +54,9 @@ async function onMessageHandler(channel, user, msg, self) {
             if (channel === "#forsen") {
                 channel = "#botbear1110";
             }
-            similarity = similarity.substring(0, 5);
-            cc.say(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity * 100}% similarity) OMGScoots`);
+            similarity = similarity * 100
+            similarity = similarity.toString().substring(0, 5);
+            cc.say(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) OMGScoots`);
 
             activetrivia.delete(channel);
             delete triviaanswer[channel];
