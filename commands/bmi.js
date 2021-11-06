@@ -11,7 +11,7 @@ module.exports = {
             }
 
             if (!input[3]) {
-                return `Format should be: "bb bmi weight(kg) height(bm)"`;
+                return `Format should be: "bb bmi weight(kg) height(cm)"`;
             }
             let text = "";
             let bmi = (input[3]**2)/10000;
