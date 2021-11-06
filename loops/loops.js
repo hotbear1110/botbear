@@ -47,7 +47,7 @@ setInterval(async function () {
                     await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`);
                     _.each(userlist, function (msg, i) {
                         setTimeout(function () {
-                            cc.action(`#${proxychannel}`, `${stream.liveemote} ${stream.username} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`);
+                            cc.action(`#${proxychannel}`, `${stream.liveemote} ${stream.username.toUpperCase()} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`);
                         }, 2000 * i);
                     });
                 };
@@ -56,7 +56,7 @@ setInterval(async function () {
                     await tools.query(`UPDATE Streamers SET islive = 0 WHERE username ="${stream.username}"`);
                     _.each(userlist, function (msg, i) {
                         setTimeout(function () {
-                            cc.action(`#${proxychannel}`, `${stream.offlineemote} ${stream.username} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`);
+                            cc.action(`#${proxychannel}`, `${stream.offlineemote} ${stream.username.toUpperCase()} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`);
                         }, 2000 * i);
                     });
                 };
