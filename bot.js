@@ -75,16 +75,26 @@ async function onMessageHandler(channel, user, msg, self) {
 
             cc.say(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) OMGScoots You get +${triviaScore} points`);
 
-            const isUser = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username]);
+            let userchannel = [];
+                    userchannel.push(`"${user.username}"`);
+                    userchannel.push(`"${channel}"`);
 
-            triviaScore = Math.round(triviaScore);
 
-            if (!isUser.length && user.username != null) {
-             await tools.query('INSERT INTO Users (username, uid, permission, trivia_score) values (?, ?, ?, ?)', [user.username, user["user-id"], 100, triviaScore]);
-            } else {
-                triviaScore = triviaScore + isUser[0].trivia_score;
-                await tools.query(`UPDATE Users SET trivia_score=? WHERE username=?`, [triviaScore, user.username]);
-            }
+
+                    const alreadyJoined = await tools.query(`
+                SELECT *
+                FROM MyPoints
+                WHERE username=?`,
+                        [`[${userchannel}]`]);
+
+                        triviaScore = Math.round(triviaScore);
+
+                    if (!alreadyJoined.length) {
+                        await tools.query('INSERT INTO MyPoints (username, points) values (?, ?)', [`[${userchannel}]`, triviaScore]);
+                    } else {
+                        triviaScore = triviaScore + alreadyJoined[0].points;
+                        await tools.query(`UPDATE MyPoints SET points=? WHERE username=?`, [triviaScore, `[${userchannel}]`])
+                    }
 
             activetrivia.delete(channel);
             delete triviaanswer[channel];

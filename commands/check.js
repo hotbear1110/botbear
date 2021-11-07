@@ -32,9 +32,23 @@ module.exports = {
                         }
                         username = input[3];
                     }
-                    const User_trivia = await tools.query(`SELECT trivia_score FROM Users WHERE username=?`, [username]);
+                    if (input[4]) {
+                        if (input[4].startsWith("@")) {
+                            input[4] = input[4].substring(1);
+                        }
+                        channel = input[4];
+                    }
 
-                    return `${username} has ${User_trivia[0].trivia_score} trivia points`;
+                    let userchannel = [];
+                    userchannel.push(`"${username}"`);
+                    userchannel.push(`"#${channel}"`);
+                    const User_trivia = await tools.query(`SELECT points FROM MyPoints WHERE username=?`, [`[${userchannel}]`]);
+
+                    if (!User_trivia.length) {
+                        return "That user has no points yet :)"
+                    }
+
+                    return `${username} has ${User_trivia[0].points} trivia points in #${channel}`;
 
                 default: 
                     return `Stuff available to check: permission, points`;
