@@ -258,6 +258,11 @@ async function onMessageHandler(channel, user, msg, self) {
             cc.say(channel, "There is already an active trivia");
             return;
         }
+        const isLive = await tools.query(`SELECT islive FROM Streamers WHERE username=?`, [realchannel]);
+        if (isLive[0].islive === 1) {
+            return;
+        }
+
         let cd = 300000;
         
         if (realchannel === "hotbear1110") {
