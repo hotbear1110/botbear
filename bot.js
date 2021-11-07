@@ -77,6 +77,8 @@ async function onMessageHandler(channel, user, msg, self) {
 
             const isUser = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username]);
 
+            triviaScore = Math.round(triviaScore);
+
             if (!isUser.length && user.username != null) {
              await tools.query('INSERT INTO Users (username, uid, permission, trivia_score) values (?, ?, ?, ?)', [user.username, user["user-id"], 100, triviaScore]);
             } else {
