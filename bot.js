@@ -113,8 +113,8 @@ async function onMessageHandler(channel, user, msg, self) {
     input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
     let realcommand = input[1];
 
-    if (realcommand !== "say" && realcommand !== "channel" && realcommand !== "emotecheck" && realcommand !== "cum" && realcommand !== "suggest" && realcommand !== "shit" && realcommand !== "code") {
-        input = msg.toLowerCase().split(" ");
+    if (realcommand === "say" && realcommand === "channel" && realcommand === "emotecheck" && realcommand === "cum" && realcommand === "suggest" && realcommand === "shit" && realcommand === "code") {
+        input = input.toString().replaceAll(",", " ");
     }
 
     if (input[0] === "[cookies]" && user["user-id"] == 425363834) {
