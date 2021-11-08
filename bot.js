@@ -5,6 +5,7 @@ const tools = require("./tools/tools.js");
 const regex = require('./tools/regex.js');
 const _ = require("underscore");
 const requireDir = require("require-dir");
+const trivia = require('./commands/trivia.js');
 
 const cc = new tmi.client(login.options);
 
@@ -69,7 +70,7 @@ async function onMessageHandler(channel, user, msg, self) {
             let triviaScore = 1000;
             triviaScore = triviaScore * (Math.floor(similarity)/100);
             triviaScore = triviaScore * time;
-            if (gothint[channel] === false) {
+            if (gothint[channel] === false || triviaHints[channel] !== "FeelsDankMan you already got the hint.") {
                 triviaScore = triviaScore * 2;
             }
 
