@@ -70,7 +70,7 @@ async function onMessageHandler(channel, user, msg, self) {
             let triviaScore = 1000;
             triviaScore = triviaScore * (Math.floor(similarity)/100);
             triviaScore = triviaScore * time;
-            if (gothint[channel] === false || triviaHints[channel] !== "FeelsDankMan you already got the hint.") {
+            if (gothint[channel] === false && triviaHints[channel] !== "FeelsDankMan you already got the hint.") {
                 triviaScore = triviaScore * 2;
             }
 
