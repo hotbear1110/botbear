@@ -73,6 +73,8 @@ async function onMessageHandler(channel, user, msg, self) {
                 triviaScore = triviaScore * 2;
             }
 
+            triviaScore = Math.round(triviaScore);
+
             cc.say(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) OMGScoots You get +${triviaScore} points`);
 
             let userchannel = [];
@@ -86,8 +88,6 @@ async function onMessageHandler(channel, user, msg, self) {
                 FROM MyPoints
                 WHERE username=?`,
                         [`[${userchannel}]`]);
-
-                        triviaScore = Math.round(triviaScore);
 
                     if (!alreadyJoined.length) {
                         await tools.query('INSERT INTO MyPoints (username, points) values (?, ?)', [`[${userchannel}]`, triviaScore]);
