@@ -1,4 +1,5 @@
 const tools = require("../tools/tools.js");
+const _ = require("underscore");
 
 module.exports = {
     name: "check",
@@ -49,6 +50,35 @@ module.exports = {
                     }
 
                     return `${username} has ${User_trivia[0].points} trivia points in #${channel}`;
+                    break;
+
+                case "leaderboard":
+                    if (input[3]) {
+                        if (input[3].startsWith("@")) {
+                            input[3] = input[3].substring(1);
+                        }
+                        channel = input[3];
+                    }
+
+                const Trivia_leaderboard = await tools.query(`SELECT * FROM MyPoints ORDER BY points DESC`);
+
+                let leaderboard = [];
+
+                _.each(Trivia_leaderboard, async function (user) {
+                    let realuser = JSON.parse(user.username)
+                    if (realuser[1] === `#${channel}`) {
+                        leaderboard.push(`${realuser[0]}: ${user.points}`)
+                    }
+                })
+                if (!leaderboard.length) {
+                    return "There are no users with points in this channel";
+                }
+
+                leaderboard = leaderboard.toString().replaceAll(',', '\n');
+
+                let hastebinlist = await tools.makehastebin(`Trivia leaderboard for #${channel}:\n\n${leaderboard}`);
+
+                return `Trivia leaderboard for #${channel}: ${hastebinlist}.txt`;
 
                 default: 
                     return `Stuff available to check: permission, points`;
