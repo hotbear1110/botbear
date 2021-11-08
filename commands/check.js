@@ -81,7 +81,7 @@ module.exports = {
                 return `Trivia leaderboard for #${channel}: ${hastebinlist}.txt`;
 
                 default: 
-                    return `Stuff available to check: permission, points`;
+                    return `Stuff available to check: permission, points, leaderboard`;
             }
         } catch (err) {
             console.log(err);
