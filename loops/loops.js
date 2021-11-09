@@ -334,8 +334,13 @@ setInterval(async function () {
 
     _.each(users, async function (User) {
         if (User.RemindTime !== null && User.RemindTime < Time) {
+            const stream = await tools.query('SELECT disabled_commands FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
+            let disabledCommands = JSON.parse(stream[0].disabled_commands)
+
             await tools.query(`UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
-            cc.say(User.Channel, `${User.User} Reminder to eat your cookie nymnOkay`)
+            if (!disabledCommands.includes("cookie")) {
+                cc.say(User.Channel, `${User.User} Reminder to eat your cookie nymnOkay`)
+            }
         }
 
     })
