@@ -117,7 +117,7 @@ async function onMessageHandler(channel, user, msg, self) {
         input = input.toString().replaceAll(",", " ");
     }
 
-    if (input[0] === "[cookies]" && user["user-id"] == 425363834) {
+    if (input[0] === "[Cookies]" && user["user-id"] == 425363834) {
         const cookieStatus = await tools.cookies(user, input, channel);
 
         if (cookieStatus[0] === "Confirmed") {
