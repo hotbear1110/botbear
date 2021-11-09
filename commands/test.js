@@ -1,11 +1,11 @@
 const shell = require("child_process")
 
 module.exports = {
-    name: "uptime",
+    name: "test",
     ping: true,
-    description: 'This command will tell you how long the bot has been live for',
-    permission: 100,
-    category: "Bot command",
+    description: 'This is a dev command for testing purposes',
+    permission: 2000,
+    category: "Dev command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {
