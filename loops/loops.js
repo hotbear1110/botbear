@@ -75,7 +75,7 @@ setInterval(async function () {
     })
     _.each(streamers, async function (stream) {
         let disabledCommands = JSON.parse(stream.disabled_commands)
-        if (!disabledCommands.includes("notify") || !disabledCommands.includes("myping")) {
+        if (!disabledCommands.includes("notify")) {
         setTimeout(async function () { 
         await axios.get(`https://api.twitch.tv/helix/channels?broadcaster_id=${stream.uid}`, {
             headers: {

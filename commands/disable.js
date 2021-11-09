@@ -65,7 +65,6 @@ module.exports = {
                         }
 
                         disabledList.push(command);
-                        console.log(disabledList);
 
                         disabledList = JSON.stringify(disabledList);
 
