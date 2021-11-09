@@ -1,5 +1,4 @@
 const got = require("got");
-const cc = require("../bot.js").cc;
 const tools = require("../tools/tools.js");
 
 
@@ -33,7 +32,12 @@ module.exports = {
             if (masspinged != "null") {
                 return "[MASS PING]";
             }
+
+            let message = tools.splitLine(fl.message, 350)
             if (fl.status !== 404) {
+                if (message[1]) {
+                    return `#${realchannel} ${fl.user}: ${message}... - (${fl.time} ago)`;
+                }
                 return `nymnDank ${fl.user}'s first message in #${realchannel} was: ${fl.message} - (${fl.time} ago)`;
             }
         } catch (err) {

@@ -34,7 +34,12 @@ module.exports = {
             if (masspinged != "null") {
                 return "[MASS PING]";
             }
+            
+            let message = tools.splitLine(lm.message, 350)
             if (lm.status !== 404) {
+                if (message[1]) {
+                    return `#${realchannel} ${lm.user}: ${message}... - (${lm.time} ago)`;
+                }
                 return `nymnDank ${lm.user}'s last message in #${realchannel} was: ${lm.response} - (${lm.time} ago)`;
             }
 

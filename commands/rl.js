@@ -1,5 +1,4 @@
 const got = require("got");
-const cc = require("../bot.js").cc;
 const tools = require("../tools/tools.js");
 
 
@@ -32,9 +31,15 @@ module.exports = {
             if (masspinged != "null") {
                 return "[MASS PING]";
             }
+
+            let message = tools.splitLine(rl.message, 350)
             if (rl.status !== 404) {
-                return `#${realchannel} ${rl.user}: ${rl.message} - (${rl.time} ago)`;
+                if (message[1]) {
+                    return `#${realchannel} ${rl.user}: ${message}... - (${rl.time} ago)`;
+                }
+                return `#${realchannel} ${rl.user}: ${message} - (${rl.time} ago)`;
             }
+
         } catch (err) {
             console.log(err);
             if (err.name) {
