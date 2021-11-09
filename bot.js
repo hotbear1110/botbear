@@ -118,6 +118,12 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (input[0] === "[Cookies]" && user["user-id"] == 425363834) {
+        const stream = await tools.query('SELECT disabled_commands FROM Streamers WHERE username=?', [channel.substring(1)]);
+
+        let disabledCommands = JSON.parse(stream[0].disabled_commands)
+        if (disabledCommands.includes("cookie")) {
+            return;
+        }
         const cookieStatus = await tools.cookies(user, input, channel);
 
         if (cookieStatus[0] === "Confirmed") {

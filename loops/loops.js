@@ -22,6 +22,8 @@ setInterval(async function () {
     const myping = await tools.query(`SELECT * FROM MyPing`);
 
     _.each(streamers, async function (stream) {
+        let disabledCommands = JSON.parse(stream.disabled_commands)
+        if (!disabledCommands.includes("notify")) {
         setTimeout(async function () { 
         await axios.get(`https://api.twitch.tv/helix/streams?user_login=${stream.username}`, {
             headers: {
@@ -69,8 +71,11 @@ setInterval(async function () {
                 // always executed
             });
         }, 500);
+    }
     })
     _.each(streamers, async function (stream) {
+        let disabledCommands = JSON.parse(stream.disabled_commands)
+        if (!disabledCommands.includes("notify") || !disabledCommands.includes("myping")) {
         setTimeout(async function () { 
         await axios.get(`https://api.twitch.tv/helix/channels?broadcaster_id=${stream.uid}`, {
             headers: {
@@ -139,6 +144,7 @@ setInterval(async function () {
                 // always executed
             });
         }, 500);
+    }
     })
 }, 20000);
 
