@@ -33,8 +33,10 @@ module.exports = {
 
             temp = temp.toString().split("=")[1];
 
+            const commits = shell.execSync('git rev-list --count master');
 
-            return `CPU: ${cpuused}% - Memory: ${used}MB/${total}B - Temperature: ${temp}`;
+
+            return `CPU: ${cpuused}% - Memory: ${used}MB/${total}B - Temperature: ${temp} - Commits: ${commits} KKona`;
 
         } catch (err) {
             console.log(err);
