@@ -115,9 +115,9 @@ async function onMessageHandler(channel, user, msg, self) {
 
     if (realcommand === "say" && realcommand === "channel" && realcommand === "emotecheck" && realcommand === "cum" && realcommand === "suggest" && realcommand === "shit" && realcommand === "code") {
         input = input.toString().replaceAll(",", " ");
-    }
+    } 
 
-    if (input[0] === "[Cookies]" && user["user-id"] == 425363834) {
+    if (input[0].toLowerCase() === "[cookies]" && user["user-id"] == 425363834) {
         const stream = await tools.query('SELECT disabled_commands FROM Streamers WHERE username=?', [channel.substring(1)]);
 
         let disabledCommands = JSON.parse(stream[0].disabled_commands)
