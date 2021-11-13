@@ -332,7 +332,7 @@ setInterval(async function () {
     const users = await tools.query(`SELECT * FROM Cookies`);
     let Time = new Date().getTime();
 
-    _.each(users, async function (User) {
+    _.each(await users, async function (User) {
         if (User.RemindTime !== null && User.RemindTime < Time) {
             const stream = await tools.query('SELECT disabled_commands FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
             let disabledCommands = JSON.parse(stream[0].disabled_commands)
