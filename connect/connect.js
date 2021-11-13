@@ -6,7 +6,6 @@ const con = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   connectTimeout: 10000,
-  timeout: 10000,
 });
 
 con.on("error", (err) => {
