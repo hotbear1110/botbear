@@ -10,7 +10,7 @@ module.exports = {
                     return;
                 }
                     
-                let responses = ["did not pass the BRUH test... Bruhge TeaTime", "passed the BRUH test, BRUH :+1:"]
+                let responses = ["did not pass the BRUH test... Bruhge TeaTime", "passed the BRUH test, BRUH 👍"]
                 
                 let number = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
     
