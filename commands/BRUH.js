@@ -9,24 +9,14 @@ module.exports = {
                 if (module.exports.permission > perm) {
                     return;
                 }
-                input.shift()
-                input.shift()
-    
-                let msg = input.toString();
-                msg = msg.replaceAll(",", " ")
-
+                    
                 function getRandomInt() {
                     return Math.floor(Math.random() < 0.5);
                 }
+                    
+                let responses = ["did not pass the BRUH test... Bruhge TeaTime","passed the BRUH test, BRUH :thumbsup:"]         
     
-                let responses = ["did not pass the BRUH test... Bruhge TeaTime","passed the BRUH test, BRUH :thumbsup:"]
-
-                const masspinged = await tools.massping(msg.toLowerCase(), channel);
-                if (masspinged != "null") {
-                    return "[MASS PING]";
-                }                
-    
-                return `/me ${msg} ${responses[getRandomInt()]}`;
+                return `/me ${input[2]} ${responses[getRandomInt()]}`;
     
             } catch (err) {
                 console.log(err);
