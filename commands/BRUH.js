@@ -8,15 +8,13 @@ module.exports = {
             try {
                 if (module.exports.permission > perm) {
                     return;
-                }
+                }y
                     
-                function getRandomInt() {
-                    return Math.floor(Math.random() < 0.5);
-                }
-                    
-                let responses = ["did not pass the BRUH test... Bruhge TeaTime","passed the BRUH test, BRUH :thumbsup:"]         
+                let responses = ["did not pass the BRUH test... Bruhge TeaTime", "passed the BRUH test, BRUH :+1:"]
+                
+                let number = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
     
-                return `/me ${input[2]} ${responses[getRandomInt()]}`;
+                return `/me ${input[2]} ${responses[number]}`;
     
             } catch (err) {
                 console.log(err);
