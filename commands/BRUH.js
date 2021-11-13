@@ -8,7 +8,7 @@ module.exports = {
             try {
                 if (module.exports.permission > perm) {
                     return;
-                }y
+                }
                     
                 let responses = ["did not pass the BRUH test... Bruhge TeaTime", "passed the BRUH test, BRUH :+1:"]
                 
