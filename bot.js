@@ -65,7 +65,7 @@ async function onMessageHandler(channel, user, msg, self) {
             time = 60 - time;
             time = 1 + (time/100);
             time = time.toString().substring(0, 4);
-            tine = parseFloat(time);
+            time = parseFloat(time);
 
             let triviaScore = 1000;
             triviaScore = triviaScore * (Math.floor(similarity)/100);
