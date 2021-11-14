@@ -147,10 +147,12 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
-    const userList = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username]);
+    const userList = await tools.query(`SELECT * FROM Users WHERE uid=?`, [user["user-id"]]);
 
     if (!userList.length && user.username != null) {
         await tools.query('INSERT INTO Users (username, uid, permission, cookie_score) values (?, ?, ?, ?)', [user.username, user["user-id"], 100, 0]);
+    } else if (user.username !== userList[0].username && user.username != null) {
+        await tools.query('UPDATE Users SET username=? WHERE uid=?', [user.username, user["user-id"]]);
     }
 
 
