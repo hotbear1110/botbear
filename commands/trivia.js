@@ -61,6 +61,11 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
+            let random = Math.floor(Math.random() * 100)
+            if (random === 69) {
+                return [`(Trivia) ${user.username} has started a trivia :) [History] Question: What happened on June 4 1989 in China? | Do "bb hint" if you are nab and need a hint!`, "[ Nothing | Nothing | Nothing | Nothing ]", "Nothing"];
+            }
+            
             function arrayShuffle(array) {
                 for (let index = array.length - 1; index > 0; index--) {
                     const newIndex = Math.floor(Math.random() * (index + 1));
