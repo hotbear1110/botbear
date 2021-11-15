@@ -14,7 +14,9 @@ module.exports = {
                 return;
             }
             let emoteId = input[2];
+            console.log(user.emotes)
             if (user.emotes) {
+                /*
                  if (input[0].toLowerCase() === "forsenbb") {
                     emoteId = JSON.stringify(user.emotes).split(",")[1].split(":")[0];
                     emoteId = emoteId.substring(1);
@@ -22,6 +24,11 @@ module.exports = {
                     emoteId = JSON.stringify(user.emotes).split(":")[0];
                     emoteId = emoteId.substring(2);
                 }
+                */
+                emoteId = JSON.stringify(user.emotes).split(":")[0];
+                    emoteId = emoteId.substring(2);
+
+
                 emoteId = emoteId.slice(0, -1);
                 emoteId = `${emoteId}?id=true`;
             } else if (emoteId.split("_")[0] === "emotesv2") {
@@ -36,12 +43,17 @@ module.exports = {
                 let url = `https://static-cdn.jtvnw.net/emoticons/v2/${emotecheck.data["emoteID"]}/default/dark/3.0`;
                 let emoteType = emotecheck.data["emoteType"];
                 let realid = emotecheck.data["emoteID"];
-                let emoteStatus = emotecheck.data["emoteAssetType"].toLowerCase();
+                let emoteStatus = "null";
+                if (emotecheck.data["emoteAssetType"]) {
+                        emoteStatus = emotecheck.data["emoteAssetType"].toLowerCase();
+                }
                 let realemote = emotecheck.data["emoteCode"];
 
+                if (emotecheck.data["channelName"]) {
                 if (emotecheck.data["channelName"].toLowerCase() !== emotecheck.data["channelLogin"]) {
                     emotechannel = `${emotecheck.data["channelLogin"]}(${emotecheck.data["channelName"]})`;
                 }
+            }
 
                 let ecount = 0;
 
