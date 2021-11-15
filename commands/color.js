@@ -39,7 +39,6 @@ module.exports = {
             }
 
             const colorName = await got(`https://www.thecolorapi.com/id?hex=${color.replace('#', '')}`, {timeout: 10000}).json();
-            console.log(colorName)
 
             if (iscolor === true) {
                 return `That hex is the color: ${colorName.name.value} ${color}`;
