@@ -1,5 +1,5 @@
 module.exports = {
-    name: "wifecheck",
+    name: "WifeCheck",
     ping: true,
     description: 'This command will make the bot respond with "doctorWTF"',
     permission: 100,
