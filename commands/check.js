@@ -79,6 +79,24 @@ module.exports = {
                 let hastebinlist = await tools.makehastebin(`Trivia leaderboard for #${channel}:\n\n${leaderboard}`);
 
                 return `Trivia leaderboard for #${channel}: ${hastebinlist}.txt`;
+                break;
+
+            case "triviacooldown":
+                if (input[3]) {
+                    if (input[3].startsWith("@")) {
+                        input[3] = input[3].substring(1);
+                    }
+                    channel = input[3];
+                }
+
+                const TriviaCD= await tools.query(`SELECT trivia_cooldowns FROM Streamers WHERE username=?`, [channel]);
+
+                if (!TriviaCD.length) {
+                    return;
+                }
+
+                return `#${channel} has a trivia cooldown of ${TriviaCD[0].trivia_cooldowns / 1000}s`;
+                break;
 
                 default: 
                     return `Stuff available to check: permission, points, leaderboard`;
