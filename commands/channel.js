@@ -213,8 +213,10 @@ module.exports = {
                         return "NotLikeThis . This command requires a parameter with the cooldown on trivia. This is set to seconds!"
                     }
 
-                    return await tools.query("UPDATE `Streamers` SET `trivia_cooldown` = ? WHERE `username` = ?", [input[3], channel]).then(() => {
-                        return `BloodTrail Successfully set the cooldown of trivia in this channel to ${input[3]}`;
+                    const cooldown = (input[3] * 1000);
+
+                    return await tools.query("UPDATE `Streamers` SET `trivia_cooldown` = ? WHERE `username` = ?", [cooldown, channel]).then(() => {
+                        return `BloodTrail Successfully set the cooldown of trivia in this channel to ${cooldown}`;
                     }).catch((error) => {
                         cc.say("botbear1110", JSON.stringify(error));
                         return "NotLikeThis UhOh! Error!";
