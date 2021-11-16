@@ -215,7 +215,7 @@ module.exports = {
 
                     const cooldown = (input[3] * 1000);
 
-                    return await tools.query("UPDATE `Streamers` SET `trivia_cooldown` = ? WHERE `username` = ?", [cooldown, channel]).then(() => {
+                    return await tools.query("UPDATE `Streamers` SET `trivia_cooldowns` = ? WHERE `username` = ?", [cooldown, channel]).then(() => {
                         return `BloodTrail Successfully set the cooldown of trivia in this channel to ${cooldown}`;
                     }).catch((error) => {
                         cc.say("botbear1110", JSON.stringify(error));
