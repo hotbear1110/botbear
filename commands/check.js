@@ -95,11 +95,11 @@ module.exports = {
                     return;
                 }
 
-                return `#${channel} has a trivia cooldown of ${TriviaCD[0].trivia_cooldowns / 1000}s`;
+                return `#${channel}'s trivia cooldown is ${TriviaCD[0].trivia_cooldowns / 1000}s`;
                 break;
 
                 default: 
-                    return `Stuff available to check: permission, points, leaderboard`;
+                    return `Stuff available to check: permission, points, leaderboard, triviacooldown`;
             }
         } catch (err) {
             console.log(err);
