@@ -6,7 +6,7 @@ const axios = require('axios');
 module.exports = {
     name: "channel",
     ping: true,
-    description: 'This command will make the bot leave or join your channel, or a channel you are mod in. (The command only works in hotbear1110 and botbear1110´s channels). Available channel commands: "bb channel join"(bot joins your channel), "bb channel leave"(bot leaves your channel), "bb channel [live/offline/title/game]emote *emote*"(will change the emote in the chat notifications), "bb channel trivia *seconds*"(will change the cooldown of the trivia command)',
+    description: '"bb channel join/leave" the bot joins or leaves your channel(only works in hotbear1110/botbear1110 chats). "bb channel [live/offline/title/game]emote *emote*" this changes the notify emotes. "bb channel trivia *seconds*" this changes the trivia cooldown(Default is 300s, if cd is too low, it can bug out)',
     permission: 100,
     category: "Core command",
     execute: async (channel, user, input, perm) => {
@@ -216,7 +216,7 @@ module.exports = {
                     const cooldown = (input[3] * 1000);
 
                     return await tools.query("UPDATE `Streamers` SET `trivia_cooldowns` = ? WHERE `username` = ?", [cooldown, channel]).then(() => {
-                        return `BloodTrail Successfully set the cooldown of trivia in this channel to ${cooldown}`;
+                        return `BloodTrail Successfully set the cooldown of trivia in this channel to ${input[3]}s`;
                     }).catch((error) => {
                         cc.say("botbear1110", JSON.stringify(error));
                         return "NotLikeThis UhOh! Error!";
