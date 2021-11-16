@@ -284,7 +284,14 @@ async function onMessageHandler(channel, user, msg, self) {
             return;
         }
 
+        // Get cooldown from database.
         let cd = await tools.query("SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?", [realchannel]);
+        
+        // Set trivia cooldown if not set.
+        if (cd[0].trivia_cooldowns === null) { 
+            cd[0].trivia_cooldowns === 30000;
+            tools.query("UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?", [realchannel]);
+        }
         
         if (realchannel === "hotbear1110") {
             cd[0].trivia_cooldowns = 1250;
