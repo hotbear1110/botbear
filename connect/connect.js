@@ -47,6 +47,7 @@ res();
 let options = {
   options: {
     debug: false,
+    joinInterval: 600,
   },
   connection: {
     secure: true,
