@@ -292,10 +292,6 @@ async function onMessageHandler(channel, user, msg, self) {
             cd[0].trivia_cooldowns === 30000;
             tools.query("UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?", [realchannel]);
         }
-        
-        if (realchannel === "hotbear1110") {
-            cd[0].trivia_cooldowns = 1250;
-        }
 
         const triviaCD = new tools.Cooldown(realchannel, realcommand, cd[0].trivia_cooldowns);
 
