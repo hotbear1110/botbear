@@ -203,6 +203,24 @@ module.exports = {
                         return `Offline emote is now set to ${input[3]}`;
                     }
                     break;
+
+                case "trivia": {
+                    if (!tools.isMod(user, channel)) {
+                        return;
+                    }
+
+                    if (input[3] === undefined) {
+                        return "NotLikeThis . This command requires a parameter with the cooldown on trivia. This is set to seconds!"
+                    }
+
+                    return await tools.query("UPDATE `Streamers` SET `trivia_cooldown` = ? WHERE `username` = ?", [input[3], channel]).then(() => {
+                        return `BloodTrail Successfully set the cooldown of trivia in this channel to ${input[3]}`;
+                    }).catch((error) => {
+                        cc.say("botbear1110", JSON.stringify(error));
+                        return "NotLikeThis UhOh! Error!";
+                    });
+                }
+
                 default:
                     return "Please specify if you want the bot to leave or join your channel, by writing either 'bb channel join' or 'bb channel leave'";
             }

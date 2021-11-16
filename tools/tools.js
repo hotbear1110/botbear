@@ -448,4 +448,18 @@ exports.similarity = async function (s1, s2) {
             costs[s2.length] = lastValue;
         }
         return costs[s2.length];
-      }
+}
+
+/**
+ * @author JoachimFlottorp
+ * @param {ChatUserstate} username User variable tmi.js creates. 
+ * @param {string} channel Channel to check for moderator status
+ * @returns {boolean} true | false | If is mod
+ */
+ exports.isMod = function(user, channel) {
+    channel = channel[0] === '#' ? channel.substr(1) : channel;
+    const isMod = user.mod || user['user-type'] === 'mod';
+    const isBroadcaster = channel === user.username;
+    const isModUp = isMod || isBroadcaster;
+    return isModUp
+}
