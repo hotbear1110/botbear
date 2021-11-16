@@ -6,7 +6,7 @@ const axios = require('axios');
 module.exports = {
     name: "channel",
     ping: true,
-    description: 'This command will make the bot leave or join your channel, or a channel you are mod in. (The command only works in hotbear1110 and botbear1110´s channels). Available channel commands: "bb channel join"(bot joins your channel), "bb channel leave"(bot leaves your channel), "bb channel [live/offline/title/game]emote"(will change the emote in the chat notifications)',
+    description: 'This command will make the bot leave or join your channel, or a channel you are mod in. (The command only works in hotbear1110 and botbear1110´s channels). Available channel commands: "bb channel join"(bot joins your channel), "bb channel leave"(bot leaves your channel), "bb channel [live/offline/title/game]emote *emote*"(will change the emote in the chat notifications), "bb channel trivia *seconds*"(will change the cooldown of the trivia command)',
     permission: 100,
     category: "Core command",
     execute: async (channel, user, input, perm) => {
@@ -224,7 +224,7 @@ module.exports = {
                 }
 
                 default:
-                    return "Please specify if you want the bot to leave or join your channel, by writing either 'bb channel join' or 'bb channel leave'";
+                    return "Available channel commands: join/leave, [live/offline/title/game]emote, trivia";
             }
         } catch (err) {
             console.log(err);
