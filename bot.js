@@ -284,13 +284,16 @@ async function onMessageHandler(channel, user, msg, self) {
             return;
         }
 
-        let cd = 300000;
+        // Get cooldown from database.
+        let cd = await tools.query("SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?", [realchannel]);
         
-        if (realchannel === "hotbear1110") {
-            cd = 1250;
+        // Set trivia cooldown if not set.
+        if (cd[0].trivia_cooldowns === null) { 
+            cd[0].trivia_cooldowns === 30000;
+            tools.query("UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?", [realchannel]);
         }
 
-        const triviaCD = new tools.Cooldown(realchannel, realcommand, cd);
+        const triviaCD = new tools.Cooldown(realchannel, realcommand, cd[0].trivia_cooldowns);
 
         if ((await triviaCD.setCooldown()).length && !user.mod) { 
             cc.say(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`)
