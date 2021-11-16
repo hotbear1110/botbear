@@ -78,7 +78,7 @@ module.exports = {
 
                 let hastebinlist = await tools.makehastebin(`Trivia leaderboard for #${channel}:\n\n${leaderboard}`);
 
-                return `Trivia leaderboard for #${channel}: ${hastebinlist}.txt`;
+                return `Trivia leaderboard for #${channel}: ${hastebinlist}`;
                 break;
 
             case "triviacooldown":
