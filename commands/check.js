@@ -49,6 +49,9 @@ module.exports = {
                         return "That user has no points yet :)"
                     }
 
+                    if (username === user.username.toLowerCase()) {
+                        return `has ${User_trivia[0].points} trivia points in #${channel}`;
+                    }
                     return `${username} has ${User_trivia[0].points} trivia points in #${channel}`;
                     break;
 
