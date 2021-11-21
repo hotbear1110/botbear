@@ -199,12 +199,6 @@ async function onMessageHandler(channel, user, msg, self) {
         }, timeout);
     }
 
-    const usernamePhrase = await tools.banphrasePass(user.username, channel);
-
-    if (usernamePhrase.banned) {
-        cc.say(channel, `[Banphrased Username] cmonBruh `);
-        return;
-    }
     const badUsername = user.username.match(regex.racism);
     if (badUsername != null) {
         cc.say(channel, `[Bad username detected] cmonBruh`);
@@ -239,7 +233,7 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (banPhrase === 0) {
-        cc.say(channel, "FeelsDankMan error!!");
+        cc.say(channel, "FeelsDankMan banphrase error!!");
         return;
     }
 
