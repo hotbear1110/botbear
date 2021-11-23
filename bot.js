@@ -109,6 +109,15 @@ async function onMessageHandler(channel, user, msg, self) {
 
     let input = msg.split(" ");
 
+    for (let i = 0; i < input.length; i++) {
+        if (new RegExp(/[\uDB40-\uDC00]/).test(input[i])) {
+            input[i] = input[i].replace(new RegExp(/[\uDB40-\uDC00]/g), "");
+            input[i] = input[i].replace(/\s\s+/g, ' ').trim();
+            input.splice(i)
+        }
+    }
+    input = input.filter(e => e);
+
     const Alias = new tools.Alias(msg);
     input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
     let realcommand = input[1];
