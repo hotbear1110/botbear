@@ -57,7 +57,7 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
 
 exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reject) => {
     this.channel = channel.replace("#", '');
-    this.message = message.replaceAll(' ', '%20');
+    this.message = encodeURIComponent(message);
     try {
         this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=${this.message}`, { timeout: 10000 });
         if (this.checkBanphrase.data["banned"] == true) {
