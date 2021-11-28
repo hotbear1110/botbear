@@ -71,8 +71,9 @@ module.exports = {
             }
 
             const findTime = requireDir("../commands");
+            let results = null;
 
-            results = new Promise(async function (resolve) {
+            results = await new Promise(async function (resolve) {
                 let timeFound = null;
                 _.each(urls, async function (url) {
                     let result = await findTime["vodtime"].execute(channel, user, ["bb", "vodtime", url, vodtime], perm);
@@ -81,10 +82,9 @@ module.exports = {
                     if (!result.startsWith(vodtime)) {
                         console.log("yes")
                         timeFound = result;
-                        resolve(timeFound);
+                        resolve(result);
                     }
                 })
-                resolve(timeFound);
             })
 
             if (await results === null) {
