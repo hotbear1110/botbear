@@ -3,7 +3,7 @@ module.exports = {
     ping: true,
     description: "This command will give you a link to my github",
     permission: 100,
-    category: "Bot command",
+    category: "Core command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

@@ -8,7 +8,7 @@ module.exports = {
     ping: true,
     description: 'This command will tell you how long the bot has been live for',
     permission: 100,
-    category: "Bot command",
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {

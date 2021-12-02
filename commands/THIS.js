@@ -3,7 +3,7 @@ module.exports = {
     ping: true,
     description: 'This command sends a THIS in the chat. peepoPog  WoW !',
     permission: 100,
-    category: "Cool command",
+    category: "Random command",
     execute: async (channel, user, input, perm) => { 
         try {
 

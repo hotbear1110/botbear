@@ -5,7 +5,7 @@ module.exports = {
     ping: true,
     description: 'This command will give you some info about the bot',
     permission: 100,
-    category: "Bot command",
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {
