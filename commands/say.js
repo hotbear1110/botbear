@@ -27,6 +27,10 @@ module.exports = {
                 return;
             }
 
+            if (perm < 2000 && msg.match(/(\.|\/)color/g)) {
+                return "cmonBruh don't change my color";
+            }
+
             const masspinged = await tools.massping(msg.toLowerCase(), channel);
 
             if (masspinged != "null") {
