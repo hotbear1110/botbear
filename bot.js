@@ -21,7 +21,9 @@ cc.connect();
 
 let uptime = new Date().getTime();
 
-const activetrivia = new Set();
+// {channel: string, time: number, answer: string}
+const activetrivia = [];
+// const activetrivia = new Set();
 let triviaanswer = {};
 let triviaHints = {};
 let gothint = {};
@@ -50,7 +52,8 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
 
-    if (activetrivia.has(channel)) { 
+    // Check if channel has trivia. This will most likely be laggy on a large scale.
+    if (ActiveTriviaInChannel(channel)) {
         let similarity = await tools.similarity(msg.toLowerCase(), triviaanswer[channel].toLowerCase())
         if (await similarity >= 0.8) {
             if (channel === "#forsen") {
@@ -97,14 +100,13 @@ async function onMessageHandler(channel, user, msg, self) {
                         await tools.query(`UPDATE MyPoints SET points=? WHERE username=?`, [triviaScore, `[${userchannel}]`])
                     }
 
-            activetrivia.delete(channel);
+            delete activetrivia[activetrivia.findIndex(a => a.channel === channel)]
             delete triviaanswer[channel];
             delete triviaHints[channel];
             delete gothint[channel];
             delete triviaTime[channel];
             return;
         }
-
     }
 
     let input = msg.split(" ");
@@ -216,7 +218,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
     let realchannel = channel.substring(1);
 
-    if (realcommand === "hint" && activetrivia.has(channel) && gothint[channel] === false) {
+    if (realcommand === "hint" && ActiveTriviaInChannel(channel) && gothint[channel] === false) {
         const ms = new Date().getTime() - triviaTime[channel];
         let timePassed = tools.humanizeDuration(ms);
         if (parseInt(timePassed) < 10){
@@ -278,7 +280,7 @@ async function onMessageHandler(channel, user, msg, self) {
         if (channel === "#forsen") {
             channel = "#botbear1110";
         }
-        if (activetrivia.has(channel)) {
+        if (ActiveTriviaInChannel(channel)) {
             cc.say(channel, "There is already an active trivia");
             return;
         }
@@ -313,24 +315,13 @@ async function onMessageHandler(channel, user, msg, self) {
         triviaanswer[channel] = result[2];
         
 
-        activetrivia.add(channel);
+        activetrivia.push({channel: channel, time: GetUnixTime, answer: result[2]})
 
         triviaHints[channel] = result[1];
 
         triviaTime[channel] = new Date().getTime();
 
         gothint[channel] = false;
-
-        setTimeout(() => {
-            if (activetrivia.has(channel)) {
-            activetrivia.delete(channel);
-            delete triviaanswer[channel];
-            delete triviaHints[channel];
-
-            cc.say(channel, `The trivia timed out after 60 seconds. The answer was: "${result[2]}"`)
-            }
-        }, 60000);
-
 
         let response = result[0];
 
@@ -491,4 +482,50 @@ started = true;
     }
 
 }
+
+// Iterate over all channels which currently have a trivia. 
+// If the trivia has lasted for 60 seconds.
+// In which case we invoke the delete trivia function
+// And trivia runs out.
+setInterval(() => {
+    activetrivia.forEach(triviaChannel => {
+        if (triviaChannel.time === (GetUnixTime() - 60)) {
+            InvokeDeleteTrivia(triviaChannel.channel, );
+        }
+    })
+}, 1000);
+
+/**
+ * @returns {number} Clock defined in UNIX standard.
+ */
+function GetUnixTime() {
+    return Math.round((new Date()).getTime() / 1000);
+}
+
+/**
+ * 
+ * @param {string} channel 
+ * @returns {boolean}
+ */
+function ActiveTriviaInChannel(channel) {
+    activetrivia.forEach(trivia => {
+        if (trivia.channel === channel) { 
+            return true;
+        }
+    })
+    return false;
+}
+
+/**
+ * @param {string} channel
+ * @param {string} answer 
+ */
+function InvokeDeleteTrivia(channel, answer) {
+    delete activetrivia[activetrivia.findIndex(a => a.channel === channel)]
+    delete triviaanswer[channel];
+    delete triviaHints[channel];
+
+    cc.say(channel, `The trivia timed out after 60 seconds. The answer was: "${answer}"`)
+}
+
 module.exports = { cc , uptime};
