@@ -21,7 +21,7 @@ cc.connect();
 
 let uptime = new Date().getTime();
 
-const activetrivia = new Set();
+let activetrivia = {};
 let triviaanswer = {};
 let triviaHints = {};
 let gothint = {};
@@ -50,7 +50,7 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
 
-    if (activetrivia.has(channel)) { 
+    if (activetrivia[channel]) { 
         let similarity = await tools.similarity(msg.toLowerCase(), triviaanswer[channel].toLowerCase())
         if (await similarity >= 0.8) {
             if (channel === "#forsen") {
@@ -97,7 +97,7 @@ async function onMessageHandler(channel, user, msg, self) {
                         await tools.query(`UPDATE MyPoints SET points=? WHERE username=?`, [triviaScore, `[${userchannel}]`])
                     }
 
-            activetrivia.delete(channel);
+            delete activetrivia[channel];
             delete triviaanswer[channel];
             delete triviaHints[channel];
             delete gothint[channel];
@@ -216,7 +216,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
     let realchannel = channel.substring(1);
 
-    if (realcommand === "hint" && activetrivia.has(channel) && gothint[channel] === false) {
+    if (realcommand === "hint" && activetrivia[channel] && gothint[channel] === false) {
         const ms = new Date().getTime() - triviaTime[channel];
         let timePassed = tools.humanizeDuration(ms);
         if (parseInt(timePassed) < 10){
@@ -278,7 +278,7 @@ async function onMessageHandler(channel, user, msg, self) {
         if (channel === "#forsen") {
             channel = "#botbear1110";
         }
-        if (activetrivia.has(channel)) {
+        if (activetrivia[channel]) {
             cc.say(channel, "There is already an active trivia");
             return;
         }
@@ -313,23 +313,29 @@ async function onMessageHandler(channel, user, msg, self) {
         triviaanswer[channel] = result[2];
         
 
-        activetrivia.add(channel);
+        activetrivia[channel] = channel;
 
         triviaHints[channel] = result[1];
 
-        triviaTime[channel] = new Date().getTime();
+        let triviaTimeID = new Date().getTime()
+
+        triviaTime[channel] = triviaTimeID;
 
         gothint[channel] = false;
-
+        triviaTimeout(channel, triviaTimeID);
+        async function triviaTimeout(channel, triviaTimeID) {
         setTimeout(() => {
-            if (activetrivia.has(channel)) {
-            activetrivia.delete(channel);
+            if (activetrivia[channel]) {
+                if (triviaTime[channel] === triviaTimeID) {
+            delete activetrivia[channel];
             delete triviaanswer[channel];
             delete triviaHints[channel];
 
             cc.say(channel, `The trivia timed out after 60 seconds. The answer was: "${result[2]}"`)
+                }
             }
         }, 60000);
+    }
 
 
         let response = result[0];
