@@ -313,11 +313,7 @@ async function onMessageHandler(channel, user, msg, self) {
         triviaanswer[channel] = result[2];
         
 
-<<<<<<< HEAD
-        activetrivia.push({channel: channel, time: GetUnixTime(), answer: result[2]})
-=======
         activetrivia.add(channel);
->>>>>>> parent of 991c93d (Merge pull request #16 from JoachimFlottorp/main)
 
         triviaHints[channel] = result[1];
 
