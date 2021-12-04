@@ -315,7 +315,7 @@ async function onMessageHandler(channel, user, msg, self) {
         triviaanswer[channel] = result[2];
         
 
-        activetrivia.push({channel: channel, time: GetUnixTime, answer: result[2]})
+        activetrivia.push({channel: channel, time: GetUnixTime(), answer: result[2]})
 
         triviaHints[channel] = result[1];
 
