@@ -17,8 +17,20 @@ module.exports = {
             if (channel === "forsen") {
                 channel = "botbear1110";
             }
-
             let username = user.username;
+
+            if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !cc.isMod(`#${input[3]}`, user.username)) {
+                if (input[3].toLowerCase() !== username) {
+                    return "You can only do this for your own channel, or a channel you are mod in."
+                }
+            }
+
+            if (input[3]) {
+                let streamer = await axios.get(`https://api.ivr.fi/twitch/resolve/${input[3]}`, { timeout: 10000 });
+                uid = streamer.data.id;
+                username = input[3];
+            }
+
             const alreadyJoined = await tools.query(`
                 SELECT *
                 FROM Streamers
@@ -32,20 +44,8 @@ module.exports = {
 
                     if (channel !== "botbear1110" && channel !== "hotbear1110" && perm < 2000) { return; }
 
-                    if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !cc.isMod(`#${input[3]}`, user.username)) {
-                        if (input[3] !== username) {
-                            return;
-                        }
-                    }
-
                     if (alreadyJoined.length) {
                         return "I am already in your channel :)";
-                    }
-
-                    if (input[3]) {
-                        let streamer = await axios.get(`https://api.ivr.fi/twitch/resolve/${input[3]}`, { timeout: 10000 });
-                        uid = streamer.data.id;
-                        username = input[3];
                     }
 
                     let islive = 0;
@@ -70,14 +70,6 @@ module.exports = {
 
                     if (!alreadyJoined.length) {
                         return "I am not in your channel";
-                    }
-
-                    if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !cc.isMod(`#${input[3]}`, user.username)) {
-                        return "You can only make me leave your own channel, or a channel you are mod in.";
-                    }
-                    
-                    if (input[3]) {
-                        username = input[3];
                     }
 
                     await tools.query('DELETE FROM Streamers WHERE username=?', [username]);
