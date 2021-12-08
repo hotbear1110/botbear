@@ -32,14 +32,14 @@ module.exports = {
 
                     if (channel !== "botbear1110" && channel !== "hotbear1110" && perm < 2000) { return; }
 
-                    if (alreadyJoined.length) {
-                        return "I am already in your channel :)";
-                    }
-
                     if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !cc.isMod(`#${input[3]}`, user.username)) {
                         if (input[3] !== username) {
                             return;
                         }
+                    }
+
+                    if (alreadyJoined.length) {
+                        return "I am already in your channel :)";
                     }
 
                     if (input[3]) {
