@@ -21,37 +21,37 @@ module.exports = {
                 if (input[2].startsWith("@")) {
                     input[2] = input[2].substring(1);
                 }
-                    try {
-                        const userData = await axios.get(`https://api.twitch.tv/helix/users?id=${input[2]}`, {
-                            headers: {
-                                'client-id': process.env.TWITCH_CLIENTID,
-                                'Authorization': process.env.TWITCH_AUTH
-                            },
-                            timeout: 10000
-                        })
-                        if (userData.data.data.length) {
+                try {
+                    const userData = await axios.get(`https://api.twitch.tv/helix/users?id=${input[2]}`, {
+                        headers: {
+                            'client-id': process.env.TWITCH_CLIENTID,
+                            'Authorization': process.env.TWITCH_AUTH
+                        },
+                        timeout: 10000
+                    })
+                    if (userData.data.data.length) {
                         uiduser = userData.data.data[0];
                         uiduser = uiduser["login"];
-                        const uidBanned = await axios.get(`https://api.ivr.fi/twitch/resolve/${uiduser}`, {timeout: 10000});
+                        const uidBanned = await axios.get(`https://api.ivr.fi/twitch/resolve/${uiduser}`, { timeout: 10000 });
                         if (uidBanned.data.banned === true) {
                             response = `Username found: ${uiduser} - cmonBruh [BANNED USER]`;
                         } else {
                             response = `Username found: ${uiduser}`;
                         }
-                }
-                        
-            } catch (err) {
-                console.log(err);
-                if (err.response.data.status !== 400) {
-                return `FeelsDankMan Error: ${err.response.data.error}`;
-                }
-                uiduser = input[2];
+                    }
 
+                } catch (err) {
+                    console.log(err);
+                    if (err.response.data.status !== 400) {
+                        return `FeelsDankMan Error: ${err.response.data.error}`;
+                    }
+                    uiduser = input[2];
+
+                }
+                userID = await axios.get(`https://api.ivr.fi/twitch/resolve/${input[2]}`, { timeout: 10000 });
+            } else {
+                userID = await axios.get(`https://api.ivr.fi/twitch/resolve/${uiduser}`, { timeout: 10000 });
             }
-            userID = await axios.get(`https://api.ivr.fi/twitch/resolve/${input[2]}`, {timeout: 10000});
-    } else {
-        userID = await axios.get(`https://api.ivr.fi/twitch/resolve/${uiduser}`, {timeout: 10000});
-    }
 
             if (response.length) {
                 if (userID.data.status === 404) {
@@ -74,7 +74,7 @@ module.exports = {
                 }
             }
 
-                return response;
+            return response;
 
         } catch (err) {
             console.log(err);
@@ -84,7 +84,7 @@ module.exports = {
             if (err.name === "TimeoutError") {
                 return `FeelsDankMan Banphrase api error: ${err.name}`;
             }
-            return `FeelsDankMan Error: ${err.response.data.error}`;   
+            return `FeelsDankMan Error: ${err.response.data.error}`;
         }
     }
 }

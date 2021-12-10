@@ -21,11 +21,11 @@ module.exports = {
             if (!commandlist.length) {
                 return;
             }
-            
+
             return `Command name: ${commandlist[0].Name}. Category: ${commandlist[0].Category}. Description: ${commandlist[0].Command} - Permission lvl: ${commandlist[0].Perm}`;
         } catch (err) {
             console.log(err);
-            return `FeelsDankMan Sql error: ${err.sqlMessage}`;        
+            return `FeelsDankMan Sql error: ${err.sqlMessage}`;
         }
     }
 }

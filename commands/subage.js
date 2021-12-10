@@ -30,7 +30,7 @@ module.exports = {
                 naniresponse = " Copege This channel is real";
             }
 
-            let subcheck = await axios.get(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`, {timeout: 10000});
+            let subcheck = await axios.get(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`, { timeout: 10000 });
             if (subcheck.data["subscribed"] == false) {
                 let oldsub = subcheck.data["cumulative"];
                 const subend = new Date().getTime() - Date.parse(oldsub["end"]);
@@ -46,8 +46,8 @@ module.exports = {
             else {
                 let subdata = subcheck.data["meta"];
                 let sublength = subcheck.data["cumulative"];
-                let substreak = subcheck.data["streak"]; 
-                
+                let substreak = subcheck.data["streak"];
+
                 const ms = new Date().getTime() - Date.parse(subdata["endsAt"]);
 
                 if (subdata["tier"] === "Custom") {

@@ -16,7 +16,7 @@ module.exports = {
             }
             let now = new Date().getTime();
 
-            let ms =  now - uptime;
+            let ms = now - uptime;
 
             const commitCount = shell.execSync("git rev-list --all --count")
 

@@ -24,7 +24,7 @@ module.exports = {
             if (input[3]) {
                 realchannel = input[3];
             }
-            let vipcheck = await axios.get(`https://api.ivr.fi/twitch/modsvips/${realchannel}`, {timeout: 10000});
+            let vipcheck = await axios.get(`https://api.ivr.fi/twitch/modsvips/${realchannel}`, { timeout: 10000 });
             isvip = vipcheck.data["vips"];
             let vipresponse = "";
 

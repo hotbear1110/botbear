@@ -82,7 +82,7 @@ exports.Cooldown = class Cooldown {
         if (!user['user-id']) {
             this.userId = user
         } else {
-        this.userId = user['user-id'];
+            this.userId = user['user-id'];
         }
         this.command = command;
         this.key = `${this.userId}_${this.command}`;
@@ -116,7 +116,7 @@ exports.Cooldown = class Cooldown {
     /**
      * @returns {String}: String formatted time left.
      */
-     formattedTime() {
+    formattedTime() {
         return exports.humanizeDuration(this.cooldown - (new Date().getTime() - cooldownTime[this.key]));
     }
 };
@@ -362,92 +362,92 @@ exports.nameChanges = new Promise(async (resolve, reject) => {
 
     _.each(streamers, async function (streamer) {
         try {
-        const userData = await axios.get(`https://api.twitch.tv/helix/users?id=${streamer.uid}`, {
-            headers: {
-                'client-id': process.env.TWITCH_CLIENTID,
-                'Authorization': process.env.TWITCH_AUTH
-            },
-            timeout: 10000
-        })
-        if (userData.data.data.length) {
-        realUser = userData.data.data[0];
-        realUser = realUser["login"];
+            const userData = await axios.get(`https://api.twitch.tv/helix/users?id=${streamer.uid}`, {
+                headers: {
+                    'client-id': process.env.TWITCH_CLIENTID,
+                    'Authorization': process.env.TWITCH_AUTH
+                },
+                timeout: 10000
+            })
+            if (userData.data.data.length) {
+                realUser = userData.data.data[0];
+                realUser = realUser["login"];
 
-        if (realUser !== streamer.username) {
-            tools.query(`UPDATE Streamers SET username=? WHERE uid=?`, [realUser, streamer.uid]);
+                if (realUser !== streamer.username) {
+                    tools.query(`UPDATE Streamers SET username=? WHERE uid=?`, [realUser, streamer.uid]);
 
-            changed.push([realUser, streamer.username]);
+                    changed.push([realUser, streamer.username]);
+                }
+            }
+        } catch (err) {
+            console.log(err);
         }
-    }
-    } catch (err) {
-        console.log(err);
-    }
     })
 
     resolve(changed);
 });
 
-exports.bannedStreamer = new Promise(async (resolve, reject) =>  {
+exports.bannedStreamer = new Promise(async (resolve, reject) => {
     let streamers = await tools.query(`SELECT * FROM Streamers`);
     let bannedUsers = [];
 
 
     _.each(streamers, async function (streamer) {
         try {
-    const isBanned = await axios.get(`https://api.ivr.fi/twitch/resolve/${streamer.username}`, {timeout: 10000});
+            const isBanned = await axios.get(`https://api.ivr.fi/twitch/resolve/${streamer.username}`, { timeout: 10000 });
 
-    if (isBanned.data.banned === true) {
-        await tools.query('DELETE FROM Streamers WHERE uid=?', [streamer.uid]);
+            if (isBanned.data.banned === true) {
+                await tools.query('DELETE FROM Streamers WHERE uid=?', [streamer.uid]);
 
-        bannedUsers.push(streamer.username);
-    }
-} catch (err) {
-    console.log(err);
-}
+                bannedUsers.push(streamer.username);
+            }
+        } catch (err) {
+            console.log(err);
+        }
     })
 
     resolve(bannedUsers);
 });
 
 exports.similarity = async function (s1, s2) {
-        var longer = s1;
-        var shorter = s2;
-        if (s1.length < s2.length) {
-          longer = s2;
-          shorter = s1;
-        }
-        var longerLength = longer.length;
-        if (longerLength == 0) {
-          return 1.0;
-        }
-        return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
-      }
+    var longer = s1;
+    var shorter = s2;
+    if (s1.length < s2.length) {
+        longer = s2;
+        shorter = s1;
+    }
+    var longerLength = longer.length;
+    if (longerLength == 0) {
+        return 1.0;
+    }
+    return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
+}
 
-      function editDistance(s1, s2) {
-        s1 = s1.toLowerCase();
-        s2 = s2.toLowerCase();
-      
-        var costs = new Array();
-        for (var i = 0; i <= s1.length; i++) {
-          var lastValue = i;
-          for (var j = 0; j <= s2.length; j++) {
+function editDistance(s1, s2) {
+    s1 = s1.toLowerCase();
+    s2 = s2.toLowerCase();
+
+    var costs = new Array();
+    for (var i = 0; i <= s1.length; i++) {
+        var lastValue = i;
+        for (var j = 0; j <= s2.length; j++) {
             if (i == 0)
-              costs[j] = j;
+                costs[j] = j;
             else {
-              if (j > 0) {
-                var newValue = costs[j - 1];
-                if (s1.charAt(i - 1) != s2.charAt(j - 1))
-                  newValue = Math.min(Math.min(newValue, lastValue),
-                    costs[j]) + 1;
-                costs[j - 1] = lastValue;
-                lastValue = newValue;
-              }
+                if (j > 0) {
+                    var newValue = costs[j - 1];
+                    if (s1.charAt(i - 1) != s2.charAt(j - 1))
+                        newValue = Math.min(Math.min(newValue, lastValue),
+                            costs[j]) + 1;
+                    costs[j - 1] = lastValue;
+                    lastValue = newValue;
+                }
             }
-          }
-          if (i > 0)
-            costs[s2.length] = lastValue;
         }
-        return costs[s2.length];
+        if (i > 0)
+            costs[s2.length] = lastValue;
+    }
+    return costs[s2.length];
 }
 
 /**
@@ -456,7 +456,7 @@ exports.similarity = async function (s1, s2) {
  * @param {string} channel Channel to check for moderator status
  * @returns {boolean} true | false | If is mod
  */
- exports.isMod = function(user, channel) {
+exports.isMod = function (user, channel) {
     channel = channel[0] === '#' ? channel.substr(1) : channel;
     const isMod = user.mod || user['user-type'] === 'mod';
     const isBroadcaster = channel === user.username;

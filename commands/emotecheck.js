@@ -26,7 +26,7 @@ module.exports = {
                 }
                 */
                 emoteId = JSON.stringify(user.emotes).split(":")[0];
-                    emoteId = emoteId.substring(2);
+                emoteId = emoteId.substring(2);
 
 
                 emoteId = emoteId.slice(0, -1);
@@ -35,7 +35,7 @@ module.exports = {
                 emoteId = `${emoteId}?id=true`;
             }
 
-            const emotecheck = await axios.get(`https://api.ivr.fi/v2/twitch/emotes/${emoteId}`, {timeout: 10000});
+            const emotecheck = await axios.get(`https://api.ivr.fi/v2/twitch/emotes/${emoteId}`, { timeout: 10000 });
 
             if (!emotecheck.data["error"]) {
                 let emotechannel = emotecheck.data["channelName"];
@@ -45,32 +45,32 @@ module.exports = {
                 let realid = emotecheck.data["emoteID"];
                 let emoteStatus = "null";
                 if (emotecheck.data["emoteAssetType"]) {
-                        emoteStatus = emotecheck.data["emoteAssetType"].toLowerCase();
+                    emoteStatus = emotecheck.data["emoteAssetType"].toLowerCase();
                 }
                 let realemote = emotecheck.data["emoteCode"];
 
                 if (emotecheck.data["channelName"]) {
-                if (emotecheck.data["channelName"].toLowerCase() !== emotecheck.data["channelLogin"]) {
-                    emotechannel = `${emotecheck.data["channelLogin"]}(${emotecheck.data["channelName"]})`;
+                    if (emotecheck.data["channelName"].toLowerCase() !== emotecheck.data["channelLogin"]) {
+                        emotechannel = `${emotecheck.data["channelLogin"]}(${emotecheck.data["channelName"]})`;
+                    }
                 }
-            }
 
                 let ecount = 0;
 
                 try {
 
-                const emotecount = await axios.get(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, {timeout: 10000});
-                let count = emotecount.data["twitchEmotes"];
-                _.each(count, async function (emote) {
-                    console.log(emote["emote"], emote["amount"]);
-                    if (emote["emote"] === realemote) {
-                        ecount = emote["amount"];
-                        return;
-                    }
-                })
-            } catch (err) {
-                console.log(err);
-            }
+                    const emotecount = await axios.get(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, { timeout: 10000 });
+                    let count = emotecount.data["twitchEmotes"];
+                    _.each(count, async function (emote) {
+                        console.log(emote["emote"], emote["amount"]);
+                        if (emote["emote"] === realemote) {
+                            ecount = emote["amount"];
+                            return;
+                        }
+                    })
+                } catch (err) {
+                    console.log(err);
+                }
 
 
 
@@ -125,7 +125,7 @@ module.exports = {
                         }
                         return `${realemote} (ID ${realid}) is a bit emote (${emoteStatus}), from the channel (#${emotechannel}) - ${url}`;
                     }
-            }
+                }
             }
 
         } catch (err) {
@@ -145,28 +145,28 @@ module.exports = {
             let foundemote = 0;
 
             try {
-            const emotecount = await axios.get(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, {timeout: 10000});
-            let bttv = emotecount.data["bttvEmotes"];
-            let ffz = emotecount.data["ffzEmotes"];
-            _.each(bttv, async function (emote) {
-                if (emote["emote"] === input[2]) {
-                    ecount = emote["amount"];
-                    foundemote = 1;
-                    return;
-                }
-            })
-            if (foundemote === 0) {
-                _.each(ffz, async function (emote) {
+                const emotecount = await axios.get(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, { timeout: 10000 });
+                let bttv = emotecount.data["bttvEmotes"];
+                let ffz = emotecount.data["ffzEmotes"];
+                _.each(bttv, async function (emote) {
                     if (emote["emote"] === input[2]) {
                         ecount = emote["amount"];
                         foundemote = 1;
                         return;
                     }
                 })
+                if (foundemote === 0) {
+                    _.each(ffz, async function (emote) {
+                        if (emote["emote"] === input[2]) {
+                            ecount = emote["amount"];
+                            foundemote = 1;
+                            return;
+                        }
+                    })
+                }
+            } catch (err) {
+                console.log(err);
             }
-        } catch (err) {
-            console.log(err);
-        }
             _.each(emotes, async function (emote) {
                 if (emote[0] === input[2]) {
 
@@ -186,9 +186,9 @@ module.exports = {
             })
 
             if (found === 0) {
-                const ffzglobal = await axios.get(`https://api.frankerfacez.com/v1/set/global`, {timeout: 10000});
-                const bttvglobal = await axios.get(`https://api.betterttv.net/3/cached/emotes/global`, {timeout: 10000});
-                const stvglobal = await axios.get(`https://api.7tv.app/v2/emotes/global`, {timeout: 10000});
+                const ffzglobal = await axios.get(`https://api.frankerfacez.com/v1/set/global`, { timeout: 10000 });
+                const bttvglobal = await axios.get(`https://api.betterttv.net/3/cached/emotes/global`, { timeout: 10000 });
+                const stvglobal = await axios.get(`https://api.7tv.app/v2/emotes/global`, { timeout: 10000 });
 
                 let ffzemotes = ffzglobal.data["sets"];
                 ffzemotes = ffzemotes["3"];
@@ -268,6 +268,7 @@ module.exports = {
                     return `FeelsDankMan Banphrase api error: ${err.name}`;
                 }
             }
-            return `FeelsDankMan Error: ${err.response.data.error}`;                }
+            return `FeelsDankMan Error: ${err.response.data.error}`;
+        }
     }
 }

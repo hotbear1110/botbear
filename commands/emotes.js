@@ -29,13 +29,13 @@ module.exports = {
                     return `2nd input should be a number`;
                 }
                 if (input[2] !== "1") {
-                    emotes = emotes.slice(-(12*(input[2]-1))).reverse();
-                    emotes = emotes.slice((6*(input[2]-2)+(6*(input[2]-1))))
+                    emotes = emotes.slice(-(12 * (input[2] - 1))).reverse();
+                    emotes = emotes.slice((6 * (input[2] - 2) + (6 * (input[2] - 1))))
                 } else {
                     emotes = emotes.slice(-6).reverse();
                 }
             } else {
-            emotes = emotes.slice(-6).reverse();
+                emotes = emotes.slice(-6).reverse();
             }
             if (!emotes.length) {
                 return `monkaS You are going too far now`
@@ -61,7 +61,7 @@ module.exports = {
 
         } catch (err) {
             console.log(err);
-            return `FeelsDankMan Sql error: ${err.sqlMessage}`;        
+            return `FeelsDankMan Sql error: ${err.sqlMessage}`;
         }
     }
 }

@@ -50,7 +50,7 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
 
-    if (activetrivia[channel]) { 
+    if (activetrivia[channel]) {
         let similarity = await tools.similarity(msg.toLowerCase(), triviaanswer[channel].toLowerCase())
         if (await similarity >= 0.8) {
             if (channel === "#forsen") {
@@ -63,12 +63,12 @@ async function onMessageHandler(channel, user, msg, self) {
             const ms = new Date().getTime() - triviaTime[channel];
             let time = parseInt(tools.humanizeDuration(ms));
             time = 60 - time;
-            time = 1 + (time/100);
+            time = 1 + (time / 100);
             time = time.toString().substring(0, 4);
             time = parseFloat(time);
 
             let triviaScore = 1000;
-            triviaScore = triviaScore * (Math.floor(similarity)/100);
+            triviaScore = triviaScore * (Math.floor(similarity) / 100);
             triviaScore = triviaScore * time;
             if (gothint[channel] === false && triviaHints[channel] !== "FeelsDankMan you already got the hint.") {
                 triviaScore = triviaScore * 2;
@@ -79,23 +79,23 @@ async function onMessageHandler(channel, user, msg, self) {
             cc.say(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) OMGScoots You get +${triviaScore} points`);
 
             let userchannel = [];
-                    userchannel.push(`"${user.username}"`);
-                    userchannel.push(`"${channel}"`);
+            userchannel.push(`"${user.username}"`);
+            userchannel.push(`"${channel}"`);
 
 
 
-                    const alreadyJoined = await tools.query(`
+            const alreadyJoined = await tools.query(`
                 SELECT *
                 FROM MyPoints
                 WHERE username=?`,
-                        [`[${userchannel}]`]);
+                [`[${userchannel}]`]);
 
-                    if (!alreadyJoined.length) {
-                        await tools.query('INSERT INTO MyPoints (username, points) values (?, ?)', [`[${userchannel}]`, triviaScore]);
-                    } else {
-                        triviaScore = triviaScore + alreadyJoined[0].points;
-                        await tools.query(`UPDATE MyPoints SET points=? WHERE username=?`, [triviaScore, `[${userchannel}]`])
-                    }
+            if (!alreadyJoined.length) {
+                await tools.query('INSERT INTO MyPoints (username, points) values (?, ?)', [`[${userchannel}]`, triviaScore]);
+            } else {
+                triviaScore = triviaScore + alreadyJoined[0].points;
+                await tools.query(`UPDATE MyPoints SET points=? WHERE username=?`, [triviaScore, `[${userchannel}]`])
+            }
 
             delete activetrivia[channel];
             delete triviaanswer[channel];
@@ -124,7 +124,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
     if (realcommand === "say" && realcommand === "channel" && realcommand === "emotecheck" && realcommand === "cum" && realcommand === "suggest" && realcommand === "shit" && realcommand === "code") {
         input = input.toString().replaceAll(",", " ");
-    } 
+    }
 
     if (input[0].toLowerCase() === "[cookies]" && user["user-id"] == 425363834) {
         const stream = await tools.query('SELECT disabled_commands FROM Streamers WHERE username=?', [channel.substring(1)]);
@@ -177,13 +177,13 @@ async function onMessageHandler(channel, user, msg, self) {
     SELECT disabled_commands
     FROM Streamers
     WHERE username=?`,
-            [channel.substring(1)]);
+        [channel.substring(1)]);
 
-        disabledCheck = JSON.parse(disabledCheck[0].disabled_commands);
+    disabledCheck = JSON.parse(disabledCheck[0].disabled_commands);
 
-        if (disabledCheck.includes(realcommand)) {
-            return;
-        }
+    if (disabledCheck.includes(realcommand)) {
+        return;
+    }
 
     const commands = requireDir("./commands");
 
@@ -219,7 +219,7 @@ async function onMessageHandler(channel, user, msg, self) {
     if (realcommand === "hint" && activetrivia[channel] && gothint[channel] === false) {
         const ms = new Date().getTime() - triviaTime[channel];
         let timePassed = tools.humanizeDuration(ms);
-        if (parseInt(timePassed) < 10){
+        if (parseInt(timePassed) < 10) {
             cc.say(channel, "You need to wait 10 seconds to get a hint.");
             return;
         }
@@ -229,49 +229,49 @@ async function onMessageHandler(channel, user, msg, self) {
 
         const banPhrase = await tools.banphrasePass(hint, channel);
 
-    if (banPhrase.banned) {
-        cc.say(channel, `[Banphrased] cmonBruh`);
+        if (banPhrase.banned) {
+            cc.say(channel, `[Banphrased] cmonBruh`);
+            return;
+        }
+
+        const banPhraseV2 = await tools.banphrasePassV2(hint, channel);
+
+        if (banPhraseV2 == true) {
+            cc.say(channel, `[Banphrased] cmonBruh`);
+            return;
+        }
+
+        if (banPhrase === 0) {
+            cc.say(channel, "FeelsDankMan banphrase error!!");
+            return;
+        }
+
+        const notabanPhrase = await tools.notbannedPhrases(hint.toLowerCase());
+
+        if (notabanPhrase != `null`) {
+            cc.say(channel, notabanPhrase);
+            return;
+        }
+
+        const badWord = hint.match(regex.racism);
+        if (badWord != null) {
+            cc.say(channel, `[Bad word detected] cmonBruh`);
+            return;
+        }
+
+        const reallength = await tools.asciiLength(hint);
+        if (reallength > 30) {
+            cc.say(channel, "[Too many emojis]");
+            return;
+        }
+
+        if (hint === oldmessage) {
+            hint = hint + " 󠀀 ";
+        }
+
+        cc.say(channel, `(Trivia) ${user.username}, Hint: ${hint}`)
+        oldmessage = `(Trivia) ${user.username}, Hint: ${hint}`;
         return;
-    }
-
-    const banPhraseV2 = await tools.banphrasePassV2(hint, channel);
-
-    if (banPhraseV2 == true) {
-        cc.say(channel, `[Banphrased] cmonBruh`);
-        return;
-    }
-
-    if (banPhrase === 0) {
-        cc.say(channel, "FeelsDankMan banphrase error!!");
-        return;
-    }
-
-    const notabanPhrase = await tools.notbannedPhrases(hint.toLowerCase());
-
-    if (notabanPhrase != `null`) {
-        cc.say(channel, notabanPhrase);
-        return;
-    }
-
-    const badWord = hint.match(regex.racism);
-    if (badWord != null) {
-        cc.say(channel, `[Bad word detected] cmonBruh`);
-        return;
-    }
-
-    const reallength = await tools.asciiLength(hint);
-    if (reallength > 30) {
-        cc.say(channel, "[Too many emojis]");
-        return;
-    }
-
-    if (hint === oldmessage) {
-        hint = hint + " 󠀀 ";
-    }
-
-    cc.say(channel, `(Trivia) ${user.username}, Hint: ${hint}`)
-    oldmessage = `(Trivia) ${user.username}, Hint: ${hint}`;
-    return;
     }
 
     if (realcommand === "trivia") {
@@ -289,29 +289,29 @@ async function onMessageHandler(channel, user, msg, self) {
 
         // Get cooldown from database.
         let cd = await tools.query("SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?", [realchannel]);
-        
+
         // Set trivia cooldown if not set.
-        if (cd[0].trivia_cooldowns === null) { 
+        if (cd[0].trivia_cooldowns === null) {
             cd[0].trivia_cooldowns === 30000;
             tools.query("UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?", [realchannel]);
         }
 
         const triviaCD = new tools.Cooldown(realchannel, realcommand, cd[0].trivia_cooldowns);
 
-        if ((await triviaCD.setCooldown()).length && !user.mod) { 
+        if ((await triviaCD.setCooldown()).length && !user.mod) {
             cc.say(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`)
-            
-            return; 
+
+            return;
         }
 
         let result = await commands[realcommand].execute(realchannel, user, input, perm);
 
         if (!result) {
             return;
-        }    
+        }
 
         triviaanswer[channel] = result[2];
-        
+
 
         activetrivia[channel] = channel;
 
@@ -324,66 +324,66 @@ async function onMessageHandler(channel, user, msg, self) {
         gothint[channel] = false;
         triviaTimeout(channel, triviaTimeID);
         async function triviaTimeout(channel, triviaTimeID) {
-        setTimeout(() => {
-            if (activetrivia[channel]) {
-                if (triviaTime[channel] === triviaTimeID) {
-            delete activetrivia[channel];
-            delete triviaanswer[channel];
-            delete triviaHints[channel];
+            setTimeout(() => {
+                if (activetrivia[channel]) {
+                    if (triviaTime[channel] === triviaTimeID) {
+                        delete activetrivia[channel];
+                        delete triviaanswer[channel];
+                        delete triviaHints[channel];
 
-            cc.say(channel, `The trivia timed out after 60 seconds. The answer was: "${result[2]}"`)
+                        cc.say(channel, `The trivia timed out after 60 seconds. The answer was: "${result[2]}"`)
+                    }
                 }
-            }
-        }, 60000);
-    }
+            }, 60000);
+        }
 
 
         let response = result[0];
 
         const banPhrase = await tools.banphrasePass(response, channel);
 
-    if (banPhrase.banned) {
-        cc.say(channel, `[Banphrased] cmonBruh`);
+        if (banPhrase.banned) {
+            cc.say(channel, `[Banphrased] cmonBruh`);
+            return;
+        }
+
+        const banPhraseV2 = await tools.banphrasePassV2(response, channel);
+
+        if (banPhraseV2 == true) {
+            cc.say(channel, `[Banphrased] cmonBruh`);
+            return;
+        }
+
+        if (banPhrase === 0) {
+            cc.say(channel, "FeelsDankMan error!!");
+            return;
+        }
+
+        const notabanPhrase = await tools.notbannedPhrases(response.toLowerCase());
+
+        if (notabanPhrase != `null`) {
+            cc.say(channel, notabanPhrase);
+            return;
+        }
+
+        const badWord = response.match(regex.racism);
+        if (badWord != null) {
+            cc.say(channel, `[Bad word detected] cmonBruh`);
+            return;
+        }
+
+        const reallength = await tools.asciiLength(response);
+        if (reallength > 30) {
+            cc.say(channel, "[Too many emojis]");
+            return;
+        }
+
+        if (response === oldmessage) {
+            response = response + " 󠀀 ";
+        }
+
+        cc.say(channel, response);
         return;
-    }
-
-    const banPhraseV2 = await tools.banphrasePassV2(response, channel);
-
-    if (banPhraseV2 == true) {
-        cc.say(channel, `[Banphrased] cmonBruh`);
-        return;
-    }
-
-    if (banPhrase === 0) {
-        cc.say(channel, "FeelsDankMan error!!");
-        return;
-    }
-
-    const notabanPhrase = await tools.notbannedPhrases(response.toLowerCase());
-
-    if (notabanPhrase != `null`) {
-        cc.say(channel, notabanPhrase);
-        return;
-    }
-
-    const badWord = response.match(regex.racism);
-    if (badWord != null) {
-        cc.say(channel, `[Bad word detected] cmonBruh`);
-        return;
-    }
-
-    const reallength = await tools.asciiLength(response);
-    if (reallength > 30) {
-        cc.say(channel, "[Too many emojis]");
-        return;
-    }
-
-    if (response === oldmessage) {
-        response = response + " 󠀀 ";
-    }
-
-    cc.say(channel, response);
-    return;
 
     }
 
@@ -460,41 +460,41 @@ async function onConnectedHandler(addr, port) {
     await tools.refreshCommands();
     if (started === false) {
 
-let bannedUsers = await tools.bannedStreamer;
+        let bannedUsers = await tools.bannedStreamer;
 
-if (await bannedUsers.length) {
-_.each(bannedUsers, async function (user) {
-    cc.part(user).then((data) => {
-        // data returns [channel]
-    }).catch((err) => {
-        console.log(err);
-    });
-    cc.say("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`)
-})
-}
+        if (await bannedUsers.length) {
+            _.each(bannedUsers, async function (user) {
+                cc.part(user).then((data) => {
+                    // data returns [channel]
+                }).catch((err) => {
+                    console.log(err);
+                });
+                cc.say("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`)
+            })
+        }
 
-let namechange = await tools.nameChanges;
+        let namechange = await tools.nameChanges;
 
-if (await namechange.length) {
-_.each(namechange, async function (name) {
-    cc.join(name[0]).then((data) => {
-        // data returns [channel]
-    }).catch((err) => {
-        console.log(err);
-    });
+        if (await namechange.length) {
+            _.each(namechange, async function (name) {
+                cc.join(name[0]).then((data) => {
+                    // data returns [channel]
+                }).catch((err) => {
+                    console.log(err);
+                });
 
-    cc.part(name[1]).then((data) => {
-        // data returns [channel]
-    }).catch((err) => {
-        console.log(err);
-    });
+                cc.part(name[1]).then((data) => {
+                    // data returns [channel]
+                }).catch((err) => {
+                    console.log(err);
+                });
 
-    cc.say(`#${name[0]}`, `Name change detected, ${name[1]} -> ${name[0]}`)
-    cc.say("#botbear1110", `Left channel ${name[1]}. Reason: Name change detected, ${name[1]} -> ${name[0]}`)
-})
-}
-started = true;
+                cc.say(`#${name[0]}`, `Name change detected, ${name[1]} -> ${name[0]}`)
+                cc.say("#botbear1110", `Left channel ${name[1]}. Reason: Name change detected, ${name[1]} -> ${name[0]}`)
+            })
+        }
+        started = true;
     }
 
 }
-module.exports = { cc , uptime};
+module.exports = { cc, uptime };

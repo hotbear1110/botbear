@@ -25,7 +25,7 @@ module.exports = {
 
             if (input[3]) {
                 try {
-                vodNumber = parseInt(input[3] - 1);
+                    vodNumber = parseInt(input[3] - 1);
                 } catch (err) {
                     console.log(err);
                     return "Last input should be a number";
@@ -52,15 +52,15 @@ module.exports = {
                 return `That channel has no vods`;
             } else if (vodNumber > 99) {
                 let vodDate = vodList.data[vodList.data.length - 1].created_at;
-            vodDate = vodDate.split("T")[0];
+                vodDate = vodDate.split("T")[0];
                 return `I can only go 100 vods back, but here is the oldest available vod - ${vodList.data[vodList.data.length - 1].url} (${vodList.data.length} - ${vodDate})`
             } else if (!vodList.data[vodNumber]) {
                 let vodDate = vodList.data[vodList.data.length - 1].created_at;
-            vodDate = vodDate.split("T")[0];
+                vodDate = vodDate.split("T")[0];
                 return `That channel only has ${vodList.data.length} vod(s), here is the oldest vod - ${vodList.data[vodList.data.length - 1].url} - ${vodDate}`;
             } else {
                 let vodDate = vodList.data[vodNumber].created_at;
-            vodDate = vodDate.split("T")[0];
+                vodDate = vodDate.split("T")[0];
                 return `${vodList.data[vodNumber].url}?t=0s - ${vodDate}`;
             }
         } catch (err) {
@@ -70,7 +70,7 @@ module.exports = {
                     return `FeelsDankMan Banphrase api error: ${err.name}`;
                 }
             }
-            return `FeelsDankMan Error: ${err.response.data.error}`;   
+            return `FeelsDankMan Error: ${err.response.data.error}`;
         }
     }
 }

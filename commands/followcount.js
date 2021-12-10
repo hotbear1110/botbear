@@ -19,7 +19,7 @@ module.exports = {
                 realchannel = input[2];
             }
 
-            const followcount = await axios.get(`https://decapi.me/twitch/followcount/${realchannel}`, {timeout: 10000});
+            const followcount = await axios.get(`https://decapi.me/twitch/followcount/${realchannel}`, { timeout: 10000 });
 
             if (followcount.data === 0) {
                 return `Could not find the channel ${realchannel}`;

@@ -28,13 +28,13 @@ module.exports = {
                 return;
             }
 
-            const lm = await got(`https://api.ivr.fi/logs/lastmessage/${realchannel}/${username}`, {timeout: 10000}).json();
+            const lm = await got(`https://api.ivr.fi/logs/lastmessage/${realchannel}/${username}`, { timeout: 10000 }).json();
             const masspinged = await tools.massping(lm.response.toLowerCase(), channel);
 
             if (masspinged != "null") {
                 return "[MASS PING]";
             }
-            
+
             let message = tools.splitLine(lm.response, 350)
             if (lm.status !== 404) {
                 if (message[1]) {
@@ -50,7 +50,7 @@ module.exports = {
                     return `FeelsDankMan Banphrase api error: ${err.name}`;
                 }
             }
-            return `FeelsDankMan Error`;    
+            return `FeelsDankMan Error`;
         }
     }
 }

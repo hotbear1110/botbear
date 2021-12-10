@@ -24,127 +24,127 @@ setInterval(async function () {
     _.each(streamers, async function (stream) {
         let disabledCommands = JSON.parse(stream.disabled_commands)
         if (!disabledCommands.includes("notify")) {
-        setTimeout(async function () { 
-        await axios.get(`https://api.twitch.tv/helix/streams?user_login=${stream.username}`, {
-            headers: {
-                'client-id': process.env.TWITCH_CLIENTID,
-                'Authorization': process.env.TWITCH_AUTH
-            },
-        })
-            .then(async function (response) {
-                // handle success
-                const twitchdata = response.data;
-                let users = JSON.parse(stream.live_ping);
-                users = users.toString().replaceAll(',', ' ');
+            setTimeout(async function () {
+                await axios.get(`https://api.twitch.tv/helix/streams?user_login=${stream.username}`, {
+                    headers: {
+                        'client-id': process.env.TWITCH_CLIENTID,
+                        'Authorization': process.env.TWITCH_AUTH
+                    },
+                })
+                    .then(async function (response) {
+                        // handle success
+                        const twitchdata = response.data;
+                        let users = JSON.parse(stream.live_ping);
+                        users = users.toString().replaceAll(',', ' ');
 
 
-                let userlist = tools.splitLine(users, 350);
-                let proxychannel = stream.username;
-                if (stream.username === "forsen") {
-                    proxychannel = "botbear1110";
-                }
+                        let userlist = tools.splitLine(users, 350);
+                        let proxychannel = stream.username;
+                        if (stream.username === "forsen") {
+                            proxychannel = "botbear1110";
+                        }
 
-                if (twitchdata['data'].length !== 0 && stream.islive == 0) {
-                    console.log(stream.username + " IS NOW LIVE");
-                    await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`);
-                    _.each(userlist, function (msg, i) {
-                        setTimeout(function () {
-                            cc.action(`#${proxychannel}`, `${stream.liveemote} ${stream.username.toUpperCase()} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`);
-                        }, 2000 * i);
+                        if (twitchdata['data'].length !== 0 && stream.islive == 0) {
+                            console.log(stream.username + " IS NOW LIVE");
+                            await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`);
+                            _.each(userlist, function (msg, i) {
+                                setTimeout(function () {
+                                    cc.action(`#${proxychannel}`, `${stream.liveemote} ${stream.username.toUpperCase()} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`);
+                                }, 2000 * i);
+                            });
+                        };
+                        if (twitchdata['data'].length === 0 && stream.islive == 1) {
+                            console.log(stream.username + " IS NOW OFFLINE");
+                            await tools.query(`UPDATE Streamers SET islive = 0 WHERE username ="${stream.username}"`);
+                            _.each(userlist, function (msg, i) {
+                                setTimeout(function () {
+                                    cc.action(`#${proxychannel}`, `${stream.offlineemote} ${stream.username.toUpperCase()} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`);
+                                }, 2000 * i);
+                            });
+                        };
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
                     });
-                };
-                if (twitchdata['data'].length === 0 && stream.islive == 1) {
-                    console.log(stream.username + " IS NOW OFFLINE");
-                    await tools.query(`UPDATE Streamers SET islive = 0 WHERE username ="${stream.username}"`);
-                    _.each(userlist, function (msg, i) {
-                        setTimeout(function () {
-                            cc.action(`#${proxychannel}`, `${stream.offlineemote} ${stream.username.toUpperCase()} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`);
-                        }, 2000 * i);
-                    });
-                };
-            })
-            .catch(function (error) {
-                // handle error
-                console.log(error);
-            })
-            .then(function () {
-                // always executed
-            });
-        }, 500);
-    }
+            }, 500);
+        }
     })
     _.each(streamers, async function (stream) {
         let disabledCommands = JSON.parse(stream.disabled_commands)
         if (!disabledCommands.includes("notify")) {
-        setTimeout(async function () { 
-        await axios.get(`https://api.twitch.tv/helix/channels?broadcaster_id=${stream.uid}`, {
-            headers: {
-                'client-id': process.env.TWITCH_CLIENTID,
-                'Authorization': process.env.TWITCH_AUTH
-            },
-        })
-            .then(async function (response) {
-                // handle success
-                const twitchdata = response.data;
-                let newTitle = twitchdata.data[0].title;
-                let titleusers = JSON.parse(stream.title_ping);
-                titleusers = titleusers.toString().replaceAll(',', ' ');
-
-                let newGame = twitchdata.data[0].game_name;
-                let gameusers = JSON.parse(stream.game_ping);
-                _.each(myping, async function (userchanel) {
-                    let pingname = JSON.parse(userchanel.username);
-                    let gamename = userchanel.game_pings;
-                    if (pingname.includes(stream.username) && gamename.includes(newGame) && newGame !== "") {
-                        gameusers.push(pingname[0]);
-                    }
+            setTimeout(async function () {
+                await axios.get(`https://api.twitch.tv/helix/channels?broadcaster_id=${stream.uid}`, {
+                    headers: {
+                        'client-id': process.env.TWITCH_CLIENTID,
+                        'Authorization': process.env.TWITCH_AUTH
+                    },
                 })
-                gameusers = gameusers.toString().replaceAll(',', ' ');
+                    .then(async function (response) {
+                        // handle success
+                        const twitchdata = response.data;
+                        let newTitle = twitchdata.data[0].title;
+                        let titleusers = JSON.parse(stream.title_ping);
+                        titleusers = titleusers.toString().replaceAll(',', ' ');
+
+                        let newGame = twitchdata.data[0].game_name;
+                        let gameusers = JSON.parse(stream.game_ping);
+                        _.each(myping, async function (userchanel) {
+                            let pingname = JSON.parse(userchanel.username);
+                            let gamename = userchanel.game_pings;
+                            if (pingname.includes(stream.username) && gamename.includes(newGame) && newGame !== "") {
+                                gameusers.push(pingname[0]);
+                            }
+                        })
+                        gameusers = gameusers.toString().replaceAll(',', ' ');
 
 
-                let titleuserlist = tools.splitLine(titleusers, 350);
-                let gameuserlist = tools.splitLine(gameusers, 350);
+                        let titleuserlist = tools.splitLine(titleusers, 350);
+                        let gameuserlist = tools.splitLine(gameusers, 350);
 
-                let proxychannel2 = stream.username;
-                if (stream.username === "forsen") {
-                    proxychannel2 = "botbear1110";
-                }
+                        let proxychannel2 = stream.username;
+                        if (stream.username === "forsen") {
+                            proxychannel2 = "botbear1110";
+                        }
 
-                if (newTitle !== stream.title) {
-                    console.log(stream.username + " NEW TITLE: " + newTitle);
-                    await tools.query(`UPDATE Streamers SET title=? WHERE username=?`, [newTitle, stream.username]);
-                    _.each(titleuserlist, function (msg, i) {
-                        setTimeout(function () {
-                            cc.action(`#${proxychannel2}`, `${stream.titleemote} NEW TITLE ! ${stream.titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`);
-                        }, 2000 * i);
+                        if (newTitle !== stream.title) {
+                            console.log(stream.username + " NEW TITLE: " + newTitle);
+                            await tools.query(`UPDATE Streamers SET title=? WHERE username=?`, [newTitle, stream.username]);
+                            _.each(titleuserlist, function (msg, i) {
+                                setTimeout(function () {
+                                    cc.action(`#${proxychannel2}`, `${stream.titleemote} NEW TITLE ! ${stream.titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`);
+                                }, 2000 * i);
+                            });
+                        };
+                        if (newGame !== stream.game) {
+                            let gameTime = new Date().getTime();
+
+                            await tools.query(`UPDATE Streamers SET game=?, game_time=? WHERE username=?`, [newGame, gameTime, stream.username]);
+
+                            if (newTitle !== stream.title) {
+                                sleep(1500)
+                            }
+                            console.log(stream.username + " NEW GAME: " + newGame);
+                            _.each(gameuserlist, function (msg, i) {
+                                setTimeout(function () {
+                                    cc.action(`#${proxychannel2}`, `${stream.gameemote} NEW GAME ! ${stream.gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`)
+                                }, 2000 * i);
+                            });
+
+                        };
+                    })
+                    .catch(function (error) {
+                        // handle error
+                        console.log(error);
+                    })
+                    .then(function () {
+                        // always executed
                     });
-                };
-                if (newGame !== stream.game) {
-                    let gameTime = new Date().getTime();
-
-                    await tools.query(`UPDATE Streamers SET game=?, game_time=? WHERE username=?`, [newGame, gameTime, stream.username]);
-
-                    if (newTitle !== stream.title) {
-                        sleep(1500)
-                    }
-                    console.log(stream.username + " NEW GAME: " + newGame);
-                    _.each(gameuserlist, function (msg, i) {
-                        setTimeout(function () {
-                            cc.action(`#${proxychannel2}`, `${stream.gameemote} NEW GAME ! ${stream.gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`)
-                        }, 2000 * i);
-                    });
-
-                };
-            })
-            .catch(function (error) {
-                // handle error
-                console.log(error);
-            })
-            .then(function () {
-                // always executed
-            });
-        }, 500);
-    }
+            }, 500);
+        }
     })
 }, 20000);
 

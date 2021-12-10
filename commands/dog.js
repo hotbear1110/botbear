@@ -11,7 +11,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            const image = await got(`https://dog.ceo/api/breeds/image/random`, {timeout: 10000}).json();
+            const image = await got(`https://dog.ceo/api/breeds/image/random`, { timeout: 10000 }).json();
             console.log(image)
 
             return `OhMyDog ${image.message}`;
@@ -23,7 +23,7 @@ module.exports = {
                     return `FeelsDankMan Banphrase api error: ${err.name}`;
                 }
             }
-            return `FeelsDankMan Error`;        
+            return `FeelsDankMan Error`;
         }
     }
 }

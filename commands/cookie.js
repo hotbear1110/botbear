@@ -66,7 +66,7 @@ module.exports = {
                     } else {
                         let cookieCD = await got(`https://api.roaringiron.com/cooldown/${user.username}`, { timeout: 10000 }).json();
 
-                        if (cookieCD["error"]) { 
+                        if (cookieCD["error"]) {
                             return cookieCD["error"];
                         }
                         if (cookieCD["can_claim"] === true) {
@@ -89,7 +89,7 @@ module.exports = {
                     return `FeelsDankMan Banphrase api error: ${err.name}`;
                 }
             }
-            return `FeelsDankMan Sql error: ${err.sqlMessage}`;        
+            return `FeelsDankMan Sql error: ${err.sqlMessage}`;
         }
     }
 }

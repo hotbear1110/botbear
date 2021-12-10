@@ -19,7 +19,7 @@ module.exports = {
                 if (input[2].startsWith("@")) {
                     username = input[2].substring(1);
                 } else {
-                username = input[2];
+                    username = input[2];
                 }
             }
             let realchannel = channel;
@@ -27,7 +27,7 @@ module.exports = {
                 realchannel = input[3];
             }
 
-            const followcheck = await axios.get(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`, {timeout: 10000});
+            const followcheck = await axios.get(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`, { timeout: 10000 });
 
             if (followcheck.data["followedAt"]) {
                 const ms = new Date().getTime() - Date.parse(followcheck.data["followedAt"]);
@@ -41,7 +41,7 @@ module.exports = {
                     return `FeelsDankMan Banphrase api error: ${err.name}`;
                 }
             }
-            return `FeelsDankMan Error`;          
+            return `FeelsDankMan Error`;
         }
     }
 }

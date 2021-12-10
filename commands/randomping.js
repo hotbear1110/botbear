@@ -11,7 +11,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            const randomuser = await axios.get(`https://decapi.me/twitch/random_user/${channel}`, {timeout: 10000});
+            const randomuser = await axios.get(`https://decapi.me/twitch/random_user/${channel}`, { timeout: 10000 });
 
             return `:tf: 🔔 ${randomuser.data}`;
 
@@ -22,7 +22,7 @@ module.exports = {
                     return `FeelsDankMan Banphrase api error: ${err.name}`;
                 }
             }
-            return `FeelsDankMan Error`;     
+            return `FeelsDankMan Error`;
         }
     }
 }

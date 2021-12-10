@@ -11,10 +11,10 @@ module.exports = {
     category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
-            if (module.exports.permission> perm) {
+            if (module.exports.permission > perm) {
                 return;
             }
-            let chatters = await axios.get(`https://tmi.twitch.tv/group/user/${channel}/chatters`, {timeout: 10000});
+            let chatters = await axios.get(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 });
             chattercount = chatters.data["chatter_count"];
             return `There are ${chattercount} users in chat rn :O`;
         } catch (err) {
@@ -24,7 +24,7 @@ module.exports = {
                     return `FeelsDankMan Banphrase api error: ${err.name}`;
                 }
             }
-            return `FeelsDankMan Error: ${err.response.data.error}`;     
+            return `FeelsDankMan Error: ${err.response.data.error}`;
         }
     }
 }

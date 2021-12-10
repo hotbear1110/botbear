@@ -44,9 +44,9 @@ function genre(category) {
 
 async function getTrivia(genre) {
     if (genre === undefined) {
-        return await got(`https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986`, {timeout: 10000}).json();
+        return await got(`https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986`, { timeout: 10000 }).json();
     } else {
-        return await got(`https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&category=${genre}`, {timeout: 10000}).json();
+        return await got(`https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&category=${genre}`, { timeout: 10000 }).json();
     }
 }
 
@@ -71,7 +71,7 @@ module.exports = {
                     const newIndex = Math.floor(Math.random() * (index + 1));
                     [array[index], array[newIndex]] = [array[newIndex], array[index]];
                 }
-            
+
                 return array;
             }
 
@@ -103,14 +103,14 @@ module.exports = {
 
             answerToString = answerToString.replace(/.$/, '')
             answerToString = decodeURIComponent(answerToString);
-            
+
             correct_answer = decodeURIComponent(correct_answer);
             console.log(answerToString)
 
-            if (question.toLowerCase().includes("which of these") || question.toLowerCase().includes("which one of these") || question.toLowerCase().includes("which of the following") || question.toLowerCase().includes("all of the following") || question.toLowerCase().includes("which one of the following") ) {
-                return [`(Trivia) ${user.username} has started a trivia :) [${category}] Question: ${question} - [${answerToString}]`, "FeelsDankMan you already got the hint." , correct_answer];
+            if (question.toLowerCase().includes("which of these") || question.toLowerCase().includes("which one of these") || question.toLowerCase().includes("which of the following") || question.toLowerCase().includes("all of the following") || question.toLowerCase().includes("which one of the following")) {
+                return [`(Trivia) ${user.username} has started a trivia :) [${category}] Question: ${question} - [${answerToString}]`, "FeelsDankMan you already got the hint.", correct_answer];
             } else {
-                return [`(Trivia) ${user.username} has started a trivia :) [${category}] Question: ${question} | Do "bb hint" if you are nab and need a hint!`, answerToString , correct_answer];
+                return [`(Trivia) ${user.username} has started a trivia :) [${category}] Question: ${question} | Do "bb hint" if you are nab and need a hint!`, answerToString, correct_answer];
             }
         } catch (err) {
             console.log(err);

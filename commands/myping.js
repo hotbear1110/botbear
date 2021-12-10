@@ -158,13 +158,13 @@ module.exports = {
                         if (input[3]) {
                             user = `${input[3]}'s'`;
                         }
-                        
+
                         let hastebinlist = await tools.makehastebin(`${username}'s game list, from channel: ${channel}\n\nGame list:\n${listgames}`);
 
                         return `${user} Game list: ${hastebinlist}.txt`;
                         break;
                     }
-                    default: `bb myping [add/remove]"(will add/remove a game from your ping list), "bb myping list"(will give you a list of the games you will get notified by)`;
+                default: `bb myping [add/remove]"(will add/remove a game from your ping list), "bb myping list"(will give you a list of the games you will get notified by)`;
             }
 
         } catch (err) {
@@ -177,7 +177,7 @@ module.exports = {
             if (err.sqlMessage) {
                 return `FeelsDankMan Sql error: ${err.sqlMessage}`;
             }
-            return `FeelsDankMan Error: ${err.response.data.error}`;    
+            return `FeelsDankMan Error: ${err.response.data.error}`;
         }
     }
 }

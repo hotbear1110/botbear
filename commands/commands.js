@@ -12,7 +12,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            if(input[2]) {
+            if (input[2]) {
                 if (input[2] === "local") {
                     let disabledList = await tools.query(`
                         SELECT disabled_commands
@@ -20,13 +20,13 @@ module.exports = {
                         WHERE username=?`,
                         [channel]);
 
-                        disabledList = JSON.parse(disabledList[0].disabled_commands);
+                    disabledList = JSON.parse(disabledList[0].disabled_commands);
 
-                        if (!disabledList.length) {
-                            return `This channel has all commands enabled: https://hotbear.xyz:2053/`;
-                        }
+                    if (!disabledList.length) {
+                        return `This channel has all commands enabled: https://hotbear.xyz:2053/`;
+                    }
 
-                        let commandList = await tools.query(`
+                    let commandList = await tools.query(`
                     SELECT *
                     FROM Commands`);
 
@@ -38,22 +38,22 @@ module.exports = {
                         commandsListNames.push(command.Name.toLowerCase());
                     });
 
-                        _.each(disabledList, function (commandName) {
-                            commandsListNames.splice(commandsListNames.indexOf(commandName), 1);
-                        });
+                    _.each(disabledList, function (commandName) {
+                        commandsListNames.splice(commandsListNames.indexOf(commandName), 1);
+                    });
 
-                        commandsListNames = commandsListNames.toString().replaceAll(",", "\n")
+                    commandsListNames = commandsListNames.toString().replaceAll(",", "\n")
 
-                        let hastebinlist = await tools.makehastebin(`List of enabled commands in #${channel}:\n\n${commandsListNames}`);
+                    let hastebinlist = await tools.makehastebin(`List of enabled commands in #${channel}:\n\n${commandsListNames}`);
 
-                        return `Local command list: ${hastebinlist}.txt`;
-                    
+                    return `Local command list: ${hastebinlist}.txt`;
+
+                }
             }
-        }
             return `List of commands: https://hotbear.xyz:2053/`;
         } catch (err) {
             console.log(err);
-            return `FeelsDankMan Sql error: ${err.sqlMessage}`;        
+            return `FeelsDankMan Sql error: ${err.sqlMessage}`;
         }
     }
 }

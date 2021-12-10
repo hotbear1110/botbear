@@ -29,7 +29,7 @@ module.exports = {
             return `/me I shat ${msg}`;
         } catch (err) {
             console.log(err);
-            return `FeelsDankMan Error`;        
+            return `FeelsDankMan Error`;
         }
     }
 }

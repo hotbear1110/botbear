@@ -25,7 +25,7 @@ module.exports = {
                 realchannel = input[3];
             }
 
-            const rl = await got(`https://api.ivr.fi/logs/rq/${realchannel}/${username}`, {timeout: 10000}).json();
+            const rl = await got(`https://api.ivr.fi/logs/rq/${realchannel}/${username}`, { timeout: 10000 }).json();
             const masspinged = await tools.massping(rl.message.toLowerCase(), channel);
 
             if (masspinged != "null") {
@@ -46,6 +46,6 @@ module.exports = {
                 return `FeelsDankMan Banphrase api error: ${err.name}`;
             }
             return `FeelsDankMan Error`;
-    }
+        }
     }
 }

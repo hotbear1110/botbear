@@ -24,14 +24,14 @@ module.exports = {
                 return "That streamer is not in my database";
             }
             let oldgameTime = JSON.parse(gameTimedata[0].game_time);
-            const ms =  new Date().getTime() - oldgameTime;
+            const ms = new Date().getTime() - oldgameTime;
 
             let game = gameTimedata[0].game;
 
             return `#${realchannel} has been in the category: (${game}), for ${tools.humanizeDuration(ms)}`;
         } catch (err) {
             console.log(err);
-            return `FeelsDankMan Sql error: ${err.sqlMessage}`;        
+            return `FeelsDankMan Sql error: ${err.sqlMessage}`;
         }
     }
 }

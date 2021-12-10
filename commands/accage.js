@@ -21,7 +21,7 @@ module.exports = {
                 }
                 let username = input[2];
 
-                uid = await axios.get(`https://api.ivr.fi/twitch/resolve/${username}`, {timeout: 10000});
+                uid = await axios.get(`https://api.ivr.fi/twitch/resolve/${username}`, { timeout: 10000 });
                 uid = uid.data.id;
             }
 
@@ -44,7 +44,7 @@ module.exports = {
                     return `FeelsDankMan Banphrase api error: ${err.name}`;
                 }
             }
-            return `FeelsDankMan Error: ${err.response.data.error}`;        
+            return `FeelsDankMan Error: ${err.response.data.error}`;
         }
     }
 }

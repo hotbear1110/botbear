@@ -36,7 +36,7 @@ async function res() {
   channelList.push(await getChannels());
   await channelList[0].forEach((i) => {
     if (i.username !== "hotbear1110") {
-    channelOptions.push(i.username);
+      channelOptions.push(i.username);
     }
   });
   console.log(`Imported channels from database: ${channelOptions}`);

@@ -25,7 +25,7 @@ module.exports = {
             if (input[3]) {
                 realchannel = input[3];
             }
-            let modcheck = await axios.get(`https://api.ivr.fi/twitch/modsvips/${realchannel}`, {timeout: 10000});
+            let modcheck = await axios.get(`https://api.ivr.fi/twitch/modsvips/${realchannel}`, { timeout: 10000 });
             ismod = modcheck.data["mods"];
             let modresponse = "";
             await _.each(ismod, async function (modstatus) {
@@ -49,7 +49,7 @@ module.exports = {
                     return `FeelsDankMan Banphrase api error: ${err.name}`;
                 }
             }
-            return `FeelsDankMan Error`;    
+            return `FeelsDankMan Error`;
         }
     }
 }

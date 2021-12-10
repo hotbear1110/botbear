@@ -30,7 +30,7 @@ module.exports = {
 
                 emote[2] = `(${tools.humanizeDuration(now - emote[2])})`;
 
-                emote.splice(1, 1); 
+                emote.splice(1, 1);
 
             })
 
@@ -40,7 +40,7 @@ module.exports = {
 
         } catch (err) {
             console.log(err);
-            return `FeelsDankMan Sql error: ${err.sqlMessage}`;        
+            return `FeelsDankMan Sql error: ${err.sqlMessage}`;
         }
     }
 }

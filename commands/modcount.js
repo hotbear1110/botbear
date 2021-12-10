@@ -21,7 +21,7 @@ module.exports = {
                 }
                 username = input[2];
             }
-            let modcount = await axios.get(`https://modlookup.3v.fi/api/user-totals/${username}`, {timeout: 10000});
+            let modcount = await axios.get(`https://modlookup.3v.fi/api/user-totals/${username}`, { timeout: 10000 });
             ismod = modcount.data["total"];
             if (ismod === 0) {
                 return `That user is not a mod in any channel :)`;
@@ -34,7 +34,7 @@ module.exports = {
                     return `FeelsDankMan Banphrase api error: ${err.name}`;
                 }
             }
-            return `FeelsDankMan Error`;    
+            return `FeelsDankMan Error`;
         }
     }
 }

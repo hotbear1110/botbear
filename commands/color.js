@@ -21,24 +21,24 @@ module.exports = {
             }
             let iscolor = false;
             if (input[2]) {
-            if (input[2].startsWith("#")) {
-                iscolor = true;
+                if (input[2].startsWith("#")) {
+                    iscolor = true;
+                }
             }
-        }
-        let color = "";
-        if (iscolor === false) {
-            let userColor = await got(`https://api.ivr.fi/twitch/resolve/${username}`, {timeout: 10000}).json();
+            let color = "";
+            if (iscolor === false) {
+                let userColor = await got(`https://api.ivr.fi/twitch/resolve/${username}`, { timeout: 10000 }).json();
 
-            color = userColor.chatColor;
-        } else {
-            color = input[2];
-        }
+                color = userColor.chatColor;
+            } else {
+                color = input[2];
+            }
 
             if (username === user.username) {
                 color = user["color"];
             }
 
-            const colorName = await got(`https://www.thecolorapi.com/id?hex=${color.replace('#', '')}`, {timeout: 10000}).json();
+            const colorName = await got(`https://www.thecolorapi.com/id?hex=${color.replace('#', '')}`, { timeout: 10000 }).json();
 
             if (iscolor === true) {
                 return `That hex is the color: ${colorName.name.value} ${color}`;
@@ -52,7 +52,7 @@ module.exports = {
                     return `FeelsDankMan Banphrase api error: ${err.name}`;
                 }
             }
-            return `FeelsDankMan Error`;        
+            return `FeelsDankMan Error`;
         }
     }
 }

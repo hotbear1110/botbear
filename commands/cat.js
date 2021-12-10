@@ -11,7 +11,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            const image = await got(`https://api.thecatapi.com/v1/images/search`, {timeout: 10000}).json();
+            const image = await got(`https://api.thecatapi.com/v1/images/search`, { timeout: 10000 }).json();
             console.log(image)
 
             return `nymnAww ${image[0].url}`;
@@ -23,7 +23,7 @@ module.exports = {
                     return `FeelsDankMan Banphrase api error: ${err.name}`;
                 }
             }
-            return `FeelsDankMan Error`;        
+            return `FeelsDankMan Error`;
         }
     }
 }

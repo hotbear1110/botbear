@@ -11,9 +11,9 @@ module.exports = {
             }
             return "borpaSpin";
 
-            } catch (err) {
+        } catch (err) {
             console.log(err);
-            return `FeelsDankMan Error`;        
+            return `FeelsDankMan Error`;
         }
     }
 }
