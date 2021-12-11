@@ -61,5 +61,8 @@
     },
     {
         "fc": "followcount"
+    },
+    {
+        "lastvod": "latestvod"
     }
 ]
