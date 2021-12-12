@@ -266,17 +266,15 @@ exports.getPerm = (user) => new Promise(async (resolve, reject) => {
 });
 
 exports.cookies = (user, command, channel) => new Promise(async (resolve, reject) => {
+    if (command[3] === "Leaderboard") {
+        resolve(0);
+        return;
+    }
     let users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [command[3]]);
     let Time = new Date().getTime();
     let RemindTime = Time + 7200000;
     let realuser = command[3];
-    let cdr = false;
-
-    let cdrusers = await tools.query(`SELECT * FROM Cdr WHERE User=?`, [command[1].slice(0, -1)]);
-
-    if (cdrusers.RemindTime === null) {
-        cdr = true;
-    }
+    let cdr = "no";
 
     if (!users.length) {
         users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [command[2]]);
@@ -289,6 +287,15 @@ exports.cookies = (user, command, channel) => new Promise(async (resolve, reject
     if (!users.length) {
         resolve(0);
         return;
+    }
+
+    let cdrusers = await tools.query(`SELECT * FROM Cdr WHERE User=?`, [realuser]);
+    console.log(command[1].slice(0, -1))
+    console.log(cdrusers)
+
+    if (cdrusers.length && cdrusers[0].RemindTime === null) {
+        console.log("cdr")
+        cdr = "yes";
     }
 
     let msg = command.toString().replaceAll(",", " ");
