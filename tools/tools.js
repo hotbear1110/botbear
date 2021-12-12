@@ -270,6 +270,14 @@ exports.cookies = (user, command, channel) => new Promise(async (resolve, reject
     let Time = new Date().getTime();
     let RemindTime = Time + 7200000;
     let realuser = command[3];
+    let cdr = false;
+
+    let cdrusers = await tools.query(`SELECT * FROM Cdr WHERE User=?`, [command[1].slice(0, -1)]);
+
+    if (cdrusers.RemindTime === null) {
+        cdr = true;
+    }
+
     if (!users.length) {
         users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [command[2]]);
         realuser = command[2];
@@ -313,6 +321,25 @@ exports.cookies = (user, command, channel) => new Promise(async (resolve, reject
         }
 
         await tools.query(`UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [response, channel, RemindTime, realuser]);
+        resolve([response, realuser, channel, cdr]);
+    }
+
+});
+
+exports.cdr = (user, command, channel) => new Promise(async (resolve, reject) => {
+    let users = await tools.query(`SELECT * FROM Cdr WHERE User=?`, [command[1].slice(0, -1)]);
+    let Time = new Date().getTime();
+    let RemindTime = Time + 10800000;
+    let realuser = command[1].slice(0, -1);
+    if (!users.length) {
+        resolve(0);
+        return;
+    }
+
+    if (user.username !== null) {
+        let response = "Confirmed";
+
+        await tools.query(`UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [response, channel, RemindTime, realuser]);
         resolve([response, realuser, channel]);
     }
 

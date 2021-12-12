@@ -348,6 +348,25 @@ setInterval(async function () {
 }, 10000);
 
 setInterval(async function () {
+    const users = await tools.query(`SELECT * FROM Cdr`);
+    let Time = new Date().getTime();
+
+    _.each(await users, async function (User) {
+        if (User.RemindTime !== null && User.RemindTime < Time) {
+            const stream = await tools.query('SELECT disabled_commands FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
+            let disabledCommands = JSON.parse(stream[0].disabled_commands)
+
+            await tools.query(`UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
+            if (!disabledCommands.includes("cdr")) {
+                cc.say(User.Channel, `${User.User} Reminder that your cdr is ready.`)
+            }
+        }
+
+    })
+
+}, 10000);
+
+setInterval(async function () {
     try {
         await got(`https://supinic.com/api/bot-program/bot/active`, {
             headers: { Authorization: `Basic ${process.env.SUPI_USERID}:${process.env.SUPI_AUTH}` },

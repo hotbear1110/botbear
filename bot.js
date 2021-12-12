@@ -136,7 +136,11 @@ async function onMessageHandler(channel, user, msg, self) {
         const cookieStatus = await tools.cookies(user, input, channel);
 
         if (cookieStatus[0] === "Confirmed") {
-            cc.say(cookieStatus[2], `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay`)
+            if (cookieStatus[3] === true) {
+                cc.say(cookieStatus[2], `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!)`)
+            } else {
+                cc.say(cookieStatus[2], `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay`)
+            }
         }
         if (cookieStatus[0] === "Confirmed2") {
             cc.say(cookieStatus[2], `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`)
@@ -145,6 +149,19 @@ async function onMessageHandler(channel, user, msg, self) {
             cc.say(cookieStatus[2], `${cookieStatus[1]} Your cookie is still on cooldown, it will be available in ${cookieStatus[3]}`)
         }
 
+    }
+    if (msg.includes("your cooldown has been reset!") && user["user-id"] == 425363834) {
+        const stream = await tools.query('SELECT disabled_commands FROM Streamers WHERE username=?', [channel.substring(1)]);
+
+        let disabledCommands = JSON.parse(stream[0].disabled_commands)
+        if (disabledCommands.includes("cdr")) {
+            return;
+        }
+        const cdrStatus = await tools.cdr(user, input, channel);
+
+        if (cdrStatus[0] === "Confirmed") {
+            cc.say(cdrStatus[2], `${cdrStatus[1]} I will remind you to use your cdr in 2 hours nymnOkay`)
+        }
     }
 
     if (input[0] !== "bb" && input[0].toLowerCase() !== "forsenbb") {
