@@ -358,7 +358,7 @@ setInterval(async function () {
 
             await tools.query(`UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
             if (!disabledCommands.includes("cdr")) {
-                cc.say(User.Channel, `${User.User} Reminder that your cdr is ready.`)
+                cc.say(User.Channel, `${User.User} Your cookie cdr is ready.`)
             }
         }
 

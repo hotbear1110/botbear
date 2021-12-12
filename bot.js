@@ -160,7 +160,7 @@ async function onMessageHandler(channel, user, msg, self) {
         const cdrStatus = await tools.cdr(user, input, channel);
 
         if (cdrStatus[0] === "Confirmed") {
-            cc.say(cdrStatus[2], `${cdrStatus[1]} I will remind you to use your cdr in 2 hours nymnOkay`)
+            cc.say(cdrStatus[2], `${cdrStatus[1]} I will remind you to use your cdr in 3 hours nymnOkay`)
         }
     }
 
