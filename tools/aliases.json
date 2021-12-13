@@ -64,5 +64,8 @@
     },
     {
         "lastvod": "latestvod"
+    },
+    {
+        "cf": "coinflip"
     }
 ]
