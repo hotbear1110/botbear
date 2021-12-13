@@ -1,5 +1,6 @@
 const got = require("got");
 const _ = require("underscore");
+const tools = require("./../tools/tools");
 
 // https://opentdb.com/api_config.php
 const OTDB_Categories = {
@@ -34,6 +35,35 @@ const OTDB_Categories = {
     "cartoons": 32
 }
 
+// Lol so much, uses this to filter out trivia.
+const OTDB_Categories_Name = {
+    9: "General Knowledge",
+    10: "Entertainment: Books",
+    11: "Entertainment: Film",
+    12: "Entertainment: Music",
+    13: "Entertainment: Musicals & Theatres",
+    14: "Entertainment: Television",
+    15: "Entertainment: Video Games",
+    16: "Entertainment: Board Games",
+    17: "Science & Nature",
+    18: "Science: Computers",
+    19: "Science: Mathematics",
+    20: "Mythology",
+    21: "Sports",
+    22: "Geography",
+    23: "History",
+    24: "Politics",
+    25: "Art",
+    26: "Celebrities",
+    27: "Animals",
+    28: "Vehicles",
+    29: "Entertainment: Comics",
+    30: "Science: Gadgets",
+    31: "Entertainment: Japanese Anime & Manga",
+    32: "Entertainment: Cartoon & Animations"
+}
+
+
 function genre(category) {
     if (category === undefined) {
         return undefined;
@@ -50,67 +80,87 @@ async function getTrivia(genre) {
     }
 }
 
+async function CreateTrivia(_genre="") 
+{
+    const trivia = (await getTrivia(genre(_genre)))["results"];
+
+    const correct_answer = trivia[0].correct_answer;
+    const incorrect_answers = trivia[0].incorrect_answers;
+
+    const allanswers = [];
+    allanswers.push(incorrect_answers)
+    allanswers.push(correct_answer);
+
+    const fixedanswers = [];
+
+    _.each(arrayShuffle(allanswers), (answer) => {
+        fixedanswers.push(answer);
+    })
+
+    let answerToString = "";
+    fixedanswers.forEach((a) => {
+        answerToString += ` ${a} |`
+    })
+
+    correct_answer = decodeURIComponent(correct_answer);
+
+    return (
+        {
+            category: category,
+            question: question,
+            answer: answer,
+            answer_as_string: decodeURIComponent(answerToString.replace(/.$/, '')),
+        }
+    )
+}
+
+function arrayShuffle(array) {
+    for (let index = array.length - 1; index > 0; index--) {
+        const newIndex = Math.floor(Math.random() * (index + 1));
+        [array[index], array[newIndex]] = [array[newIndex], array[index]];
+    }
+
+    return array;
+}
+
 module.exports = {
     name: "trivia",
     ping: false,
     description: 'This command will start a new trivia in chat (The cooldown is 5 minutes and the trivia times out after 60 seconds.). Specific category: "bb trivia sports". Categories: [ https://haste.zneix.eu/uhedagatig.txt ]',
     permission: 100,
     category: "Random command",
+    params: [
+        {
+            name: "filter",
+            description: "Filter out a trivia, using the categories."
+        },
+    ],
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {
                 return;
             }
-            let random = Math.floor(Math.random() * 100)
-            if (random === 69 && !input[3]) {
+            const params = tools.parseParams(this.params, input.slice(2, index.length));
+            
+            // forsenJoy sex number.
+            if (Math.floor(Math.random() * 100) === 69) {
                 return [`(Trivia) ${user.username} has started a trivia :) [History] Question: What happened on June 4 1989 in China? | Do "bb hint" if you are nab and need a hint!`, "[ Nothing | Nothing | Nothing | Nothing ]", "Nothing"];
             }
+            const filter = params.filter(param => param.name = "filter");
 
-            function arrayShuffle(array) {
-                for (let index = array.length - 1; index > 0; index--) {
-                    const newIndex = Math.floor(Math.random() * (index + 1));
-                    [array[index], array[newIndex]] = [array[newIndex], array[index]];
-                }
+            let result = await CreateTrivia(string(input.slice(2, 3)));
 
-                return array;
+            if (OTDB_Categories_Name[OTDB_Categories[filter.value]])
+            {
+                result = await CreateTrivia(string(input.slice(2, 3)));
             }
 
-            let a = await getTrivia(genre(input[2]));
-            if (input[3]) {
-                a = await getTrivia(genre(`${input[2]} ${input[3]}`));
-            }
-            const trivia = await a["results"];
-
-            let question = decodeURIComponent(trivia[0].question);
-            let correct_answer = trivia[0].correct_answer;
-            let incorrect_answers = trivia[0].incorrect_answers;
-            let allanswers = incorrect_answers;
-            let category = decodeURIComponent(trivia[0].category);
-
-            allanswers.push(correct_answer);
-
-            let shuffled = arrayShuffle(allanswers);
-            let fixedanswers = [];
-
-            _.each(shuffled, (answer) => {
-                fixedanswers.push(answer);
-            })
-
-            let answerToString = "";
-            fixedanswers.forEach((a) => {
-                answerToString += ` ${a} |`
-            })
-
-            answerToString = answerToString.replace(/.$/, '')
-            answerToString = decodeURIComponent(answerToString);
-
-            correct_answer = decodeURIComponent(correct_answer);
-            console.log(answerToString)
-
-            if (question.toLowerCase().includes("which of these") || question.toLowerCase().includes("which one of these") || question.toLowerCase().includes("which of the following") || question.toLowerCase().includes("all of the following") || question.toLowerCase().includes("which one of the following")) {
-                return [`(Trivia) ${user.username} has started a trivia :) [${category}] Question: ${question} - [${answerToString}]`, "FeelsDankMan you already got the hint.", correct_answer];
+            q_lowercase = result.question.toLowerCase();
+            
+            if(["which of these", "which one of these", "which of the following"].includes(q_lowercase)) {
+                return [`(Trivia) ${user.username} has started a trivia :) [${result.category}] Question: ${result.question} - [${result.answerToString}]`, "FeelsDankMan you already got the hint.", result.correct_answer];
             } else {
-                return [`(Trivia) ${user.username} has started a trivia :) [${category}] Question: ${question} | Do "bb hint" if you are nab and need a hint!`, answerToString, correct_answer];
+                return [`(Trivia) ${user.username} has started a trivia :) [${result.category}] Question: ${result.question} | Do "bb hint" if you are nab and need a hint!`, result.answerToString, result.correct_answer];
             }
         } catch (err) {
             console.log(err);

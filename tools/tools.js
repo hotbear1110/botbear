@@ -360,15 +360,15 @@ exports.refreshCommands = async function () {
         let iscommand = 0;
         _.each(dbCommands, async function (dbcommand) {
             if (dbcommand.Name === command.name) {
-                if (dbcommand.Command !== command.description || dbcommand.Perm !== command.permission || dbcommand.Category !== command.category) {
-                    tools.query(`UPDATE Commands SET Command=?, Perm=?, Category=? WHERE Name=?`, [command.description, command.permission, command.category, command.name]);
+                if (dbcommand.Command !== command.description || dbcommand.Perm !== command.permission || dbcommand.Category !== command.category || dbcommand.Params !== command.params) {
+                    tools.query("UPDATE `Commands` SET Command=?, Perm=?, Category=?, Params=? WHERE Name=?", [command.description, command.permission, command.category, command.params === undefined ? [] : command.params, command.name]);
                 }
                 iscommand = 1;
                 return;
             }
         });
         if (iscommand === 0) {
-            await tools.query('INSERT INTO Commands (Name, Command, Perm, Category) values (?, ?, ?, ?)', [command.name, command.description, command.permission, command.category]);
+            await tools.query('INSERT INTO Commands (Name, Command, Perm, Category, Params) values (?, ?, ?, ?, ?)', [command.name, command.description, command.permission, command.category, command.params]);
         }
 
 
@@ -490,10 +490,34 @@ function editDistance(s1, s2) {
  * @param {string} channel Channel to check for moderator status
  * @returns {boolean} true | false | If is mod
  */
-exports.isMod = function (user, channel) {
+exports.isMod = function (user, channel)
+{
     channel = channel[0] === '#' ? channel.substr(1) : channel;
     const isMod = user.mod || user['user-type'] === 'mod';
     const isBroadcaster = channel === user.username;
     const isModUp = isMod || isBroadcaster;
     return isModUp
+}
+
+/**
+ * @author JoachimFlottorp
+ * @param {object[]} params Parameters the command configured 
+ * @param {string[]} input the user input, without bb and the command.
+ * @returns {object[]} Array containing all params which the user has given. Empty if nothing.
+ */
+exports.parseParams = function(params=[], input=[])
+{
+    const verParam = [];
+    for (let i = 0; i < input.length; i++)
+    {
+        // Is a param
+        if (input[i].slice(0, 1) === "--")
+        {
+            verParam.push({
+                name: input[i].slice(2, input[i].indexOf('=', 3)),
+                value: input[i].slice(input[i].indexOf('=', 3) + 1, input[i].length)
+            })
+        }
+    }
+    return verParam;
 }
