@@ -148,10 +148,14 @@ module.exports = {
             }
             const filter = params.filter(param => param.name = "filter");
 
-            let result = await CreateTrivia(string(input.slice(2, 3)));
-
-            if (OTDB_Categories_Name[OTDB_Categories[filter.value]])
+            
+            while (true)
             {
+                let result = await CreateTrivia(string(input.slice(2, 3)));
+                if (!OTDB_Categories_Name[OTDB_Categories[filter.value]])
+                {
+                    break;
+                }
                 result = await CreateTrivia(string(input.slice(2, 3)));
             }
 
