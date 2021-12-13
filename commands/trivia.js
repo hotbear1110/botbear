@@ -132,7 +132,7 @@ module.exports = {
     params: [
         {
             name: "filter",
-            description: "Filter out a trivia, using the categories."
+            description: "Filter out a trivia, using the categories. Can be entered as an array: [anime,sports,comics]"
         },
     ],
     execute: async (channel, user, input, perm) => {
@@ -146,17 +146,35 @@ module.exports = {
             if (Math.floor(Math.random() * 100) === 69) {
                 return [`(Trivia) ${user.username} has started a trivia :) [History] Question: What happened on June 4 1989 in China? | Do "bb hint" if you are nab and need a hint!`, "[ Nothing | Nothing | Nothing | Nothing ]", "Nothing"];
             }
-            const filter = params.filter(param => param.name = "filter");
-
+            let filter = (params.filter(param => param.name = "filter"));
             
-            while (true)
+            const filterArr = [];
+            // Is an array.
+            if (filter[0] === '[' && filter[filter.length] === ']')
             {
-                let result = await CreateTrivia(string(input.slice(2, 3)));
-                if (!OTDB_Categories_Name[OTDB_Categories[filter.value]])
+                for (let i = filter.findIndex(","); i < filter.length; i = filter.findIndex(",", i))
                 {
-                    break;
+                    // Space after the comma in array
+                    if (filter[i + 1] = " ")
+                    {
+                        filter[i + 1].replace(" ", "");
+                    }
                 }
-                result = await CreateTrivia(string(input.slice(2, 3)));
+                filterArr.push(filter.replace(/\[|\]/g,'').split(','));
+            }
+            
+            let result = "";
+            for (let i = 0; i < filterArr.length; i++)
+            {
+                while (true)
+                {
+                    result = await CreateTrivia(string(input.slice(2, 3)));
+                    if (!OTDB_Categories_Name[OTDB_Categories[filter[i].value]])
+                    {
+                        break;
+                    }
+                    result = await CreateTrivia(string(input.slice(2, 3)));
+                }
             }
 
             q_lowercase = result.question.toLowerCase();
