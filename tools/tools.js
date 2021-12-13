@@ -335,6 +335,7 @@ exports.cookies = (user, command, channel) => new Promise(async (resolve, reject
 
 exports.cdr = (user, command, channel) => new Promise(async (resolve, reject) => {
     let users = await tools.query(`SELECT * FROM Cdr WHERE User=?`, [command[1].slice(0, -1)]);
+    let hasCookie = await tools.query(`SELECT * FROM Cookie WHERE User=?`, [command[1].slice(0, -1)]);
     let Time = new Date().getTime();
     let RemindTime = Time + 10800000;
     let realuser = command[1].slice(0, -1);
@@ -347,6 +348,9 @@ exports.cdr = (user, command, channel) => new Promise(async (resolve, reject) =>
         let response = "Confirmed";
 
         await tools.query(`UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [response, channel, RemindTime, realuser]);
+        if (hasCookie.length) {
+            await tools.query(`UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, realuser]);
+        }
         resolve([response, realuser, channel]);
     }
 

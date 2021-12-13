@@ -352,15 +352,11 @@ setInterval(async function () {
     let Time = new Date().getTime();
 
     _.each(await users, async function (User) {
-        let hasCookie = await tools.query(`SELECT * FROM Cookie WHERE User=?`, [User.User]);
         if (User.RemindTime !== null && User.RemindTime < Time) {
             const stream = await tools.query('SELECT disabled_commands FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
             let disabledCommands = JSON.parse(stream[0].disabled_commands)
 
             await tools.query(`UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
-            if (hasCookie.length) {
-                await tools.query(`UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
-            }
             if (!disabledCommands.includes("cdr")) {
                 cc.say(User.Channel, `${User.User} Your cookie cdr is ready.`)
             }
