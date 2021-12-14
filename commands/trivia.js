@@ -161,6 +161,10 @@ module.exports = {
                     }
                 }
                 filterArr.push(filter.replace(/\[|\]/g,'').split(','));
+            } 
+            else 
+            {
+                filterArr.push(input.join(" "));
             }
             
             let result = "";
