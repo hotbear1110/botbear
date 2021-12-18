@@ -39,6 +39,7 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
         resolve(0);
     }
     try {
+        message = decodeURIComponent(message)
         this.checkBanphrase = await got(this.banphraseapi, {
             method: "POST",
             body: "message=" + message,
