@@ -18,7 +18,7 @@ module.exports = {
             SELECT offlineonly
             FROM Streamers
             WHERE username=?`,
-                [user.username]);
+                [channel]);
 
             let mode = Math.abs(offlinemode[0].offlineonly - 1);
 
