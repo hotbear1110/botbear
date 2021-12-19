@@ -22,7 +22,7 @@ module.exports = {
 
             let mode = Math.abs(offlinemode[0].offlineonly - 1);
 
-            await tools.query(`UPDATE Streamers SET offlineonly=? WHERE username=?`, [mode, user.username]);
+            await tools.query(`UPDATE Streamers SET offlineonly=? WHERE username=?`, [mode, channel]);
 
             if (mode === 1) {
                 return "Offline only mode is now on!";
