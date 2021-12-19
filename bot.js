@@ -49,6 +49,11 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
+    const offlineonly = await tools.query('SELECT * FROM Streamers WHERE username=?', [channel.substring(1)]);
+
+    if (offlineonly[0].offlineonly === 1 && offlineonly[0].islive === 1 && !tools.isMod(user, channel)) {
+        return;
+    }
 
     if (activetrivia[channel]) {
         let similarity = await tools.similarity(msg.toLowerCase(), triviaanswer[channel].toLowerCase())
