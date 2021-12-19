@@ -349,7 +349,7 @@ setInterval(async function () {
 
     })
 
-}, 10000);
+}, 1000);
 
 setInterval(async function () {
     const users = await tools.query(`SELECT * FROM Cdr`);
@@ -368,7 +368,7 @@ setInterval(async function () {
 
     })
 
-}, 10000);
+}, 1000);
 
 setInterval(async function () {
     try {
