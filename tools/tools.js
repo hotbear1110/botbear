@@ -40,7 +40,6 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
     }
     try {
         message = encodeURIComponent(message)
-        console.log(message)
         this.checkBanphrase = await got(this.banphraseapi, {
             method: "POST",
             body: "message=" + message,
@@ -49,7 +48,6 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
             },
             timeout: 10000
         }).json();
-        console.log(this.checkBanphrase)
         resolve(this.checkBanphrase);
     } catch (err) {
         console.log(err);
