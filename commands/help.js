@@ -1,23 +1,31 @@
-const tools = require("../tools/tools.js")
+const tools = require("../tools/tools.js");
 
 module.exports = {
     name: "help",
     ping: true,
-    execute: async (channel, user, input) => {
+    description: 'This command will give you information about any onther command. Example: "bb help followage"',
+    permission: 100,
+    category: "Core command",
+    execute: async (channel, user, input, perm) => {
         try {
-            if (!input[2]) {
-                return 'List of commands: https://botbear.github.io/ - If you want help with a command, write: "bb help *command*"'
+            if (module.exports.permission > perm) {
+                return;
             }
-            const commandlist = await tools.query(`SELECT * FROM Commands WHERE Name=?`, [input[2]])
+            if (!input[2]) {
+                return 'List of commands: https://botbear.github.io/ - If you want help with a command, write: "bb help *command*"';
+            }
+            const Alias = new tools.Alias(`bb ${input[2]}`);
+            realcommand = input[2].replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
+            const commandlist = await tools.query(`SELECT * FROM Commands WHERE Name=?`, [realcommand]);
 
             if (!commandlist.length) {
                 return;
             }
-            
-            return `bb ${input[2]}: ${commandlist[0].Command}`;
+
+            return `Command name: ${commandlist[0].Name}. Category: ${commandlist[0].Category}. Description: ${commandlist[0].Command} - Permission lvl: ${commandlist[0].Perm}`;
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan `;
+            return `FeelsDankMan Sql error: ${err.sqlMessage}`;
         }
     }
 }

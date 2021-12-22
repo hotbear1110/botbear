@@ -1,24 +1,51 @@
 const got = require("got");
-const cc = require("../bot.js").cc;
+const tools = require("../tools/tools.js");
+
 
 module.exports = {
     name: "rl",
     ping: false,
-    execute: async (channel, user, input) => {
+    description: 'This command will give you a random logged line from a specific user in the chat (Only works if logs are available in the channel, logs used: "https://logs.ivr.fi/"). Example: "bb rl NymN"',
+    permission: 100,
+    category: "Info command",
+    execute: async (channel, user, input, perm) => {
         try {
+            if (module.exports.permission > perm) {
+                return;
+            }
             let username = user.username;
             if (input[2]) {
+                if (input[2].startsWith("@")) {
+                    input[2] = input[2].substring(1);
+                }
                 username = input[2];
             }
-
-            const rl = await got(`https://api.ivr.fi/logs/rq/${channel}/${username}`).json();
-
-            if (rl.status !== 404) {
-                return `#${channel} ${rl.user}: ${rl.message} - (${rl.time} ago)`
+            let realchannel = channel;
+            if (input[3]) {
+                realchannel = input[3];
             }
+
+            const rl = await got(`https://api.ivr.fi/logs/rq/${realchannel}/${username}`, { timeout: 10000 }).json();
+            const masspinged = await tools.massping(rl.message.toLowerCase(), channel);
+
+            if (masspinged != "null") {
+                return "[MASS PING]";
+            }
+
+            let message = tools.splitLine(rl.message, 350)
+            if (rl.status !== 404) {
+                if (message[1]) {
+                    return `#${realchannel} ${rl.user}: ${message}... - (${rl.time} ago)`;
+                }
+                return `#${realchannel} ${rl.user}: ${message} - (${rl.time} ago)`;
+            }
+
         } catch (err) {
             console.log(err);
-            return ` Error FeelsBadMan : No logs for that user in this chat`;
+            if (err.name) {
+                return `FeelsDankMan Banphrase api error: ${err.name}`;
+            }
+            return `FeelsDankMan Error`;
         }
     }
 }

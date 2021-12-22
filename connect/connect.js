@@ -5,6 +5,7 @@ const con = mysql.createConnection({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
+  connectTimeout: 10000,
 });
 
 con.on("error", (err) => {
@@ -26,20 +27,27 @@ const getChannels = () =>
   });
 
 const channelList = [];
-const channelOptions = [];
+let channelOptions = ["hotbear1110"];
 async function res() {
+  if (process.platform === "win32") {
+    console.log(`Imported channels from database: ${channelOptions}`);
+    return;
+  }
   channelList.push(await getChannels());
   await channelList[0].forEach((i) => {
-    channelOptions.push(i.username);
+    if (i.username !== "hotbear1110") {
+      channelOptions.push(i.username);
+    }
   });
   console.log(`Imported channels from database: ${channelOptions}`);
 }
 
-res()
+res();
 
 let options = {
   options: {
     debug: false,
+    joinInterval: 600,
   },
   connection: {
     secure: true,

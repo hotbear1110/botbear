@@ -1,0 +1,71 @@
+[
+    {
+        "leaderboard": "check leaderboard"
+    },
+    {
+        "points": "check points"
+    },
+    {
+        "pong": "ping"
+    },
+    {
+        "pang": "ping"
+    },
+    {
+        "chl": "channel"
+    },
+    {
+        "firstline": "fl"
+    },
+    {
+        "firstmessage": "fl"
+    },
+    {
+        "randomline": "rl"
+    },
+    {
+        "rq": "rl"
+    },
+    {
+        "perm": "permission"
+    },
+    {
+        "sa": "subage"
+    },
+    {
+        "fa": "followage"
+    },
+    {
+        "users": "chatters"
+    },
+    {
+        "fm": "fl"
+    },
+    {
+        "ll": "lm"
+    },
+    {
+        "mp": "myping"
+    },
+    {
+        "rm": "rl"
+    },
+    {
+        "colour": "color"
+    },
+    {
+        "checkemote": "emotecheck"
+    },
+    {
+        "findemote": "emotecheck"
+    },
+    {
+        "fc": "followcount"
+    },
+    {
+        "lastvod": "latestvod"
+    },
+    {
+        "cf": "coinflip"
+    }
+]
