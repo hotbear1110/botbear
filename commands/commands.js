@@ -23,7 +23,7 @@ module.exports = {
                     disabledList = JSON.parse(disabledList[0].disabled_commands);
 
                     if (!disabledList.length) {
-                        return `The site is not https at the moment, I will fix that when I have the time again (25/12 hopefully) - This channel has all commands enabled: https://hotbear.xyz:2053/`;
+                        return `This channel has all commands enabled: https://hotbear.xyz/`;
                     }
 
                     let commandList = await tools.query(`
@@ -50,7 +50,7 @@ module.exports = {
 
                 }
             }
-            return `The site is not https at the moment, I will fix that when I have the time again (25/12 hopefully) - List of commands: https://hotbear.xyz:2053/`;
+            return `List of commands: https://hotbear.xyz:/`;
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Sql error: ${err.sqlMessage}`;
