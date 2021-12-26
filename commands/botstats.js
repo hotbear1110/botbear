@@ -29,9 +29,10 @@ module.exports = {
             let cpuused = cpu.toString().split("all")[1]
             cpuused = cpuused.split(" ")[4]
 
-            let temp = shell.execSync("vcgencmd measure_temp");
+            let temp = shell.execSync("sensors");
 
-            temp = temp.toString().split("=")[1];
+            temp = temp.toString().split("+")[1];
+            temp = temp.split(" ")[0]
 
             const commits = shell.execSync('git rev-list --all --count');
 
