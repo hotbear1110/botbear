@@ -1,4 +1,9 @@
 const shell = require("child_process")
+const axios = require('axios');
+const tools = require("../tools/tools.js");
+const _ = require("underscore");
+const { fchown } = require("fs");
+const got = require("got");
 
 module.exports = {
     name: "test",
@@ -11,34 +16,25 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
+            const isSubbed = await got(`https://api.7tv.app/v2/badges?user_identifier=twitch_id`, { timeout: 10000 }).json();
 
-            const test = shell.execSync("free -h")
+            let foundName = false;
+            _.each(isSubbed["badges"], async function (badge) {
+                if (badge["name"].split(" ").includes("Subscriber")) {
+                    let users = badge["users"]
+                    if (users.includes("62300805")) {
+                        foundName = true;
+                    }
+                }
+            });
 
-            let total = test.toString().split(":")[1]
-
-            total = total.split(" ")
-
-            let used = total[18];
-            total = total[11];
-
-            used = used.slice(0, -2);
-            total = total.slice(0, -1);
-
-            const cpu = shell.execSync("mpstat")
-
-            let cpuused = cpu.toString().split("all")[1]
-            cpuused = cpuused.split(" ")[3]
-
-            let temp = shell.execSync("vcgencmd measure_temp");
-
-            temp = temp.split("=")[1];
-
-
-            return `CPU: ${cpuused}% - Memory: ${used}/${total}B - Temperature: ${temp}`;
+            if (foundName === false) {
+            }
+            return;
 
         } catch (err) {
             console.log(err);
-            return `FeelsDankMan Error`;
+            return `FeelsDankMan Test Failed`;
         }
     }
 }
