@@ -312,10 +312,6 @@ setInterval(async function () {
 
                     Emote_removed.push([emote[0], emote[1], time]);
 
-                    if (Emote_removed.length > 6) {
-                        Emote_removed.shift();
-                    }
-
                     Emote_list = _.without(Emote_list, emote)
                 }
 
