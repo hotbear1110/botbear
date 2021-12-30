@@ -34,6 +34,7 @@ let oldmessage = "";
 
 async function onMessageHandler(channel, user, msg, self) {
     let start = new Date().getTime();
+    msg = msg.replace(regex.invisChar, "");
     if (channel == "#botbear1110") {
         console.log(`${user.username}: ${msg}`);
     }
