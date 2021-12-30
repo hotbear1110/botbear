@@ -20,7 +20,7 @@ module.exports = {
             }
             let test = 1640887200000 - new Date().getTime();
 
-            return `${username}, Time untill nnys starts: ${tools.humanizeDuration(test)}`;
+            return `${username}, NymN's New Years Show starts at 7PM CET (In ${tools.humanizeDuration(test)})`;
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Error`;
