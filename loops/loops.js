@@ -112,8 +112,9 @@ setInterval(async function () {
                     }
 
                     if (newTitle !== stream.title) {
+                        let titleTime = new Date().getTime();
                         console.log(stream.username + " NEW TITLE: " + newTitle);
-                        await tools.query(`UPDATE Streamers SET title=? WHERE username=?`, [newTitle, stream.username]);
+                        await tools.query(`UPDATE Streamers SET title=?, title_time=? WHERE username=?`, [newTitle, titleTime, stream.username]);
                         if (!disabledCommands.includes("notify")) {
                             _.each(titleuserlist, function (msg, i) {
                                 setTimeout(function () {
