@@ -13,6 +13,9 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
+            if (!input[2]) {
+                return `No emote specified. Example: "bb emotecheck TriHard"`
+            }
             let emoteId = input[2];
             console.log(user.emotes)
             if (user.emotes) {
