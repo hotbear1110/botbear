@@ -37,12 +37,12 @@ setInterval(async function () {
                     users = users.toString().replaceAll(',', ' ');
 
 
-                    let userlist = tools.splitLine(users, 350);
                     let proxychannel = stream.username;
                     if (stream.username === "forsen") {
                         proxychannel = "botbear1110";
                     }
                     if (twitchdata['data'].length !== 0 && stream.islive == 0) {
+                        let userlist = tools.splitLine(users, 350);
                         console.log(stream.username + " IS NOW LIVE");
                         await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`);
                         if (!disabledCommands.includes("notify")) {
@@ -54,6 +54,7 @@ setInterval(async function () {
                         }
                     };
                     if (twitchdata['data'].length === 0 && stream.islive == 1) {
+                        let userlist = tools.splitLine(users, 350);
                         console.log(stream.username + " IS NOW OFFLINE");
                         await tools.query(`UPDATE Streamers SET islive = 0 WHERE username ="${stream.username}"`);
                         if (!disabledCommands.includes("notify")) {
@@ -102,16 +103,13 @@ setInterval(async function () {
                     })
                     gameusers = gameusers.toString().replaceAll(',', ' ');
 
-
-                    let titleuserlist = tools.splitLine(titleusers, 350);
-                    let gameuserlist = tools.splitLine(gameusers, 350);
-
                     let proxychannel2 = stream.username;
                     if (stream.username === "forsen") {
                         proxychannel2 = "botbear1110";
                     }
 
                     if (newTitle !== stream.title) {
+                        let titleuserlist = tools.splitLine(titleusers, 350);
                         let titleTime = new Date().getTime();
                         console.log(stream.username + " NEW TITLE: " + newTitle);
                         await tools.query(`UPDATE Streamers SET title=?, title_time=? WHERE username=?`, [newTitle, titleTime, stream.username]);
@@ -124,6 +122,7 @@ setInterval(async function () {
                         }
                     };
                     if (newGame !== stream.game) {
+                        let gameuserlist = tools.splitLine(gameusers, 350);
                         let gameTime = new Date().getTime();
 
                         await tools.query(`UPDATE Streamers SET game=?, game_time=? WHERE username=?`, [newGame, gameTime, stream.username]);

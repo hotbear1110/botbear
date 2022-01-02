@@ -123,11 +123,24 @@ exports.Cooldown = class Cooldown {
 };
 
 exports.splitLine = (message, chars) => {
+    message = message.split(" ");
     let messages = [];
-    for (let i = 0; i < Math.ceil(message.length / chars); i++) {
-        const multipy = i + 1;
-        messages.push(message.substring(i * chars, multipy * chars));
+    let msglength = 0;
+    let tempmsg = [];
+    _.each(message, function (msg) {
+        msglength = msglength + msg.length + 1;
+        if (msglength > chars) {
+            messages.push(tempmsg.toString().replaceAll(",", " "));
+            tempmsg = [];
+            msglength = 0;
+        }
+        tempmsg.push(msg);
+
+    })
+    if (tempmsg.length) {
+        messages.push(tempmsg.toString().replaceAll(",", " "));
     }
+
     return messages;
 };
 
