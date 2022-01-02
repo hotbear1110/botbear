@@ -23,12 +23,19 @@ module.exports = {
             if (!gameTimedata[0]) {
                 return "That streamer is not in my database";
             }
-            let oldgameTime = JSON.parse(gameTimedata[0].game_time);
-            const ms = new Date().getTime() - oldgameTime;
-
             let game = gameTimedata[0].game;
 
-            return `#${realchannel} has been in the category: (${game}), for ${tools.humanizeDuration(ms)}`;
+            let oldgameTime = JSON.parse(gameTimedata[0].game_time);
+            if (oldgameTime !== null && oldgameTime !== 2147483647) {
+
+
+                console.log
+                const ms = new Date().getTime() - oldgameTime;
+
+
+                return `#${realchannel} has been in the category: (${game}), for ${tools.humanizeDuration(ms)}`;
+            }
+            return `#${realchannel}'s current game is: (${game})`;
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Sql error: ${err.sqlMessage}`;

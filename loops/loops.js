@@ -112,8 +112,9 @@ setInterval(async function () {
                     }
 
                     if (newTitle !== stream.title) {
+                        let titleTime = new Date().getTime();
                         console.log(stream.username + " NEW TITLE: " + newTitle);
-                        await tools.query(`UPDATE Streamers SET title=? WHERE username=?`, [newTitle, stream.username]);
+                        await tools.query(`UPDATE Streamers SET title=?, title_time=? WHERE username=?`, [newTitle, titleTime, stream.username]);
                         if (!disabledCommands.includes("notify")) {
                             _.each(titleuserlist, function (msg, i) {
                                 setTimeout(function () {
@@ -191,7 +192,7 @@ setInterval(async function () {
                         let time = new Date().getTime();
                         let owner = emote["owner"]
 
-                        Emote_list.push([emote["name"], emote["id"], time, owner["name"], `https://www.frankerfacez.com/emoticon/${emote["id"]}`]);
+                        Emote_list.push([emote["name"], emote["id"], time, owner["name"], `https://www.frankerfacez.com/emoticon/${emote["id"]}`, "ffz"]);
                     }
 
                 });
@@ -229,7 +230,7 @@ setInterval(async function () {
                             owner = owner["name"];
                         }
 
-                        Emote_list.push([emote["code"], emote["id"], time, owner, `https://betterttv.com/emotes/${emote["id"]}`]);
+                        Emote_list.push([emote["code"], emote["id"], time, owner, `https://betterttv.com/emotes/${emote["id"]}`, "bttv"]);
                     }
 
                 });
@@ -251,6 +252,7 @@ setInterval(async function () {
                 _.each(STV_list, async function (emote) {
                     //console.log(emote)
                     let inlist = 0;
+
                     _.each(Emote_list, async function (emotecheck) {
                         if (emotecheck.includes(emote["name"]) && emotecheck.includes(emote["id"])) {
                             inlist = 1;
@@ -260,8 +262,12 @@ setInterval(async function () {
                     if (inlist === 0) {
                         let time = new Date().getTime();
                         let owner = emote["owner"]
+                        let zero_Width = "7tv"
+                        if (emote["visibility_simple"][0] === "ZERO_WIDTH") {
+                            zero_Width = "7tv_ZERO_WIDTH"
+                        }
 
-                        Emote_list.push([emote["name"], emote["id"], time, owner["login"], `https://7tv.app/emotes/${emote["id"]}`]);
+                        Emote_list.push([emote["name"], emote["id"], time, owner["login"], `https://7tv.app/emotes/${emote["id"]}`, zero_Width]);
                     }
 
                 });
@@ -310,11 +316,7 @@ setInterval(async function () {
 
                     let time = new Date().getTime();
 
-                    Emote_removed.push([emote[0], emote[1], time]);
-
-                    if (Emote_removed.length > 6) {
-                        Emote_removed.shift();
-                    }
+                    Emote_removed.push([emote[0], emote[1], time, [emote[5]]]);
 
                     Emote_list = _.without(Emote_list, emote)
                 }
@@ -326,9 +328,23 @@ setInterval(async function () {
             await tools.query(`UPDATE Streamers SET emote_list=? WHERE username=?`, [Emote_list, streamer.username]);
             await tools.query(`UPDATE Streamers SET emote_removed=? WHERE username=?`, [Emote_removed, streamer.username]);
 
+            const isSubbed = await got(`https://api.7tv.app/v2/badges?user_identifier=twitch_id`, { timeout: 10000 }).json();
 
+            let foundName = false;
+            _.each(isSubbed["badges"], async function (badge) {
+                if (badge["name"].split(" ").includes("Subscriber")) {
+                    let users = badge["users"]
+                    if (users.includes(streamer.uid.toString())) {
+                        foundName = true;
+                        await tools.query(`UPDATE Streamers SET seventv_sub=? WHERE username=?`, [1, streamer.username]);
+                    }
+                }
+            });
+
+            if (foundName === false) {
+                await tools.query(`UPDATE Streamers SET seventv_sub=? WHERE username=?`, [0, streamer.username]);
+            }
         }, 200);
-
     });
 }, 60000);
 

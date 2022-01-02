@@ -13,6 +13,9 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
+            if (!input[2]) {
+                return `No emote specified. Example: "bb emotecheck TriHard "`
+            }
             let emoteId = input[2];
             console.log(user.emotes)
             if (user.emotes) {
@@ -173,11 +176,14 @@ module.exports = {
                     emote[2] = `(${tools.humanizeDuration(now - emote[2])})`;
 
                     found = 1;
+                    if (emote[5] === "7tv_ZERO_WIDTH") {
+                        emote[5] = "7tv (zero width)"
+                    }
                     if (ecount !== 0) {
-                        response = `${input[2]} is a 3rd party emote, the emote was added to the channel ${emote[2]} ago, and has been used ${ecount} times in this chat. The emote was uploaded by the user "${emote[3]}" - ${emote[4]}`;
+                        response = `${input[2]} is a ${emote[5]} emote, the emote was added to the channel ${emote[2]} ago, and has been used ${ecount} times in this chat. The emote was uploaded by the user "${emote[3]}" - ${emote[4]}`;
                     }
                     else {
-                        response = `${input[2]} is a 3rd party emote, the emote was added to the channel ${emote[2]} ago. The emote was uploaded by the user "${emote[3]}" - ${emote[4]}`;
+                        response = `${input[2]} is a ${emote[5]} emote, the emote was added to the channel ${emote[2]} ago. The emote was uploaded by the user "${emote[3]}" - ${emote[4]}`;
 
                     }
                     return;

@@ -57,6 +57,9 @@ module.exports = {
 
             emotes = emotes.toString().replaceAll(',', ' ');
 
+            if (input[2]) {
+                return `Added emotes page[${input[2]}]: ${emotes}`;
+            }
             return `the latest added emotes are: ${emotes}`;
 
         } catch (err) {
