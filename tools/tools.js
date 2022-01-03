@@ -236,11 +236,16 @@ exports.asciiLength = (message) => {
     return emojicount;
 
 };
-
-const aliasList = require('./aliases.json');
+var reload = require('require-reload')(require),
+    aliasList = reload('./aliases.json');
 
 exports.Alias = class Alias {
     constructor(message) {
+        try {
+            aliasList = reload('./aliases.json');
+        } catch (e) {
+            console.error("Failed to reload ./aliases.json! Error: ", e);
+        }
         this.command = message
             .split(' ')
             .splice(1)
