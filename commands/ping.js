@@ -12,8 +12,8 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            const latency = await tools.query(`SELECT Latency FROM Latency ORDER BY id DESC LIMIT 1`);
-            let delay = JSON.parse(latency[0].Latency);
+            const latency = await tools.query(`SELECT Latency FROM Latency`);
+            let delay = JSON.parse(latency[latency.length - 1].Latency);
 
             return `nymnDank pong! - Tmi delay: ${delay * 1000}ms - Internal delay:`;
         } catch (err) {
