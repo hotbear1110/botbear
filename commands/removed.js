@@ -50,6 +50,10 @@ module.exports = {
 
                 emote[2] = `(${tools.humanizeDuration(now - emote[2])})`;
 
+                if (emote[3]) {
+                    emote.pop()
+                }
+
                 emote.splice(1, 1);
 
             })
