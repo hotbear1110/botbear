@@ -109,7 +109,7 @@ setInterval(async function () {
                     }
 
                     if (newTitle !== stream.title) {
-                        let titleuserlist = tools.splitLine(titleusers, 350);
+                        let titleuserlist = tools.splitLine(titleusers, 400 - newTitle.length);
                         let titleTime = new Date().getTime();
                         console.log(stream.username + " NEW TITLE: " + newTitle);
                         await tools.query(`UPDATE Streamers SET title=?, title_time=? WHERE username=?`, [newTitle, titleTime, stream.username]);
@@ -122,7 +122,7 @@ setInterval(async function () {
                         }
                     };
                     if (newGame !== stream.game) {
-                        let gameuserlist = tools.splitLine(gameusers, 350);
+                        let gameuserlist = tools.splitLine(gameusers, 400 - newGame.length);
                         let gameTime = new Date().getTime();
 
                         await tools.query(`UPDATE Streamers SET game=?, game_time=? WHERE username=?`, [newGame, gameTime, stream.username]);

@@ -1,4 +1,5 @@
 const shell = require("child_process")
+const tools = require("../tools/tools.js");
 
 module.exports = {
     name: "botstats",
@@ -36,8 +37,11 @@ module.exports = {
 
             const commits = shell.execSync('git rev-list --all --count');
 
+            let streamerCount = await tools.query(`SELECT * FROM Streamers`);
 
-            return `CPU: ${cpuused}% - Memory: ${used}MB/${total}B - Temperature: ${temp} - Commits: ${commits} KKona`;
+
+
+            return `CPU: ${cpuused}% - Memory: ${used}MB/${total}B - Temperature: ${temp} - Commits: ${commits} KKona - Currently active in ${streamerCount.length} channels.`;
 
         } catch (err) {
             console.log(err);
