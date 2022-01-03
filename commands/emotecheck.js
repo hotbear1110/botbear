@@ -125,7 +125,7 @@ module.exports = {
                 if (emoteType === "BITS_BADGE_TIERS") {
 
 
-                    const emoteCost = await axios.get(`https://api.ivr.fi/twitch/allemotes/nymn`, { timeout: 10000 });
+                    const emoteCost = await axios.get(`https://api.ivr.fi/twitch/allemotes/${emotechannel}`, { timeout: 10000 });
                     let bitEmotes = emoteCost.data["bitEmotes"];
                     let realemoteCost = 0;
                     _.each(bitEmotes, async function (emote) {
