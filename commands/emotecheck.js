@@ -123,8 +123,27 @@ module.exports = {
                     return `${realemote} (ID ${realid}) is a tier ${tier} ${emoteStatus} emote, from the channel (#${emotechannel}) - ${url}`;
                 }
                 if (emoteType === "BITS_BADGE_TIERS") {
+
+
+                    const emoteCost = await axios.get(`https://api.ivr.fi/twitch/allemotes/nymn`, { timeout: 10000 });
+                    let bitEmotes = emoteCost.data["bitEmotes"];
+                    let realemoteCost = 0;
+                    _.each(bitEmotes, async function (emote) {
+                        if (emote["code"] === realemote) {
+                            realemoteCost = emote["bitCost"];
+                            return;
+                        }
+                    })
+
+
                     if (ecount !== 0) {
+                        if (realemoteCost !== 0) {
+                            return `${realemote} (ID ${realid}) is a  bit emote (${emoteStatus}), from the channel (#${emotechannel}), the emote costs ${realemoteCost} bits and the emote has been used ${ecount} times in this chat - ${url}`;
+                        }
                         return `${realemote} (ID ${realid}) is a bit emote (${emoteStatus}), from the channel (#${emotechannel}), the emote has been used ${ecount} times in this chat - ${url}`;
+                    }
+                    if (realemoteCost !== 0) {
+                        return `${realemote} (ID ${realid}) is a  bit emote (${emoteStatus}), from the channel (#${emotechannel}), the emote costs ${realemoteCost} bits - ${url}`;
                     }
                     return `${realemote} (ID ${realid}) is a bit emote (${emoteStatus}), from the channel (#${emotechannel}) - ${url}`;
                 }
