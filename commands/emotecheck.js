@@ -128,6 +128,12 @@ module.exports = {
                         }
                         return `${realemote} (ID ${realid}) is a bit emote (${emoteStatus}), from the channel (#${emotechannel}) - ${url}`;
                     }
+                    if (emoteType === "FOLLOWER") {
+                        if (ecount !== 0) {
+                            return `${realemote} (ID ${realid}) is a follower emote (${emoteStatus}), from the channel (#${emotechannel}), the emote has been used ${ecount} times in this chat - ${url}`;
+                        }
+                        return `${realemote} (ID ${realid}) is a follower emote (${emoteStatus}), from the channel (#${emotechannel}) - ${url}`;
+                    }
                 }
             }
 
