@@ -124,14 +124,6 @@ async function onMessageHandler(channel, user, msg, self) {
     }
     input = input.filter(e => e);
 
-    const Alias = new tools.Alias(msg);
-    input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
-    let realcommand = input[1];
-
-    if (realcommand === "say" && realcommand === "channel" && realcommand === "emotecheck" && realcommand === "cum" && realcommand === "suggest" && realcommand === "shit" && realcommand === "code") {
-        input = input.toString().replaceAll(",", " ");
-    }
-
     if (input[0].toLowerCase() === "[cookies]" && user["user-id"] == 425363834 && !msg.includes("rankup")) {
         const stream = await tools.query('SELECT disabled_commands FROM Streamers WHERE username=?', [channel.substring(1)]);
 
@@ -177,6 +169,18 @@ async function onMessageHandler(channel, user, msg, self) {
     if (user.username === "supibot") {
         cc.say(channel, ":tf: no");
         return;
+    }
+
+    let aliasList = await tools.query(`SELECT Aliases FROM Aliases`);
+
+    aliasList = JSON.parse(aliasList[0].Aliases);
+
+    const Alias = new tools.Alias(msg, aliasList);
+    input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
+    let realcommand = input[1];
+
+    if (realcommand === "say" && realcommand === "channel" && realcommand === "emotecheck" && realcommand === "cum" && realcommand === "suggest" && realcommand === "shit" && realcommand === "code") {
+        input = input.toString().replaceAll(",", " ");
     }
 
     const userList = await tools.query(`SELECT * FROM Users WHERE uid=?`, [user["user-id"]]);

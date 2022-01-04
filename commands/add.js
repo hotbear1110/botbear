@@ -29,7 +29,10 @@ module.exports = {
                     aliases.shift()
                     aliases.shift()
 
-                    let data = fs.readFileSync(`${__dirname}/../tools/aliases.json`, 'utf-8');
+                    let data = await tools.query(`SELECT Aliases FROM Aliases`);
+
+                    data = data[0].Aliases;
+
                     console.log(data)
 
                     let newdata = data.toString().replaceAll("[", "").replaceAll("]", "").split(",");
@@ -53,7 +56,6 @@ module.exports = {
                                 iscommand.push(alias);
                             } else {
                                 _.each(newdata, function (oldalias) {
-                                    oldalias = JSON.parse(oldalias);
                                     if (oldalias[alias]) {
                                         alreadyAlias.push(alias)
                                     }
@@ -71,7 +73,7 @@ module.exports = {
                         });
                     })
 
-                    fs.writeFileSync(`${__dirname}/../tools/aliases.json`, `[${result[0].toString()}]`, 'utf-8');
+                    await tools.query(`UPDATE Aliases SET Aliases=?`, [`[${newdata.toString()}]`])
 
                     let iscommand2 = "";
 
