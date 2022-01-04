@@ -4,7 +4,7 @@ const tools = require("../tools/tools.js");
 
 module.exports = {
     name: "fl",
-    ping: false,
+    ping: true,
     description: 'This command will give you the first logged line from a specific user in the chat (Only works if logs are available in the channel, logs used: "https://logs.ivr.fi/"). Example: "bb fl NymN"',
     permission: 100,
     category: "Info command",
@@ -25,6 +25,17 @@ module.exports = {
                 realchannel = input[3];
             }
 
+            try {
+                const optedout = await got(`https://logs.ivr.fi/channel/${realchannel}/user/${username}`, { timeout: 10000 });
+            } catch (err) {
+                if (err.toString().startsWith("HTTPError: Response code 403 (Forbidden)")) {
+                    return "User or channel has opted out";
+                }
+                if (err.toString().startsWith("HTTPError: Response code 500 (Internal Server Error)")) {
+                    return "Could not load logs. Most likely the user either doesn't exist or doesn't have any logs here.";
+                }
+                console.log(err)
+            }
 
             const fl = await got(`https://api.ivr.fi/logs/firstmessage/${realchannel}/${username}`, { timeout: 10000 }).json();
             const masspinged = await tools.massping(fl.message.toLowerCase(), channel);

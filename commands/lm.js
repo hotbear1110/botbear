@@ -28,6 +28,19 @@ module.exports = {
                 return;
             }
 
+            try {
+                const optedout = await got(`https://logs.ivr.fi/channel/${realchannel}/user/${username}`, { timeout: 10000 });
+            } catch (err) {
+                if (err.toString().startsWith("HTTPError: Response code 403 (Forbidden)")) {
+                    return "User or channel has opted out";
+                }
+                if (err.toString().startsWith("HTTPError: Response code 500 (Internal Server Error)")) {
+                    return "Could not load logs. Most likely the user either doesn't exist or doesn't have any logs here.";
+                }
+                console.log(err)
+            }
+
+
             const lm = await got(`https://api.ivr.fi/logs/lastmessage/${realchannel}/${username}`, { timeout: 10000 }).json();
             const masspinged = await tools.massping(lm.response.toLowerCase(), channel);
 
