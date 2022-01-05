@@ -16,10 +16,6 @@ module.exports = {
             input = input.splice(2);
             let msg = input.toString().replaceAll(',', ' ');
 
-            if (channel === "forsen") {
-                channel = "botbear1110";
-            }
-
             msg.replace(regex.invisChar, '');
 
 

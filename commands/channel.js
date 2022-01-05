@@ -14,9 +14,6 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            if (channel === "forsen") {
-                channel = "botbear1110";
-            }
             switch (input[2]) {
                 case "join":
                     console.log(channel);
