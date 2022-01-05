@@ -114,7 +114,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
     for (let i = 0; i < input.length; i++) {
         if (new RegExp(/[\uDB40-\uDC00]/).test(input[i])) {
-            input[i] = input[i].replace(new RegExp(/[\uDB40-\uDC00-\u034f-\u2800-\u{E0000}-\u180e-\ufeff-\u2000-\u200d-\u206D]/g), "");
+            input[i] = input[i].replace(new RegExp(/[\uDB40-\uDC00\u034f\u2800\u{E0000}\u180e\ufeff\u2000-\u200d\u206D]/g), "");
             input[i] = input[i].replace(/\s\s+/g, ' ').trim();
             input.splice(i)
         }
