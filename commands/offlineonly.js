@@ -3,7 +3,7 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "offlineonly",
     ping: true,
-    description: 'This command will let you change the bot to/from offline only mode (toggle), live/game/title notify will still work!',
+    description: 'This command will let you change the bot to/from offline only mode (toggle), live/game/title notify will still work! (This is a mod command)',
     permission: 100,
     category: "Core command",
     execute: async (channel, user, input, perm) => {

@@ -59,9 +59,6 @@ async function onMessageHandler(channel, user, msg, self) {
     if (activetrivia[channel]) {
         let similarity = await tools.similarity(msg.toLowerCase(), triviaanswer[channel].toLowerCase())
         if (await similarity >= 0.8) {
-            if (channel === "#forsen") {
-                channel = "#botbear1110";
-            }
 
             similarity = similarity * 100
             similarity = similarity.toString().substring(0, 5);
@@ -162,7 +159,7 @@ async function onMessageHandler(channel, user, msg, self) {
         }
     }
 
-    if (input[0] !== "bb" && input[0].toLowerCase() !== "forsenbb") {
+    if (input[0] !== "bb" && input[0] !== "forsenBB") {
         return;
     }
 
@@ -189,15 +186,6 @@ async function onMessageHandler(channel, user, msg, self) {
         await tools.query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
     } else if (user.username !== userList[0].username && user.username != null) {
         await tools.query('UPDATE Users SET username=? WHERE uid=?', [user.username, user["user-id"]]);
-    }
-
-
-    if (channel === "#forsen") {
-        return;
-    }
-
-    if (channel === "#botbear1110") {
-        channel = "#forsen";
     }
 
     let disabledCheck = await tools.query(`
@@ -302,9 +290,6 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (realcommand === "trivia") {
-        if (channel === "#forsen") {
-            channel = "#botbear1110";
-        }
         if (activetrivia[channel]) {
             cc.say(channel, "There is already an active trivia");
             return;
@@ -423,10 +408,6 @@ async function onMessageHandler(channel, user, msg, self) {
 
     if (commands[realcommand].ping == true) {
         result = `${user['display-name']}, ${result}`;
-    }
-
-    if (channel === "#forsen") {
-        channel = "#botbear1110";
     }
 
     const banPhrase = await tools.banphrasePass(result, channel);
