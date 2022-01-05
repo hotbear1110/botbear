@@ -47,7 +47,7 @@ module.exports = {
             let message = tools.splitLine(rl.message, 350)
             if (rl.status !== 404) {
                 if (message[1]) {
-                    return `#${realchannel} ${rl.user}: ${message}... - (${rl.time} ago)`;
+                    return `#${realchannel} ${rl.user}: ${message[0]}... - (${rl.time} ago)`;
                 }
                 return `#${realchannel} ${rl.user}: ${message} - (${rl.time} ago)`;
             }

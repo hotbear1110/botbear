@@ -456,7 +456,16 @@ async function onMessageHandler(channel, user, msg, self) {
     if (commands[realcommand].showDelay == true) {
         result = `${result} ${end - start}ms`;
     }
-
+    if (channel === "#forsen") {
+        let message = tools.splitLine(result, 90)
+        if (message[1]) {
+            if (message[0].length === 0) {
+                cc.say(channel, "ForsenLookingAtYou Message is too long");
+            }
+            cc.say(channel, message[0] + " ...");
+            return;
+        }
+    }
     cc.say(channel, result);
     oldmessage = result;
     return;

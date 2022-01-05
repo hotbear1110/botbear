@@ -19,7 +19,7 @@ module.exports = {
             msg.replace(regex.invisChar, '');
 
 
-            if (user.mod === false && perm < 2000 && msg.match(/[$|/|.|?|!|-]|\bkb\b|^\bmelon\b/g)) { // ignores $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
+            if (user.mod === false && perm < 2000 && msg.match(/[+|$|/|.|?|!|-]|\bkb\b|^\bmelon\b/g)) { // ignores $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
                 return;
             }
 
