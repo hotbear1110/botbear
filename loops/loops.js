@@ -45,7 +45,7 @@ setInterval(async function () {
                         let userlist = tools.splitLine(users, 350);
                         console.log(stream.username + " IS NOW LIVE");
                         await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`);
-                        if (!disabledCommands.includes("notify") || proxychannel !== "botbear1110") {
+                        if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
                             _.each(userlist, function (msg, i) {
                                 setTimeout(function () {
                                     cc.action(`#${proxychannel}`, `${stream.liveemote} ${stream.username.toUpperCase()} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`);
@@ -57,7 +57,7 @@ setInterval(async function () {
                         let userlist = tools.splitLine(users, 350);
                         console.log(stream.username + " IS NOW OFFLINE");
                         await tools.query(`UPDATE Streamers SET islive = 0 WHERE username ="${stream.username}"`);
-                        if (!disabledCommands.includes("notify") || proxychannel !== "botbear1110") {
+                        if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
                             _.each(userlist, function (msg, i) {
                                 setTimeout(function () {
                                     cc.action(`#${proxychannel}`, `${stream.offlineemote} ${stream.username.toUpperCase()} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`);
@@ -113,7 +113,7 @@ setInterval(async function () {
                         let titleTime = new Date().getTime();
                         console.log(stream.username + " NEW TITLE: " + newTitle);
                         await tools.query(`UPDATE Streamers SET title=?, title_time=? WHERE username=?`, [newTitle, titleTime, stream.username]);
-                        if (!disabledCommands.includes("notify") || proxychannel2 !== "botbear1110") {
+                        if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110") {
                             _.each(titleuserlist, function (msg, i) {
                                 setTimeout(function () {
                                     cc.action(`#${proxychannel2}`, `${stream.titleemote} NEW TITLE ! ${stream.titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`);
@@ -131,7 +131,7 @@ setInterval(async function () {
                             sleep(1500)
                         }
                         console.log(stream.username + " NEW GAME: " + newGame);
-                        if (!disabledCommands.includes("notify") || proxychannel2 !== "botbear1110") {
+                        if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110") {
                             _.each(gameuserlist, function (msg, i) {
                                 setTimeout(function () {
                                     cc.action(`#${proxychannel2}`, `${stream.gameemote} NEW GAME ! ${stream.gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`)
