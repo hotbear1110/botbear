@@ -113,12 +113,14 @@ setInterval(async function () {
                         let titleTime = new Date().getTime();
                         console.log(stream.username + " NEW TITLE: " + newTitle);
                         await tools.query(`UPDATE Streamers SET title=?, title_time=? WHERE username=?`, [newTitle, titleTime, stream.username]);
-                        if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110" && titleusers.length) {
-                            _.each(titleuserlist, function (msg, i) {
-                                setTimeout(function () {
-                                    cc.action(`#${proxychannel2}`, `${stream.titleemote} NEW TITLE ! ${stream.titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`);
-                                }, 2000 * i);
-                            });
+                        if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110") {
+                            if (titleusers.length) {
+                                _.each(titleuserlist, function (msg, i) {
+                                    setTimeout(function () {
+                                        cc.action(`#${proxychannel2}`, `${stream.titleemote} NEW TITLE ! ${stream.titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`);
+                                    }, 2000 * i);
+                                });
+                            }
                         }
                     };
                     if (newGame !== stream.game) {
@@ -131,12 +133,14 @@ setInterval(async function () {
                             sleep(1500)
                         }
                         console.log(stream.username + " NEW GAME: " + newGame);
-                        if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110" && gameusers.length) {
-                            _.each(gameuserlist, function (msg, i) {
-                                setTimeout(function () {
-                                    cc.action(`#${proxychannel2}`, `${stream.gameemote} NEW GAME ! ${stream.gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`)
-                                }, 2000 * i);
-                            });
+                        if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110") {
+                            if (gameusers.length) {
+                                _.each(gameuserlist, function (msg, i) {
+                                    setTimeout(function () {
+                                        cc.action(`#${proxychannel2}`, `${stream.gameemote} NEW GAME ! ${stream.gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`)
+                                    }, 2000 * i);
+                                });
+                            }
                         }
                     };
                 })
