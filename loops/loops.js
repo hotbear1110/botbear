@@ -108,7 +108,7 @@ setInterval(async function () {
                         proxychannel2 = "botbear1110";
                     }
 
-                    if (newTitle !== stream.title) {
+                    if (newTitle !== stream.title && titleusers.length) {
                         let titleuserlist = tools.splitLine(titleusers, 400 - newTitle.length);
                         let titleTime = new Date().getTime();
                         console.log(stream.username + " NEW TITLE: " + newTitle);
@@ -121,7 +121,7 @@ setInterval(async function () {
                             });
                         }
                     };
-                    if (newGame !== stream.game) {
+                    if (newGame !== stream.game && gameusers.length) {
                         let gameuserlist = tools.splitLine(gameusers, 400 - newGame.length);
                         let gameTime = new Date().getTime();
 
