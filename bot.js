@@ -203,7 +203,7 @@ async function onMessageHandler(channel, user, msg, self) {
     const commands = requireDir("./commands");
 
     if (typeof commands[realcommand] === "undefined") {
-        console.log(channel, ": undefined");
+        console.log(channel, ": undefined - '", realcommand, "'");
         return;
     }
 
