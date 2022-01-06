@@ -53,6 +53,9 @@ module.exports = {
             }
         } catch (err) {
             console.log(err);
+            if (err.toString().startsWith("HTTPError: Response code 403 (Forbidden)")) {
+                return "User is blacklisted";
+            }
             if (err.name) {
                 if (err.name === "TimeoutError") {
                     return `FeelsDankMan Banphrase api error: ${err.name}`;
