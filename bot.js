@@ -34,7 +34,9 @@ let oldmessage = "";
 
 async function onMessageHandler(channel, user, msg, self) {
     let start = new Date().getTime();
-    msg = msg.replace(regex.invisChar, "");
+    msg = msg.replaceAll(regex.invisChar, "");
+    msg = msg.replaceAll("  ", "");
+
     if (channel == "#botbear1110") {
         console.log(`${user.username}: ${msg}`);
     }
@@ -116,6 +118,7 @@ async function onMessageHandler(channel, user, msg, self) {
         if (new RegExp(/[\uDB40-\uDC00]/).test(input[i])) {
             input[i] = input[i].replace(new RegExp(/[\uDB40-\uDC00\u034f\u2800\u{E0000}\u180e\ufeff\u2000-\u200d\u206D]/g), "");
             input[i] = input[i].replace(/\s\s+/g, ' ').trim();
+            input[i] = input[i].replace("  ", "");
             input.splice(i)
         }
     }
@@ -203,7 +206,7 @@ async function onMessageHandler(channel, user, msg, self) {
     const commands = requireDir("./commands");
 
     if (typeof commands[realcommand] === "undefined") {
-        console.log(channel, ": undefined - '", realcommand, "'");
+        console.log(channel, ": undefined - '", input, "'");
         return;
     }
 
