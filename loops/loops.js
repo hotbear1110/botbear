@@ -108,12 +108,12 @@ setInterval(async function () {
                         proxychannel2 = "botbear1110";
                     }
 
-                    if (newTitle !== stream.title && titleusers.length) {
+                    if (newTitle !== stream.title) {
                         let titleuserlist = tools.splitLine(titleusers, 400 - newTitle.length);
                         let titleTime = new Date().getTime();
                         console.log(stream.username + " NEW TITLE: " + newTitle);
                         await tools.query(`UPDATE Streamers SET title=?, title_time=? WHERE username=?`, [newTitle, titleTime, stream.username]);
-                        if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110") {
+                        if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110" && titleusers.length) {
                             _.each(titleuserlist, function (msg, i) {
                                 setTimeout(function () {
                                     cc.action(`#${proxychannel2}`, `${stream.titleemote} NEW TITLE ! ${stream.titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`);
@@ -121,7 +121,7 @@ setInterval(async function () {
                             });
                         }
                     };
-                    if (newGame !== stream.game && gameusers.length) {
+                    if (newGame !== stream.game) {
                         let gameuserlist = tools.splitLine(gameusers, 400 - newGame.length);
                         let gameTime = new Date().getTime();
 
@@ -131,7 +131,7 @@ setInterval(async function () {
                             sleep(1500)
                         }
                         console.log(stream.username + " NEW GAME: " + newGame);
-                        if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110") {
+                        if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110" && gameusers.length) {
                             _.each(gameuserlist, function (msg, i) {
                                 setTimeout(function () {
                                     cc.action(`#${proxychannel2}`, `${stream.gameemote} NEW GAME ! ${stream.gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`)
