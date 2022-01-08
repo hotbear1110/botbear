@@ -22,7 +22,7 @@ module.exports = {
                         return `Please specify a command to enable`;
                     }
 
-                    let command = input[3].toLowerCase();
+                    let command = input[3];
 
                     let disabledList = await tools.query(`
                     SELECT disabled_commands
@@ -55,7 +55,7 @@ module.exports = {
                         return `Please specify a category to enable`;
                     }
 
-                    let category = input[3].toLowerCase();
+                    let category = input[3];
 
                     if (category === "core") {
                         return `Core commands can't be disabled, so there is no enabling them`;
@@ -78,11 +78,11 @@ module.exports = {
 
                     _.each(commandList2, function (commandName) {
 
-                        if (commandName.Category.toLowerCase() === `${category} command`) {
+                        if (commandName.Category === `${category} command`) {
                             iscategory = true;
-                            if (disabledList2.includes(commandName.Name.toLowerCase())) {
+                            if (disabledList2.includes(commandName.Name)) {
                                 isdisabled = true;
-                                disabledList2.splice(disabledList2.indexOf(commandName.Name.toLowerCase()), 1);
+                                disabledList2.splice(disabledList2.indexOf(commandName.Name), 1);
                             }
                         }
                     });
@@ -120,9 +120,9 @@ module.exports = {
 
                     _.each(commandList3, function (commandName) {
                         if (commandName.Category !== "Core command" && commandName.Category !== "Dev command") {
-                            if (disabledList3.includes(commandName.Name.toLowerCase())) {
+                            if (disabledList3.includes(commandName.Name)) {
                                 isdisabled3 = true;
-                                disabledList3.splice(disabledList3.indexOf(commandName.Name.toLowerCase()), 1);
+                                disabledList3.splice(disabledList3.indexOf(commandName.Name), 1);
                             }
                         }
 

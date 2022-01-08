@@ -22,7 +22,7 @@ module.exports = {
                         return `Please specify a command to disable`;
                     }
 
-                    let command = input[3].toLowerCase();
+                    let command = input[3];
 
                     let disabledList = await tools.query(`
                     SELECT disabled_commands
@@ -45,7 +45,7 @@ module.exports = {
 
                     _.each(commandList, function (commandName) {
 
-                        if (command === commandName.Name.toLowerCase()) {
+                        if (command === commandName.Name) {
                             if (commandName.Category === "Core command" || commandName.Category === "Dev command") {
                                 iscore = true;
                                 return;
@@ -80,7 +80,7 @@ module.exports = {
                         return `Please specify a category to disable`;
                     }
 
-                    let category = input[3].toLowerCase();
+                    let category = input[3];
 
                     if (category === "core") {
                         return `You can't disable core commands`;
@@ -103,11 +103,11 @@ module.exports = {
 
                     _.each(commandList2, function (commandName) {
 
-                        if (commandName.Category.toLowerCase() === `${category} command`) {
+                        if (commandName.Category === `${category} command`) {
                             iscategory = true;
-                            if (!disabledList2.includes(commandName.Name.toLowerCase())) {
+                            if (!disabledList2.includes(commandName.Name)) {
                                 isdisabled = true;
-                                disabledList2.push(commandName.Name.toLowerCase());
+                                disabledList2.push(commandName.Name);
                             }
                         }
 
@@ -146,9 +146,9 @@ module.exports = {
 
                     _.each(commandList3, function (commandName) {
                         if (commandName.Category !== "Core command" && commandName.Category !== "Dev command") {
-                            if (!disabledList3.includes(commandName.Name.toLowerCase())) {
+                            if (!disabledList3.includes(commandName.Name)) {
                                 isdisabled3 = true;
-                                disabledList3.push(commandName.Name.toLowerCase());
+                                disabledList3.push(commandName.Name);
                             }
                         }
 
