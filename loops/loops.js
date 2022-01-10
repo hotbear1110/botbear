@@ -357,14 +357,16 @@ setInterval(async function () {
 
     _.each(await users, async function (User) {
         if (User.RemindTime !== null && User.RemindTime < Time) {
-            const stream = await tools.query('SELECT disabled_commands FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
-            let disabledCommands = JSON.parse(stream[0].disabled_commands)
+            if (User.Status === "Confirmed" || User.Status === "Confirmed2") {
+                const stream = await tools.query('SELECT disabled_commands FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
+                let disabledCommands = JSON.parse(stream[0].disabled_commands)
 
-            await tools.query(`UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
-            if (!disabledCommands.includes("cookie")) {
-                if (stream[0].offlineonly === 1 && stream[0].islive === 1) {
-                } else {
-                    cc.say(User.Channel, `${User.User} Reminder to eat your cookie nymnOkay`)
+                await tools.query(`UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
+                if (!disabledCommands.includes("cookie")) {
+                    if (stream[0].offlineonly === 1 && stream[0].islive === 1) {
+                    } else {
+                        cc.say(User.Channel, `${User.User} Reminder to eat your cookie nymnOkay`)
+                    }
                 }
             }
         }
@@ -378,7 +380,7 @@ setInterval(async function () {
     let Time = new Date().getTime();
 
     _.each(await users, async function (User) {
-        if (User.RemindTime !== null && User.RemindTime < Time) {
+        if (User.RemindTime !== null && User.RemindTime < Time && User.Status === "Confirmed") {
             const stream = await tools.query('SELECT * FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
             let disabledCommands = JSON.parse(stream[0].disabled_commands)
 
