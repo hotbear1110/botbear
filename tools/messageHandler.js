@@ -37,13 +37,13 @@ exports.messageHandler = class Cooldown {
         }
 
         setTimeout(() => {
-            if (this.message === oldmessage) {
-                this.message = this.message + " 󠀀 ";
-            }
             let tempList = talkedRecently[this.channel]
             if (this.noCD === 0) {
                 if (!(this.message.includes("Reminder to eat your cookie nymnOkay") || this.message.includes("Reminder to eat your cookie nymnOkay 󠀀 ")) || oldmessage !== this.message) {
                     if (!(this.message.includes("Your cookie cdr is ready.") || this.message.includes("Your cookie cdr is ready. 󠀀 ")) || oldmessage !== this.message) {
+                        if (this.message === oldmessage) {
+                            this.message = this.message + " 󠀀 ";
+                        }
                         cc.say(this.channel, this.message);
                     }
                 }
