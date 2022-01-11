@@ -6,7 +6,7 @@ exports.messageHandler = class Cooldown {
     constructor(channel, message) {
         this.channel = channel;
         this.message = message;
-        console.log(this.channel, this.message)
+        this.noCD = 0;
     }
     async Cooldown() {
         let cooldown = 1250;
@@ -14,39 +14,38 @@ exports.messageHandler = class Cooldown {
             cooldown = 1250 * (talkedRecently[this.channel].length);
 
         }
-        console.log(cooldown)
-
         return cooldown;
     }
 
     async newMessage() {
-
+        const cc = require("../bot.js").cc;
         if (talkedRecently[this.channel]) {
+            this.noCD = 0
             let tempList = talkedRecently[this.channel]
             tempList.push(this.message)
             talkedRecently[this.channel] = tempList;
-            console.log(tempList)
         } else {
+            cc.say(this.channel, this.message);
+            this.noCD = 1;
             let tempList = [];
             tempList.push(this.message)
-            console.log(tempList)
             talkedRecently[this.channel] = tempList;
         }
 
         setTimeout(() => {
-            const cc = require("../bot.js").cc;
-
             if (this.message === oldmessage) {
                 this.message = this.message + " 󠀀 ";
             }
-            cc.say(this.channel, this.message);
+            if (this.noCD === 0) {
+                cc.say(this.channel, this.message);
+            }
             oldmessage = this.message;
             let tempList = talkedRecently[this.channel]
             tempList.shift()
-            console.log(tempList)
             talkedRecently[this.channel] = tempList;
             if (!talkedRecently[this.channel].length) {
                 delete talkedRecently[this.channel];
+                this.noCD = 0
             }
 
         }, await this.Cooldown());
