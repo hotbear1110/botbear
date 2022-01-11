@@ -25,7 +25,11 @@ exports.messageHandler = class Cooldown {
             tempList.push(this.message)
             talkedRecently[this.channel] = tempList;
         } else {
-            cc.say(this.channel, this.message);
+            if (!this.message.includes("Reminder to eat your cookie nymnOkay") || oldmessage !== this.message) {
+                if (!this.message.includes("Your cookie cdr is ready.") || oldmessage !== this.message) {
+                    cc.say(this.channel, this.message);
+                }
+            }
             this.noCD = 1;
             let tempList = [];
             tempList.push(this.message)
@@ -36,11 +40,15 @@ exports.messageHandler = class Cooldown {
             if (this.message === oldmessage) {
                 this.message = this.message + " 󠀀 ";
             }
+            let tempList = talkedRecently[this.channel]
             if (this.noCD === 0) {
-                cc.say(this.channel, this.message);
+                if (!this.message.includes("Reminder to eat your cookie nymnOkay") || oldmessage !== this.message) {
+                    if (!this.message.includes("Your cookie cdr is ready.") || oldmessage !== this.message) {
+                        cc.say(this.channel, this.message);
+                    }
+                }
             }
             oldmessage = this.message;
-            let tempList = talkedRecently[this.channel]
             tempList.shift()
             talkedRecently[this.channel] = tempList;
             if (!talkedRecently[this.channel].length) {
