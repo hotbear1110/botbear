@@ -4,13 +4,14 @@ const tools = require("../tools/tools.js");
 const _ = require("underscore");
 const { fchown } = require("fs");
 const got = require("got");
+let messageHandler = require("../tools/messageHandler.js").messageHandler;
 //const redisC = require("../tools/logger.js").redisC;
 
 module.exports = {
     name: "test",
     ping: true,
     description: 'This is a dev command for testing purposes',
-    permission: 100,
+    permission: 2000,
     category: "Dev command",
     execute: async (channel, user, input, perm) => {
         try {

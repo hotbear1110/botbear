@@ -6,6 +6,7 @@ const regex = require('./tools/regex.js');
 const _ = require("underscore");
 const requireDir = require("require-dir");
 const trivia = require('./commands/trivia.js');
+let messageHandler = require("./tools/messageHandler.js").messageHandler;
 
 const cc = new tmi.client(login.options);
 
@@ -29,7 +30,6 @@ let triviaTime = {};
 
 let started = false;
 
-const talkedRecently = new Set();
 let oldmessage = "";
 
 async function onMessageHandler(channel, user, msg, self) {
@@ -81,7 +81,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
             triviaScore = Math.round(triviaScore);
 
-            cc.say(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) OMGScoots You get +${triviaScore} points`);
+            new messageHandler(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) OMGScoots You get +${triviaScore} points`).newMessage();
 
             let userchannel = [];
             userchannel.push(`"${user.username}"`);
@@ -135,16 +135,16 @@ async function onMessageHandler(channel, user, msg, self) {
 
         if (cookieStatus[0] === "Confirmed") {
             if (cookieStatus[3] === "yes") {
-                cc.say(cookieStatus[2], `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!)`)
+                new messageHandler(cookieStatus[2], `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!)`).newMessage();
             } else {
-                cc.say(cookieStatus[2], `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay`)
+                new messageHandler(cookieStatus[2], `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
             }
         }
         if (cookieStatus[0] === "Confirmed2") {
-            cc.say(cookieStatus[2], `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`)
+            new messageHandler(cookieStatus[2], `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
         }
         if (cookieStatus[0] === "CD") {
-            cc.say(cookieStatus[2], `${cookieStatus[1]} Your cookie is still on cooldown, it will be available in ${cookieStatus[3]}`)
+            new messageHandler(cookieStatus[2], `${cookieStatus[1]} Your cookie is still on cooldown, it will be available in ${cookieStatus[3]}`).newMessage();
         }
 
     }
@@ -158,7 +158,7 @@ async function onMessageHandler(channel, user, msg, self) {
         const cdrStatus = await tools.cdr(user, input, channel);
 
         if (cdrStatus[0] === "Confirmed") {
-            cc.say(cdrStatus[2], `${cdrStatus[1]} I will remind you to use your cdr in 3 hours nymnOkay`)
+            new messageHandler(cdrStatus[2], `${cdrStatus[1]} I will remind you to use your cdr in 3 hours nymnOkay`).newMessage();
         }
     }
 
@@ -167,7 +167,7 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (user.username === "supibot") {
-        cc.say(channel, ":tf: no");
+        new messageHandler(channel, ":tf: no").newMessage();
         return;
     }
 
@@ -216,19 +216,9 @@ async function onMessageHandler(channel, user, msg, self) {
 
     if ((await userCD.setCooldown()).length) { return; }
 
-
-    if (user['user-id'] !== process.env.TWITCH_OWNERUID) {
-
-        let timeout = 1250;
-
-        setTimeout(() => {
-            talkedRecently.delete(channel);
-        }, timeout);
-    }
-
     const badUsername = user.username.match(regex.racism);
     if (badUsername != null) {
-        cc.say(channel, `[Bad username detected] cmonBruh`);
+        new messageHandler(channel, `[Bad username detected] cmonBruh`).newMessage();
         return;
     }
 
@@ -238,7 +228,7 @@ async function onMessageHandler(channel, user, msg, self) {
         const ms = new Date().getTime() - triviaTime[channel];
         let timePassed = tools.humanizeDuration(ms);
         if (parseInt(timePassed) < 10) {
-            cc.say(channel, "You need to wait 10 seconds to get a hint.");
+            new messageHandler(channel, "You need to wait 10 seconds to get a hint.").newMessage();
             return;
         }
         gothint[channel] = true;
@@ -248,38 +238,38 @@ async function onMessageHandler(channel, user, msg, self) {
         const banPhrase = await tools.banphrasePass(hint, channel);
 
         if (banPhrase.banned) {
-            cc.say(channel, `[Banphrased] cmonBruh`);
+            new messageHandler(channel, `[Banphrased] cmonBruh`).newMessage();
             return;
         }
 
         const banPhraseV2 = await tools.banphrasePassV2(hint, channel);
 
         if (banPhraseV2 == true) {
-            cc.say(channel, `[Banphrased] cmonBruh`);
+            new messageHandler(channel, `[Banphrased] cmonBruh`).newMessage();
             return;
         }
 
         if (banPhrase === 0) {
-            cc.say(channel, "FeelsDankMan banphrase error!!");
+            new messageHandler(channel, "FeelsDankMan banphrase error!!").newMessage();
             return;
         }
 
         const notabanPhrase = await tools.notbannedPhrases(hint.toLowerCase());
 
         if (notabanPhrase != `null`) {
-            cc.say(channel, notabanPhrase);
+            new messageHandler(channel, notabanPhrase).newMessage();
             return;
         }
 
         const badWord = hint.match(regex.racism);
         if (badWord != null) {
-            cc.say(channel, `[Bad word detected] cmonBruh`);
+            new messageHandler(channel, `[Bad word detected] cmonBruh`).newMessage();
             return;
         }
 
         const reallength = await tools.asciiLength(hint);
         if (reallength > 30) {
-            cc.say(channel, "[Too many emojis]");
+            new messageHandler(channel, "[Too many emojis]").newMessage();
             return;
         }
 
@@ -287,14 +277,14 @@ async function onMessageHandler(channel, user, msg, self) {
             hint = hint + " 󠀀 ";
         }
 
-        cc.say(channel, `(Trivia) ${user.username}, Hint: ${hint}`)
+        new messageHandler(channel, `(Trivia) ${user.username}, Hint: ${hint}`).newMessage();
         oldmessage = `(Trivia) ${user.username}, Hint: ${hint}`;
         return;
     }
 
     if (realcommand === "trivia") {
         if (activetrivia[channel]) {
-            cc.say(channel, "There is already an active trivia");
+            new messageHandler(channel, "There is already an active trivia").newMessage();
             return;
         }
         const isLive = await tools.query(`SELECT islive FROM Streamers WHERE username=?`, [realchannel]);
@@ -314,8 +304,7 @@ async function onMessageHandler(channel, user, msg, self) {
         const triviaCD = new tools.Cooldown(realchannel, realcommand, cd[0].trivia_cooldowns);
 
         if ((await triviaCD.setCooldown()).length && !user.mod) {
-            cc.say(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`)
-
+            new messageHandler(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
             return;
         }
 
@@ -346,7 +335,7 @@ async function onMessageHandler(channel, user, msg, self) {
                         delete triviaanswer[channel];
                         delete triviaHints[channel];
 
-                        cc.say(channel, `The trivia timed out after 60 seconds. The answer was: "${result[2]}"`)
+                        new messageHandler(channel, `The trivia timed out after 60 seconds. The answer was: "${result[2]}"`)
                     }
                 }
             }, 60000);
@@ -358,38 +347,38 @@ async function onMessageHandler(channel, user, msg, self) {
         const banPhrase = await tools.banphrasePass(response, channel);
 
         if (banPhrase.banned) {
-            cc.say(channel, `[Banphrased] cmonBruh`);
+            new messageHandler(channel, `[Banphrased] cmonBruh`).newMessage();
             return;
         }
 
         const banPhraseV2 = await tools.banphrasePassV2(response, channel);
 
         if (banPhraseV2 == true) {
-            cc.say(channel, `[Banphrased] cmonBruh`);
+            new messageHandler(channel, `[Banphrased] cmonBruh`).newMessage();
             return;
         }
 
         if (banPhrase === 0) {
-            cc.say(channel, "FeelsDankMan error!!");
+            new messageHandler(channel, "FeelsDankMan error!!").newMessage();
             return;
         }
 
         const notabanPhrase = await tools.notbannedPhrases(response.toLowerCase());
 
         if (notabanPhrase != `null`) {
-            cc.say(channel, notabanPhrase);
+            new messageHandler(channel, notabanPhrase).newMessage();
             return;
         }
 
         const badWord = response.match(regex.racism);
         if (badWord != null) {
-            cc.say(channel, `[Bad word detected] cmonBruh`);
+            new messageHandler(channel, `[Bad word detected] cmonBruh`).newMessage();
             return;
         }
 
         const reallength = await tools.asciiLength(response);
         if (reallength > 30) {
-            cc.say(channel, "[Too many emojis]");
+            new messageHandler(channel, "[Too many emojis]").newMessage();
             return;
         }
 
@@ -397,7 +386,7 @@ async function onMessageHandler(channel, user, msg, self) {
             response = response + " 󠀀 ";
         }
 
-        cc.say(channel, response);
+        new messageHandler(channel, response).newMessage();
         return;
 
     }
@@ -423,37 +412,34 @@ async function onMessageHandler(channel, user, msg, self) {
     const banPhraseV2 = await tools.banphrasePassV2(result, channel);
 
     if (banPhraseV2 == true) {
-        cc.say(channel, `[Banphrased] cmonBruh`);
+        new messageHandler(channel, `[Banphrased] cmonBruh`).newMessage();
         return;
     }
 
     if (banPhrase === 0) {
-        cc.say(channel, "FeelsDankMan error!!");
+        new messageHandler(channel, "FeelsDankMan error!!").newMessage();
         return;
     }
 
     const notabanPhrase = await tools.notbannedPhrases(result.toLowerCase());
 
     if (notabanPhrase != `null`) {
-        cc.say(channel, notabanPhrase);
+        new messageHandler(channel, notabanPhrase).newMessage();
         return;
     }
 
     const badWord = result.match(regex.racism);
     if (badWord != null) {
-        cc.say(channel, `[Bad word detected] cmonBruh`);
+        new messageHandler(channel, `[Bad word detected] cmonBruh`).newMessage();
         return;
     }
 
     const reallength = await tools.asciiLength(result);
     if (reallength > 30) {
-        cc.say(channel, "[Too many emojis]");
+        new messageHandler(channel, "[Too many emojis]").newMessage();
         return;
     }
 
-    if (result === oldmessage) {
-        result = result + " 󠀀 ";
-    }
     let end = new Date().getTime();
 
     if (commands[realcommand].showDelay == true) {
@@ -463,14 +449,14 @@ async function onMessageHandler(channel, user, msg, self) {
         let message = tools.splitLine(result, 90)
         if (message[1]) {
             if (message[0].length === 0) {
-                cc.say(channel, "ForsenLookingAtYou Message is too long");
+                new messageHandler(channel, "ForsenLookingAtYou Message is too long").newMessage();
+                return
             }
-            cc.say(channel, message[0] + " ...");
+            new messageHandler(channel, message[0] + " ...").newMessage();
             return;
         }
     }
-    cc.say(channel, result);
-    oldmessage = result;
+    new messageHandler(channel, result).newMessage();
     return;
 }
 
@@ -489,7 +475,7 @@ async function onConnectedHandler(addr, port) {
                 }).catch((err) => {
                     console.log(err);
                 });
-                cc.say("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`)
+                new messageHandler("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`)
             })
         }
 
@@ -509,8 +495,8 @@ async function onConnectedHandler(addr, port) {
                     console.log(err);
                 });
 
-                cc.say(`#${name[0]}`, `Name change detected, ${name[1]} -> ${name[0]}`)
-                cc.say("#botbear1110", `Left channel ${name[1]}. Reason: Name change detected, ${name[1]} -> ${name[0]}`)
+                new messageHandler(`#${name[0]}`, `Name change detected, ${name[1]} -> ${name[0]}`)
+                new messageHandler("#botbear1110", `Left channel ${name[1]}. Reason: Name change detected, ${name[1]} -> ${name[0]}`)
             })
         }
         started = true;

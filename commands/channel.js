@@ -1,7 +1,8 @@
 require('dotenv').config();
 const tools = require("../tools/tools.js");
-const cc = require("../bot.js").cc;
+let messageHandler = require("../tools/messageHandler.js").messageHandler;
 const axios = require('axios');
+const cc = require("../bot.js").cc;
 
 module.exports = {
     name: "channel",
@@ -55,7 +56,7 @@ module.exports = {
                         }).catch((err) => {
                             console.log(err);
                         });
-                        cc.say(`#${username}`, '👋 nymnDank Hello!');
+                        new messageHandler(`#${username}`, '👋 nymnDank Hello!').newMessage();
                         return `Joined channel: ${username}`;
 
                     }
@@ -83,7 +84,7 @@ module.exports = {
 
                     else {
                         await tools.query('DELETE FROM Streamers WHERE username=?', [username2]);
-                        cc.say(`#${username2}`, '👋 nymnDank bye!');
+                        new messageHandler(`#${username2}`, '👋 nymnDank bye!').newMessage();
                         cc.part(username2).then((data) => {
                             // data returns [channel]
                         }).catch((err) => {
@@ -215,7 +216,7 @@ module.exports = {
                     return await tools.query("UPDATE `Streamers` SET `trivia_cooldowns` = ? WHERE `username` = ?", [cooldown, channel]).then(() => {
                         return `BloodTrail Successfully set the cooldown of trivia in this channel to ${input[3]}s`;
                     }).catch((error) => {
-                        cc.say("botbear1110", JSON.stringify(error));
+                        new messageHandler("botbear1110", JSON.stringify(error)).newMessage();
                         return "NotLikeThis UhOh! Error!";
                     });
                 }

@@ -5,6 +5,8 @@ const axios = require('axios');
 const cc = require("../bot.js").cc;
 const got = require("got");
 const { isDnsLookupIpVersion } = require('got/dist/source/core/utils/dns-ip-version');
+let messageHandler = require("../tools/messageHandler.js").messageHandler;
+const { con } = require('../connect/connect.js');
 
 function sleep(milliseconds) {
     var start = new Date().getTime();
@@ -47,9 +49,7 @@ setInterval(async function () {
                         await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`);
                         if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
                             _.each(userlist, function (msg, i) {
-                                setTimeout(function () {
-                                    cc.action(`#${proxychannel}`, `${stream.liveemote} ${stream.username.toUpperCase()} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`);
-                                }, 2000 * i);
+                                new messageHandler(`#${proxychannel}`, `/me ${stream.liveemote} ${stream.username.toUpperCase()} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`).newMessage();
                             });
                         }
                     };
@@ -59,9 +59,7 @@ setInterval(async function () {
                         await tools.query(`UPDATE Streamers SET islive = 0 WHERE username ="${stream.username}"`);
                         if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
                             _.each(userlist, function (msg, i) {
-                                setTimeout(function () {
-                                    cc.action(`#${proxychannel}`, `${stream.offlineemote} ${stream.username.toUpperCase()} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`);
-                                }, 2000 * i);
+                                new messageHandler(`#${proxychannel}`, `/me ${stream.offlineemote} ${stream.username.toUpperCase()} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`).newMessage();
                             });
                         }
                     };
@@ -116,9 +114,7 @@ setInterval(async function () {
                         if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110") {
                             if (titleusers.length) {
                                 _.each(titleuserlist, function (msg, i) {
-                                    setTimeout(function () {
-                                        cc.action(`#${proxychannel2}`, `${stream.titleemote} NEW TITLE ! ${stream.titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`);
-                                    }, 2000 * i);
+                                    new messageHandler(`#${proxychannel2}`, `/me ${stream.titleemote} NEW TITLE ! ${stream.titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`).newMessage();
                                 });
                             }
                         }
@@ -136,9 +132,7 @@ setInterval(async function () {
                         if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110") {
                             if (gameusers.length) {
                                 _.each(gameuserlist, function (msg, i) {
-                                    setTimeout(function () {
-                                        cc.action(`#${proxychannel2}`, `${stream.gameemote} NEW GAME ! ${stream.gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`)
-                                    }, 2000 * i);
+                                    new messageHandler(`#${proxychannel2}`, `/me ${stream.gameemote} NEW GAME ! ${stream.gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`).newMessage();
                                 });
                             }
                         }
@@ -365,7 +359,7 @@ setInterval(async function () {
                 if (!disabledCommands.includes("cookie")) {
                     if (stream[0].offlineonly === 1 && stream[0].islive === 1) {
                     } else {
-                        cc.say(User.Channel, `${User.User} Reminder to eat your cookie nymnOkay`)
+                        new messageHandler(User.Channel, `${User.User} Reminder to eat your cookie nymnOkay`).newMessage();
                     }
                 }
             }
@@ -388,7 +382,8 @@ setInterval(async function () {
             if (!disabledCommands.includes("cdr")) {
                 if (stream[0].offlineonly === 1 && stream[0].islive === 1) {
                 } else {
-                    cc.say(User.Channel, `${User.User} Your cookie cdr is ready.`)
+                    new messageHandler(User.Channel, `${User.User} Your cookie cdr is ready.`).newMessage();
+
                 }
             }
         }
