@@ -82,7 +82,6 @@ async function onMessageHandler(channel, user, msg, self) {
             triviaScore = Math.round(triviaScore);
 
             new messageHandler(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) OMGScoots You get +${triviaScore} points`).newMessage();
-
             let userchannel = [];
             userchannel.push(`"${user.username}"`);
             userchannel.push(`"${channel}"`);
@@ -335,7 +334,7 @@ async function onMessageHandler(channel, user, msg, self) {
                         delete triviaanswer[channel];
                         delete triviaHints[channel];
 
-                        new messageHandler(channel, `The trivia timed out after 60 seconds. The answer was: "${result[2]}"`)
+                        new messageHandler(channel, `The trivia timed out after 60 seconds. The answer was: "${result[2]}"`).newMessage();
                     }
                 }
             }, 60000);
@@ -475,7 +474,7 @@ async function onConnectedHandler(addr, port) {
                 }).catch((err) => {
                     console.log(err);
                 });
-                new messageHandler("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`)
+                new messageHandler("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`).newMessage();
             })
         }
 
@@ -495,8 +494,8 @@ async function onConnectedHandler(addr, port) {
                     console.log(err);
                 });
 
-                new messageHandler(`#${name[0]}`, `Name change detected, ${name[1]} -> ${name[0]}`)
-                new messageHandler("#botbear1110", `Left channel ${name[1]}. Reason: Name change detected, ${name[1]} -> ${name[0]}`)
+                new messageHandler(`#${name[0]}`, `Name change detected, ${name[1]} -> ${name[0]}`).newMessage();
+                new messageHandler("#botbear1110", `Left channel ${name[1]}. Reason: Name change detected, ${name[1]} -> ${name[0]}`).newMessage();
             })
         }
         started = true;
