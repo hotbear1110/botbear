@@ -27,12 +27,6 @@ module.exports = {
                 return "cmonBruh don't change my color";
             }
 
-            const masspinged = await tools.massping(msg.toLowerCase(), channel);
-
-            if (masspinged != "null") {
-                return "[MASS PING]";
-            }
-
             return msg;
         } catch (err) {
             console.log(err);

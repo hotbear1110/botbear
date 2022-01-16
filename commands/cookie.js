@@ -86,7 +86,7 @@ module.exports = {
             console.log(err);
             if (err.name) {
                 if (err.name === "TimeoutError") {
-                    return `FeelsDankMan Banphrase api error: ${err.name}`;
+                    return `FeelsDankMan api error: ${err.name}`;
                 }
             }
             return `FeelsDankMan Sql error: ${err.sqlMessage}`;

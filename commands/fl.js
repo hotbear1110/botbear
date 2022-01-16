@@ -38,11 +38,6 @@ module.exports = {
             }
 
             const fl = await got(`https://api.ivr.fi/logs/firstmessage/${realchannel}/${username}`, { timeout: 10000 }).json();
-            const masspinged = await tools.massping(fl.message.toLowerCase(), channel);
-
-            if (masspinged != "null") {
-                return "[MASS PING]";
-            }
 
             let message = tools.splitLine(fl.message, 350)
             if (fl.status !== 404) {
@@ -58,7 +53,7 @@ module.exports = {
             }
             if (err.name) {
                 if (err.name === "TimeoutError") {
-                    return `FeelsDankMan Banphrase api error: ${err.name}`;
+                    return `FeelsDankMan api error: ${err.name}`;
                 }
             }
             return `FeelsDankMan Error`;

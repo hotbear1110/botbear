@@ -38,11 +38,6 @@ module.exports = {
             }
 
             const rl = await got(`https://api.ivr.fi/logs/rq/${realchannel}/${username}`, { timeout: 10000 }).json();
-            const masspinged = await tools.massping(rl.message.toLowerCase(), channel);
-
-            if (masspinged != "null") {
-                return "[MASS PING]";
-            }
 
             let message = tools.splitLine(rl.message, 350)
             if (rl.status !== 404) {
@@ -58,7 +53,7 @@ module.exports = {
                 return "User is blacklisted";
             }
             if (err.name) {
-                return `FeelsDankMan Banphrase api error: ${err.name}`;
+                return `FeelsDankMan api error: ${err.name}`;
             }
             return `FeelsDankMan Error`;
         }

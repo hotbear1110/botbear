@@ -20,12 +20,6 @@ module.exports = {
             msg = msg.replaceAll(/(?:^|\W)me(?:$|\W)/g, " you ")
             msg = msg.replaceAll(/(?:^|\W)my(?:$|\W)/g, " your ")
 
-            const masspinged = await tools.massping(msg.toLowerCase(), channel);
-
-            if (masspinged != "null") {
-                return "[MASS PING]";
-            }
-
             return `/me I shat ${msg}`;
         } catch (err) {
             console.log(err);
