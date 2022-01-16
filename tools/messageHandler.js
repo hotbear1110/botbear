@@ -1,3 +1,5 @@
+const tools = require("./tools.js");
+
 talkedRecently = {};
 
 let oldmessage = "";
@@ -19,6 +21,20 @@ exports.messageHandler = class Cooldown {
 
     async newMessage() {
         const cc = require("../bot.js").cc;
+        if (this.channel === "#forsen") {
+            let message = tools.splitLine(result, 90)
+            if (message[1]) {
+                if (message[0].length === 0) {
+                    this.message = "ForsenLookingAtYou Message is too long";
+                    return
+                }
+                this.message = message[0] + " ...";
+                return;
+            }
+        }
+
+        this.message = await tools.checkAllBanphrases(this.message, this.channel);
+
         if (talkedRecently[this.channel]) {
             this.noCD = 0
             let tempList = talkedRecently[this.channel]

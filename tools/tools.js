@@ -9,6 +9,7 @@ const hastebin = require('better-hastebin');
 const humanize = require('humanize-duration');
 const axios = require('axios');
 const requireDir = require("require-dir");
+const regex = require('./regex.js');
 
 exports.query = (query, data = []) =>
     new Promise((resolve, reject) => {
@@ -519,4 +520,40 @@ exports.isMod = function (user, channel) {
     const isBroadcaster = channel === user.username;
     const isModUp = isMod || isBroadcaster;
     return isModUp
+}
+
+exports.checkAllBanphrases = async function (message, channel) {
+    const banPhrase = await tools.banphrasePass(message, channel);
+
+    if (banPhrase.banned) {
+        return `[Banphrased] cmonBruh`;
+    }
+
+    const banPhraseV2 = await tools.banphrasePassV2(message, channel);
+
+    if (banPhraseV2 == true) {
+        return `[Banphrased] cmonBruh`;
+    }
+
+    if (banPhrase === 0) {
+        return "FeelsDankMan banphrase error!!";
+    }
+
+    const notabanPhrase = await tools.notbannedPhrases(message.toLowerCase());
+
+    if (notabanPhrase != `null`) {
+        return notabanPhrase;
+    }
+
+    const badWord = message.match(regex.racism);
+    if (badWord != null) {
+        return `[Bad word detected] cmonBruh`;
+    }
+
+    const reallength = await tools.asciiLength(message);
+    if (reallength > 30) {
+        return "[Too many emojis]";
+    }
+
+    return message;
 }

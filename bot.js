@@ -234,44 +234,6 @@ async function onMessageHandler(channel, user, msg, self) {
 
         let hint = triviaHints[channel];
 
-        const banPhrase = await tools.banphrasePass(hint, channel);
-
-        if (banPhrase.banned) {
-            new messageHandler(channel, `[Banphrased] cmonBruh`).newMessage();
-            return;
-        }
-
-        const banPhraseV2 = await tools.banphrasePassV2(hint, channel);
-
-        if (banPhraseV2 == true) {
-            new messageHandler(channel, `[Banphrased] cmonBruh`).newMessage();
-            return;
-        }
-
-        if (banPhrase === 0) {
-            new messageHandler(channel, "FeelsDankMan banphrase error!!").newMessage();
-            return;
-        }
-
-        const notabanPhrase = await tools.notbannedPhrases(hint.toLowerCase());
-
-        if (notabanPhrase != `null`) {
-            new messageHandler(channel, notabanPhrase).newMessage();
-            return;
-        }
-
-        const badWord = hint.match(regex.racism);
-        if (badWord != null) {
-            new messageHandler(channel, `[Bad word detected] cmonBruh`).newMessage();
-            return;
-        }
-
-        const reallength = await tools.asciiLength(hint);
-        if (reallength > 30) {
-            new messageHandler(channel, "[Too many emojis]").newMessage();
-            return;
-        }
-
         if (hint === oldmessage) {
             hint = hint + " 󠀀 ";
         }
@@ -343,44 +305,6 @@ async function onMessageHandler(channel, user, msg, self) {
 
         let response = result[0];
 
-        const banPhrase = await tools.banphrasePass(response, channel);
-
-        if (banPhrase.banned) {
-            new messageHandler(channel, `[Banphrased] cmonBruh`).newMessage();
-            return;
-        }
-
-        const banPhraseV2 = await tools.banphrasePassV2(response, channel);
-
-        if (banPhraseV2 == true) {
-            new messageHandler(channel, `[Banphrased] cmonBruh`).newMessage();
-            return;
-        }
-
-        if (banPhrase === 0) {
-            new messageHandler(channel, "FeelsDankMan error!!").newMessage();
-            return;
-        }
-
-        const notabanPhrase = await tools.notbannedPhrases(response.toLowerCase());
-
-        if (notabanPhrase != `null`) {
-            new messageHandler(channel, notabanPhrase).newMessage();
-            return;
-        }
-
-        const badWord = response.match(regex.racism);
-        if (badWord != null) {
-            new messageHandler(channel, `[Bad word detected] cmonBruh`).newMessage();
-            return;
-        }
-
-        const reallength = await tools.asciiLength(response);
-        if (reallength > 30) {
-            new messageHandler(channel, "[Too many emojis]").newMessage();
-            return;
-        }
-
         if (response === oldmessage) {
             response = response + " 󠀀 ";
         }
@@ -401,59 +325,10 @@ async function onMessageHandler(channel, user, msg, self) {
         result = `${user['display-name']}, ${result}`;
     }
 
-    const banPhrase = await tools.banphrasePass(result, channel);
-
-    if (banPhrase.banned) {
-        cc.say(channel, `[Banphrased] cmonBruh`);
-        return;
-    }
-
-    const banPhraseV2 = await tools.banphrasePassV2(result, channel);
-
-    if (banPhraseV2 == true) {
-        new messageHandler(channel, `[Banphrased] cmonBruh`).newMessage();
-        return;
-    }
-
-    if (banPhrase === 0) {
-        new messageHandler(channel, "FeelsDankMan error!!").newMessage();
-        return;
-    }
-
-    const notabanPhrase = await tools.notbannedPhrases(result.toLowerCase());
-
-    if (notabanPhrase != `null`) {
-        new messageHandler(channel, notabanPhrase).newMessage();
-        return;
-    }
-
-    const badWord = result.match(regex.racism);
-    if (badWord != null) {
-        new messageHandler(channel, `[Bad word detected] cmonBruh`).newMessage();
-        return;
-    }
-
-    const reallength = await tools.asciiLength(result);
-    if (reallength > 30) {
-        new messageHandler(channel, "[Too many emojis]").newMessage();
-        return;
-    }
-
     let end = new Date().getTime();
 
     if (commands[realcommand].showDelay == true) {
         result = `${result} ${end - start}ms`;
-    }
-    if (channel === "#forsen") {
-        let message = tools.splitLine(result, 90)
-        if (message[1]) {
-            if (message[0].length === 0) {
-                new messageHandler(channel, "ForsenLookingAtYou Message is too long").newMessage();
-                return
-            }
-            new messageHandler(channel, message[0] + " ...").newMessage();
-            return;
-        }
     }
     new messageHandler(channel, result).newMessage();
     return;
