@@ -219,10 +219,37 @@ module.exports = {
                         new messageHandler("botbear1110", JSON.stringify(error)).newMessage();
                         return "NotLikeThis UhOh! Error!";
                     });
+                    break;
                 }
 
+                case "pb1": {
+                    if (!tools.isMod(user, channel)) {
+                        return;
+                    }
+
+                    if (!input[3]) {
+                        return "Please provide an url! Example: https://pajlada.pajbot.com";
+                    }
+
+                    await tools.query(`UPDATE Streamers SET banphraseapi=? WHERE username=?`, [input[3], channel])
+                    return `pb1 banphrase api is now set to: ${input[3]}/api/v1/banphrases/test`;
+                    break;
+                }
+
+                case "pb2": {
+                    if (!tools.isMod(user, channel)) {
+                        return;
+                    }
+
+                    if (!input[3]) {
+                        return "Please provide an url! Example: https://paj.pajbot.com";
+                    }
+
+                    await tools.query(`UPDATE Streamers SET banphraseapi2=? WHERE username=?`, [input[3], channel])
+                    return `pb2 banphrase api is now set to: ${input[3]}/api/channel/${user.uid}/moderation/check_message?message=`;
+                }
                 default:
-                    return "Available channel commands: join/leave, [live/offline/title/game]emote, trivia";
+                    return "Available channel commands: join/leave, [live/offline/title/game]emote, trivia, pb1, pb2";
             }
         } catch (err) {
             console.log(err);

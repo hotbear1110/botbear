@@ -33,7 +33,7 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
     this.banphraseapi = this.data[0].banphraseapi;
     try {
         if (this.banphraseapi == null || this.banphraseapi == "NULL" || !this.banphraseapi) {
-            this.banphraseapi = "https://pajlada.pajbot.com/api/v1/banphrases/test";
+            this.banphraseapi = "https://pajlada.pajbot.com";
         }
     } catch (err) {
         console.log(err);
@@ -41,7 +41,7 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
     }
     try {
         message = encodeURIComponent(message)
-        this.checkBanphrase = await got(this.banphraseapi, {
+        this.checkBanphrase = await got(`${this.banphraseapi}/api/v1/banphrases/test`, {
             method: "POST",
             body: "message=" + message,
             headers: {
@@ -60,25 +60,39 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
 exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reject) => {
     this.channel = channel.replace("#", '');
     this.message = encodeURIComponent(message);
-    let userid = await tools.query(`SELECT uid FROM Streamers WHERE username=?`, [this.channel]);
+    this.data = await tools.query(`SELECT * FROM Streamers WHERE username=?`, [this.channel]);
 
-    userid = userid[0].uid;
-    try {
-        this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/${userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 });
-        if (this.checkBanphrase.data["banned"] == true) {
-            resolve(true);
-        }
-        resolve(false);
-    } catch (err) {
+    let userid = this.data[0].uid;
+    this.banphraseapi2 = this.data[0].banphraseapi2;
+    if (this.banphraseapi2 !== null) {
+        console.log("costum")
         try {
-            this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 });
+            this.checkBanphrase = await axios.get(`${this.banphraseapi2}/api/channel/${userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 });
             if (this.checkBanphrase.data["banned"] == true) {
                 resolve(true);
             }
             resolve(false);
         } catch (err) {
             console.log(err);
-            resolve(0);
+        }
+    } else {
+        try {
+            this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/${userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 });
+            if (this.checkBanphrase.data["banned"] == true) {
+                resolve(true);
+            }
+            resolve(false);
+        } catch (err) {
+            try {
+                this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 });
+                if (this.checkBanphrase.data["banned"] == true) {
+                    resolve(true);
+                }
+                resolve(false);
+            } catch (err) {
+                console.log(err);
+                resolve(0);
+            }
         }
     }
 
