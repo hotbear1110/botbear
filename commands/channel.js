@@ -231,6 +231,11 @@ module.exports = {
                         return "Please provide an url! Example: https://pajlada.pajbot.com";
                     }
 
+                    if (input[3] === "reset") {
+                        await tools.query(`UPDATE Streamers SET banphraseapi=? WHERE username=?`, ["https://pajlada.pajbot.com", channel])
+                        return `pb1 banphrase api has reset`;
+                    }
+
                     await tools.query(`UPDATE Streamers SET banphraseapi=? WHERE username=?`, [input[3], channel])
                     return `pb1 banphrase api is now set to: ${input[3]}/api/v1/banphrases/test`;
                     break;
@@ -243,6 +248,11 @@ module.exports = {
 
                     if (!input[3]) {
                         return "Please provide an url! Example: https://paj.pajbot.com";
+                    }
+
+                    if (input[3] === "reset") {
+                        await tools.query(`UPDATE Streamers SET banphraseapi2=? WHERE username=?`, [null, channel])
+                        return `pb2 banphrase api has reset`;
                     }
 
                     await tools.query(`UPDATE Streamers SET banphraseapi2=? WHERE username=?`, [input[3], channel])
