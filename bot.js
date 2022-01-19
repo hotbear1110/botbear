@@ -161,7 +161,7 @@ async function onMessageHandler(channel, user, msg, self) {
         }
     }
 
-    if (input[0] !== "bb" && input[0] !== "forsenBB") {
+    if (input[0].toLowerCase() !== "bb" && input[0] !== "forsenBB") {
         return;
     }
 
