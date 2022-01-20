@@ -61,7 +61,7 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (activetrivia[channel]) {
-        if (triviaHints2[channel].length) {
+        if (triviaHints2[channel] !== undefined) {
             let similarity = await tools.similarity(msg.toLowerCase(), triviaanswer[channel].toLowerCase())
             if (await similarity >= 0.8) {
 
@@ -281,7 +281,7 @@ async function onMessageHandler(channel, user, msg, self) {
     let realchannel = channel.substring(1);
 
     if (realcommand === "hint" && activetrivia[channel] && gothint[channel] === false) {
-        if (triviaHints2[channel].length && gothint2[channel] !== 1) {
+        if (triviaHints2[channel] !== undefined && gothint2[channel] !== 1) {
             const ms = new Date().getTime() - triviaTime[channel];
             let timePassed = tools.humanizeDuration(ms);
             if (parseInt(timePassed) < 10) {
