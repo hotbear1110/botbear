@@ -10,7 +10,7 @@ module.exports = {
                 return;
             }
 
-            let responses = ["HEADS", "TAILS"]
+            let responses = ["HEADS(yes)", "TAILS(no)"]
 
             let number = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
 
