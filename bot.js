@@ -25,7 +25,9 @@ let uptime = new Date().getTime();
 let activetrivia = {};
 let triviaanswer = {};
 let triviaHints = {};
+let triviaHints2 = {};
 let gothint = {};
+let gothint2 = {};
 let triviaTime = {};
 
 let started = false;
@@ -59,56 +61,108 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (activetrivia[channel]) {
-        let similarity = await tools.similarity(msg.toLowerCase(), triviaanswer[channel].toLowerCase())
-        if (await similarity >= 0.8) {
+        if (triviaHints2[channel].length) {
+            let similarity = await tools.similarity(msg.toLowerCase(), triviaanswer[channel].toLowerCase())
+            if (await similarity >= 0.8) {
 
-            similarity = similarity * 100
-            similarity = similarity.toString().substring(0, 5);
+                similarity = similarity * 100
+                similarity = similarity.toString().substring(0, 5);
 
-            const ms = new Date().getTime() - triviaTime[channel];
-            let time = parseInt(tools.humanizeDuration(ms));
-            time = 60 - time;
-            time = 1 + (time / 100);
-            time = time.toString().substring(0, 4);
-            time = parseFloat(time);
+                const ms = new Date().getTime() - triviaTime[channel];
+                let time = parseInt(tools.humanizeDuration(ms));
+                time = 60 - time;
+                time = 1 + (time / 100);
+                time = time.toString().substring(0, 4);
+                time = parseFloat(time);
 
-            let triviaScore = 1000;
-            triviaScore = triviaScore * (Math.floor(similarity) / 100);
-            triviaScore = triviaScore * time;
-            if (gothint[channel] === false && triviaHints[channel] !== "FeelsDankMan you already got the hint.") {
-                triviaScore = triviaScore * 2;
+                let triviaScore = 1000;
+                triviaScore = triviaScore * (Math.floor(similarity) / 100);
+                triviaScore = triviaScore * time;
+                if (gothint[channel] === false) {
+                    triviaScore = triviaScore * 2;
+                }
+
+                triviaScore = Math.round(triviaScore);
+
+                new messageHandler(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) OMGScoots You get +${triviaScore} points`).newMessage();
+                let userchannel = [];
+                userchannel.push(`"${user.username}"`);
+                userchannel.push(`"${channel}"`);
+
+
+
+                const alreadyJoined = await tools.query(`
+                    SELECT *
+                    FROM MyPoints
+                    WHERE username=?`,
+                    [`[${userchannel}]`]);
+
+                if (!alreadyJoined.length) {
+                    await tools.query('INSERT INTO MyPoints (username, points) values (?, ?)', [`[${userchannel}]`, triviaScore]);
+                } else {
+                    triviaScore = triviaScore + alreadyJoined[0].points;
+                    await tools.query(`UPDATE MyPoints SET points=? WHERE username=?`, [triviaScore, `[${userchannel}]`])
+                }
+
+                delete activetrivia[channel];
+                delete triviaanswer[channel];
+                delete triviaHints2[channel];
+                delete gothint[channel];
+                delete triviaTime[channel];
+                return;
             }
 
-            triviaScore = Math.round(triviaScore);
+        } else {
+            let similarity = await tools.similarity(msg.toLowerCase(), triviaanswer[channel].toLowerCase())
+            if (await similarity >= 0.8) {
 
-            new messageHandler(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) OMGScoots You get +${triviaScore} points`).newMessage();
-            let userchannel = [];
-            userchannel.push(`"${user.username}"`);
-            userchannel.push(`"${channel}"`);
+                similarity = similarity * 100
+                similarity = similarity.toString().substring(0, 5);
+
+                const ms = new Date().getTime() - triviaTime[channel];
+                let time = parseInt(tools.humanizeDuration(ms));
+                time = 60 - time;
+                time = 1 + (time / 100);
+                time = time.toString().substring(0, 4);
+                time = parseFloat(time);
+
+                let triviaScore = 1000;
+                triviaScore = triviaScore * (Math.floor(similarity) / 100);
+                triviaScore = triviaScore * time;
+                if (gothint[channel] === false && triviaHints[channel] !== "FeelsDankMan you already got the hint.") {
+                    triviaScore = triviaScore * 2;
+                }
+
+                triviaScore = Math.round(triviaScore);
+
+                new messageHandler(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) OMGScoots You get +${triviaScore} points`).newMessage();
+                let userchannel = [];
+                userchannel.push(`"${user.username}"`);
+                userchannel.push(`"${channel}"`);
 
 
 
-            const alreadyJoined = await tools.query(`
+                const alreadyJoined = await tools.query(`
                 SELECT *
                 FROM MyPoints
                 WHERE username=?`,
-                [`[${userchannel}]`]);
+                    [`[${userchannel}]`]);
 
-            if (!alreadyJoined.length) {
-                await tools.query('INSERT INTO MyPoints (username, points) values (?, ?)', [`[${userchannel}]`, triviaScore]);
-            } else {
-                triviaScore = triviaScore + alreadyJoined[0].points;
-                await tools.query(`UPDATE MyPoints SET points=? WHERE username=?`, [triviaScore, `[${userchannel}]`])
+                if (!alreadyJoined.length) {
+                    await tools.query('INSERT INTO MyPoints (username, points) values (?, ?)', [`[${userchannel}]`, triviaScore]);
+                } else {
+                    triviaScore = triviaScore + alreadyJoined[0].points;
+                    await tools.query(`UPDATE MyPoints SET points=? WHERE username=?`, [triviaScore, `[${userchannel}]`])
+                }
+
+                delete activetrivia[channel];
+                delete triviaanswer[channel];
+                delete triviaHints[channel];
+                delete gothint[channel];
+                delete triviaTime[channel];
+                return;
             }
-
-            delete activetrivia[channel];
-            delete triviaanswer[channel];
-            delete triviaHints[channel];
-            delete gothint[channel];
-            delete triviaTime[channel];
-            return;
         }
-
     }
 
     let input = msg.split(" ");
@@ -161,6 +215,9 @@ async function onMessageHandler(channel, user, msg, self) {
         }
     }
 
+    if (input[0] === undefined) {
+        return;
+    }
     if (input[0].toLowerCase() !== "bb" && input[0] !== "forsenBB") {
         return;
     }
@@ -224,23 +281,55 @@ async function onMessageHandler(channel, user, msg, self) {
     let realchannel = channel.substring(1);
 
     if (realcommand === "hint" && activetrivia[channel] && gothint[channel] === false) {
-        const ms = new Date().getTime() - triviaTime[channel];
-        let timePassed = tools.humanizeDuration(ms);
-        if (parseInt(timePassed) < 10) {
-            new messageHandler(channel, "You need to wait 10 seconds to get a hint.").newMessage();
+        if (triviaHints2[channel].length && gothint2[channel] !== 1) {
+            const ms = new Date().getTime() - triviaTime[channel];
+            let timePassed = tools.humanizeDuration(ms);
+            if (parseInt(timePassed) < 10) {
+                new messageHandler(channel, "You need to wait 10 seconds to get a hint.").newMessage();
+                return;
+            }
+            if (gothint2[channel] === 0) {
+                gothint2[channel] = 1;
+            } else {
+                gothint2[channel] = 0;
+            }
+
+            let hint = triviaHints2[channel][gothint2[channel]];
+            console.log(hint)
+            if (hint === undefined || !hint) {
+                if (gothint2[channel] === 0) {
+                    hint = "There are no hints"
+                } else {
+                    hint = "No more hints"
+                }
+            }
+
+            if (hint === oldmessage) {
+                hint = hint + " 󠀀 ";
+            }
+
+            new messageHandler(channel, `(Trivia) ${user.username}, Hint: ${hint}`).newMessage();
+            oldmessage = `(Trivia) ${user.username}, Hint: ${hint}`;
+            return;
+        } else if (!gothint2[channel]) {
+            const ms = new Date().getTime() - triviaTime[channel];
+            let timePassed = tools.humanizeDuration(ms);
+            if (parseInt(timePassed) < 10) {
+                new messageHandler(channel, "You need to wait 10 seconds to get a hint.").newMessage();
+                return;
+            }
+            gothint[channel] = true;
+
+            let hint = triviaHints[channel];
+
+            if (hint === oldmessage) {
+                hint = hint + " 󠀀 ";
+            }
+
+            new messageHandler(channel, `(Trivia) ${user.username}, Hint: ${hint}`).newMessage();
+            oldmessage = `(Trivia) ${user.username}, Hint: ${hint}`;
             return;
         }
-        gothint[channel] = true;
-
-        let hint = triviaHints[channel];
-
-        if (hint === oldmessage) {
-            hint = hint + " 󠀀 ";
-        }
-
-        new messageHandler(channel, `(Trivia) ${user.username}, Hint: ${hint}`).newMessage();
-        oldmessage = `(Trivia) ${user.username}, Hint: ${hint}`;
-        return;
     }
 
     if (realcommand === "trivia") {
@@ -314,6 +403,77 @@ async function onMessageHandler(channel, user, msg, self) {
 
     }
 
+    if (realcommand === "trivia2") {
+        if (activetrivia[channel]) {
+            new messageHandler(channel, "There is already an active trivia").newMessage();
+            return;
+        }
+        const isLive = await tools.query(`SELECT islive FROM Streamers WHERE username=?`, [realchannel]);
+        if (isLive[0].islive === 1) {
+            return;
+        }
+
+        // Get cooldown from database.
+        let cd = await tools.query("SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?", [realchannel]);
+
+        // Set trivia cooldown if not set.
+        if (cd[0].trivia_cooldowns === null) {
+            cd[0].trivia_cooldowns === 30000;
+            tools.query("UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?", [realchannel]);
+        }
+
+        const triviaCD = new tools.Cooldown(realchannel, realcommand, cd[0].trivia_cooldowns);
+
+        if ((await triviaCD.setCooldown()).length && !user.mod) {
+            new messageHandler(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
+            return;
+        }
+
+        let result = await commands[realcommand].execute(realchannel, user, input, perm);
+
+        console.log(result)
+        if (!result) {
+            return;
+        }
+
+        triviaanswer[channel] = result[1];
+
+        activetrivia[channel] = channel;
+
+        triviaHints2[channel] = [result[2], result[3]];
+
+        let triviaTimeID = new Date().getTime()
+
+        triviaTime[channel] = triviaTimeID;
+
+        gothint[channel] = false;
+        gothint2[channel] = false;
+        triviaTimeout(channel, triviaTimeID);
+        async function triviaTimeout(channel, triviaTimeID) {
+            setTimeout(() => {
+                if (activetrivia[channel]) {
+                    if (triviaTime[channel] === triviaTimeID) {
+                        delete activetrivia[channel];
+                        delete triviaanswer[channel];
+                        delete triviaHints2[channel];
+
+                        new messageHandler(channel, `The trivia timed out after 60 seconds. The answer was: "${result[1]}"`).newMessage();
+                    }
+                }
+            }, 60000);
+        }
+
+
+        let response = result[0];
+
+        if (response === oldmessage) {
+            response = response + " 󠀀 ";
+        }
+
+        new messageHandler(channel, response).newMessage();
+        return;
+
+    }
     let result = await commands[realcommand].execute(realchannel, user, input, perm);
 
 
