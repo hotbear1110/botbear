@@ -288,7 +288,20 @@ async function onMessageHandler(channel, user, msg, self) {
                 new messageHandler(channel, "You need to wait 10 seconds to get a hint.").newMessage();
                 return;
             }
-            if (gothint2[channel] === 0) {
+            let hintcount = 0;
+
+            if (triviaHints2[channel][0] !== undefined && triviaHints2[channel][0]) {
+                hintcount = 1;
+            }
+            if (triviaHints2[channel][1] !== undefined && triviaHints2[channel][1]) {
+                if (hintcount === 0) {
+                    hintcount = 2;
+                } else if (hintcount === 1) {
+                    hintcount = 3;
+                }
+            }
+
+            if (gothint2[channel] === 0 && (hintcount !== 0 || hintcount !== 1)) {
                 gothint2[channel] = 1;
             } else {
                 gothint2[channel] = 0;
@@ -297,11 +310,19 @@ async function onMessageHandler(channel, user, msg, self) {
             let hint = triviaHints2[channel][gothint2[channel]];
             console.log(hint)
             if (hint === undefined || !hint) {
-                if (gothint2[channel] === 0) {
+                if (gothint2[channel] === 0 && hintcount !== 2) {
                     hint = "There are no hints"
-                } else {
+                } else if (hintcount === 1) {
                     hint = "No more hints"
                 }
+            }
+            if (gothint2[channel] === 0 && hintcount === 3) {
+                hint = hint + " - (There is one more hint)"
+            }
+
+            if (hintcount === 2 && gothint2[channel] === 0) {
+                hint = triviaHints2[channel][1];
+                gothint2[channel] = 1
             }
 
             if (hint === oldmessage) {
