@@ -452,7 +452,6 @@ async function onMessageHandler(channel, user, msg, self) {
 
         let result = await commands[realcommand].execute(realchannel, user, input, perm);
 
-        console.log(result)
         if (!result) {
             return;
         }
