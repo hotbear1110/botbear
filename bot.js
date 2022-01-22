@@ -374,7 +374,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
         const triviaCD = new tools.Cooldown(realchannel, realcommand, cd[0].trivia_cooldowns);
 
-        if ((await triviaCD.setCooldown()).length && !user.mod) {
+        if ((await triviaCD.setCooldown()).length && !tools.isMod(user, channel)) {
             new messageHandler(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
             return;
         }
@@ -445,7 +445,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
         const triviaCD = new tools.Cooldown(realchannel, realcommand, cd[0].trivia_cooldowns);
 
-        if ((await triviaCD.setCooldown()).length && !user.mod) {
+        if ((await triviaCD.setCooldown()).length && !tools.isMod(user, channel)) {
             new messageHandler(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
             return;
         }
