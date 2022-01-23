@@ -62,12 +62,12 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
     this.message = encodeURIComponent(message);
     this.data = await tools.query(`SELECT * FROM Streamers WHERE username=?`, [this.channel]);
 
-    let userid = this.data[0].uid;
+    this.userid = this.data[0].uid;
     this.banphraseapi2 = this.data[0].banphraseapi2;
     if (this.banphraseapi2 !== null) {
         console.log("costum")
         try {
-            this.checkBanphrase = await axios.get(`${this.banphraseapi2}/api/channel/${userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 });
+            this.checkBanphrase = await axios.get(`${this.banphraseapi2}/api/channel/${this.userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 });
             if (this.checkBanphrase.data["banned"] == true) {
                 resolve(true);
             }
@@ -77,7 +77,7 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
         }
     } else {
         try {
-            this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/${userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 });
+            this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/${this.userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 });
             if (this.checkBanphrase.data["banned"] == true) {
                 resolve(true);
             }
