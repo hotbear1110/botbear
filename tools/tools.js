@@ -398,15 +398,15 @@ exports.refreshCommands = async function () {
         let iscommand = 0;
         _.each(dbCommands, async function (dbcommand) {
             if (dbcommand.Name === command.name) {
-                if (dbcommand.Command !== command.description || dbcommand.Perm !== command.permission || dbcommand.Category !== command.category) {
-                    tools.query(`UPDATE Commands SET Command=?, Perm=?, Category=? WHERE Name=?`, [command.description, command.permission, command.category, command.name]);
+                if (dbcommand.Command !== command.description || dbcommand.Perm !== command.permission || dbcommand.Category !== command.category || dbcommand.Cooldown !== command.cooldown) {
+                    tools.query(`UPDATE Commands SET Command=?, Perm=?, Category=?, Cooldown=? WHERE Name=?`, [command.description, command.permission, command.category, command.cooldown, command.name]);
                 }
                 iscommand = 1;
                 return;
             }
         });
         if (iscommand === 0) {
-            await tools.query('INSERT INTO Commands (Name, Command, Perm, Category) values (?, ?, ?, ?)', [command.name, command.description, command.permission, command.category]);
+            await tools.query('INSERT INTO Commands (Name, Command, Perm, Category, Cooldown) values (?, ?, ?, ?, ?)', [command.name, command.description, command.permission, command.category, command.cooldown]);
         }
 
 

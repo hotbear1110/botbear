@@ -235,7 +235,7 @@ async function onMessageHandler(channel, user, msg, self) {
     input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
     let realcommand = input[1];
 
-    if (realcommand === "say" && realcommand === "channel" && realcommand === "emotecheck" && realcommand === "cum" && realcommand === "suggest" && realcommand === "shit" && realcommand === "code") {
+    if (realcommand === "say" && realcommand === "channel" && realcommand === "emotecheck" && realcommand === "cum" && realcommand === "suggest" && realcommand === "shit" && realcommand === "code" && realcommand === "test2") {
         input = input.toString().replaceAll(",", " ");
     }
 
@@ -268,7 +268,19 @@ async function onMessageHandler(channel, user, msg, self) {
 
     const perm = await tools.getPerm(user.username);
 
-    const userCD = new tools.Cooldown(user, realcommand, 3000);
+    let commandCD = await tools.query(`SELECT Cooldown FROM Commands WHERE Name=?`, [input[1]]);
+
+    commandCD = commandCD[0].Cooldown;
+    console.log(commandCD)
+
+    if (commandCD === null) {
+        commandCD = 3000;
+    } else {
+        commandCD = commandCD * 1000;
+    }
+    console.log(commandCD)
+
+    const userCD = new tools.Cooldown(user, realcommand, commandCD);
 
     if ((await userCD.setCooldown()).length) { return; }
 
