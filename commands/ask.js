@@ -45,7 +45,7 @@ module.exports = {
                     replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
                     replacedText = replacedText.replace(replacePattern2, '*LINK*');
 
-                    replacePattern3 = /([a-z|0-9|A-Z]{1,}\.[a-z|0-9|A-Z]{1,})/g;
+                    replacePattern3 = /[a-z|0-9|A-Z]{1,}\.([a-z|A-Z])([a-z|A-Z|0-9]{1,})/g;
                     replacedText = replacedText.replace(replacePattern3, '*LINK*');
 
                     return replacedText;
