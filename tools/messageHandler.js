@@ -22,9 +22,9 @@ exports.messageHandler = class Cooldown {
     async newMessage() {
         const cc = require("../bot.js").cc;
         if (this.channel === "#forsen") {
-            let message = tools.splitLine(this.message, 90)
-            if (message[1]) {
-                if (message[0].length === 0) {
+            let newmessage = tools.splitLine(this.message, 90)
+            if (newmessage[1]) {
+                if (newmessage[0].length === 0) {
                     this.message = "ForsenLookingAtYou Message is too long";
                     return
                 }
