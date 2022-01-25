@@ -28,7 +28,7 @@ exports.messageHandler = class Cooldown {
                     this.message = "ForsenLookingAtYou Message is too long";
                     return
                 }
-                this.message = message[0] + " ...";
+                this.message = newmessage[0] + " ...";
                 return;
             }
         }
