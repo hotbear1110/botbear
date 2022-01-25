@@ -1,3 +1,3 @@
 # botbear
 Dank bot that does stuff, idk
-Link to my commands: https://hotbear.xyz:2053/
+Link to my commands: https://hotbear.xyz/
