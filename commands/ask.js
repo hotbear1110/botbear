@@ -4,7 +4,7 @@ const got = require('got');
 module.exports = {
     name: "ask",
     ping: true,
-    description: 'Ask botbear any question and it will tell you the answer!',
+    description: 'Ask botbear any question and it will tell you the answer! - The cooldown on this is 2 min.',
     permission: 100,
     cooldown: 120,
     category: "Random command",

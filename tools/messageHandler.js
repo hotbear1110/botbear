@@ -22,16 +22,16 @@ exports.messageHandler = class Cooldown {
     async newMessage() {
         const cc = require("../bot.js").cc;
         if (this.channel === "#forsen") {
-            let newmessage = tools.splitLine(this.message, 90)
+            let newmessage = tools.splitLine(this.message, 150)
             if (newmessage[1]) {
-                if (newmessage[0].length === 0) {
+                if (!newmessage[0].length) {
                     this.message = "ForsenLookingAtYou Message is too long";
-                    return
+                } else {
+                    this.message = newmessage[0] + " ...";
                 }
-                this.message = newmessage[0] + " ...";
-                return;
             }
         }
+        console.log(this.message)
 
         this.message = await tools.checkAllBanphrases(this.message, this.channel);
 
