@@ -49,7 +49,7 @@ setInterval(async function () {
                         await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`);
                         if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
                             _.each(userlist, function (msg, i) {
-                                new messageHandler(`#${proxychannel}`, `/me ${stream.liveemote} ${stream.username.toUpperCase()} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`).newMessage();
+                                new messageHandler(`#${proxychannel}`, `/me ${stream.liveemote} ${stream.username[0].toUpperCase()}\u{E0000}${stream.username.toUpperCase().slice(1)} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`).newMessage();
                             });
                         }
                     };
@@ -59,7 +59,7 @@ setInterval(async function () {
                         await tools.query(`UPDATE Streamers SET islive = 0 WHERE username ="${stream.username}"`);
                         if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
                             _.each(userlist, function (msg, i) {
-                                new messageHandler(`#${proxychannel}`, `/me ${stream.offlineemote} ${stream.username.toUpperCase()} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`).newMessage();
+                                new messageHandler(`#${proxychannel}`, `/me ${stream.offlineemote} ${stream.username[0].toUpperCase()}\u{E0000}${stream.username.toUpperCase().slice(1)} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`).newMessage();
                             });
                         }
                     };

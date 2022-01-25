@@ -44,7 +44,7 @@ module.exports = {
                 if (message[1]) {
                     return `#${realchannel} ${rl.user}: ${message[0]}... - (${rl.time} ago)`;
                 }
-                return `#${realchannel} ${rl.user}: ${message} - (${rl.time} ago)`;
+                return `#${realchannel[0]}\u{E0000}${realchannel.slice(1)} ${rl.user}: ${message} - (${rl.time} ago)`;
             }
 
         } catch (err) {

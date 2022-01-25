@@ -22,7 +22,7 @@ module.exports = {
             let category = decodeURIComponent(questions[0].category);
             let submitter = decodeURIComponent(questions[0].submitter);
 
-            return [`(Trivia) ${user.username} has started a trivia :) [${category}] Question: ${question} | Do "bb hint" if you are nab and need a hint! - Question was submitted by: ${submitter}`, correct_answer, hint1, hint2];
+            return [`(Trivia) [${category}] Question: ${question}`, correct_answer, hint1, hint2];
 
         } catch (err) {
             console.log(err);

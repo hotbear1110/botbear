@@ -42,7 +42,7 @@ module.exports = {
                 if (oldtitleTime !== null) {
                     const ms = new Date().getTime() - oldtitleTime;
 
-                    return `#${realchannel} has had the title: "${title}", for ${tools.humanizeDuration(ms)}`;
+                    return `#${realchannel[0]}\u{E0000}${realchannel.slice(1)} has had the title: "${title}", for ${tools.humanizeDuration(ms)}`;
                 }
             }
 

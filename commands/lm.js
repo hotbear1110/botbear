@@ -48,7 +48,7 @@ module.exports = {
                 if (message[1]) {
                     return `#${realchannel} ${lm.user}: ${message}... - (${lm.time} ago)`;
                 }
-                return `nymnDank ${lm.user}'s last message in #${realchannel} was: ${lm.response} - (${lm.time} ago)`;
+                return `nymnDank ${lm.user}'s last message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${lm.response} - (${lm.time} ago)`;
             }
 
         } catch (err) {

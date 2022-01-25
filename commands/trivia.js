@@ -63,7 +63,7 @@ module.exports = {
             }
             let random = Math.floor(Math.random() * 100)
             if (random === 69 && !input[3]) {
-                return [`(Trivia) ${user.username} has started a trivia :) [History] Question: What happened on June 4 1989 in China? | Do "bb hint" if you are nab and need a hint!`, "[ Nothing | Nothing | Nothing | Nothing ]", "Nothing"];
+                return [`(Trivia) [History] Question: What happened on June 4 1989 in China?`, "[ Nothing | Nothing | Nothing | Nothing ]", "Nothing"];
             }
 
             function arrayShuffle(array) {
@@ -108,9 +108,9 @@ module.exports = {
             console.log(answerToString)
 
             if (question.toLowerCase().includes("which of these") || question.toLowerCase().includes("which one of these") || question.toLowerCase().includes("which of the following") || question.toLowerCase().includes("all of the following") || question.toLowerCase().includes("which one of the following")) {
-                return [`(Trivia) ${user.username} has started a trivia :) [${category}] Question: ${question} - [${answerToString}]`, "FeelsDankMan you already got the hint.", correct_answer];
+                return [`(Trivia) [${category}] Question: ${question} - [${answerToString}]`, "FeelsDankMan you already got the hint.", correct_answer];
             } else {
-                return [`(Trivia) ${user.username} has started a trivia :) [${category}] Question: ${question} | Do "bb hint" if you are nab and need a hint!`, answerToString, correct_answer];
+                return [`(Trivia) [${category}] Question: ${question}`, answerToString, correct_answer];
             }
         } catch (err) {
             console.log(err);

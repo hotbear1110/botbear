@@ -39,7 +39,7 @@ module.exports = {
                 return modresponse;
             }
             else {
-                return `That user is not a mod in #${realchannel} :)`;
+                return `That user is not a mod in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} :)`;
             }
 
         } catch (err) {
