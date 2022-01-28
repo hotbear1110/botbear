@@ -561,7 +561,7 @@ async function onConnectedHandler(addr, port) {
                     console.log(err);
                 });
 
-                new messageHandler(`#${name[0]}`, `Name change detected, ${name[1]} -> ${name[0]}`).newMessage();
+                cc.say(`#${name[0]}`, `Name change detected, ${name[1]} -> ${name[0]}`);
                 new messageHandler("#botbear1110", `Left channel ${name[1]}. Reason: Name change detected, ${name[1]} -> ${name[0]}`).newMessage();
             })
         }

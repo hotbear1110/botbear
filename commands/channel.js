@@ -50,13 +50,13 @@ module.exports = {
                         let offlineemote = "FeelsBadMan";
                         let gameTime = new Date().getTime();
 
-                        await tools.query('INSERT INTO Streamers (username, uid, islive, liveemote, titleemote, gameemote, offlineemote, live_ping, title_ping, game_ping, game_time, emote_list, emote_removed, disabled_commands) values (?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?)', [username, uid, islive, liveemote, liveemote, liveemote, offlineemote, '[""]', '[""]', '[""]', gameTime, '[]', '[]', '[]']);
+                        await tools.query('INSERT INTO Streamers (username, uid, islive, liveemote, titleemote, gameemote, offlineemote, live_ping, title_ping, game_ping, game_time, emote_list, emote_removed, disabled_commands) values (?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?)', [username, uid, islive, liveemote, liveemote, liveemote, offlineemote, '[""]', '[""]', '[""]', gameTime, '[]', '[]', '[]']);
                         cc.join(username).then((data) => {
                             // data returns [channel]
                         }).catch((err) => {
                             console.log(err);
                         });
-                        new messageHandler(`#${username}`, '👋 nymnDank Hello!').newMessage();
+                        cc.say(`#${username}`, '👋 nymnDank Hello!');
                         return `Joined channel: ${username}`;
 
                     }
@@ -84,13 +84,13 @@ module.exports = {
 
                     else {
                         await tools.query('DELETE FROM Streamers WHERE username=?', [username2]);
-                        new messageHandler(`#${username2}`, '👋 nymnDank bye!').newMessage();
                         cc.part(username2).then((data) => {
                             // data returns [channel]
                         }).catch((err) => {
                             console.log(err);
                         });
-                        return `Left channel: ${username2}`;
+                        cc.say(`#${username2}`, '👋 nymnDank bye!');
+                        return `Left channel: ${username2}`; 
 
                     }
                     break;
