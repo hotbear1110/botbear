@@ -3,6 +3,7 @@ const tools = require("../tools/tools.js");
 let messageHandler = require("../tools/messageHandler.js").messageHandler;
 const axios = require('axios');
 const cc = require("../bot.js").cc;
+const _ = require("underscore");
 
 module.exports = {
     name: "channel",
@@ -15,16 +16,34 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
+            let modresponse = await new Promise(async function (resolve) {
+
+                if (input[3]) {
+                    let modcheck = await axios.get(`https://api.ivr.fi/twitch/modsvips/${input[3]}`, { timeout: 10000 });
+                    let ismod = modcheck.data["mods"];
+                    let isdone = false;
+                    await _.each(ismod, async function (modstatus) {
+                        if (modstatus.login == user.username) {
+                            isdone = true;
+                            resolve(true);
+                        }
+                    })
+                    if (await isdone === false) {
+                        resolve(false)
+                    }
+                } else {
+                    resolve(false)
+                }
+            });
+
             switch (input[2]) {
                 case "join":
-                    console.log(channel);
-                    console.log(cc.isMod(`#${input[3]}`, user.username))
                     if (channel !== "botbear1110" && channel !== "hotbear1110" && perm < 2000) { return; }
                     let username = user.username;
                     let uid = user['user-id'];
 
-                    if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !cc.isMod(`#${input[3]}`, user.username)) {
-                        if (input[3] !== username) {
+                    if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !modresponse) {
+                        if (input[3].toLowerCase() !== username) {
                             return;
                         }
                     }
@@ -69,14 +88,17 @@ module.exports = {
                         username2 = input[3];
                     }
 
-                    if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !cc.isMod(`#${input[3]}`, user.username)) {
-                        return "You can only make me leave your own channel, or a channel you are mod in.";
+                    if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !modresponse) {
+                        if (input[3].toLowerCase() !== user.username) {
+                            console.log("test")
+                            return "You can only make me leave your own channel, or a channel you are mod in.";
+                        }
                     }
 
                     const alreadyJoined2 = await tools.query(`
                             SELECT *
                             FROM Streamers
-                            WHERE username=?`,
+                            WHERE username =? `,
                         [username2]);
 
                     if (!alreadyJoined2.length) {
@@ -90,8 +112,8 @@ module.exports = {
                         }).catch((err) => {
                             console.log(err);
                         });
-                        cc.say(`#${username2}`, '👋 nymnDank bye!');
-                        return `Left channel: ${username2}`; 
+                        cc.say(`#${username2} `, '👋 nymnDank bye!');
+                        return `Left channel: ${username2} `;
 
                     }
                     break;
@@ -108,9 +130,9 @@ module.exports = {
 
 
                     const alreadyJoined3 = await tools.query(`
-                            SELECT *
-                            FROM Streamers
-                            WHERE username=?`,
+                    SELECT *
+                        FROM Streamers
+                            WHERE username =? `,
                         [username3]);
 
                     if (!alreadyJoined3.length) {
@@ -118,8 +140,8 @@ module.exports = {
                     }
 
                     else {
-                        await tools.query(`UPDATE Streamers SET liveemote=? WHERE username=?`, [input[3], username3])
-                        return `Live emote is now set to ${input[3]}`;
+                        await tools.query(`UPDATE Streamers SET liveemote =? WHERE username =? `, [input[3], username3])
+                        return `Live emote is now set to ${input[3]} `;
                     }
                     break;
                 case "gameemote":
@@ -135,9 +157,9 @@ module.exports = {
 
 
                     const alreadyJoined4 = await tools.query(`
-                            SELECT *
-                            FROM Streamers
-                            WHERE username=?`,
+                    SELECT *
+                        FROM Streamers
+                            WHERE username =? `,
                         [username4]);
 
                     if (!alreadyJoined4.length) {
@@ -145,8 +167,8 @@ module.exports = {
                     }
 
                     else {
-                        await tools.query(`UPDATE Streamers SET gameemote=? WHERE username=?`, [input[3], username4])
-                        return `Game emote is now set to ${input[3]}`;
+                        await tools.query(`UPDATE Streamers SET gameemote =? WHERE username =? `, [input[3], username4])
+                        return `Game emote is now set to ${input[3]} `;
                     }
                     break;
                 case "titleemote":
@@ -162,9 +184,9 @@ module.exports = {
 
 
                     const alreadyJoined5 = await tools.query(`
-                            SELECT *
-                            FROM Streamers
-                            WHERE username=?`,
+                    SELECT *
+                        FROM Streamers
+                            WHERE username =? `,
                         [username5]);
 
                     if (!alreadyJoined5.length) {
@@ -172,8 +194,8 @@ module.exports = {
                     }
 
                     else {
-                        await tools.query(`UPDATE Streamers SET titleemote=? WHERE username=?`, [input[3], username5])
-                        return `Title emote is now set to ${input[3]}`;
+                        await tools.query(`UPDATE Streamers SET titleemote =? WHERE username =? `, [input[3], username5])
+                        return `Title emote is now set to ${input[3]} `;
                     }
                     break;
                 case "offlineemote":
@@ -188,9 +210,9 @@ module.exports = {
                     }
 
                     const alreadyJoined6 = await tools.query(`
-                            SELECT *
-                            FROM Streamers
-                            WHERE username=?`,
+                    SELECT *
+                        FROM Streamers
+                            WHERE username =? `,
                         [username6]);
 
                     if (!alreadyJoined6.length) {
@@ -198,8 +220,8 @@ module.exports = {
                     }
 
                     else {
-                        await tools.query(`UPDATE Streamers SET offlineemote=? WHERE username=?`, [input[3], username6])
-                        return `Offline emote is now set to ${input[3]}`;
+                        await tools.query(`UPDATE Streamers SET offlineemote =? WHERE username =? `, [input[3], username6])
+                        return `Offline emote is now set to ${input[3]} `;
                     }
                     break;
 
@@ -215,7 +237,7 @@ module.exports = {
                     const cooldown = (input[3] * 1000);
 
                     return await tools.query("UPDATE `Streamers` SET `trivia_cooldowns` = ? WHERE `username` = ?", [cooldown, channel]).then(() => {
-                        return `BloodTrail Successfully set the cooldown of trivia in this channel to ${input[3]}s`;
+                        return `BloodTrail Successfully set the cooldown of trivia in this channel to ${input[3]} s`;
                     }).catch((error) => {
                         new messageHandler("botbear1110", JSON.stringify(error)).newMessage();
                         return "NotLikeThis UhOh! Error!";
@@ -233,12 +255,12 @@ module.exports = {
                     }
 
                     if (input[3] === "reset") {
-                        await tools.query(`UPDATE Streamers SET banphraseapi=? WHERE username=?`, ["https://pajlada.pajbot.com", channel])
+                        await tools.query(`UPDATE Streamers SET banphraseapi =? WHERE username =? `, ["https://pajlada.pajbot.com", channel])
                         return `pb1 banphrase api has reset`;
                     }
 
-                    await tools.query(`UPDATE Streamers SET banphraseapi=? WHERE username=?`, [input[3], channel])
-                    return `pb1 banphrase api is now set to: ${input[3]}/api/v1/banphrases/test`;
+                    await tools.query(`UPDATE Streamers SET banphraseapi =? WHERE username =? `, [input[3], channel])
+                    return `pb1 banphrase api is now set to: ${input[3]} /api/v1 / banphrases / test`;
                     break;
                 }
 
@@ -252,12 +274,12 @@ module.exports = {
                     }
 
                     if (input[3] === "reset") {
-                        await tools.query(`UPDATE Streamers SET banphraseapi2=? WHERE username=?`, [null, channel])
+                        await tools.query(`UPDATE Streamers SET banphraseapi2 =? WHERE username =? `, [null, channel])
                         return `pb2 banphrase api has reset`;
                     }
 
-                    await tools.query(`UPDATE Streamers SET banphraseapi2=? WHERE username=?`, [input[3], channel])
-                    return `pb2 banphrase api is now set to: ${input[3]}/api/channel/${user.uid}/moderation/check_message?message=`;
+                    await tools.query(`UPDATE Streamers SET banphraseapi2 =? WHERE username =? `, [input[3], channel])
+                    return `pb2 banphrase api is now set to: ${input[3]} /api/channel / ${user.uid} /moderation/check_message ? message = `;
                 }
                 default:
                     return "Available channel commands: join/leave, [live/offline/title/game]emote, trivia, pb1, pb2";
@@ -266,10 +288,10 @@ module.exports = {
             console.log(err);
             if (err.name) {
                 if (err.name === "TimeoutError") {
-                    return `FeelsDankMan api error: ${err.name}`;
+                    return `FeelsDankMan api error: ${err.name} `;
                 }
             }
-            return `FeelsDankMan Error: ${err.response.data.error}`;
+            return `FeelsDankMan Error: ${err.response.data.error} `;
         }
     }
 }
