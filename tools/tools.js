@@ -7,7 +7,6 @@ const tools = require("./tools.js");
 const bannedPhrases = require("./bannedPhrases.js");
 const hastebin = require('better-hastebin');
 const humanize = require('humanize-duration');
-const axios = require('axios');
 const requireDir = require("require-dir");
 const regex = require('./regex.js');
 
@@ -67,8 +66,8 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
     if (this.banphraseapi2 !== null) {
         console.log("costum")
         try {
-            this.checkBanphrase = await axios.get(`${this.banphraseapi2}/api/channel/${this.userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 });
-            if (this.checkBanphrase.data["banned"] == true) {
+            this.checkBanphrase = await got(`${this.banphraseapi2}/api/channel/${this.userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
+            if (this.checkBanphrase["banned"] == true) {
                 resolve(true);
             }
             resolve(false);
@@ -77,15 +76,15 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
         }
     } else {
         try {
-            this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/${this.userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 });
-            if (this.checkBanphrase.data["banned"] == true) {
+            this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/${this.userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
+            if (this.checkBanphrase["banned"] == true) {
                 resolve(true);
             }
             resolve(false);
         } catch (err) {
             try {
-                this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 });
-                if (this.checkBanphrase.data["banned"] == true) {
+                this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
+                if (this.checkBanphrase["banned"] == true) {
                     resolve(true);
                 }
                 resolve(false);
@@ -434,15 +433,15 @@ exports.nameChanges = new Promise(async (resolve, reject) => {
 
     _.each(streamers, async function (streamer) {
         try {
-            const userData = await axios.get(`https://api.twitch.tv/helix/users?id=${streamer.uid}`, {
+            const userData = await got(`https://api.twitch.tv/helix/users?id=${streamer.uid}`, {
                 headers: {
                     'client-id': process.env.TWITCH_CLIENTID,
                     'Authorization': process.env.TWITCH_AUTH
                 },
                 timeout: 10000
-            })
-            if (userData.data.data.length) {
-                realUser = userData.data.data[0];
+            }).json();
+            if (userData.data.length) {
+                realUser = userData.data[0];
                 realUser = realUser["login"];
 
                 if (realUser !== streamer.username) {
@@ -466,9 +465,9 @@ exports.bannedStreamer = new Promise(async (resolve, reject) => {
 
     _.each(streamers, async function (streamer) {
         try {
-            const isBanned = await axios.get(`https://api.ivr.fi/twitch/resolve/${streamer.username}`, { timeout: 10000 });
+            const isBanned = await got(`https://api.ivr.fi/twitch/resolve/${streamer.username}`, { timeout: 10000 }).json();
 
-            if (isBanned.data.banned === true) {
+            if (isBanned.banned === true) {
                 await tools.query('DELETE FROM Streamers WHERE uid=?', [streamer.uid]);
 
                 bannedUsers.push(streamer.username);

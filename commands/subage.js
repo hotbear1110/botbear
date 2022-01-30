@@ -1,4 +1,4 @@
-const axios = require('axios');
+const got = require("got");
 const _ = require("underscore");
 const tools = require("../tools/tools.js");
 
@@ -30,9 +30,9 @@ module.exports = {
                 naniresponse = " Copege This channel is real";
             }
 
-            let subcheck = await axios.get(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`, { timeout: 10000 });
-            if (subcheck.data["subscribed"] == false) {
-                let oldsub = subcheck.data["cumulative"];
+            let subcheck = await got(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`, { timeout: 10000 }).json();
+            if (subcheck["subscribed"] == false) {
+                let oldsub = subcheck["cumulative"];
                 const subend = new Date().getTime() - Date.parse(oldsub["end"]);
 
 
@@ -44,9 +44,9 @@ module.exports = {
                 }
             }
             else {
-                let subdata = subcheck.data["meta"];
-                let sublength = subcheck.data["cumulative"];
-                let substreak = subcheck.data["streak"];
+                let subdata = subcheck["meta"];
+                let sublength = subcheck["cumulative"];
+                let substreak = subcheck["streak"];
 
                 const ms = new Date().getTime() - Date.parse(subdata["endsAt"]);
 

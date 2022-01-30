@@ -1,4 +1,4 @@
-const axios = require('axios');
+const got = require("got");
 require('dotenv').config();
 
 module.exports = {
@@ -22,18 +22,18 @@ module.exports = {
                     input[2] = input[2].substring(1);
                 }
                 try {
-                    const userData = await axios.get(`https://api.twitch.tv/helix/users?id=${input[2]}`, {
+                    const userData = await got(`https://api.twitch.tv/helix/users?id=${input[2]}`, {
                         headers: {
                             'client-id': process.env.TWITCH_CLIENTID,
                             'Authorization': process.env.TWITCH_AUTH
                         },
                         timeout: 10000
-                    })
-                    if (userData.data.data.length) {
-                        uiduser = userData.data.data[0];
+                    }).json();
+                    if (userData.data.length) {
+                        uiduser = userData.data[0];
                         uiduser = uiduser["login"];
-                        const uidBanned = await axios.get(`https://api.ivr.fi/twitch/resolve/${uiduser}`, { timeout: 10000 });
-                        if (uidBanned.data.banned === true) {
+                        const uidBanned = await got(`https://api.ivr.fi/twitch/resolve/${uiduser}`, { timeout: 10000 }).json();
+                        if (uidBanned.banned === true) {
                             response = `Username found: ${uiduser} - cmonBruh [BANNED USER]`;
                         } else {
                             response = `Username found: ${uiduser}`;
@@ -48,29 +48,29 @@ module.exports = {
                     uiduser = input[2];
 
                 }
-                userID = await axios.get(`https://api.ivr.fi/twitch/resolve/${input[2]}`, { timeout: 10000 });
+                userID = await got(`https://api.ivr.fi/twitch/resolve/${input[2]}`, { timeout: 10000 }).json();
             } else {
-                userID = await axios.get(`https://api.ivr.fi/twitch/resolve/${uiduser}`, { timeout: 10000 });
+                userID = await got(`https://api.ivr.fi/twitch/resolve/${uiduser}`, { timeout: 10000 }).json();
             }
 
             if (response.length) {
-                if (userID.data.status === 404) {
+                if (userID.status === 404) {
                     return response;
                 }
-                if (userID.data.banned === true) {
-                    response = `Multiple users found. ${response} | User-ID found: ${userID.data["id"]} - cmonBruh [BANNED USER]`
+                if (userID.banned === true) {
+                    response = `Multiple users found. ${response} | User-ID found: ${userID["id"]} - cmonBruh [BANNED USER]`
                 } else {
-                    console.log(userID.data)
-                    response = `Multiple users found. ${response} | User-ID found: ${userID.data["id"]}`
+                    console.log(userID)
+                    response = `Multiple users found. ${response} | User-ID found: ${userID["id"]}`
                 }
             } else {
-                if (userID.data.status === 404) {
+                if (userID.status === 404) {
                     return "No users found";
                 }
-                if (userID.data.banned === true) {
-                    response = `User-ID found: ${userID.data.id} - cmonBruh [BANNED USER]`
+                if (userID.banned === true) {
+                    response = `User-ID found: ${userID.id} - cmonBruh [BANNED USER]`
                 } else {
-                    response = `User-ID found: ${userID.data.id}`
+                    response = `User-ID found: ${userID.id}`
                 }
             }
 

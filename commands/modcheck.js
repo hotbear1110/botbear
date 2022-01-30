@@ -1,4 +1,4 @@
-const axios = require('axios');
+const got = require("got");
 const _ = require("underscore");
 const tools = require("../tools/tools.js");
 
@@ -25,8 +25,8 @@ module.exports = {
             if (input[3]) {
                 realchannel = input[3];
             }
-            let modcheck = await axios.get(`https://api.ivr.fi/twitch/modsvips/${realchannel}`, { timeout: 10000 });
-            let ismod = modcheck.data["mods"];
+            let modcheck = await got(`https://api.ivr.fi/twitch/modsvips/${realchannel}`, { timeout: 10000 }).json();
+            let ismod = modcheck["mods"];
             let modresponse = "";
             await _.each(ismod, async function (modstatus) {
                 if (modstatus.login == username) {

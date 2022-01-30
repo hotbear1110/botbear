@@ -1,4 +1,4 @@
-const axios = require('axios');
+const got = require("got");
 const tools = require("../tools/tools.js");
 const _ = require("underscore");
 
@@ -38,23 +38,23 @@ module.exports = {
                 emoteId = `${emoteId}?id=true`;
             }
 
-            const emotecheck = await axios.get(`https://api.ivr.fi/v2/twitch/emotes/${emoteId}`, { timeout: 10000 });
+            const emotecheck = await got(`https://api.ivr.fi/v2/twitch/emotes/${emoteId}`, { timeout: 10000 }).json();
 
-            if (!emotecheck.data["error"]) {
-                let emotechannel = emotecheck.data["channelName"];
-                let tier = emotecheck.data["emoteTier"];
-                let url = `https://static-cdn.jtvnw.net/emoticons/v2/${emotecheck.data["emoteID"]}/default/dark/3.0`;
-                let emoteType = emotecheck.data["emoteType"];
-                let realid = emotecheck.data["emoteID"];
+            if (!emotecheck["error"]) {
+                let emotechannel = emotecheck["channelName"];
+                let tier = emotecheck["emoteTier"];
+                let url = `https://static-cdn.jtvnw.net/emoticons/v2/${emotecheck["emoteID"]}/default/dark/3.0`;
+                let emoteType = emotecheck["emoteType"];
+                let realid = emotecheck["emoteID"];
                 let emoteStatus = "null";
-                if (emotecheck.data["emoteAssetType"]) {
-                    emoteStatus = emotecheck.data["emoteAssetType"].toLowerCase();
+                if (emotecheck["emoteAssetType"]) {
+                    emoteStatus = emotecheck["emoteAssetType"].toLowerCase();
                 }
-                let realemote = emotecheck.data["emoteCode"];
+                let realemote = emotecheck["emoteCode"];
 
-                if (emotecheck.data["channelName"]) {
-                    if (emotecheck.data["channelName"].toLowerCase() !== emotecheck.data["channelLogin"]) {
-                        emotechannel = `${emotecheck.data["channelLogin"]}(${emotecheck.data["channelName"]})`;
+                if (emotecheck["channelName"]) {
+                    if (emotecheck["channelName"].toLowerCase() !== emotecheck["channelLogin"]) {
+                        emotechannel = `${emotecheck["channelLogin"]}(${emotecheck["channelName"]})`;
                     }
                 }
 
@@ -62,8 +62,8 @@ module.exports = {
 
                 try {
 
-                    const emotecount = await axios.get(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, { timeout: 10000 });
-                    let count = emotecount.data["twitchEmotes"];
+                    const emotecount = await got(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, { timeout: 10000 }).json();
+                    let count = emotecount["twitchEmotes"];
                     _.each(count, async function (emote) {
                         console.log(emote["emote"], emote["amount"]);
                         if (emote["emote"] === realemote) {
@@ -125,8 +125,8 @@ module.exports = {
                 if (emoteType === "BITS_BADGE_TIERS") {
 
 
-                    const emoteCost = await axios.get(`https://api.ivr.fi/twitch/allemotes/${emotechannel}`, { timeout: 10000 });
-                    let bitEmotes = emoteCost.data["bitEmotes"];
+                    const emoteCost = await got(`https://api.ivr.fi/twitch/allemotes/${emotechannel}`, { timeout: 10000 }).json();
+                    let bitEmotes = emoteCost["bitEmotes"];
                     let realemoteCost = 0;
                     _.each(bitEmotes, async function (emote) {
                         if (emote["code"] === realemote) {
@@ -177,9 +177,9 @@ module.exports = {
             let foundemote = 0;
 
             try {
-                const emotecount = await axios.get(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, { timeout: 10000 });
-                let bttv = emotecount.data["bttvEmotes"];
-                let ffz = emotecount.data["ffzEmotes"];
+                const emotecount = await got(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, { timeout: 10000 }).json();
+                let bttv = emotecount["bttvEmotes"];
+                let ffz = emotecount["ffzEmotes"];
                 _.each(bttv, async function (emote) {
                     if (emote["emote"] === input[2]) {
                         ecount = emote["amount"];
@@ -221,11 +221,11 @@ module.exports = {
             })
 
             if (found === 0) {
-                const ffzglobal = await axios.get(`https://api.frankerfacez.com/v1/set/global`, { timeout: 10000 });
-                const bttvglobal = await axios.get(`https://api.betterttv.net/3/cached/emotes/global`, { timeout: 10000 });
-                const stvglobal = await axios.get(`https://api.7tv.app/v2/emotes/global`, { timeout: 10000 });
+                const ffzglobal = await got(`https://api.frankerfacez.com/v1/set/global`, { timeout: 10000 }).json();
+                const bttvglobal = await got(`https://api.betterttv.net/3/cached/emotes/global`, { timeout: 10000 }).json();
+                const stvglobal = await got(`https://api.7tv.app/v2/emotes/global`, { timeout: 10000 }).json();
 
-                let ffzemotes = ffzglobal.data["sets"];
+                let ffzemotes = ffzglobal["sets"];
                 ffzemotes = ffzemotes["3"];
                 ffzemotes = ffzemotes["emoticons"];
 
@@ -248,7 +248,7 @@ module.exports = {
                     return response;
                 }
 
-                let bttvemotes = bttvglobal.data;
+                let bttvemotes = bttvglobal;
 
                 _.each(bttvemotes, async function (emote) {
                     if (emote["code"] === input[2]) {
@@ -268,7 +268,7 @@ module.exports = {
                     return response;
                 }
 
-                let svtemotes = stvglobal.data;
+                let svtemotes = stvglobal;
 
                 _.each(svtemotes, async function (emote) {
                     if (emote["name"] === input[2]) {

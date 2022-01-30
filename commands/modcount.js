@@ -1,4 +1,4 @@
-const axios = require('axios');
+const got = require("got");
 const _ = require("underscore");
 const tools = require("../tools/tools.js");
 
@@ -21,8 +21,8 @@ module.exports = {
                 }
                 username = input[2];
             }
-            let modcount = await axios.get(`https://modlookup.3v.fi/api/user-totals/${username}`, { timeout: 10000 });
-            ismod = modcount.data["total"];
+            let modcount = await got(`https://modlookup.3v.fi/api/user-totals/${username}`, { timeout: 10000 }).json();
+            ismod = modcount["total"];
             if (ismod === 0) {
                 return `That user is not a mod in any channel :)`;
             }

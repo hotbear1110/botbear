@@ -1,5 +1,5 @@
 require('dotenv').config();
-const axios = require('axios');
+const got = require("got");
 const tools = require("../tools/tools.js");
 const date = require('date-and-time');
 
@@ -18,15 +18,15 @@ module.exports = {
             vodid = vodid[vodid.length - 1];
 
 
-            const response = await axios.get(`https://api.twitch.tv/helix/videos?id=${vodid}`, {
+            const response = await got(`https://api.twitch.tv/helix/videos?id=${vodid}`, {
                 headers: {
                     'client-id': process.env.TWITCH_CLIENTID,
                     'Authorization': process.env.TWITCH_AUTH
                 },
                 timeout: 10000
-            })
+            }).json();
 
-            let starttime = response.data.data[0].created_at;
+            let starttime = response.data[0].created_at;
 
             let giventime = starttime.split("T");
             giventime = `${giventime[0]}T${input[3]}:00Z`;
@@ -36,7 +36,7 @@ module.exports = {
             starttime = date.addHours(starttime, 1);
 
 
-            let duration = response.data.data[0].duration;
+            let duration = response.data[0].duration;
             console.log(duration)
 
             let hours = "";

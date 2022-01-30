@@ -1,6 +1,6 @@
 require('dotenv').config();
 const tools = require("../tools/tools.js");
-const axios = require('axios');
+const got = require("got");
 
 module.exports = {
     name: "myping",
@@ -25,17 +25,17 @@ module.exports = {
                     console.log(input.toString());
                     let emote = input.toString().replaceAll(',', ' ');
                     console.log(emote);
-                    let realgame = await axios.get(`https://api.twitch.tv/helix/games?name=${emote}`, {
+                    let realgame = await got(`https://api.twitch.tv/helix/games?name=${emote}`, {
                         headers: {
                             'client-id': process.env.TWITCH_CLIENTID,
                             'Authorization': process.env.TWITCH_AUTH
                         },
                         timeout: 10000
-                    });
+                    }).json();
                     if (!realgame.data.data[0]) {
                         return `"${emote}", is either not a twitch category, or it's not specific enough!`;
                     }
-                    realgame = realgame.data.data[0];
+                    realgame = realgame.data[0];
                     realgame = realgame["name"];
 
                     let userchannel = [];
@@ -83,17 +83,17 @@ module.exports = {
                     }
                     input.splice(0, 3);
                     let emote2 = input.toString().replaceAll(',', ' ');
-                    let realgame2 = await axios.get(`https://api.twitch.tv/helix/games?name=${emote2}`, {
+                    let realgame2 = await got(`https://api.twitch.tv/helix/games?name=${emote2}`, {
                         headers: {
                             'client-id': process.env.TWITCH_CLIENTID,
                             'Authorization': process.env.TWITCH_AUTH
                         },
                         timeout: 10000
-                    });
+                    }).json();
                     if (!realgame2.data.data[0]) {
                         return `"${input}", is either not a twitch category, or it's not specific enough!`;
                     }
-                    realgame2 = realgame2.data.data[0];
+                    realgame2 = realgame2.data[0];
                     realgame2 = realgame2["name"];
 
 

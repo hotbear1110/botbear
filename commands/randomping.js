@@ -1,4 +1,4 @@
-const axios = require('axios');
+const got = require("got");
 
 module.exports = {
     name: "randomping",
@@ -11,9 +11,9 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            const randomuser = await axios.get(`https://decapi.me/twitch/random_user/${channel}`, { timeout: 10000 });
+            const randomuser = await got(`https://decapi.me/twitch/random_user/${channel}`, { timeout: 10000 }).json();
 
-            return `:tf: 🔔 ${randomuser.data}`;
+            return `:tf: 🔔 ${randomuser}`;
 
         } catch (err) {
             console.log(err);

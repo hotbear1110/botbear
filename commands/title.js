@@ -1,5 +1,5 @@
 const tools = require("../tools/tools.js");
-const axios = require('axios');
+const got = require("got");
 
 module.exports = {
     name: "title",
@@ -23,18 +23,18 @@ module.exports = {
             let title = "";
             const streamTitle = await tools.query(`SELECT * FROM Streamers WHERE username=?`, [realchannel]);
             if (!streamTitle[0]) {
-                let userID = await axios.get(`https://api.ivr.fi/twitch/resolve/${input[2]}`, { timeout: 10000 });
+                let userID = await got(`https://api.ivr.fi/twitch/resolve/${input[2]}`, { timeout: 10000 }).json();
 
-                userID = userID.data.id;
+                userID = userID.id;
 
-                title = await axios.get(`https://api.twitch.tv/helix/channels?broadcaster_id=${userID}`, {
+                title = await got(`https://api.twitch.tv/helix/channels?broadcaster_id=${userID}`, {
                     headers: {
                         'client-id': process.env.TWITCH_CLIENTID,
                         'Authorization': process.env.TWITCH_AUTH
                     },
                     timeout: 10000
-                });
-                title = title.data.data[0].title;
+                }).json();
+                title = title.data[0].title;
             } else {
                 let oldtitleTime = JSON.parse(streamTitle[0].title_time);
                 title = streamTitle[0].title;

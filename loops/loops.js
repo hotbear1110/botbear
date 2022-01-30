@@ -1,7 +1,6 @@
 require('dotenv').config();
 const tools = require("../tools/tools.js");
 const _ = require("underscore");
-const axios = require('axios');
 const cc = require("../bot.js").cc;
 const got = require("got");
 const { isDnsLookupIpVersion } = require('got/dist/source/core/utils/dns-ip-version');
@@ -26,15 +25,15 @@ setInterval(async function () {
     _.each(streamers, async function (stream) {
         let disabledCommands = JSON.parse(stream.disabled_commands)
         setTimeout(async function () {
-            await axios.get(`https://api.twitch.tv/helix/streams?user_login=${stream.username}`, {
+            await got(`https://api.twitch.tv/helix/streams?user_login=${stream.username}`, {
                 headers: {
                     'client-id': process.env.TWITCH_CLIENTID,
                     'Authorization': process.env.TWITCH_AUTH
                 },
-            })
+            }).json()
                 .then(async function (response) {
                     // handle success
-                    const twitchdata = response.data;
+                    const twitchdata = response;
                     let users = JSON.parse(stream.live_ping);
                     users = users.toString().replaceAll(',', ' ');
 
@@ -77,15 +76,15 @@ setInterval(async function () {
     _.each(streamers, async function (stream) {
         let disabledCommands = JSON.parse(stream.disabled_commands)
         setTimeout(async function () {
-            await axios.get(`https://api.twitch.tv/helix/channels?broadcaster_id=${stream.uid}`, {
+            await got(`https://api.twitch.tv/helix/channels?broadcaster_id=${stream.uid}`, {
                 headers: {
                     'client-id': process.env.TWITCH_CLIENTID,
                     'Authorization': process.env.TWITCH_AUTH
                 },
-            })
+            }).json()
                 .then(async function (response) {
                     // handle success
-                    const twitchdata = response.data;
+                    const twitchdata = response;
                     let newTitle = twitchdata.data[0].title;
                     let titleusers = JSON.parse(stream.title_ping);
                     titleusers = titleusers.toString().replaceAll(',', ' ');

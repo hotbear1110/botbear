@@ -1,7 +1,7 @@
 require('dotenv').config();
 const tools = require("../tools/tools.js");
 let messageHandler = require("../tools/messageHandler.js").messageHandler;
-const axios = require('axios');
+const got = require("got");
 const cc = require("../bot.js").cc;
 const _ = require("underscore");
 
@@ -16,26 +16,18 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            let modresponse = await new Promise(async function (resolve) {
+            let modresponse = false;
 
-                if (input[3]) {
-                    let modcheck = await axios.get(`https://api.ivr.fi/twitch/modsvips/${input[3]}`, { timeout: 10000 });
-                    let ismod = modcheck.data["mods"];
-                    let isdone = false;
-                    await _.each(ismod, async function (modstatus) {
-                        if (modstatus.login == user.username) {
-                            isdone = true;
-                            resolve(true);
-                        }
-                    })
-                    if (await isdone === false) {
-                        resolve(false)
+            if (input[3]) {
+                let modcheck = await got(`https://api.ivr.fi/twitch/modsvips/${input[3]}`, { timeout: 10000 }).json();
+                let ismod = modcheck["mods"];
+                await _.each(ismod, async function (modstatus) {
+                    if (modstatus.login == user.username) {
+                        modresponse = true;
                     }
-                } else {
-                    resolve(false)
-                }
-            });
-
+                })
+            }
+            Promise.all([modresponse])
             switch (input[2]) {
                 case "join":
                     if (channel !== "botbear1110" && channel !== "hotbear1110" && perm < 2000) { return; }
@@ -49,8 +41,8 @@ module.exports = {
                     }
 
                     if (input[3]) {
-                        let streamer = await axios.get(`https://api.ivr.fi/twitch/resolve/${input[3]}`, { timeout: 10000 });
-                        uid = streamer.data.id;
+                        let streamer = await got(`https://api.ivr.fi/twitch/resolve/${input[3]}`, { timeout: 10000 }).json();
+                        uid = streamer.id;
                         username = input[3];
                     }
 

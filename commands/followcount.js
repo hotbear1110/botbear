@@ -1,4 +1,4 @@
-const axios = require('axios');
+const got = require("got");
 
 module.exports = {
     name: "followcount",
@@ -19,13 +19,13 @@ module.exports = {
                 realchannel = input[2];
             }
 
-            const followcount = await axios.get(`https://decapi.me/twitch/followcount/${realchannel}`, { timeout: 10000 });
+            const followcount = await got(`https://decapi.me/twitch/followcount/${realchannel}`, { timeout: 10000 }).json();
 
-            if (followcount.data === 0) {
+            if (followcount === 0) {
                 return `Could not find the channel ${realchannel}`;
             }
 
-            return `#${realchannel} has ${followcount.data} followers!`;
+            return `#${realchannel} has ${followcount} followers!`;
 
         } catch (err) {
             console.log(err);
