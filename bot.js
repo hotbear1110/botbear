@@ -271,14 +271,12 @@ async function onMessageHandler(channel, user, msg, self) {
     let commandCD = await tools.query(`SELECT Cooldown FROM Commands WHERE Name=?`, [input[1]]);
 
     commandCD = commandCD[0].Cooldown;
-    console.log(commandCD)
 
     if (commandCD === null) {
         commandCD = 3000;
     } else {
         commandCD = commandCD * 1000;
     }
-    console.log(commandCD)
 
     const userCD = new tools.Cooldown(user, realcommand, commandCD);
 
@@ -320,7 +318,6 @@ async function onMessageHandler(channel, user, msg, self) {
             }
 
             let hint = triviaHints2[channel][gothint2[channel]];
-            console.log(hint)
             if (hint === undefined || !hint) {
                 if (gothint2[channel] === 0 && hintcount !== 2) {
                     hint = "There are no hints"

@@ -18,6 +18,7 @@ module.exports = {
             switch (input[2]) {
                 case "join":
                     console.log(channel);
+                    console.log(cc.isMod(`#${input[3]}`, user.username))
                     if (channel !== "botbear1110" && channel !== "hotbear1110" && perm < 2000) { return; }
                     let username = user.username;
                     let uid = user['user-id'];
