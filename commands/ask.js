@@ -13,6 +13,8 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
+            return "This command is currently diabled due to edgy responses :)";
+            /*
             input = input.splice(2);
             let msg = input.toString().replaceAll(',', ' ');
             const prompt = `Q: ${msg}\nA:`;
@@ -55,7 +57,7 @@ module.exports = {
             } catch (err) {
                 console.log(err);
             }
-
+*/
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Error`;
