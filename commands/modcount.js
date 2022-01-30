@@ -26,7 +26,7 @@ module.exports = {
             if (ismod === 0) {
                 return `That user is not a mod in any channel :)`;
             }
-            return `That user is a m OMEGALUL d in ${ismod} channel('s)`;
+            return `That user is a M OMEGALUL D in ${ismod} channel('s)`;
         } catch (err) {
             console.log(err);
             if (err.name) {

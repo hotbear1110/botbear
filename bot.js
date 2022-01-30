@@ -84,7 +84,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
                 triviaScore = Math.round(triviaScore);
 
-                new messageHandler(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) OMGScoots You get +${triviaScore} points`).newMessage();
+                new messageHandler(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) BroBalt You get +${triviaScore} points`).newMessage();
                 let userchannel = [];
                 userchannel.push(`"${user.username}"`);
                 userchannel.push(`"${channel}"`);
@@ -135,7 +135,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
                 triviaScore = Math.round(triviaScore);
 
-                new messageHandler(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) OMGScoots You get +${triviaScore} points`).newMessage();
+                new messageHandler(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) BroBalt You get +${triviaScore} points`).newMessage();
                 let userchannel = [];
                 userchannel.push(`"${user.username}"`);
                 userchannel.push(`"${channel}"`);
