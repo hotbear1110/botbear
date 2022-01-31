@@ -233,7 +233,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
     const Alias = new tools.Alias(msg, aliasList);
     input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
-    let realcommand = input[1];
+    let realcommand = input[1].toLowerCase();
 
     if (realcommand === "say" && realcommand === "channel" && realcommand === "emotecheck" && realcommand === "cum" && realcommand === "suggest" && realcommand === "shit" && realcommand === "code" && realcommand === "test2") {
         input = input.toString().replaceAll(",", " ");
@@ -503,7 +503,7 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
 
     }
-    let result = await commands[realcommand.toLowerCase()].execute(realchannel, user, input, perm);
+    let result = await commands[realcommand].execute(realchannel, user, input, perm);
 
 
     if (!result) {
