@@ -1,5 +1,5 @@
 module.exports = {
-    name: "THIS",
+    name: "this",
     ping: true,
     description: 'This command sends a THIS in the chat. peepoPog  WoW !',
     permission: 100,

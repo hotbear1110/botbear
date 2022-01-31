@@ -1,5 +1,5 @@
 module.exports = {
-    name: "BRUH",
+    name: "bruh",
     ping: false,
     description: 'This command will check if the person passes the BRUH test(50/50)',
     permission: 100,

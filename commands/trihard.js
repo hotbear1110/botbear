@@ -1,15 +1,12 @@
 module.exports = {
-    name: "WifeCheck",
+    name: "trihard",
     ping: true,
-    description: 'This command will make the bot respond with "doctorWTF"',
+    description: 'Says TriHard',
     permission: 100,
     category: "Random command",
     execute: async (channel, user, input, perm) => {
         try {
-            if (module.exports.permission > perm) {
-                return;
-            }
-            return "doctorWTF";
+            return "TriHard";
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Error`;

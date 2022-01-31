@@ -503,7 +503,7 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
 
     }
-    let result = await commands[realcommand].execute(realchannel, user, input, perm);
+    let result = await commands[realcommand.toLowerCase()].execute(realchannel, user, input, perm);
 
 
     if (!result) {
