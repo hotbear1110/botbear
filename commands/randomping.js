@@ -11,9 +11,21 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            const randomuser = await got(`https://decapi.me/twitch/random_user/${channel}`, { timeout: 10000 }).json();
+            let chatters = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 }).json();
 
-            return `:tf: 🔔 ${randomuser}`;
+            let chatterlist = [];
+            chatters = chatters["chatters"];
+            chatterlist = chatterlist.concat(chatters["broadcaster"]);
+            chatterlist = chatterlist.concat(chatters["vips"]);
+            chatterlist = chatterlist.concat(chatters["moderators"]);
+            chatterlist = chatterlist.concat(chatters["staff"]);
+            chatterlist = chatterlist.concat(chatters["admins"]);
+            chatterlist = chatterlist.concat(chatters["global_mods"]);
+            chatterlist = chatterlist.concat(chatters["viewers"]);
+
+            let number = Math.floor(Math.random() * chatterlist.length);
+
+            return `:tf: 🔔 ${chatterlist[number]}`;
 
         } catch (err) {
             console.log(err);
