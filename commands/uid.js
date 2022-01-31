@@ -29,7 +29,8 @@ module.exports = {
                         },
                         timeout: 10000
                     }).json();
-                    if (userData.data.length) {
+                    console.log(userData)
+                    if (userData.length) {
                         uiduser = userData.data[0];
                         uiduser = uiduser["login"];
                         const uidBanned = await got(`https://api.ivr.fi/twitch/resolve/${uiduser}`, { timeout: 10000 }).json();
@@ -41,8 +42,8 @@ module.exports = {
                     }
 
                 } catch (err) {
-                    console.log(err);
-                    if (err.response.status !== 400) {
+                    console.log(err.response.statusCode);
+                    if (err.response.statusCode !== 400) {
                         return `FeelsDankMan Error: ${err.response.error}`;
                     }
                     uiduser = input[2];
@@ -84,7 +85,7 @@ module.exports = {
             if (err.name === "TimeoutError") {
                 return `FeelsDankMan api error: ${err.name}`;
             }
-            return `FeelsDankMan Error: ${err.response.data.error}`;
+            return `FeelsDankMan Error: ${err.response.error}`;
         }
     }
 }
