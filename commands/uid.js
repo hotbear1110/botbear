@@ -42,8 +42,8 @@ module.exports = {
 
                 } catch (err) {
                     console.log(err);
-                    if (err.response.data.status !== 400) {
-                        return `FeelsDankMan Error: ${err.response.data.error}`;
+                    if (err.response.status !== 400) {
+                        return `FeelsDankMan Error: ${err.response.error}`;
                     }
                     uiduser = input[2];
 
