@@ -47,9 +47,11 @@ setInterval(async function () {
                         console.log(stream.username + " IS NOW LIVE");
                         await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`);
                         if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
-                            _.each(userlist, function (msg, i) {
-                                new messageHandler(`#${proxychannel}`, `/me ${stream.liveemote} ${stream.username[0].toUpperCase()}\u{E0000}${stream.username.toUpperCase().slice(1)} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`).newMessage();
-                            });
+                            if (users.length) {
+                                _.each(userlist, function (msg, i) {
+                                    new messageHandler(`#${proxychannel}`, `/me ${stream.liveemote} ${stream.username[0].toUpperCase()}\u{E0000}${stream.username.toUpperCase().slice(1)} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`).newMessage();
+                                });
+                            }
                         }
                     };
                     if (twitchdata['data'].length === 0 && stream.islive == 1) {
@@ -57,9 +59,11 @@ setInterval(async function () {
                         console.log(stream.username + " IS NOW OFFLINE");
                         await tools.query(`UPDATE Streamers SET islive = 0 WHERE username ="${stream.username}"`);
                         if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
-                            _.each(userlist, function (msg, i) {
-                                new messageHandler(`#${proxychannel}`, `/me ${stream.offlineemote} ${stream.username[0].toUpperCase()}\u{E0000}${stream.username.toUpperCase().slice(1)} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`).newMessage();
-                            });
+                            if (users.length) {
+                                _.each(userlist, function (msg, i) {
+                                    new messageHandler(`#${proxychannel}`, `/me ${stream.offlineemote} ${stream.username[0].toUpperCase()}\u{E0000}${stream.username.toUpperCase().slice(1)} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`).newMessage();
+                                });
+                            }
                         }
                     };
                 })
