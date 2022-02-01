@@ -39,9 +39,6 @@ async function onMessageHandler(channel, user, msg, self) {
     msg = msg.replaceAll(regex.invisChar, "");
     msg = msg.replaceAll("  ", "");
 
-    if (channel == "#botbear1110") {
-        console.log(`${user.username}: ${msg}`);
-    }
     /*
     const userList = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username]);
 
@@ -281,12 +278,6 @@ async function onMessageHandler(channel, user, msg, self) {
     const userCD = new tools.Cooldown(user, realcommand, commandCD);
 
     if ((await userCD.setCooldown()).length) { return; }
-
-    const badUsername = user.username.match(regex.racism);
-    if (badUsername != null) {
-        new messageHandler(channel, `[Bad username detected] cmonBruh`).newMessage();
-        return;
-    }
 
     let realchannel = channel.substring(1);
 

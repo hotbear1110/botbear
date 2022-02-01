@@ -346,7 +346,7 @@ setInterval(async function () {
             }
         }, 200);
     });
-}, 60000);
+}, 120000);
 
 setInterval(async function () {
     const users = await tools.query(`SELECT * FROM Cookies`);
@@ -370,7 +370,7 @@ setInterval(async function () {
 
     })
 
-}, 1000);
+}, 10000);
 
 setInterval(async function () {
     const users = await tools.query(`SELECT * FROM Cdr`);
@@ -393,7 +393,7 @@ setInterval(async function () {
 
     })
 
-}, 1000);
+}, 10000);
 
 setInterval(async function () {
     try {
