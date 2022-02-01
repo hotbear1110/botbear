@@ -154,7 +154,7 @@ setInterval(async function () {
 }, 20000);
 
 setInterval(async function () {
-    const streamers = await tools.query('SELECT * FROM Streamers');
+    const streamers = await tools.query('SELECT * FROM Streamers'); 
 
     _.each(streamers, async function (streamer) {
         setTimeout(async function () {
