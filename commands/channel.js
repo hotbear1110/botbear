@@ -18,7 +18,7 @@ module.exports = {
             }
             let modresponse = false;
 
-            if (input[3]) {
+            if (input[3] && (input[2] === "join" || input[2] === "leave")) {
                 let modcheck = await got(`https://api.ivr.fi/twitch/modsvips/${input[3]}`, { timeout: 10000 }).json();
                 let ismod = modcheck["mods"];
                 await _.each(ismod, async function (modstatus) {
@@ -238,6 +238,7 @@ module.exports = {
                 }
 
                 case "pb1": {
+                    console.log(tools.isMod(user, channel))
                     if (!tools.isMod(user, channel)) {
                         return;
                     }
@@ -252,7 +253,7 @@ module.exports = {
                     }
 
                     await tools.query(`UPDATE Streamers SET banphraseapi =? WHERE username =? `, [input[3], channel])
-                    return `pb1 banphrase api is now set to: ${input[3]} /api/v1 / banphrases / test`;
+                    return `pb1 banphrase api is now set to: ${input[3]}/api/v1/banphrases/test`;
                     break;
                 }
 
@@ -271,7 +272,7 @@ module.exports = {
                     }
 
                     await tools.query(`UPDATE Streamers SET banphraseapi2 =? WHERE username =? `, [input[3], channel])
-                    return `pb2 banphrase api is now set to: ${input[3]} /api/channel / ${user.uid} /moderation/check_message ? message = `;
+                    return `pb2 banphrase api is now set to: ${input[3]}/api/channel/${user.uid}/moderation/check_message?message=`;
                 }
                 default:
                     return "Available channel commands: join/leave, [live/offline/title/game]emote, trivia, pb1, pb2";
