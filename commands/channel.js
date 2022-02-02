@@ -36,7 +36,7 @@ module.exports = {
 
                     if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !modresponse) {
                         if (input[3].toLowerCase() !== username) {
-                            return;
+                            return "You can only make me join your own channel, or a channel you are mod in.";
                         }
                     }
 
