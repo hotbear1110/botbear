@@ -20,7 +20,7 @@ module.exports = {
             aliasList = JSON.parse(aliasList[0].Aliases);
 
             const Alias = new tools.Alias(`bb ${input[2]}`, aliasList);
-            let realcommand = input[2].replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
+            let realcommand = input[2].replace(Alias.getRegex(), Alias.getReplacement());
             const commandlist = await tools.query(`SELECT * FROM Commands WHERE Name=?`, [realcommand.toLowerCase()]);
 
             if (!commandlist.length) {

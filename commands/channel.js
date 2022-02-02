@@ -82,7 +82,6 @@ module.exports = {
 
                     if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !modresponse) {
                         if (input[3].toLowerCase() !== user.username) {
-                            console.log("test")
                             return "You can only make me leave your own channel, or a channel you are mod in.";
                         }
                     }
@@ -111,12 +110,12 @@ module.exports = {
                     break;
                 case "liveemote":
                     let username3 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000 && !user.mod) { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && perm < 2000 && ) { return; }
                     if (!input[3]) {
                         return;
                     }
 
-                    if (user.mod) {
+                    if (tools.isMod(user, channel)) {
                         username3 = channel;
                     }
 
@@ -138,12 +137,12 @@ module.exports = {
                     break;
                 case "gameemote":
                     let username4 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000 && !user.mod) { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && perm < 2000 && !tools.isMod(user, channel)) { return; }
                     if (!input[3]) {
                         return;
                     }
 
-                    if (user.mod) {
+                    if (tools.isMod(user, channel)) {
                         username4 = channel;
                     }
 
@@ -165,12 +164,12 @@ module.exports = {
                     break;
                 case "titleemote":
                     let username5 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000 && !user.mod) { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && perm < 2000 && !tools.isMod(user, channel)) { return; }
                     if (!input[3]) {
                         return;
                     }
 
-                    if (user.mod) {
+                    if (tools.isMod(user, channel)) {
                         username5 = channel;
                     }
 
@@ -192,12 +191,12 @@ module.exports = {
                     break;
                 case "offlineemote":
                     let username6 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000 && !user.mod) { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && perm < 2000 && !tools.isMod(user, channel)) { return; }
                     if (!input[3]) {
                         return;
                     }
 
-                    if (user.mod) {
+                    if (tools.isMod(user, channel)) {
                         username6 = channel;
                     }
 
@@ -238,7 +237,6 @@ module.exports = {
                 }
 
                 case "pb1": {
-                    console.log(tools.isMod(user, channel))
                     if (!tools.isMod(user, channel)) {
                         return;
                     }
