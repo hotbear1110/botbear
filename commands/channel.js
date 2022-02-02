@@ -110,7 +110,7 @@ module.exports = {
                     break;
                 case "liveemote":
                     let username3 = user.username;
-                    if (channel != "botbear1110" && channel != "hotbear1110" && perm < 2000 && ) { return; }
+                    if (channel != "botbear1110" && channel != "hotbear1110" && perm < 2000 && !tools.isMod(user, channel)) { return; }
                     if (!input[3]) {
                         return;
                     }
