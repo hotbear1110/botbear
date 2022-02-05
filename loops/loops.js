@@ -152,7 +152,7 @@ setInterval(async function () {
         }, 500);
     }
     )
-}, 5000);
+}, 10000);
 
 setInterval(async function () {
     const streamers = await tools.query('SELECT * FROM Streamers');
