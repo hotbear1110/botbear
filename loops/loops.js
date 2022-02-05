@@ -364,7 +364,7 @@ setInterval(async function () {
                     if ((stream[0].offlineonly !== 1 || stream[0].islive === 0) && User.Mode === 0) {
                         new messageHandler(User.Channel, `${User.User} Reminder to eat your cookie nymnOkay`).newMessage();
                     } else if (User.Mode === 1) {
-                        new whisperHandler(User.User, `${User.Channel} Reminder to eat your cookie nymnOkay`).newWhisper();
+                        new whisperHandler(User.User, `Reminder to eat your cookie nymnOkay`).newWhisper();
                     }
                 }
             }
@@ -388,7 +388,7 @@ setInterval(async function () {
                 if ((stream[0].offlineonly !== 1 || stream[0].islive === 0) && User.Mode === 0) {
                     new messageHandler(User.Channel, `${User.User} Your cookie cdr is ready.`).newMessage();
                 } else if (User.Mode === 1) {
-                    new whisperHandler(User.User, `${User.Channel} Your cookie cdr is ready.`).newWhisper();
+                    new whisperHandler(User.User, `Your cookie cdr is ready.`).newWhisper();
                 }
             }
         }
