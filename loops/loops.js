@@ -5,6 +5,7 @@ const cc = require("../bot.js").cc;
 const got = require("got");
 const { isDnsLookupIpVersion } = require('got/dist/source/core/utils/dns-ip-version');
 let messageHandler = require("../tools/messageHandler.js").messageHandler;
+let whisperHandler = require("../tools/whisperHandler.js").whisperHandler;
 const { con } = require('../connect/connect.js');
 
 function sleep(milliseconds) {
@@ -154,7 +155,7 @@ setInterval(async function () {
 }, 20000);
 
 setInterval(async function () {
-    const streamers = await tools.query('SELECT * FROM Streamers'); 
+    const streamers = await tools.query('SELECT * FROM Streamers');
 
     _.each(streamers, async function (streamer) {
         setTimeout(async function () {
@@ -360,9 +361,10 @@ setInterval(async function () {
 
                 await tools.query(`UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
                 if (!disabledCommands.includes("cookie")) {
-                    if (stream[0].offlineonly === 1 && stream[0].islive === 1) {
-                    } else {
+                    if ((stream[0].offlineonly !== 1 || stream[0].islive === 0) && User.Mode === 0) {
                         new messageHandler(User.Channel, `${User.User} Reminder to eat your cookie nymnOkay`).newMessage();
+                    } else if (User.Mode === 1) {
+                        new whisperHandler(User.User, `${User.Channel} Reminder to eat your cookie nymnOkay`).newWhisper();
                     }
                 }
             }
@@ -383,10 +385,10 @@ setInterval(async function () {
 
             await tools.query(`UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
             if (!disabledCommands.includes("cdr")) {
-                if (stream[0].offlineonly === 1 && stream[0].islive === 1) {
-                } else {
+                if ((stream[0].offlineonly !== 1 || stream[0].islive === 0) && User.Mode === 0) {
                     new messageHandler(User.Channel, `${User.User} Your cookie cdr is ready.`).newMessage();
-
+                } else if (User.Mode === 1) {
+                    new whisperHandler(User.User, `${User.Channel} Your cookie cdr is ready.`).newWhisper();
                 }
             }
         }

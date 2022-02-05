@@ -4,7 +4,7 @@ const got = require("got");
 module.exports = {
     name: "cdr",
     ping: true,
-    description: 'This command will register/unregiter you for notifications for "ThePositiveBot´s" cookie cdr. Available commands: "bb cdr [register/unregister]", "bb cdr status"(will tell you the time remaining until you can get your next cdr)',
+    description: 'This command will register/unregiter you for notifications for "ThePositiveBot´s" cookie cdr, this send you whispers as default. Available commands: "bb cdr [register/unregister]", "bb cdr status"(will tell you the time remaining until you can get your next cdr), "bb cdr whisper"(Toggles between whisper on and whisper off)',
     permission: 100,
     category: "Notify command",
     execute: async (channel, user, input, perm) => {
@@ -19,7 +19,7 @@ module.exports = {
                     if (!register.length) {
                         await tools.query('INSERT INTO Cdr (User) values (?)', [user.username]);
 
-                        return 'You are now registered for cookie cdr notifications (The reminders might not work properly untill you use your next cdr)';
+                        return 'You are now registered for cookie cdr notifications (whispers) (The reminders might not work properly untill you use your next cdr)';
 
                     } else {
                         return 'You are already registered for cookie cdr notifications';
@@ -53,8 +53,31 @@ module.exports = {
                         return `You are not registered for cdr notifications. Do "bb cdr register" to register`;
 
                     }
+                    break;
+                case "whisper":
+                    const isregistered = await tools.query(`SELECT * FROM Cdr WHERE User=?`, [user.username]);
+
+                    if (isregistered.length) {
+                        const cdrmode = await tools.query(`
+                    SELECT Mode
+                    FROM Cdr
+                    WHERE User=?`,
+                            [user.username]);
+
+                        let mode = Math.abs(cdrmode[0].Mode - 1);
+
+                        await tools.query(`UPDATE Cdr SET Mode=? WHERE User=?`, [mode, user.username]);
+
+                        if (mode === 1) {
+                            return "I will now remind you in whispers";
+                        }
+
+                        return "I will now remind you in the channel where you last used the command";
+                    } else {
+                        return `You are not registered for cdr notifications. Do "bb cdr register" to register`;
+                    }
                 default:
-                    return 'This command is for registering/unregitering you for notifications for "ThePositiveBot´s" cookie cdr. Available cdr commands: "bb cdr register", "bb cdr unregister", "bb cdr status"'
+                    return 'This command is for registering/unregitering you for notifications for "ThePositiveBot´s" cookie cdr. Available cdr commands: "bb cdr register", "bb cdr unregister", "bb cdr status", "bb cdr whisper"'
             }
 
         } catch (err) {

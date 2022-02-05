@@ -7,6 +7,7 @@ const _ = require("underscore");
 const requireDir = require("require-dir");
 const trivia = require('./commands/trivia.js');
 let messageHandler = require("./tools/messageHandler.js").messageHandler;
+let whisperHandler = require("./tools/whisperHandler.js").whisperHandler;
 
 const cc = new tmi.client(login.options);
 
@@ -182,22 +183,32 @@ async function onMessageHandler(channel, user, msg, self) {
             return;
         }
         const cookieStatus = await tools.cookies(user, input, channel);
+        let checkmode = await tools.query(`SELECT Mode FROM Cookies WHERE User=?`, [cookieStatus[1]]);
 
-        if (cookieStatus[0] === "Confirmed") {
+        if (cookieStatus[0] === "Confirmed" && checkmode[0].Mode === 0) {
             if (cookieStatus[3] === "yes") {
                 new messageHandler(cookieStatus[2], `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!)`).newMessage();
             } else {
                 new messageHandler(cookieStatus[2], `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
             }
+        } else if (cookieStatus[0] === "Confirmed" && checkmode[0].Mode === 1) {
+            if (cookieStatus[3] === "yes") {
+                new whisperHandler(cookieStatus[1], `${cookieStatus[2]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!)`).newWhisper();
+            } else {
+                new whisperHandler(cookieStatus[1], `${cookieStatus[2]} I will remind you to eat your cookie in 2 hours nymnOkay`).newWhisper();
+            }
         }
-        if (cookieStatus[0] === "Confirmed2") {
+        if (cookieStatus[0] === "Confirmed2" && checkmode[0].Mode === 0) {
             new messageHandler(cookieStatus[2], `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
+        } else if (cookieStatus[0] === "Confirmed2" && checkmode[0].Mode === 1) {
+            new whisperHandler(cookieStatus[1], `${cookieStatus[2]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`).newWhisper();
         }
         if (cookieStatus[0] === "CD") {
             new messageHandler(cookieStatus[2], `${cookieStatus[1]} Your cookie is still on cooldown, it will be available in ${cookieStatus[3]}`).newMessage();
         }
 
     }
+
     if (msg.includes("your cooldown has been reset!") && user["user-id"] == 425363834) {
         const stream = await tools.query('SELECT disabled_commands FROM Streamers WHERE username=?', [channel.substring(1)]);
 
@@ -206,9 +217,12 @@ async function onMessageHandler(channel, user, msg, self) {
             return;
         }
         const cdrStatus = await tools.cdr(user, input, channel);
+        let checkmode = await tools.query(`SELECT Mode FROM Cookies WHERE User=?`, [cdrStatus[1]]);
 
-        if (cdrStatus[0] === "Confirmed") {
+        if (cdrStatus[0] === "Confirmed" && checkmode[0].Mode === 0) {
             new messageHandler(cdrStatus[2], `${cdrStatus[1]} I will remind you to use your cdr in 3 hours nymnOkay`).newMessage();
+        } else if (cdrStatus[0] === "Confirmed" && checkmode[0].Mode === 1) {
+            new whisperHandler(cdrStatus[1], `${cdrStatus[2]} I will remind you to use your cdr in 3 hours nymnOkay`).newWhisper();
         }
     }
 
