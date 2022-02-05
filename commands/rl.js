@@ -47,9 +47,6 @@ module.exports = {
             if (err.toString().startsWith("HTTPError: Response code 500 (Internal Server Error)")) {
                 return "Could not load logs. Most likely the user either doesn't exist or doesn't have any logs here.";
             }
-            if (err.toString().startsWith("HTTPError: Response code 403 (Forbidden)")) {
-                return "User is blacklisted";
-            }
             if (err.name) {
                 if (err.name === "HTTPError") {
                     return "That user does not exist";
