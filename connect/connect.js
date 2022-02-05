@@ -46,11 +46,11 @@ res();
 
 let options = {
   options: {
-    debug: false,
-    joinInterval: 600,
+    joinInterval: 0,
   },
   connection: {
     secure: true,
+    reconnect: true,
   },
   identity: {
     username: process.env.TWITCH_USER,
