@@ -362,7 +362,7 @@ setInterval(async function () {
                         new messageHandler(User.Channel, `${User.User} Reminder to eat your cookie nymnOkay`).newMessage();
                     } else if (User.Mode === 1 || stream[0].islive === 1) {
                         if (stream[0].islive === 1) {
-                            new whisperHandler(User.User, `Reminder to eat your cookie nymnOkay - This reminder is from a channel that is live[#${User.Channel}]`).newWhisper();
+                            new whisperHandler(User.User, `Reminder to eat your cookie nymnOkay - This reminder is from a channel that is live[${User.Channel}]`).newWhisper();
                         } else {
                             new whisperHandler(User.User, `Reminder to eat your cookie nymnOkay`).newWhisper();
                         }
@@ -390,7 +390,7 @@ setInterval(async function () {
                     new messageHandler(User.Channel, `${User.User} Your cookie cdr is ready.`).newMessage();
                 } else if (User.Mode === 1 || stream[0].islive === 1) {
                     if (stream[0].islive === 1) {
-                        new whisperHandler(User.User, `Your cookie cdr is ready - This reminder is from a channel that is live[#${User.Channel}]`).newWhisper();
+                        new whisperHandler(User.User, `Your cookie cdr is ready - This reminder is from a channel that is live[${User.Channel}]`).newWhisper();
                     } else {
                         new whisperHandler(User.User, `Your cookie cdr is ready.`).newWhisper();
                     }
