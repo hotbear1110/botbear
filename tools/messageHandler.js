@@ -31,7 +31,6 @@ exports.messageHandler = class Cooldown {
                 }
             }
         }
-        console.log(this.message)
 
         this.message = await tools.checkAllBanphrases(this.message, this.channel);
 

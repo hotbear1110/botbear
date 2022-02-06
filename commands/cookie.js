@@ -89,7 +89,6 @@ module.exports = {
                         WHERE User=?`,
                             [user.username]);
 
-                        console.log(cookiemode)
                         let mode = Math.abs(cookiemode[0].Mode - 1);
 
                         await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [mode, user.username]);

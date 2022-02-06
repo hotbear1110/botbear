@@ -64,7 +64,6 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
     this.userid = this.data[0].uid;
     this.banphraseapi2 = this.data[0].banphraseapi2;
     if (this.banphraseapi2 !== null) {
-        console.log("costum")
         try {
             this.checkBanphrase = await got(`${this.banphraseapi2}/api/channel/${this.userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
             if (this.checkBanphrase["banned"] == true) {
@@ -175,7 +174,6 @@ let hasteoptions = {
 
 exports.makehastebin = (message) =>
     hastebin(message, hasteoptions).then((url) => {
-        console.log(url);
         return url;
     });
 
@@ -328,8 +326,6 @@ exports.cookies = (user, command, channel) => new Promise(async (resolve, reject
     }
 
     let cdrusers = await tools.query(`SELECT * FROM Cdr WHERE User=?`, [realuser]);
-    console.log(command[1].slice(0, -1))
-    console.log(cdrusers)
 
     if (cdrusers.length && cdrusers[0].RemindTime === null) {
         cdr = "yes";
@@ -349,7 +345,6 @@ exports.cookies = (user, command, channel) => new Promise(async (resolve, reject
                 } else {
                     let cd = cookieCD["seconds_left"] * 1000;
                     cd = tools.humanizeDuration(cd);
-                    console.log(cd)
 
                     resolve(["CD", realuser, channel, cd]);
                     return;

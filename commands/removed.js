@@ -41,13 +41,9 @@ module.exports = {
                 return `monkaS You are going too far now`
             }
 
-            console.log(emotes)
-
             const now = new Date().getTime();
 
             _.each(emotes, async function (emote) {
-                console.log(emote)
-
                 emote[2] = `(${tools.humanizeDuration(now - emote[2])})`;
 
                 if (emote[3]) {

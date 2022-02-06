@@ -33,8 +33,6 @@ module.exports = {
 
                     data = data[0].Aliases;
 
-                    console.log(data)
-
                     let newdata = data.toString().replaceAll("[", "").replaceAll("]", "").split(",");
 
                     let currentAliases = [];

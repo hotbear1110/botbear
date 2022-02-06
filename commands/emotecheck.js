@@ -17,7 +17,6 @@ module.exports = {
                 return `No emote specified. Example: "bb emotecheck TriHard "`
             }
             let emoteId = input[2];
-            console.log(user.emotes)
             if (user.emotes) {
                 /*
                  if (input[0].toLowerCase() === "forsenbb") {
@@ -65,7 +64,6 @@ module.exports = {
                     const emotecount = await got(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, { timeout: 10000 }).json();
                     let count = emotecount["twitchEmotes"];
                     _.each(count, async function (emote) {
-                        console.log(emote["emote"], emote["amount"]);
                         if (emote["emote"] === realemote) {
                             ecount = emote["amount"];
                             return;

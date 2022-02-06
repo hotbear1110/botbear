@@ -29,7 +29,6 @@ module.exports = {
                         },
                         timeout: 10000
                     }).json();
-                    console.log(userData)
                     if (userData.length) {
                         uiduser = userData.data[0];
                         uiduser = uiduser["login"];
@@ -61,7 +60,6 @@ module.exports = {
                 if (userID.banned === true) {
                     response = `Multiple users found. ${response} | User-ID found: ${userID["id"]} - cmonBruh [BANNED USER]`
                 } else {
-                    console.log(userID)
                     response = `Multiple users found. ${response} | User-ID found: ${userID["id"]}`
                 }
             } else {

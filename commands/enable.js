@@ -32,9 +32,6 @@ module.exports = {
 
                     disabledList = JSON.parse(disabledList[0].disabled_commands);
 
-                    console.log(disabledList);
-
-
                     if (!disabledList.includes(command)) {
                         return "That command is not disabled";
                     }

@@ -22,9 +22,7 @@ module.exports = {
                         return 'You should remove your "global" game notification, by doing "bb remove game" first';
                     }
                     input.splice(0, 3);
-                    console.log(input.toString());
                     let emote = input.toString().replaceAll(',', ' ');
-                    console.log(emote);
                     let realgame = await got(`https://api.twitch.tv/helix/games?name=${emote}`, {
                         headers: {
                             'client-id': process.env.TWITCH_CLIENTID,
@@ -62,7 +60,6 @@ module.exports = {
                     }
                     game_list.push(realgame);
                     game_list = JSON.stringify(game_list);
-                    console.log(game_list);
 
                     await tools.query(`UPDATE MyPing SET game_pings=? WHERE username=?`, [game_list, `[${userchannel}]`])
                     return `The game ${realgame} has been added to your ping list :) You can do 'bb myping list' to see your list.`;
@@ -122,7 +119,6 @@ module.exports = {
 
                     }
                     game_list2 = JSON.stringify(game_list2);
-                    console.log(game_list2);
 
                     await tools.query(`UPDATE MyPing SET game_pings=? WHERE username=?`, [game_list2, `[${userchannel2}]`])
                     return `The game ${realgame2} has been removed from your ping list :)`;

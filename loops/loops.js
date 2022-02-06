@@ -251,7 +251,6 @@ setInterval(async function () {
                 STV_list = STV
 
                 _.each(STV_list, async function (emote) {
-                    //console.log(emote)
                     let inlist = 0;
 
                     _.each(Emote_list, async function (emotecheck) {
@@ -313,8 +312,6 @@ setInterval(async function () {
                     })
                 }
                 if (inlist === 0 && noFFZ === 0 && noBTTV === 0 && noSTV === 0) {
-                    console.log(STV_list)
-
                     let time = new Date().getTime();
 
                     Emote_removed.push([emote[0], emote[1], time, [emote[5]]]);

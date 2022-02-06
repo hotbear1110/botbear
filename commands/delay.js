@@ -16,7 +16,6 @@ module.exports = {
             }
             input.splice(1,1);
 
-            console.log(input)
             let msg = input.toString().replaceAll(",", " ")
             const Alias = new tools.Alias(msg);
             input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');

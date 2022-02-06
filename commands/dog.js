@@ -12,7 +12,6 @@ module.exports = {
                 return;
             }
             const image = await got(`https://dog.ceo/api/breeds/image/random`, { timeout: 10000 }).json();
-            console.log(image)
 
             return `OhMyDog ${image.message}`;
 

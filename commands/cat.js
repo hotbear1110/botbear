@@ -12,7 +12,6 @@ module.exports = {
                 return;
             }
             const image = await got(`https://api.thecatapi.com/v1/images/search`, { timeout: 10000 }).json();
-            console.log(image)
 
             return `nymnAww ${image[0].url}`;
 

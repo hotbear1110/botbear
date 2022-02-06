@@ -75,10 +75,8 @@ module.exports = {
                 let timeFound = null;
                 _.each(urls, async function (url) {
                     let result = await findTime["vodtime"].execute(channel, user, ["bb", "vodtime", url, vodtime], perm);
-                    console.log(result)
 
                     if (!result.startsWith(vodtime)) {
-                        console.log("yes")
                         timeFound = result;
                         resolve(result);
                     }

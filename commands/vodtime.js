@@ -37,7 +37,6 @@ module.exports = {
 
 
             let duration = response.data[0].duration;
-            console.log(duration)
 
             let hours = "";
 
@@ -74,7 +73,6 @@ module.exports = {
 
             let newgiventime = false;
             let otherdate = false;
-            console.log(date.subtract(endtime, starttime).toDays())
 
             if (date.subtract(endtime, starttime).toDays() > 0) {
                 newgiventime = date.addDays(giventime, 1);
@@ -104,11 +102,6 @@ module.exports = {
             } else if (Date.parse(giventime) < Date.parse(starttime)) {
                 return `${input[3]} is before stream start.`;
             }
-
-            console.log(giventime, starttime)
-
-
-
 
             const ms = Date.parse(giventime) - Date.parse(starttime)
 

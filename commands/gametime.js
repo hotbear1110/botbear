@@ -28,10 +28,7 @@ module.exports = {
             let oldgameTime = JSON.parse(gameTimedata[0].game_time);
             if (oldgameTime !== null && oldgameTime !== 2147483647) {
 
-
-                console.log
                 const ms = new Date().getTime() - oldgameTime;
-
 
                 return `#${realchannel[0]}\u{E0000}${realchannel.slice(1)} has been in the category: (${game}), for ${tools.humanizeDuration(ms)}`;
             }
