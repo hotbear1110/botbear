@@ -12,6 +12,11 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
+
+            if (!input[2]) {
+                return "No command specified - https://github.com/hotbear1110/botbear/blob/main/commands/"
+            }
+
             let commandList = await tools.query(`
                     SELECT *
                     FROM Commands`);
