@@ -22,7 +22,7 @@ module.exports = {
                         return `Please specify a command to enable`;
                     }
 
-                    let command = input[3];
+                    let command = input[3].toLowerCase();
 
                     let disabledList = await tools.query(`
                     SELECT disabled_commands
@@ -52,7 +52,7 @@ module.exports = {
                         return `Please specify a category to enable`;
                     }
 
-                    let category = input[3];
+                    let category = input[3].toLowerCase();
 
                     if (category === "core") {
                         return `Core commands can't be disabled, so there is no enabling them`;
@@ -75,7 +75,7 @@ module.exports = {
 
                     _.each(commandList2, function (commandName) {
 
-                        if (commandName.Category === `${category} command`) {
+                        if (commandName.Category.toLowerCase() === `${category} command`) {
                             iscategory = true;
                             if (disabledList2.includes(commandName.Name)) {
                                 isdisabled = true;

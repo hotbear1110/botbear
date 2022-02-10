@@ -22,7 +22,7 @@ module.exports = {
                         return `Please specify a command to disable`;
                     }
 
-                    let command = input[3];
+                    let command = input[3].toLowerCase();
 
                     let disabledList = await tools.query(`
                     SELECT disabled_commands
@@ -45,7 +45,7 @@ module.exports = {
 
                     _.each(commandList, function (commandName) {
 
-                        if (command === commandName.Name) {
+                        if (command === commandName.Name.toLowerCase()) {
                             if (commandName.Category === "Core command" || commandName.Category === "Dev command") {
                                 iscore = true;
                                 return;
@@ -80,7 +80,7 @@ module.exports = {
                         return `Please specify a category to disable`;
                     }
 
-                    let category = input[3];
+                    let category = input[3].toLowerCase();
 
                     if (category === "core") {
                         return `You can't disable core commands`;
@@ -103,7 +103,7 @@ module.exports = {
 
                     _.each(commandList2, function (commandName) {
 
-                        if (commandName.Category === `${category} command`) {
+                        if (commandName.Category.toLowerCase() === `${category} command`) {
                             iscategory = true;
                             if (!disabledList2.includes(commandName.Name)) {
                                 isdisabled = true;
@@ -146,9 +146,9 @@ module.exports = {
 
                     _.each(commandList3, function (commandName) {
                         if (commandName.Category !== "Core command" && commandName.Category !== "Dev command") {
-                            if (!disabledList3.includes(commandName.Name)) {
+                            if (!disabledList3.includes(commandName.Name.toLowerCase())) {
                                 isdisabled3 = true;
-                                disabledList3.push(commandName.Name);
+                                disabledList3.push(commandName.Name.toLowerCase());
                             }
                         }
 
