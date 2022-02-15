@@ -18,7 +18,7 @@ module.exports = {
                 if (input[2].startsWith("@")) {
                     input[2] = input[2].substring(1);
                 }
-                username = input[2];
+                username = input[2].toLowerCase();
             }
             let realchannel = channel;
             if (input[3]) {
