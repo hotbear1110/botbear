@@ -83,24 +83,44 @@ module.exports = {
                     const isregistered = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
 
                     if (isregistered.length) {
-                        const cookiemode = await tools.query(`
-                        SELECT Mode
-                        FROM Cookies
-                        WHERE User=?`,
-                            [user.username]);
+                        switch(input[3]){
+                            case "enable":
+                                const cookiemode = await tools.query(`
+                                SELECT Mode
+                                FROM Cookies
+                                WHERE User=?`,
+                                    [user.username]);
 
-                        let mode = Math.abs(cookiemode[0].Mode - 1);
+                                if (cookiemode[0].Mode == 0) {
+                                    cookiemode[0].Mode = 1;
+                                    await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode[0].Mode, user.username]);
+                                    return "I will now remind you in whispers";
+                                } else {
+                                    return "Whisper notifications are already enabled";
+                                } 
+                                break; 
+                            case "disable":
+                                const cookiemode = await tools.query(`
+                                SELECT Mode
+                                FROM Cookies
+                                WHERE User=?`,
+                                    [user.username]);
 
-                        await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [mode, user.username]);
-
-                        if (mode === 1) {
-                            return "I will now remind you in whispers";
-                        }
-
-                        return "I will now remind you in the channel where you last used the command";
+                                if(cookiemode[0].Mode == 1){
+                                    cookiemode[0].Mode=0;
+                                    await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode[0].Mode, user.username]);
+                                    return "I will now remind you in the channel where you last used the register command";
+                                } else {
+                                return "Whisper notifications are already disabled";
+                                }
+                                break;
+                            default:
+                                return `Do "bb cookie whisper enable/disable" to enable or disable whisper notifications for "ThePositiveBot´s" cookies`;
+                        }                      
                     } else {
                         return `You are not registered for cookie notifications. Do "bb cookie register" to register`;
                     }
+                    break;
                 default:
                     return 'This command is for registering/unregitering you for notifications for "ThePositiveBot´s" cookies. Available cookie commands: "bb cookie register", "bb cookie unregister", "bb cookie status", "bb cookie whisper"'
             }
