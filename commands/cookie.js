@@ -83,7 +83,7 @@ module.exports = {
                     const isregistered = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
 
                     if (isregistered.length) {
-                        switch(input[3]){
+                        switch (input[3]) {
                             case "enable":
                                 const cookiemode = await tools.query(`
                                 SELECT Mode
@@ -91,14 +91,14 @@ module.exports = {
                                 WHERE User=?`,
                                     [user.username]);
 
-                                if (cookiemode[0].Mode == 0) {
+                                if (cookiemode[0].Mode === 0) {
                                     cookiemode[0].Mode = 1;
                                     await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode[0].Mode, user.username]);
                                     return "I will now remind you in whispers";
                                 } else {
                                     return "Whisper notifications are already enabled";
-                                } 
-                                break; 
+                                }
+                                break;
                             case "disable":
                                 const cookiemode = await tools.query(`
                                 SELECT Mode
@@ -106,17 +106,17 @@ module.exports = {
                                 WHERE User=?`,
                                     [user.username]);
 
-                                if(cookiemode[0].Mode == 1){
-                                    cookiemode[0].Mode=0;
+                                if (cookiemode[0].Mode === 1) {
+                                    cookiemode[0].Mode = 0;
                                     await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode[0].Mode, user.username]);
-                                    return "I will now remind you in the channel where you last used the register command";
+                                    return "I will now remind you in the channel where you lats ate a cookie";
                                 } else {
-                                return "Whisper notifications are already disabled";
+                                    return "Whisper notifications are already disabled";
                                 }
                                 break;
                             default:
                                 return `Do "bb cookie whisper enable/disable" to enable or disable whisper notifications for "ThePositiveBot´s" cookies`;
-                        }                      
+                        }
                     } else {
                         return `You are not registered for cookie notifications. Do "bb cookie register" to register`;
                     }
