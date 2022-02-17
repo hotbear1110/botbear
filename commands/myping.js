@@ -30,7 +30,7 @@ module.exports = {
                         },
                         timeout: 10000
                     }).json();
-                    if (!realgame.data.data[0]) {
+                    if (!realgame.data[0]) {
                         return `"${emote}", is either not a twitch category, or it's not specific enough!`;
                     }
                     realgame = realgame.data[0];
