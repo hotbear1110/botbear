@@ -29,7 +29,7 @@ module.exports = {
             }
             Promise.all([modresponse])
             switch (input[2]) {
-                case "join":
+                case "join": {
                     if (channel !== "botbear1110" && channel !== "hotbear1110" && perm < 2000) { return; }
                     let username = user.username;
                     let uid = user['user-id'];
@@ -72,12 +72,13 @@ module.exports = {
                         return `Joined channel: ${username}`;
 
                     }
+                }
                     break;
-                case "leave":
-                    let username2 = user.username;
+                case "leave": {
+                    let username = user.username;
                     if (channel != "botbear1110" && channel != "hotbear1110" && channel != user.username && perm < 2000) { return; }
                     if (input[3]) {
-                        username2 = input[3];
+                        username = input[3];
                     }
 
                     if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !modresponse) {
@@ -86,136 +87,140 @@ module.exports = {
                         }
                     }
 
-                    const alreadyJoined2 = await tools.query(`
+                    const alreadyJoined = await tools.query(`
                             SELECT *
                             FROM Streamers
                             WHERE username =? `,
-                        [username2]);
+                        [username]);
 
-                    if (!alreadyJoined2.length) {
+                    if (!alreadyJoined.length) {
                         return "I am not in your channel";
                     }
 
                     else {
-                        await tools.query('DELETE FROM Streamers WHERE username=?', [username2]);
-                        cc.part(username2).then((data) => {
+                        await tools.query('DELETE FROM Streamers WHERE username=?', [username]);
+                        cc.part(username).then((data) => {
                             // data returns [channel]
                         }).catch((err) => {
                             console.log(err);
                         });
-                        cc.say(`#${username2} `, '👋 nymnDank bye!');
-                        return `Left channel: ${username2} `;
+                        cc.say(`#${username} `, '👋 nymnDank bye!');
+                        return `Left channel: ${username} `;
 
                     }
+                }
                     break;
-                case "liveemote":
-                    let username3 = user.username;
+                case "liveemote": {
+                    let username = user.username;
                     if (channel != "botbear1110" && channel != "hotbear1110" && perm < 2000 && !tools.isMod(user, channel)) { return; }
                     if (!input[3]) {
                         return;
                     }
 
                     if (tools.isMod(user, channel)) {
-                        username3 = channel;
+                        username = channel;
                     }
 
 
-                    const alreadyJoined3 = await tools.query(`
+                    const alreadyJoined = await tools.query(`
                     SELECT *
                         FROM Streamers
                             WHERE username =? `,
-                        [username3]);
+                        [username]);
 
-                    if (!alreadyJoined3.length) {
+                    if (!alreadyJoined.length) {
                         return "I am not in your channel";
                     }
 
                     else {
-                        await tools.query(`UPDATE Streamers SET liveemote =? WHERE username =? `, [input[3], username3])
+                        await tools.query(`UPDATE Streamers SET liveemote =? WHERE username =? `, [input[3], username])
                         return `Live emote is now set to ${input[3]} `;
                     }
+                }
                     break;
-                case "gameemote":
-                    let username4 = user.username;
+                case "gameemote": {
+                    let username = user.username;
                     if (channel != "botbear1110" && channel != "hotbear1110" && perm < 2000 && !tools.isMod(user, channel)) { return; }
                     if (!input[3]) {
                         return;
                     }
 
                     if (tools.isMod(user, channel)) {
-                        username4 = channel;
+                        username = channel;
                     }
 
 
-                    const alreadyJoined4 = await tools.query(`
+                    const alreadyJoined = await tools.query(`
                     SELECT *
                         FROM Streamers
                             WHERE username =? `,
-                        [username4]);
+                        [username]);
 
-                    if (!alreadyJoined4.length) {
+                    if (!alreadyJoined.length) {
                         return "I am not in your channel";
                     }
 
                     else {
-                        await tools.query(`UPDATE Streamers SET gameemote =? WHERE username =? `, [input[3], username4])
+                        await tools.query(`UPDATE Streamers SET gameemote =? WHERE username =? `, [input[3], username])
                         return `Game emote is now set to ${input[3]} `;
                     }
+                }
                     break;
-                case "titleemote":
-                    let username5 = user.username;
+                case "titleemote": {
+                    let username = user.username;
                     if (channel != "botbear1110" && channel != "hotbear1110" && perm < 2000 && !tools.isMod(user, channel)) { return; }
                     if (!input[3]) {
                         return;
                     }
 
                     if (tools.isMod(user, channel)) {
-                        username5 = channel;
+                        username = channel;
                     }
 
 
-                    const alreadyJoined5 = await tools.query(`
+                    const alreadyJoined = await tools.query(`
                     SELECT *
                         FROM Streamers
                             WHERE username =? `,
-                        [username5]);
+                        [username]);
 
-                    if (!alreadyJoined5.length) {
+                    if (!alreadyJoined.length) {
                         return "I am not in your channel";
                     }
 
                     else {
-                        await tools.query(`UPDATE Streamers SET titleemote =? WHERE username =? `, [input[3], username5])
+                        await tools.query(`UPDATE Streamers SET titleemote =? WHERE username =? `, [input[3], username])
                         return `Title emote is now set to ${input[3]} `;
                     }
+                }
                     break;
-                case "offlineemote":
-                    let username6 = user.username;
+                case "offlineemote": {
+                    let username = user.username;
                     if (channel != "botbear1110" && channel != "hotbear1110" && perm < 2000 && !tools.isMod(user, channel)) { return; }
                     if (!input[3]) {
                         return;
                     }
 
                     if (tools.isMod(user, channel)) {
-                        username6 = channel;
+                        username = channel;
                     }
 
-                    const alreadyJoined6 = await tools.query(`
+                    const alreadyJoined = await tools.query(`
                     SELECT *
                         FROM Streamers
                             WHERE username =? `,
-                        [username6]);
+                        [username]);
 
-                    if (!alreadyJoined6.length) {
+                    if (!alreadyJoined.length) {
                         return "I am not in your channel";
                     }
 
                     else {
-                        await tools.query(`UPDATE Streamers SET offlineemote =? WHERE username =? `, [input[3], username6])
+                        await tools.query(`UPDATE Streamers SET offlineemote =? WHERE username =? `, [input[3], username])
                         return `Offline emote is now set to ${input[3]} `;
                     }
+                }
                     break;
-
                 case "trivia": {
                     if (!tools.isMod(user, channel)) {
                         return;

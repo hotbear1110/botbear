@@ -4,7 +4,7 @@ const got = require("got");
 module.exports = {
     name: "cookie",
     ping: true,
-    description: 'This command will register/unregiter you for notifications for "ThePositiveBot´s" cookies. Available commands: "bb cookie [register/unregister]", "bb cookie status"(will tell you the time remaining until you can eat your next cookie), "bb cookie whisper"(will toggle between whisper on and off)',
+    description: 'This command will register/unregiter you for notifications for "ThePositiveBot´s" cookies. Available commands: "bb cookie [register/unregister]", "bb cookie status"(will tell you the time remaining until you can eat your next cookie), "bb cookie whisper enable/disable"',
     permission: 100,
     category: "Notify command",
     execute: async (channel, user, input, perm) => {
@@ -84,7 +84,7 @@ module.exports = {
 
                     if (isregistered.length) {
                         switch (input[3]) {
-                            case "enable":
+                            case "enable": {
                                 let cookiemode = await tools.query(`
                                 SELECT Mode
                                 FROM Cookies
@@ -98,21 +98,23 @@ module.exports = {
                                 } else {
                                     return "Whisper notifications are already enabled";
                                 }
+                            }
                                 break;
-                            case "disable":
-                                let cookiemode2 = await tools.query(`
+                            case "disable": {
+                                let cookiemode = await tools.query(`
                                 SELECT Mode
                                 FROM Cookies
                                 WHERE User=?`,
                                     [user.username]);
 
-                                if (cookiemode2[0].Mode === 1) {
-                                    cookiemode2[0].Mode = 0;
-                                    await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode2[0].Mode, user.username]);
+                                if (cookiemode[0].Mode === 1) {
+                                    cookiemode[0].Mode = 0;
+                                    await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode[0].Mode, user.username]);
                                     return "I will now remind you in the channel where you last ate a cookie";
                                 } else {
                                     return "Whisper notifications are already disabled";
                                 }
+                            }
                                 break;
                             default:
                                 return `Do "bb cookie whisper enable/disable" to enable or disable whisper notifications for "ThePositiveBot´s" cookies`;

@@ -14,7 +14,7 @@ module.exports = {
                 return;
             }
             switch (input[2]) {
-                case "add":
+                case "add": {
                     const gameUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
                     let gameusers = JSON.parse(gameUsers[0].game_ping);
 
@@ -63,56 +63,55 @@ module.exports = {
 
                     await tools.query(`UPDATE MyPing SET game_pings=? WHERE username=?`, [game_list, `[${userchannel}]`])
                     return `The game ${realgame} has been added to your ping list :) You can do 'bb myping list' to see your list.`;
-
-
+                }
                     break;
 
-                case "remove":
-                    let userchannel2 = [];
-                    userchannel2.push(`"${user.username}"`);
-                    userchannel2.push(`"${channel}"`);
+                case "remove": {
+                    let userchannel = [];
+                    userchannel.push(`"${user.username}"`);
+                    userchannel.push(`"${channel}"`);
 
                     if (input.length == 4 && input[3] === "all") {
                         let removeall = [];
-                        await tools.query(`UPDATE MyPing SET game_pings=? WHERE username=?`, [`[]`, `[${userchannel2}]`])
+                        await tools.query(`UPDATE MyPing SET game_pings=? WHERE username=?`, [`[]`, `[${userchannel}]`])
                         return `Your ping list is now empty :)`;
 
                     }
                     input.splice(0, 3);
                     let emote2 = input.toString().replaceAll(',', ' ');
-                    let realgame2 = await got(`https://api.twitch.tv/helix/games?name=${emote2}`, {
+                    let realgame = await got(`https://api.twitch.tv/helix/games?name=${emote2}`, {
                         headers: {
                             'client-id': process.env.TWITCH_CLIENTID,
                             'Authorization': process.env.TWITCH_AUTH
                         },
                         timeout: 10000
                     }).json();
-                    if (!realgame2.data.data[0]) {
+                    if (!realgame.data.data[0]) {
                         return `"${input}", is either not a twitch category, or it's not specific enough!`;
                     }
-                    realgame2 = realgame2.data[0];
-                    realgame2 = realgame2["name"];
+                    realgame = realgame.data[0];
+                    realgame = realgame["name"];
 
 
-                    const alreadyJoined2 = await tools.query(`
+                    const alreadyJoined = await tools.query(`
                 SELECT *
                 FROM MyPing
                 WHERE username=?`,
-                        [`[${userchannel2}]`]);
+                        [`[${userchannel}]`]);
 
-                    if (!alreadyJoined2.length) {
+                    if (!alreadyJoined.length) {
                         return `FeelsDankMan You don't have any games in your ping list to remove!`;
                     }
 
-                    let game_list2 = JSON.parse(alreadyJoined2[0].game_pings);
+                    let game_list2 = JSON.parse(alreadyJoined[0].game_pings);
 
-                    if (!game_list2.includes(realgame2)) {
+                    if (!game_list2.includes(realgame)) {
                         return "FeelsDankMan That game is not in your ping list! You can do 'bb myping list' to see your list.";
                     }
 
                     for (var i = 0; i < game_list2.length; i++) {
 
-                        if (game_list2[i] === realgame2) {
+                        if (game_list2[i] === realgame) {
 
                             game_list2.splice(i, 1);
                         }
@@ -120,11 +119,12 @@ module.exports = {
                     }
                     game_list2 = JSON.stringify(game_list2);
 
-                    await tools.query(`UPDATE MyPing SET game_pings=? WHERE username=?`, [game_list2, `[${userchannel2}]`])
-                    return `The game ${realgame2} has been removed from your ping list :)`;
+                    await tools.query(`UPDATE MyPing SET game_pings=? WHERE username=?`, [game_list2, `[${userchannel}]`])
+                    return `The game ${realgame} has been removed from your ping list :)`;
+                }
                     break;
 
-                case "list":
+                case "list": {
                     let username = user.username;
                     if (input[3]) {
                         if (input[3].startsWith("@")) {
@@ -132,22 +132,22 @@ module.exports = {
                         }
                         username = input[3];
                     }
-                    let userchannel3 = [];
-                    userchannel3.push(`"${username}"`);
-                    userchannel3.push(`"${channel}"`);
+                    let userchannel = [];
+                    userchannel.push(`"${username}"`);
+                    userchannel.push(`"${channel}"`);
 
-                    const alreadyJoined3 = await tools.query(`
+                    const alreadyJoined = await tools.query(`
                         SELECT *
                         FROM MyPing
                         WHERE username=?`,
-                        [`[${userchannel3}]`]);
+                        [`[${userchannel}]`]);
 
-                    if (!alreadyJoined3.length || alreadyJoined3[0].game_pings == "[]") {
+                    if (!alreadyJoined.length || alreadyJoined[0].game_pings == "[]") {
                         return `FeelsDankMan ! You don't have a game list yet. You should add a game first, by typing "bb myping add *game*"`;
                     }
                     else {
 
-                        const gamelist = await tools.query(`SELECT * FROM MyPing WHERE username=?`, [`[${userchannel3}]`]);
+                        const gamelist = await tools.query(`SELECT * FROM MyPing WHERE username=?`, [`[${userchannel}]`]);
                         let listgames = JSON.parse(gamelist[0].game_pings);
                         listgames = listgames.toString().replaceAll(',', '\n');
                         let user = "";
@@ -158,8 +158,9 @@ module.exports = {
                         let hastebinlist = await tools.makehastebin(`${username}'s game list, from channel: ${channel}\n\nGame list:\n${listgames}`);
 
                         return `${user} Game list: ${hastebinlist}.txt`;
-                        break;
                     }
+                    break;
+                }
                 default: `bb myping [add/remove]"(will add/remove a game from your ping list), "bb myping list"(will give you a list of the games you will get notified by)`;
             }
 
