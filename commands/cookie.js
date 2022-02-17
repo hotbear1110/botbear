@@ -100,15 +100,15 @@ module.exports = {
                                 }
                                 break;
                             case "disable":
-                                cookiemode = await tools.query(`
+                                let cookiemode2 = await tools.query(`
                                 SELECT Mode
                                 FROM Cookies
                                 WHERE User=?`,
                                     [user.username]);
 
-                                if (cookiemode[0].Mode === 1) {
-                                    cookiemode[0].Mode = 0;
-                                    await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode[0].Mode, user.username]);
+                                if (cookiemode2[0].Mode === 1) {
+                                    cookiemode2[0].Mode = 0;
+                                    await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode2[0].Mode, user.username]);
                                     return "I will now remind you in the channel where you lats ate a cookie";
                                 } else {
                                     return "Whisper notifications are already disabled";
