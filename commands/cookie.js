@@ -85,7 +85,7 @@ module.exports = {
                     if (isregistered.length) {
                         switch (input[3]) {
                             case "enable":
-                                const cookiemode = await tools.query(`
+                                let cookiemode = await tools.query(`
                                 SELECT Mode
                                 FROM Cookies
                                 WHERE User=?`,
