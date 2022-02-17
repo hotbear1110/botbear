@@ -100,7 +100,7 @@ module.exports = {
                                 }
                                 break;
                             case "disable":
-                                const cookiemode = await tools.query(`
+                                cookiemode = await tools.query(`
                                 SELECT Mode
                                 FROM Cookies
                                 WHERE User=?`,
