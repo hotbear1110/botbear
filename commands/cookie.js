@@ -109,7 +109,7 @@ module.exports = {
                                 if(cookiemode[0].Mode == 1){
                                     cookiemode[0].Mode=0;
                                     await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode[0].Mode, user.username]);
-                                    return "I will now remind you in the channel where you last used the command";
+                                    return "I will now remind you in the channel where you last used the register command";
                                 } else {
                                 return "Whisper notifications are already disabled";
                                 }
