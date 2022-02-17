@@ -1,4 +1,4 @@
-    const tools = require("../tools/tools.js");
+const tools = require("../tools/tools.js");
 const got = require("got");
 
 module.exports = {
