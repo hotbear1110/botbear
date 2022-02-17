@@ -91,11 +91,9 @@ module.exports = {
                                 WHERE User=?`,
                                     [user.username]);
 
-                                let mode = Math.abs(cookiemode[0].Mode);
-
-                                if (mode == 0) {
-                                    mode=1;
-                                    await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [mode, user.username]);
+                                if (cookiemode[0].Mode == 0) {
+                                    cookiemode[0].Mode = 1;
+                                    await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode[0].Mode, user.username]);
                                     return "I will now remind you in whispers";
                                 } else {
                                     return "Whisper notifications are already enabled";
@@ -108,10 +106,9 @@ module.exports = {
                                 WHERE User=?`,
                                     [user.username]);
 
-                                let mode = Math.abs(cookiemode[0].Mode);
-                                if(mode == 1){
-                                    mode=0;
-                                    await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [mode, user.username]);
+                                if(cookiemode[0].Mode == 1){
+                                    cookiemode[0].Mode=0;
+                                    await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode[0].Mode, user.username]);
                                     return "I will now remind you in the channel where you last used the command";
                                 } else {
                                 return "Whisper notifications are already disabled";
