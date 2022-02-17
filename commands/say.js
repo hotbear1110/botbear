@@ -20,7 +20,7 @@ module.exports = {
 
 
             if (tools.isMod(user, channel) === false && perm < 2000 && msg.match(/[&|$|/|.|?|!|-]|\bkb\b|^\bmelon\b/g)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
-                msg = "\u{E0000}" + msg;
+                return;
             }
 
             if (perm < 2000 && msg.match(/(\.|\/)color/g)) {
