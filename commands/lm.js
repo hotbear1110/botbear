@@ -13,44 +13,48 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            let username = user.username;
+            let uid = user["user-id"];
             if (input[2]) {
                 if (input[2].startsWith("@")) {
                     input[2] = input[2].substring(1);
                 }
-                username = input[2];
+                uid = await got(`https://api.ivr.fi/twitch/resolve/${input[2]}`, { timeout: 10000 }).json();
+                uid = uid.id;
             }
             let realchannel = channel;
             if (input[3]) {
                 realchannel = input[3];
             }
-            if (username === "botbear1110" || username === "ksyncbot") {
-                return;
-            }
 
-            const lm = await got(`https://api.ivr.fi/logs/lastmessage/${realchannel}/${username}`, {timeout: 10000}).json();
-            const masspinged = await tools.massping(lm.response.toLowerCase(), channel);
+            const lm = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}?json&reverse`, { timeout: 10000 }).json();
 
-            if (masspinged != "null") {
-                return "[MASS PING]";
-            }
-            
-            let message = tools.splitLine(lm.response, 350)
+            let message = tools.splitLine(lm.messages[0].text, 350)
+
+            const timeago = new Date().getTime() - Date.parse(lm.messages[0].timestamp);
+
             if (lm.status !== 404) {
                 if (message[1]) {
-                    return `#${realchannel} ${lm.user}: ${message}... - (${lm.time} ago)`;
+                    return `#${realchannel} ${lm.messages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
                 }
-                return `nymnDank ${lm.user}'s last message in #${realchannel} was: ${lm.response} - (${lm.time} ago)`;
+                return `nymnDank ${lm.messages[0].displayName}'s last message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
             }
 
         } catch (err) {
             console.log(err);
-            if (err.name) {
-                if (err.name === "TimeoutError") {
-                    return `FeelsDankMan Banphrase api error: ${err.name}`;
-                }
+
+            if (err.toString().startsWith("HTTPError: Response code 403 (Forbidden)")) {
+                return "User or channel has opted out";
             }
-            return `FeelsDankMan Error`;    
+            if (err.toString().startsWith("HTTPError: Response code 500 (Internal Server Error)")) {
+                return "Could not load logs. Most likely the user either doesn't exist or doesn't have any logs here.";
+            }
+            if (err.name) {
+                if (err.name === "HTTPError") {
+                    return "That user does not exist";
+                }
+                return `FeelsDankMan api error: ${err.name}`;
+            }
+            return `FeelsDankMan Error`;
         }
     }
 }

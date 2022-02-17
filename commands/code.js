@@ -12,26 +12,31 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
+
+            if (!input[2]) {
+                return "No command specified - https://github.com/hotbear1110/botbear/blob/main/commands/"
+            }
+
             let commandList = await tools.query(`
                     SELECT *
                     FROM Commands`);
 
-                    let iscommand = false;
+            let iscommand = false;
 
-                        _.each(commandList, function (commandName) {
+            _.each(commandList, function (commandName) {
 
-                            if (input[2] === commandName.Name) {
-                                iscommand = true;
-                                return;
-                            }
+                if (input[2] === commandName.Name) {
+                    iscommand = true;
+                    return;
+                }
 
-                        });
+            });
 
-                        if (iscommand === false) {
-                            return `${input[2]} is not a command! Do: "bb commands" to see a list of available commands`
-                        }
+            if (iscommand === false) {
+                return `${input[2]} is not a command! Do: "bb commands" to see a list of available commands`
+            }
 
-                return `https://github.com/hotbear1110/botbear/blob/main/commands/${input[2]}.js`;
+            return `https://github.com/hotbear1110/botbear/blob/main/commands/${input[2]}.js`;
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Error`;

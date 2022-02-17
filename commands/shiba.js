@@ -11,14 +11,14 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            const image = await got(`http://shibe.online/api/shibes?count=1&urls=true&httpsUrls=true`, {timeout: 10000}).json();
+            const image = await got(`http://shibe.online/api/shibes?count=1&urls=true&httpsUrls=true`, { timeout: 10000 }).json();
 
             return `nymnAww ${image}`;
 
         } catch (err) {
             console.log(err);
             if (err.name === "TimeoutError") {
-                return `FeelsDankMan Banphrase api error: ${err.name}`;
+                return `FeelsDankMan api error: ${err.name}`;
             }
             return `FeelsDankMan Error`;
         }

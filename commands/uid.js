@@ -1,4 +1,4 @@
-const axios = require('axios');
+const got = require("got");
 require('dotenv').config();
 
 module.exports = {
@@ -8,62 +8,82 @@ module.exports = {
     permission: 100,
     category: "Info command",
     execute: async (channel, user, input, perm) => {
+        let response = "";
         try {
             if (module.exports.permission > perm) {
                 return;
             }
             let uiduser = user.username;
 
-            let isuid = !isNaN(input[2]);
+            let userID = "";
 
             if (input[2]) {
-                if (isuid) {
-                    try {
-                        const userData = await axios.get(`https://api.twitch.tv/helix/users?id=${input[2]}`, {
-                            headers: {
-                                'client-id': process.env.TWITCH_CLIENTID,
-                                'Authorization': process.env.TWITCH_AUTH
-                            },
-                            timeout: 10000
-                        })
-                        if (userData.data.data.length) {
-                        uiduser = userData.data.data[0];
+                if (input[2].startsWith("@")) {
+                    input[2] = input[2].substring(1);
+                }
+                try {
+                    const userData = await got(`https://api.twitch.tv/helix/users?id=${input[2]}`, {
+                        headers: {
+                            'client-id': process.env.TWITCH_CLIENTID,
+                            'Authorization': process.env.TWITCH_AUTH
+                        },
+                        timeout: 10000
+                    }).json();
+                    if (userData.length) {
+                        uiduser = userData.data[0];
                         uiduser = uiduser["login"];
+                        const uidBanned = await got(`https://api.ivr.fi/twitch/resolve/${uiduser}`, { timeout: 10000 }).json();
+                        if (uidBanned.banned === true) {
+                            response = `Username found: ${uiduser} - cmonBruh [BANNED USER]`;
+                        } else {
+                            response = `Username found: ${uiduser}`;
+                        }
+                    }
+
+                } catch (err) {
+                    console.log(err.response.statusCode);
+                    if (err.response.statusCode !== 400) {
+                        return `FeelsDankMan Error: ${err.response.error}`;
+                    }
+                    uiduser = input[2];
 
                 }
-            } catch (err) {
-                console.log(err);
-                return `FeelsDankMan Error: ${err.response.data.error}`;
-
-            }
-        } else {
-            if (input[2].startsWith("@")) {
-                input[2] = input[2].substring(1);
-            }
-            uiduser = input[2];
-        }
-    }
-            const userID = await axios.get(`https://api.ivr.fi/twitch/resolve/${uiduser}`, {timeout: 10000});
-
-            if (isuid) {
-                if (userID.data.banned === true) {
-                    return `${uiduser} - cmonBruh [BANNED USER]`;
-                }
-    
-                return uiduser;
+                userID = await got(`https://api.ivr.fi/twitch/resolve/${input[2]}`, { timeout: 10000 }).json();
             } else {
-                if (userID.data.banned === true) {
-                    return `${userID.data.id} - cmonBruh [BANNED USER]`;
-                }
-    
-                return userID.data.id;
+                userID = await got(`https://api.ivr.fi/twitch/resolve/${uiduser}`, { timeout: 10000 }).json();
             }
+
+            if (response.length) {
+                if (userID.status === 404) {
+                    return response;
+                }
+                if (userID.banned === true) {
+                    response = `Multiple users found. ${response} | User-ID found: ${userID["id"]} - cmonBruh [BANNED USER]`
+                } else {
+                    response = `Multiple users found. ${response} | User-ID found: ${userID["id"]}`
+                }
+            } else {
+                if (userID.status === 404) {
+                    return "No users found";
+                }
+                if (userID.banned === true) {
+                    response = `User-ID found: ${userID.id} - cmonBruh [BANNED USER]`
+                } else {
+                    response = `User-ID found: ${userID.id}`
+                }
+            }
+
+            return response;
+
         } catch (err) {
             console.log(err);
-            if (err.name === "TimeoutError") {
-                return `FeelsDankMan Banphrase api error: ${err.name}`;
+            if (response.length) {
+                return response;
             }
-            return `FeelsDankMan Error: ${err.response.data.error}`;   
+            if (err.name === "TimeoutError") {
+                return `FeelsDankMan api error: ${err.name}`;
+            }
+            return `FeelsDankMan Error: ${err.response.error}`;
         }
     }
 }

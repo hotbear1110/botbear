@@ -5,6 +5,7 @@ const con = mysql.createConnection({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
+  connectTimeout: 10000,
 });
 
 con.on("error", (err) => {
@@ -35,7 +36,7 @@ async function res() {
   channelList.push(await getChannels());
   await channelList[0].forEach((i) => {
     if (i.username !== "hotbear1110") {
-    channelOptions.push(i.username);
+      channelOptions.push(i.username);
     }
   });
   console.log(`Imported channels from database: ${channelOptions}`);
@@ -45,10 +46,11 @@ res();
 
 let options = {
   options: {
-    debug: false,
+    joinInterval: 0,
   },
   connection: {
     secure: true,
+    reconnect: true,
   },
   identity: {
     username: process.env.TWITCH_USER,

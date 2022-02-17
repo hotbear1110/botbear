@@ -1,4 +1,4 @@
-const axios = require('axios');
+const got = require("got");
 const _ = require("underscore");
 const tools = require("../tools/tools.js");
 
@@ -19,7 +19,7 @@ module.exports = {
                 if (input[2].startsWith("@")) {
                     username = input[2].substring(1);
                 } else {
-                username = input[2];
+                    username = input[2];
                 }
             }
             let realchannel = channel;
@@ -27,10 +27,10 @@ module.exports = {
                 realchannel = input[3];
             }
 
-            const followcheck = await axios.get(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`, {timeout: 10000});
+            const followcheck = await got(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`, { timeout: 10000 }).json();
 
-            if (followcheck.data["followedAt"]) {
-                const ms = new Date().getTime() - Date.parse(followcheck.data["followedAt"]);
+            if (followcheck["followedAt"]) {
+                const ms = new Date().getTime() - Date.parse(followcheck["followedAt"]);
                 return `${username} has been following #${realchannel} for (${tools.humanizeDuration(ms)})`;
             }
             return `${username} does not follow #${realchannel}.`;
@@ -38,10 +38,10 @@ module.exports = {
             console.log(err);
             if (err.name) {
                 if (err.name === "TimeoutError") {
-                    return `FeelsDankMan Banphrase api error: ${err.name}`;
+                    return `FeelsDankMan api error: ${err.name}`;
                 }
             }
-            return `FeelsDankMan Error`;          
+            return `FeelsDankMan Error`;
         }
     }
 }

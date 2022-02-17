@@ -66,7 +66,7 @@ module.exports = {
             }
         } catch (err) {
             console.log(err);
-            return `FeelsDankMan Sql error: ${err.sqlMessage}`;        
+            return `FeelsDankMan Sql error: ${err.sqlMessage}`;
         }
     }
 }

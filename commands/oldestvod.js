@@ -1,4 +1,4 @@
-const axios = require('axios');
+const got = require("got");
 
 module.exports = {
     name: "oldestvod",
@@ -20,37 +20,37 @@ module.exports = {
                 realchannel = input[2];
             }
 
-            const userID = await axios.get(`https://api.ivr.fi/twitch/resolve/${realchannel}`, { timeout: 10000 });
+            const userID = await got(`https://api.ivr.fi/twitch/resolve/${realchannel}`, { timeout: 10000 }).json();
 
             if (userID.status === 404) {
                 return `Could not find user: "${realchannel}"`;
             }
 
-            let vodList = await axios.get(`https://api.twitch.tv/helix/videos?user_id=${userID.data.id}&type=archive&first=100`, {
+            let vodList = await got(`https://api.twitch.tv/helix/videos?user_id=${userID.data.id}&type=archive&first=100`, {
                 headers: {
                     'client-id': process.env.TWITCH_CLIENTID,
                     'Authorization': process.env.TWITCH_AUTH
                 },
                 timeout: 10000
-            });
+            }).json();
 
             vodList = vodList.data
 
-            if (!vodList.data.length) {
+            if (!vodList.length) {
                 return `That channel has no vods`;
-            } else if (vodList.data.length === 100) {
-                return `${vodList.data[vodList.data.length - 1].url}?t=0s (This is vod number 100, I can only go 100 vods back so this might not be the oldest vod.)`;
+            } else if (vodList.length === 100) {
+                return `${vodList[vodList.length - 1].url}?t=0s (This is vod number 100, I can only go 100 vods back so this might not be the oldest vod.)`;
             } else {
-                return `${vodList.data[vodList.data.length - 1].url}?t=0s (#${vodList.data.length - 1})`;
+                return `${vodList[vodList.length - 1].url}?t=0s (#${vodList.length - 1})`;
             }
         } catch (err) {
             console.log(err);
             if (err.name) {
                 if (err.name === "TimeoutError") {
-                    return `FeelsDankMan Banphrase api error: ${err.name}`;
+                    return `FeelsDankMan api error: ${err.name}`;
                 }
             }
-            return `FeelsDankMan Error: ${err.response.data.error}`;    
+            return `FeelsDankMan Error: ${err.response.data.error}`;
         }
     }
 }

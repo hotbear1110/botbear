@@ -1,5 +1,5 @@
 module.exports = {
-    name: "TriHard",
+    name: "trihard",
     ping: true,
     description: 'Says TriHard',
     permission: 100,

@@ -49,6 +49,9 @@ module.exports = {
                         return "That user has no points yet :)"
                     }
 
+                    if (username === user.username.toLowerCase()) {
+                        return `has ${User_trivia[0].points} trivia points in #${channel}`;
+                    }
                     return `${username} has ${User_trivia[0].points} trivia points in #${channel}`;
                     break;
 
@@ -60,32 +63,50 @@ module.exports = {
                         channel = input[3];
                     }
 
-                const Trivia_leaderboard = await tools.query(`SELECT * FROM MyPoints ORDER BY points DESC`);
+                    const Trivia_leaderboard = await tools.query(`SELECT * FROM MyPoints ORDER BY points DESC`);
 
-                let leaderboard = [];
+                    let leaderboard = [];
 
-                _.each(Trivia_leaderboard, async function (user) {
-                    let realuser = JSON.parse(user.username)
-                    if (realuser[1] === `#${channel}`) {
-                        leaderboard.push(`${realuser[0]}: ${user.points}`)
+                    _.each(Trivia_leaderboard, async function (user) {
+                        let realuser = JSON.parse(user.username)
+                        if (realuser[1] === `#${channel}`) {
+                            leaderboard.push(`${realuser[0]}: ${user.points}`)
+                        }
+                    })
+                    if (!leaderboard.length) {
+                        return "There are no users with points in this channel";
                     }
-                })
-                if (!leaderboard.length) {
-                    return "There are no users with points in this channel";
-                }
 
-                leaderboard = leaderboard.toString().replaceAll(',', '\n');
+                    leaderboard = leaderboard.toString().replaceAll(',', '\n');
 
-                let hastebinlist = await tools.makehastebin(`Trivia leaderboard for #${channel}:\n\n${leaderboard}`);
+                    let hastebinlist = await tools.makehastebin(`Trivia leaderboard for #${channel}:\n\n${leaderboard}`);
 
-                return `Trivia leaderboard for #${channel}: ${hastebinlist}.txt`;
+                    return `Trivia leaderboard for #${channel}: ${hastebinlist}`;
+                    break;
 
-                default: 
-                    return `Stuff available to check: permission, points, leaderboard`;
+                case "triviacooldown":
+                    if (input[3]) {
+                        if (input[3].startsWith("@")) {
+                            input[3] = input[3].substring(1);
+                        }
+                        channel = input[3];
+                    }
+
+                    const TriviaCD = await tools.query(`SELECT trivia_cooldowns FROM Streamers WHERE username=?`, [channel]);
+
+                    if (!TriviaCD.length) {
+                        return;
+                    }
+
+                    return `#${channel}'s trivia cooldown is ${TriviaCD[0].trivia_cooldowns / 1000}s`;
+                    break;
+
+                default:
+                    return `Stuff available to check: permission, points, leaderboard, triviacooldown`;
             }
         } catch (err) {
             console.log(err);
-            return `FeelsDankMan Sql error: ${err.sqlMessage}`;        
+            return `FeelsDankMan Sql error: ${err.sqlMessage}`;
         }
     }
 }

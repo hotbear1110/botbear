@@ -16,21 +16,15 @@ module.exports = {
             input = input.splice(2);
             let msg = input.toString().replaceAll(',', ' ');
 
-            if (channel === "forsen") {
-                channel = "botbear1110";
-            }
-
             msg.replace(regex.invisChar, '');
 
 
-            if (user.mod === false && perm < 2000 && msg.match(/[$|/|.|?|!|-]|\bkb\b|^\bmelon\b/g)) { // ignores $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
+            if (tools.isMod(user, channel) === false && perm < 2000 && msg.match(/[$|/|.|?|!|-]|\bkb\b|^\bmelon\b/g)) { // ignores $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
                 return;
             }
 
-            const masspinged = await tools.massping(msg.toLowerCase(), channel);
-
-            if (masspinged != "null") {
-                return "[MASS PING]";
+            if (perm < 2000 && msg.match(/(\.|\/)color/g)) {
+                return "cmonBruh don't change my color";
             }
 
             return msg;

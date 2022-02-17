@@ -1,4 +1,4 @@
-const axios = require('axios');
+const got = require("got");
 const _ = require("underscore");
 const tools = require("../tools/tools.js");
 
@@ -18,14 +18,14 @@ module.exports = {
                 if (input[2].startsWith("@")) {
                     input[2] = input[2].substring(1);
                 }
-                username = input[2];
+                username = input[2].toLowerCase();
             }
             let realchannel = channel;
             if (input[3]) {
                 realchannel = input[3];
             }
-            let vipcheck = await axios.get(`https://api.ivr.fi/twitch/modsvips/${realchannel}`, {timeout: 10000});
-            isvip = vipcheck.data["vips"];
+            let vipcheck = await got(`https://api.ivr.fi/twitch/modsvips/${realchannel}`, { timeout: 10000 }).json();
+            isvip = vipcheck["vips"];
             let vipresponse = "";
 
             await _.each(isvip, async function (viptatus) {
@@ -43,7 +43,7 @@ module.exports = {
         } catch (err) {
             console.log(err);
             if (err.name === "TimeoutError") {
-                return `FeelsDankMan Banphrase api error: ${err.name}`;
+                return `FeelsDankMan api error: ${err.name}`;
             }
             return `FeelsDankMan Error`;
         }

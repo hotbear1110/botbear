@@ -1,7 +1,7 @@
 module.exports = {
     name: "borpa",
     ping: true,
-    description: 'This command will responde with "borpaSpin"',
+    description: 'This command will respond with "borpaSpin"',
     permission: 100,
     category: "Random command",
     execute: async (channel, user, input, perm) => {
@@ -11,9 +11,9 @@ module.exports = {
             }
             return "borpaSpin";
 
-            } catch (err) {
+        } catch (err) {
             console.log(err);
-            return `FeelsDankMan Error`;        
+            return `FeelsDankMan Error`;
         }
     }
 }

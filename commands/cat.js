@@ -11,8 +11,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            const image = await got(`https://api.thecatapi.com/v1/images/search`, {timeout: 10000}).json();
-            console.log(image)
+            const image = await got(`https://api.thecatapi.com/v1/images/search`, { timeout: 10000 }).json();
 
             return `nymnAww ${image[0].url}`;
 
@@ -20,10 +19,10 @@ module.exports = {
             console.log(err);
             if (err.name) {
                 if (err.name === "TimeoutError") {
-                    return `FeelsDankMan Banphrase api error: ${err.name}`;
+                    return `FeelsDankMan api error: ${err.name}`;
                 }
             }
-            return `FeelsDankMan Error`;        
+            return `FeelsDankMan Error`;
         }
     }
 }

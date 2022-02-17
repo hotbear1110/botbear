@@ -44,9 +44,9 @@ function genre(category) {
 
 async function getTrivia(genre) {
     if (genre === undefined) {
-        return await got(`https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986`, {timeout: 10000}).json();
+        return await got(`https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986`, { timeout: 10000 }).json();
     } else {
-        return await got(`https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&category=${genre}`, {timeout: 10000}).json();
+        return await got(`https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&category=${genre}`, { timeout: 10000 }).json();
     }
 }
 
@@ -61,12 +61,17 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
+            let random = Math.floor(Math.random() * 100)
+            if (random === 69 && !input[3]) {
+                return [`(Trivia) [History] Question: What happened on June 4 1989 in China?`, "[ Nothing | Nothing | Nothing | Nothing ]", "Nothing"];
+            }
+
             function arrayShuffle(array) {
                 for (let index = array.length - 1; index > 0; index--) {
                     const newIndex = Math.floor(Math.random() * (index + 1));
                     [array[index], array[newIndex]] = [array[newIndex], array[index]];
                 }
-            
+
                 return array;
             }
 
@@ -98,19 +103,18 @@ module.exports = {
 
             answerToString = answerToString.replace(/.$/, '')
             answerToString = decodeURIComponent(answerToString);
-            
-            correct_answer = decodeURIComponent(correct_answer);
-            console.log(answerToString)
 
-            if (question.toLowerCase().includes("which of these") || question.toLowerCase().includes("which one of these") || question.toLowerCase().includes("which of the following") || question.toLowerCase().includes("all of the following")) {
-                return [`(Trivia) ${user.username} has started a trivia :) [${category}] Question: ${question} - [${answerToString}]`, "FeelsDankMan you already got the hint." , correct_answer];
+            correct_answer = decodeURIComponent(correct_answer);
+
+            if (question.toLowerCase().includes("which of these") || question.toLowerCase().includes("which one of these") || question.toLowerCase().includes("which of the following") || question.toLowerCase().includes("all of the following") || question.toLowerCase().includes("which one of the following")) {
+                return [`(Trivia) [${category}] Question: ${question} - [${answerToString}]`, "FeelsDankMan you already got the hint.", correct_answer];
             } else {
-                return [`(Trivia) ${user.username} has started a trivia :) [${category}] Question: ${question} | Do "bb hint" if you are nab and need a hint!`, answerToString , correct_answer];
+                return [`(Trivia) [${category}] Question: ${question}`, answerToString, correct_answer];
             }
         } catch (err) {
             console.log(err);
             if (err.name === "TimeoutError") {
-                return `FeelsDankMan Banphrase api error: ${err.name}`;
+                return `FeelsDankMan api error: ${err.name}`;
             }
             return `FeelsDankMan Error, ${err}`;
         }

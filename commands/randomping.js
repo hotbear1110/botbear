@@ -1,4 +1,4 @@
-const axios = require('axios');
+const got = require("got");
 
 module.exports = {
     name: "randomping",
@@ -11,18 +11,30 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            const randomuser = await axios.get(`https://decapi.me/twitch/random_user/${channel}`, {timeout: 10000});
+            let chatters = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 }).json();
 
-            return `:tf: 🔔 ${randomuser.data}`;
+            let chatterlist = [];
+            chatters = chatters["chatters"];
+            chatterlist = chatterlist.concat(chatters["broadcaster"]);
+            chatterlist = chatterlist.concat(chatters["vips"]);
+            chatterlist = chatterlist.concat(chatters["moderators"]);
+            chatterlist = chatterlist.concat(chatters["staff"]);
+            chatterlist = chatterlist.concat(chatters["admins"]);
+            chatterlist = chatterlist.concat(chatters["global_mods"]);
+            chatterlist = chatterlist.concat(chatters["viewers"]);
+
+            let number = Math.floor(Math.random() * chatterlist.length);
+
+            return `:tf: 🔔 ${chatterlist[number]}`;
 
         } catch (err) {
             console.log(err);
             if (err.name) {
                 if (err.name === "TimeoutError") {
-                    return `FeelsDankMan Banphrase api error: ${err.name}`;
+                    return `FeelsDankMan api error: ${err.name}`;
                 }
             }
-            return `FeelsDankMan Error`;     
+            return `FeelsDankMan Error`;
         }
     }
 }

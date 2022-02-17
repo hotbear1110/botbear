@@ -1,4 +1,10 @@
 const shell = require("child_process")
+const tools = require("../tools/tools.js");
+const _ = require("underscore");
+const { fchown } = require("fs");
+const got = require("got");
+let messageHandler = require("../tools/messageHandler.js").messageHandler;
+//const redisC = require("../tools/logger.js").redisC;
 
 module.exports = {
     name: "test",
@@ -10,35 +16,37 @@ module.exports = {
         try {
             if (module.exports.permission > perm) {
                 return;
+            }/*
+            if (input[2]) {
+                channel = input[2];
             }
+            const gameTimedata = await tools.query(`SELECT * FROM Streamers WHERE username=?`, [channel]);
+            if (!gameTimedata[0]) {
+                return "That streamer is not in my database";
+            }
+            let response = ""
+            let test = null;
 
-            const test = shell.execSync("free -h")
+            test = await new Promise(async function (resolve) {
+                redisC.get(`LOGS_${channel}`, async function (err, reply) {
+                response = JSON.parse(reply)
 
-            let total = test.toString().split(":")[1]
+                let jsonlength = Object.keys(response).length
+                let random = Math.floor(Math.random() * ((jsonlength + 1) - 0) + 0).toString();
+                console.log(random.toString())
+                let message = response[random]
 
-            total = total.split(" ")
+                const ms = new Date().getTime() - message.time_sent;
 
-            let used = total[18];
-            total = total[11];
-
-            used = used.slice(0, -2);
-            total = total.slice(0, -1);
-
-            const cpu = shell.execSync("mpstat")
-
-            let cpuused = cpu.toString().split("all")[1]
-            cpuused = cpuused.split(" ")[3]
-
-            let temp = shell.execSync("vcgencmd measure_temp");
-
-            temp = temp.split("=")[1];
-
-
-            return `CPU: ${cpuused}% - Memory: ${used}/${total}B - Temperature: ${temp}`;
+                resolve(`Random message from database: ${message.channel} ${message.user.username}: ${message["message"]} - (${tools.humanizeDuration(ms)} ago)`);
+            })
+        })
+*/
+            return;
 
         } catch (err) {
             console.log(err);
-            return `FeelsDankMan Error`;
+            return `FeelsDankMan Test Failed`;
         }
     }
 }

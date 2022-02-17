@@ -1,11 +1,12 @@
 const shell = require("child_process")
+const tools = require("../tools/tools.js");
 
 module.exports = {
     name: "botstats",
     ping: true,
     description: 'This command will give you some info about the bot',
     permission: 100,
-    category: "Bot command",
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {
@@ -29,14 +30,18 @@ module.exports = {
             let cpuused = cpu.toString().split("all")[1]
             cpuused = cpuused.split(" ")[4]
 
-            let temp = shell.execSync("vcgencmd measure_temp");
+            let temp = shell.execSync("sensors");
 
-            temp = temp.toString().split("=")[1];
+            temp = temp.toString().split("+")[1];
+            temp = temp.split(" ")[0]
 
             const commits = shell.execSync('git rev-list --all --count');
 
+            let streamerCount = await tools.query(`SELECT * FROM Streamers`);
 
-            return `CPU: ${cpuused}% - Memory: ${used}MB/${total}B - Temperature: ${temp} - Commits: ${commits} KKona`;
+
+
+            return `CPU: ${cpuused}% - Memory: ${used}MB/${total}B - Temperature: ${temp} - Commits: ${commits} KKona - Currently active in ${streamerCount.length} channels.`;
 
         } catch (err) {
             console.log(err);

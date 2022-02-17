@@ -7,8 +7,8 @@ const tools = require("./tools.js");
 const bannedPhrases = require("./bannedPhrases.js");
 const hastebin = require('better-hastebin');
 const humanize = require('humanize-duration');
-const axios = require('axios');
 const requireDir = require("require-dir");
+const regex = require('./regex.js');
 
 exports.query = (query, data = []) =>
     new Promise((resolve, reject) => {
@@ -23,7 +23,7 @@ exports.query = (query, data = []) =>
     });
 
 exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject) => {
-    this.channel = channel.replace("#", '');
+    this.channel = channel.substring(1);;
     this.data = await tools.query(`
           SELECT banphraseapi
           FROM Streamers
@@ -31,15 +31,16 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
         [this.channel]);
     this.banphraseapi = this.data[0].banphraseapi;
     try {
-        if (this.banphraseapi == null) {
-            this.banphraseapi = "https://pajlada.pajbot.com/api/v1/banphrases/test";
+        if (this.banphraseapi == null || this.banphraseapi == "NULL" || !this.banphraseapi) {
+            this.banphraseapi = "https://pajlada.pajbot.com";
         }
     } catch (err) {
         console.log(err);
         resolve(0);
     }
     try {
-        this.checkBanphrase = await got(this.banphraseapi, {
+        message = encodeURIComponent(message)
+        this.checkBanphrase = await got(`${this.banphraseapi}/api/v1/banphrases/test`, {
             method: "POST",
             body: "message=" + message,
             headers: {
@@ -57,16 +58,40 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
 
 exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reject) => {
     this.channel = channel.replace("#", '');
-    this.message = message.replaceAll(' ', '%20');
-    try {
-        this.checkBanphrase = await axios.get(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=${this.message}`, { timeout: 10000 });
-        if (this.checkBanphrase.data["banned"] == true) {
-            resolve(true);
+    this.message = encodeURIComponent(message).replaceAll("%0A", "%20");
+    this.data = await tools.query(`SELECT * FROM Streamers WHERE username=?`, [this.channel]);
+
+    this.userid = this.data[0].uid;
+    this.banphraseapi2 = this.data[0].banphraseapi2;
+    if (this.banphraseapi2 !== null) {
+        try {
+            this.checkBanphrase = await got(`${this.banphraseapi2}/api/channel/${this.userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
+            if (this.checkBanphrase["banned"] == true) {
+                resolve(true);
+            }
+            resolve(false);
+        } catch (err) {
+            console.log(err);
         }
-        resolve(false);
-    } catch (err) {
-        console.log(err);
-        resolve(0);
+    } else {
+        try {
+            this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/${this.userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
+            if (this.checkBanphrase["banned"] == true) {
+                resolve(true);
+            }
+            resolve(false);
+        } catch (err) {
+            try {
+                this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
+                if (this.checkBanphrase["banned"] == true) {
+                    resolve(true);
+                }
+                resolve(false);
+            } catch (err) {
+                console.log(err);
+                resolve(0);
+            }
+        }
     }
 
 });
@@ -82,7 +107,7 @@ exports.Cooldown = class Cooldown {
         if (!user['user-id']) {
             this.userId = user
         } else {
-        this.userId = user['user-id'];
+            this.userId = user['user-id'];
         }
         this.command = command;
         this.key = `${this.userId}_${this.command}`;
@@ -116,17 +141,30 @@ exports.Cooldown = class Cooldown {
     /**
      * @returns {String}: String formatted time left.
      */
-     formattedTime() {
+    formattedTime() {
         return exports.humanizeDuration(this.cooldown - (new Date().getTime() - cooldownTime[this.key]));
     }
 };
 
 exports.splitLine = (message, chars) => {
+    message = message.split(" ");
     let messages = [];
-    for (let i = 0; i < Math.ceil(message.length / chars); i++) {
-        const multipy = i + 1;
-        messages.push(message.substring(i * chars, multipy * chars));
+    let msglength = 0;
+    let tempmsg = [];
+    _.each(message, function (msg) {
+        msglength = msglength + msg.length + 1;
+        if (msglength > chars) {
+            messages.push(tempmsg.toString().replaceAll(",", " "));
+            tempmsg = [];
+            msglength = 0;
+        }
+        tempmsg.push(msg);
+
+    })
+    if (tempmsg.length) {
+        messages.push(tempmsg.toString().replaceAll(",", " "));
     }
+
     return messages;
 };
 
@@ -136,7 +174,6 @@ let hasteoptions = {
 
 exports.makehastebin = (message) =>
     hastebin(message, hasteoptions).then((url) => {
-        console.log(url);
         return url;
     });
 
@@ -223,10 +260,9 @@ exports.asciiLength = (message) => {
 
 };
 
-const aliasList = require('./aliases.json');
 
 exports.Alias = class Alias {
-    constructor(message) {
+    constructor(message, aliasList) {
         this.command = message
             .split(' ')
             .splice(1)
@@ -266,10 +302,16 @@ exports.getPerm = (user) => new Promise(async (resolve, reject) => {
 });
 
 exports.cookies = (user, command, channel) => new Promise(async (resolve, reject) => {
+    if (command[3] === "Leaderboard") {
+        resolve(0);
+        return;
+    }
     let users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [command[3]]);
     let Time = new Date().getTime();
     let RemindTime = Time + 7200000;
     let realuser = command[3];
+    let cdr = "no";
+
     if (!users.length) {
         users = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [command[2]]);
         realuser = command[2];
@@ -281,6 +323,12 @@ exports.cookies = (user, command, channel) => new Promise(async (resolve, reject
     if (!users.length) {
         resolve(0);
         return;
+    }
+
+    let cdrusers = await tools.query(`SELECT * FROM Cdr WHERE User=?`, [realuser]);
+
+    if (cdrusers.length && cdrusers[0].RemindTime === null) {
+        cdr = "yes";
     }
 
     let msg = command.toString().replaceAll(",", " ");
@@ -297,7 +345,6 @@ exports.cookies = (user, command, channel) => new Promise(async (resolve, reject
                 } else {
                     let cd = cookieCD["seconds_left"] * 1000;
                     cd = tools.humanizeDuration(cd);
-                    console.log(cd)
 
                     resolve(["CD", realuser, channel, cd]);
                     return;
@@ -313,6 +360,25 @@ exports.cookies = (user, command, channel) => new Promise(async (resolve, reject
         }
 
         await tools.query(`UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [response, channel, RemindTime, realuser]);
+        resolve([response, realuser, channel, cdr]);
+    }
+
+});
+
+exports.cdr = (user, command, channel) => new Promise(async (resolve, reject) => {
+    let users = await tools.query(`SELECT * FROM Cdr WHERE User=?`, [command[1].slice(0, -1)]);
+    let Time = new Date().getTime();
+    let RemindTime = Time + 10800000;
+    let realuser = command[1].slice(0, -1);
+    if (!users.length) {
+        resolve(0);
+        return;
+    }
+
+    if (user.username !== null) {
+        let response = "Confirmed";
+
+        await tools.query(`UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [response, channel, RemindTime, realuser]);
         resolve([response, realuser, channel]);
     }
 
@@ -326,15 +392,15 @@ exports.refreshCommands = async function () {
         let iscommand = 0;
         _.each(dbCommands, async function (dbcommand) {
             if (dbcommand.Name === command.name) {
-                if (dbcommand.Command !== command.description || dbcommand.Perm !== command.permission || dbcommand.Category !== command.category) {
-                    tools.query(`UPDATE Commands SET Command=?, Perm=?, Category=? WHERE Name=?`, [command.description, command.permission, command.category, command.name]);
+                if (dbcommand.Command !== command.description || dbcommand.Perm !== command.permission || dbcommand.Category !== command.category || dbcommand.Cooldown !== command.cooldown) {
+                    tools.query(`UPDATE Commands SET Command=?, Perm=?, Category=?, Cooldown=? WHERE Name=?`, [command.description, command.permission, command.category, command.cooldown, command.name]);
                 }
                 iscommand = 1;
                 return;
             }
         });
         if (iscommand === 0) {
-            await tools.query('INSERT INTO Commands (Name, Command, Perm, Category) values (?, ?, ?, ?)', [command.name, command.description, command.permission, command.category]);
+            await tools.query('INSERT INTO Commands (Name, Command, Perm, Category, Cooldown) values (?, ?, ?, ?, ?)', [command.name, command.description, command.permission, command.category, command.cooldown]);
         }
 
 
@@ -362,90 +428,140 @@ exports.nameChanges = new Promise(async (resolve, reject) => {
 
     _.each(streamers, async function (streamer) {
         try {
-        const userData = await axios.get(`https://api.twitch.tv/helix/users?id=${streamer.uid}`, {
-            headers: {
-                'client-id': process.env.TWITCH_CLIENTID,
-                'Authorization': process.env.TWITCH_AUTH
-            },
-            timeout: 10000
-        })
-        if (userData.data.data.length) {
-        realUser = userData.data.data[0];
-        realUser = realUser["login"];
+            const userData = await got(`https://api.twitch.tv/helix/users?id=${streamer.uid}`, {
+                headers: {
+                    'client-id': process.env.TWITCH_CLIENTID,
+                    'Authorization': process.env.TWITCH_AUTH
+                },
+                timeout: 10000
+            }).json();
+            if (userData.data.length) {
+                realUser = userData.data[0];
+                realUser = realUser["login"];
 
-        if (realUser !== streamer.username) {
-            tools.query(`UPDATE Streamers SET username=? WHERE uid=?`, [realUser, streamer.uid]);
+                if (realUser !== streamer.username) {
+                    tools.query(`UPDATE Streamers SET username=? WHERE uid=?`, [realUser, streamer.uid]);
 
-            changed.push([realUser, streamer.username]);
+                    changed.push([realUser, streamer.username]);
+                }
+            }
+        } catch (err) {
+            console.log(err);
         }
-    }
-    } catch (err) {
-        console.log(err);
-    }
     })
 
     resolve(changed);
 });
 
-exports.bannedStreamer = new Promise(async (resolve, reject) =>  {
+exports.bannedStreamer = new Promise(async (resolve, reject) => {
     let streamers = await tools.query(`SELECT * FROM Streamers`);
     let bannedUsers = [];
 
 
     _.each(streamers, async function (streamer) {
         try {
-    const isBanned = await axios.get(`https://api.ivr.fi/twitch/resolve/${streamer.username}`, {timeout: 10000});
+            const isBanned = await got(`https://api.ivr.fi/twitch/resolve/${streamer.username}`, { timeout: 10000 }).json();
 
-    if (isBanned.data.banned === true) {
-        await tools.query('DELETE FROM Streamers WHERE uid=?', [streamer.uid]);
+            if (isBanned.banned === true) {
+                await tools.query('DELETE FROM Streamers WHERE uid=?', [streamer.uid]);
 
-        bannedUsers.push(streamer.username);
-    }
-} catch (err) {
-    console.log(err);
-}
+                bannedUsers.push(streamer.username);
+            }
+        } catch (err) {
+            console.log(err);
+        }
     })
 
     resolve(bannedUsers);
 });
 
 exports.similarity = async function (s1, s2) {
-        var longer = s1;
-        var shorter = s2;
-        if (s1.length < s2.length) {
-          longer = s2;
-          shorter = s1;
-        }
-        var longerLength = longer.length;
-        if (longerLength == 0) {
-          return 1.0;
-        }
-        return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
-      }
+    var longer = s1;
+    var shorter = s2;
+    if (s1.length < s2.length) {
+        longer = s2;
+        shorter = s1;
+    }
+    var longerLength = longer.length;
+    if (longerLength == 0) {
+        return 1.0;
+    }
+    return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
+}
 
-      function editDistance(s1, s2) {
-        s1 = s1.toLowerCase();
-        s2 = s2.toLowerCase();
-      
-        var costs = new Array();
-        for (var i = 0; i <= s1.length; i++) {
-          var lastValue = i;
-          for (var j = 0; j <= s2.length; j++) {
+function editDistance(s1, s2) {
+    s1 = s1.toLowerCase();
+    s2 = s2.toLowerCase();
+
+    var costs = new Array();
+    for (var i = 0; i <= s1.length; i++) {
+        var lastValue = i;
+        for (var j = 0; j <= s2.length; j++) {
             if (i == 0)
-              costs[j] = j;
+                costs[j] = j;
             else {
-              if (j > 0) {
-                var newValue = costs[j - 1];
-                if (s1.charAt(i - 1) != s2.charAt(j - 1))
-                  newValue = Math.min(Math.min(newValue, lastValue),
-                    costs[j]) + 1;
-                costs[j - 1] = lastValue;
-                lastValue = newValue;
-              }
+                if (j > 0) {
+                    var newValue = costs[j - 1];
+                    if (s1.charAt(i - 1) != s2.charAt(j - 1))
+                        newValue = Math.min(Math.min(newValue, lastValue),
+                            costs[j]) + 1;
+                    costs[j - 1] = lastValue;
+                    lastValue = newValue;
+                }
             }
-          }
-          if (i > 0)
-            costs[s2.length] = lastValue;
         }
-        return costs[s2.length];
-      }
+        if (i > 0)
+            costs[s2.length] = lastValue;
+    }
+    return costs[s2.length];
+}
+
+/**
+ * @author JoachimFlottorp
+ * @param {ChatUserstate} username User variable tmi.js creates. 
+ * @param {string} channel Channel to check for moderator status
+ * @returns {boolean} true | false | If is mod
+ */
+exports.isMod = function (user, channel) {
+    channel = channel[0] === '#' ? channel.substr(1) : channel;
+    const isMod = user.mod || user['user-type'] === 'mod';
+    const isBroadcaster = channel === user.username;
+    const isModUp = isMod || isBroadcaster;
+    return isModUp
+}
+
+exports.checkAllBanphrases = async function (message, channel) {
+    const banPhrase = await tools.banphrasePass(message, channel);
+
+    if (banPhrase.banned) {
+        return `[Banphrased] cmonBruh`;
+    }
+
+    const banPhraseV2 = await tools.banphrasePassV2(message, channel);
+
+    if (banPhraseV2 == true) {
+        return `[Banphrased] cmonBruh`;
+    }
+
+    if (banPhrase === 0) {
+        return "FeelsDankMan banphrase error!!";
+    }
+
+    const notabanPhrase = await tools.notbannedPhrases(message.toLowerCase());
+
+    if (notabanPhrase != `null`) {
+        return notabanPhrase;
+    }
+
+    const badWord = message.match(regex.racism);
+    if (badWord != null) {
+        return `[Bad word detected] cmonBruh`;
+    }
+
+    const reallength = await tools.asciiLength(message);
+    if (reallength > 30) {
+        return "[Too many emojis]";
+    }
+
+    return message;
+}

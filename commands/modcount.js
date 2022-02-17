@@ -1,4 +1,4 @@
-const axios = require('axios');
+const got = require("got");
 const _ = require("underscore");
 const tools = require("../tools/tools.js");
 
@@ -21,20 +21,20 @@ module.exports = {
                 }
                 username = input[2];
             }
-            let modcount = await axios.get(`https://modlookup.3v.fi/api/user-totals/${username}`, {timeout: 10000});
-            ismod = modcount.data["total"];
+            let modcount = await got(`https://modlookup.3v.fi/api/user-totals/${username}`, { timeout: 10000 }).json();
+            ismod = modcount["total"];
             if (ismod === 0) {
                 return `That user is not a mod in any channel :)`;
             }
-            return `That user is a m OMEGALUL d in ${ismod} channel('s)`;
+            return `That user is a M OMEGALUL D in ${ismod} channel('s)`;
         } catch (err) {
             console.log(err);
             if (err.name) {
                 if (err.name === "TimeoutError") {
-                    return `FeelsDankMan Banphrase api error: ${err.name}`;
+                    return `FeelsDankMan api error: ${err.name}`;
                 }
             }
-            return `FeelsDankMan Error`;    
+            return `FeelsDankMan Error`;
         }
     }
 }

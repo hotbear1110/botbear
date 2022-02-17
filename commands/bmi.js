@@ -14,8 +14,8 @@ module.exports = {
                 return `Format should be: "bb bmi weight(kg) height(cm)"`;
             }
             let text = "";
-            let bmi = (input[3]**2)/10000;
-            bmi = input[2]/bmi;
+            let bmi = (input[3] ** 2) / 10000;
+            bmi = input[2] / bmi;
 
             if (bmi <= 18.5) {
                 text = "Underweight";
@@ -39,7 +39,7 @@ module.exports = {
 
         } catch (err) {
             console.log(err);
-            return `FeelsDankMan Error`;        
+            return `FeelsDankMan Error`;
         }
     }
 }

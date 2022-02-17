@@ -1,6 +1,6 @@
 require('dotenv').config();
 const tools = require("../tools/tools.js");
-const axios = require('axios');
+const got = require("got");
 
 module.exports = {
     name: "myping",
@@ -22,20 +22,18 @@ module.exports = {
                         return 'You should remove your "global" game notification, by doing "bb remove game" first';
                     }
                     input.splice(0, 3);
-                    console.log(input.toString());
                     let emote = input.toString().replaceAll(',', ' ');
-                    console.log(emote);
-                    let realgame = await axios.get(`https://api.twitch.tv/helix/games?name=${emote}`, {
+                    let realgame = await got(`https://api.twitch.tv/helix/games?name=${emote}`, {
                         headers: {
                             'client-id': process.env.TWITCH_CLIENTID,
                             'Authorization': process.env.TWITCH_AUTH
                         },
                         timeout: 10000
-                    });
+                    }).json();
                     if (!realgame.data.data[0]) {
                         return `"${emote}", is either not a twitch category, or it's not specific enough!`;
                     }
-                    realgame = realgame.data.data[0];
+                    realgame = realgame.data[0];
                     realgame = realgame["name"];
 
                     let userchannel = [];
@@ -62,7 +60,6 @@ module.exports = {
                     }
                     game_list.push(realgame);
                     game_list = JSON.stringify(game_list);
-                    console.log(game_list);
 
                     await tools.query(`UPDATE MyPing SET game_pings=? WHERE username=?`, [game_list, `[${userchannel}]`])
                     return `The game ${realgame} has been added to your ping list :) You can do 'bb myping list' to see your list.`;
@@ -83,17 +80,17 @@ module.exports = {
                     }
                     input.splice(0, 3);
                     let emote2 = input.toString().replaceAll(',', ' ');
-                    let realgame2 = await axios.get(`https://api.twitch.tv/helix/games?name=${emote2}`, {
+                    let realgame2 = await got(`https://api.twitch.tv/helix/games?name=${emote2}`, {
                         headers: {
                             'client-id': process.env.TWITCH_CLIENTID,
                             'Authorization': process.env.TWITCH_AUTH
                         },
                         timeout: 10000
-                    });
+                    }).json();
                     if (!realgame2.data.data[0]) {
                         return `"${input}", is either not a twitch category, or it's not specific enough!`;
                     }
-                    realgame2 = realgame2.data.data[0];
+                    realgame2 = realgame2.data[0];
                     realgame2 = realgame2["name"];
 
 
@@ -122,7 +119,6 @@ module.exports = {
 
                     }
                     game_list2 = JSON.stringify(game_list2);
-                    console.log(game_list2);
 
                     await tools.query(`UPDATE MyPing SET game_pings=? WHERE username=?`, [game_list2, `[${userchannel2}]`])
                     return `The game ${realgame2} has been removed from your ping list :)`;
@@ -158,25 +154,26 @@ module.exports = {
                         if (input[3]) {
                             user = `${input[3]}'s'`;
                         }
-                        
+
                         let hastebinlist = await tools.makehastebin(`${username}'s game list, from channel: ${channel}\n\nGame list:\n${listgames}`);
 
                         return `${user} Game list: ${hastebinlist}.txt`;
                         break;
                     }
+                default: `bb myping [add/remove]"(will add/remove a game from your ping list), "bb myping list"(will give you a list of the games you will get notified by)`;
             }
 
         } catch (err) {
             console.log(err);
             if (err.name) {
                 if (err.name === "TimeoutError") {
-                    return `FeelsDankMan Banphrase api error: ${err.name}`;
+                    return `FeelsDankMan api error: ${err.name}`;
                 }
             }
             if (err.sqlMessage) {
                 return `FeelsDankMan Sql error: ${err.sqlMessage}`;
             }
-            return `FeelsDankMan Error: ${err.response.data.error}`;    
+            return `FeelsDankMan Error: ${err.response.data.error}`;
         }
     }
 }

@@ -1,5 +1,5 @@
 require('dotenv').config();
-const axios = require('axios');
+const got = require("got");
 const tools = require("../tools/tools.js");
 const date = require('date-and-time');
 
@@ -18,26 +18,25 @@ module.exports = {
             vodid = vodid[vodid.length - 1];
 
 
-            const response = await axios.get(`https://api.twitch.tv/helix/videos?id=${vodid}`, {
+            const response = await got(`https://api.twitch.tv/helix/videos?id=${vodid}`, {
                 headers: {
                     'client-id': process.env.TWITCH_CLIENTID,
                     'Authorization': process.env.TWITCH_AUTH
                 },
                 timeout: 10000
-            })
+            }).json();
 
-            let starttime = response.data.data[0].created_at;
+            let starttime = response.data[0].created_at;
 
             let giventime = starttime.split("T");
             giventime = `${giventime[0]}T${input[3]}:00Z`;
             giventime = new Date(giventime);
 
             starttime = new Date(starttime);
-            starttime = date.addHours(starttime, 2);
+            starttime = date.addHours(starttime, 1);
 
 
-            let duration = response.data.data[0].duration;
-            console.log(duration)
+            let duration = response.data[0].duration;
 
             let hours = "";
 
@@ -74,7 +73,6 @@ module.exports = {
 
             let newgiventime = false;
             let otherdate = false;
-            console.log(date.subtract(endtime, starttime).toDays())
 
             if (date.subtract(endtime, starttime).toDays() > 0) {
                 newgiventime = date.addDays(giventime, 1);
@@ -105,11 +103,6 @@ module.exports = {
                 return `${input[3]} is before stream start.`;
             }
 
-            console.log(giventime, starttime)
-
-
-
-
             const ms = Date.parse(giventime) - Date.parse(starttime)
 
 
@@ -124,7 +117,7 @@ module.exports = {
             console.log(err);
             if (err.name) {
                 if (err.name === "TimeoutError") {
-                    return `FeelsDankMan Banphrase api error: ${err.name}`;
+                    return `FeelsDankMan api error: ${err.name}`;
                 }
             }
             return `FeelsDankMan Error: ${err.response.data.error}`;

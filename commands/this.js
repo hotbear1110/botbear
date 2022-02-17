@@ -1,10 +1,10 @@
 module.exports = {
-    name: "THIS",
+    name: "this",
     ping: true,
     description: 'This command sends a THIS in the chat. peepoPog  WoW !',
     permission: 100,
-    category: "Cool command",
-    execute: async (channel, user, input, perm) => { 
+    category: "Random command",
+    execute: async (channel, user, input, perm) => {
         try {
 
             return "THIS";
@@ -15,5 +15,5 @@ module.exports = {
         }
 
 
-    } 
+    }
 }
