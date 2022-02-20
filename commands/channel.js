@@ -68,7 +68,7 @@ module.exports = {
                         }).catch((err) => {
                             console.log(err);
                         });
-                        cc.say(`#${username}`, `👋 nymnDank Hello! I am botbear1110, I was added to the channel by @${user.username}. Here is a list my commands: https://hotbear.xyz/`);
+                        cc.say(`#${username}`, `👋 nymnDank Hello! I am botbear1110, I was added to the channel by @${user.username}. Here is a list my commands: https://hotbear.org/`);
                         return `Joined channel: ${username}`;
 
                     }

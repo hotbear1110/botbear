@@ -23,7 +23,7 @@ module.exports = {
                     disabledList = JSON.parse(disabledList[0].disabled_commands);
 
                     if (!disabledList.length) {
-                        return `This channel has all commands enabled: https://hotbear.xyz/`;
+                        return `This channel has all commands enabled: https://hotbear.org/`;
                     }
 
                     let commandList = await tools.query(`

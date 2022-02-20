@@ -12,7 +12,7 @@ module.exports = {
                 return;
             }
             if (!input[2]) {
-                return 'List of commands: https://hotbear.xyz/ - If you want help with a command, write: "bb help *command*"';
+                return 'List of commands: https://hotbear.org/ - If you want help with a command, write: "bb help *command*"';
             }
 
             let aliasList = await tools.query(`SELECT Aliases FROM Aliases`);
