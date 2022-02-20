@@ -50,7 +50,7 @@ module.exports = {
 
                 }
             }
-            return `List of commands: https://hotbear.xyz/`;
+            return `List of commands: https://hotbear.org/`;
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Sql error: ${err.sqlMessage}`;
