@@ -32,9 +32,9 @@ module.exports = {
                     if (userData.length) {
                         uiduser = userData.data[0];
                         uiduser = uiduser["login"];
-                        const uidBanned = await got(`https://api.ivr.fi/twitch/resolve/${uiduser}`, { timeout: 10000 }).json();
+                        const uidBanned = await got(`https://api.ivr.fi/v2/twitch/user/${uiduser}`, { timeout: 10000 }).json();
                         if (uidBanned.banned === true) {
-                            response = `Username found: ${uiduser} - cmonBruh [BANNED USER]`;
+                            response = `Username found: ${uiduser} - cmonBruh [BANNED USER] | Type: ${uidBanned.banReason}`;
                         } else {
                             response = `Username found: ${uiduser}`;
                         }
@@ -48,9 +48,9 @@ module.exports = {
                     uiduser = input[2];
 
                 }
-                userID = await got(`https://api.ivr.fi/twitch/resolve/${input[2]}`, { timeout: 10000 }).json();
+                userID = await got(`https://api.ivr.fi/v2/twitch/user/${input[2]}`, { timeout: 10000 }).json();
             } else {
-                userID = await got(`https://api.ivr.fi/twitch/resolve/${uiduser}`, { timeout: 10000 }).json();
+                userID = await got(`https://api.ivr.fi/v2/twitch/user/${uiduser}`, { timeout: 10000 }).json();
             }
 
             if (response.length) {
@@ -58,7 +58,7 @@ module.exports = {
                     return response;
                 }
                 if (userID.banned === true) {
-                    response = `Multiple users found. ${response} | User-ID found: ${userID["id"]} - cmonBruh [BANNED USER]`
+                    response = `Multiple users found. ${response} | User-ID found: ${userID["id"]} - cmonBruh [BANNED USER] | Type: ${userID.banReason}`
                 } else {
                     response = `Multiple users found. ${response} | User-ID found: ${userID["id"]}`
                 }
@@ -67,7 +67,7 @@ module.exports = {
                     return "No users found";
                 }
                 if (userID.banned === true) {
-                    response = `User-ID found: ${userID.id} - cmonBruh [BANNED USER]`
+                    response = `User-ID found: ${userID.id} - cmonBruh [BANNED USER] | Type: ${userID.banReason}`
                 } else {
                     response = `User-ID found: ${userID.id}`
                 }
