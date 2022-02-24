@@ -222,8 +222,9 @@ exports.notbannedPhrases = (message) => {
 
 exports.massping = (message, channel) => new Promise(async (resolve, reject) => {
     channel = channel.replace("#", '');
-    let dblist = "filler " + message.slice()
-        .toString().replace(/(^|[@#.,:;\s]+)|([?!.,:;\s]|$)/gm, " ")
+    let dblist = "filler " + message.slice();
+    dblist = dblist.toString()
+        .replace(/(^|[@#.,:;\s]+)|([?!.,:;\s]|$)/gm, " ")
         .split(" ")
         .filter(String);
 
