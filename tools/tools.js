@@ -222,24 +222,20 @@ exports.notbannedPhrases = (message) => {
 
 exports.massping = (message, channel) => new Promise(async (resolve, reject) => {
     channel = channel.replace("#", '');
-    let dblist = message.slice();
-
-    dblist = "filler " + dblist;
-    dblist = dblist.toString().replace(/(^|[@#.,:;\s]+)|([?!.,:;\s]|$)/gm, " ");
-    dblist = dblist.split(" ");
-    dblist = dblist.filter(String);
+    let dblist = "filler " + message.slice()
+        .toString().replace(/(^|[@#.,:;\s]+)|([?!.,:;\s]|$)/gm, " ")
+        .split(" ")
+        .filter(String);
 
     const dbpings = await tools.query(`SELECT username FROM Users WHERE ` + Array(dblist.length).fill("username = ?").join(" OR "), dblist);
 
     let dbnames = dbpings.map(a => a.username);
     let users = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 }).json();
-    let userlist = users.chatters["broadcaster"];
-    userlist = userlist.concat(users.chatters["vips"]);
-    userlist = userlist.concat(users.chatters["moderators"]);
-    userlist = userlist.concat(users.chatters["staff"]);
-    userlist = userlist.concat(users.chatters["admins"]);
-    userlist = userlist.concat(users.chatters["global_mods"]);
-    userlist = userlist.concat(users.chatters["viewers"]);
+
+    let userlist = [];
+    for (const [_, values] of Object.entries(users.chatters)) {
+        userlist.concat(values);
+    };
 
     userlist = userlist.concat(dbnames.filter(x => !userlist.includes(x)));
 
