@@ -221,6 +221,18 @@ exports.notbannedPhrases = (message) => {
 };
 
 exports.massping = (message, channel) => new Promise(async (resolve, reject) => {
+    channel = channel.replace("#", '');
+    let dblist = message.slice();
+
+    dblist = "filler " + dblist;
+    dblist = dblist.toString().replace(/(^|[@#.,:;\s]+)|([?!.,:;\s]|$)/gm, " ");
+    dblist = dblist.split(" ");
+    dblist = dblist.filter(String);
+
+    const dbpings = await tools.query(`SELECT username FROM Users WHERE ` + Array(dblist.length).fill("username = ?").join(" OR "), dblist);
+
+    let dbnames = dbpings.map(a => a.username);
+    console.log(channel)
     let users = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 }).json();
     let userlist = users.chatters["broadcaster"];
     userlist = userlist.concat(users.chatters["vips"]);
@@ -230,8 +242,10 @@ exports.massping = (message, channel) => new Promise(async (resolve, reject) => 
     userlist = userlist.concat(users.chatters["global_mods"]);
     userlist = userlist.concat(users.chatters["viewers"]);
 
-    let pings = 0;
+    userlist = userlist.concat(dbnames.filter(x => !userlist.includes(x)));
 
+    let pings = 0;
+    console.log("2")
     _.each(userlist, async function (user) {
         if (message.includes(user)) {
             pings++;
@@ -561,6 +575,11 @@ exports.checkAllBanphrases = async function (message, channel) {
     const reallength = await tools.asciiLength(message);
     if (reallength > 30) {
         return "[Too many emojis]";
+    }
+
+    const massping = await tools.massping(message, channel);
+    if (massping === "[MASS PING]") {
+        return "[MASS PING]";
     }
 
     return message;
