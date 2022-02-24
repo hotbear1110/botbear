@@ -232,7 +232,6 @@ exports.massping = (message, channel) => new Promise(async (resolve, reject) => 
     const dbpings = await tools.query(`SELECT username FROM Users WHERE ` + Array(dblist.length).fill("username = ?").join(" OR "), dblist);
 
     let dbnames = dbpings.map(a => a.username);
-    console.log(channel)
     let users = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 }).json();
     let userlist = users.chatters["broadcaster"];
     userlist = userlist.concat(users.chatters["vips"]);
@@ -245,7 +244,6 @@ exports.massping = (message, channel) => new Promise(async (resolve, reject) => 
     userlist = userlist.concat(dbnames.filter(x => !userlist.includes(x)));
 
     let pings = 0;
-    console.log("2")
     _.each(userlist, async function (user) {
         if (message.includes(user)) {
             pings++;
