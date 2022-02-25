@@ -50,7 +50,7 @@ setInterval(async function () {
                         if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
                             if (users.length) {
                                 _.each(userlist, function (msg, i) {
-                                    new messageHandler(`#${proxychannel}`, `/me ${stream.liveemote} ${stream.username[0].toUpperCase()}\u{E0000}${stream.username.toUpperCase().slice(1)} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`).newMessage();
+                                    new messageHandler(`#${proxychannel}`, `/me ${stream.liveemote} ${stream.username[0].toUpperCase()}\u{E0000}${stream.username.toUpperCase().slice(1)} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`, true).newMessage();
                                 });
                             }
                         }
@@ -62,7 +62,7 @@ setInterval(async function () {
                         if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
                             if (users.length) {
                                 _.each(userlist, function (msg, i) {
-                                    new messageHandler(`#${proxychannel}`, `/me ${stream.offlineemote} ${stream.username[0].toUpperCase()}\u{E0000}${stream.username.toUpperCase().slice(1)} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`).newMessage();
+                                    new messageHandler(`#${proxychannel}`, `/me ${stream.offlineemote} ${stream.username[0].toUpperCase()}\u{E0000}${stream.username.toUpperCase().slice(1)} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`, true).newMessage();
                                 });
                             }
                         }
@@ -118,7 +118,7 @@ setInterval(async function () {
                         if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110") {
                             if (titleusers.length) {
                                 _.each(titleuserlist, function (msg, i) {
-                                    new messageHandler(`#${proxychannel2}`, `/me ${stream.titleemote} NEW TITLE ! ${stream.titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`).newMessage();
+                                    new messageHandler(`#${proxychannel2}`, `/me ${stream.titleemote} NEW TITLE ! ${stream.titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`, true).newMessage();
                                 });
                             }
                         }
@@ -136,7 +136,7 @@ setInterval(async function () {
                         if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110") {
                             if (gameusers.length) {
                                 _.each(gameuserlist, function (msg, i) {
-                                    new messageHandler(`#${proxychannel2}`, `/me ${stream.gameemote} NEW GAME ! ${stream.gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`).newMessage();
+                                    new messageHandler(`#${proxychannel2}`, `/me ${stream.gameemote} NEW GAME ! ${stream.gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`, true).newMessage();
                                 });
                             }
                         }
