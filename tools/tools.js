@@ -234,12 +234,10 @@ exports.massping = (message, channel) => new Promise(async (resolve, reject) => 
 
     let userlist = [];
     for (const [_, values] of Object.entries(users.chatters)) {
-        userlist.concat(values);
+        userlist = userlist.concat(values);
     };
 
-    userlist = userlist.concat(dbnames.filter(x => !userlist.includes(x)));
-
-    let pings = 0;
+    let pings = dbnames.length;
     _.each(userlist, async function (user) {
         if (message.includes(user)) {
             pings++;
