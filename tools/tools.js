@@ -238,7 +238,9 @@ exports.massping = (message, channel) => new Promise(async (resolve, reject) => 
         userlist = userlist.concat(values);
     };
 
-    let pings = dbnames.length;
+    userlist = userlist.concat(dbnames.filter(x => !userlist.includes(x)));
+
+    let pings = 0;
     _.each(userlist, async function (user) {
         if (message.includes(user)) {
             pings++;
