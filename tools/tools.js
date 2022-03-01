@@ -546,14 +546,14 @@ exports.checkAllBanphrases = async function (message, channel) {
         return `[Banphrased] cmonBruh`;
     }
 
+    if (banPhrase === 0) {
+        return "FeelsDankMan banphrase error!!";
+    }
+
     const banPhraseV2 = await tools.banphrasePassV2(message, channel);
 
     if (banPhraseV2 == true) {
         return `[Banphrased] cmonBruh`;
-    }
-
-    if (banPhrase === 0) {
-        return "FeelsDankMan banphrase error!!";
     }
 
     const notabanPhrase = await tools.notbannedPhrases(message.toLowerCase());
