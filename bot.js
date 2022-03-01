@@ -21,6 +21,11 @@ cc.on("pong", async (latency) => {
 
 cc.connect();
 
+cc.on("notice", (channel, msgid, message) => {
+    // Do your stuff.
+    console.log(channel, msgid, message)
+});
+
 let uptime = new Date().getTime();
 
 let activetrivia = {};
