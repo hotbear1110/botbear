@@ -32,7 +32,7 @@ module.exports = {
 
             let subcheck = await got(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`, { timeout: 10000 }).json();
             if (subcheck["hidden"]) {
-                return "That channel has their sub status hidden"
+                return "That user/channel has their sub status hidden"
             }
             if (subcheck["subscribed"] == false) {
                 let oldsub = subcheck["cumulative"];
