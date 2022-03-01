@@ -41,7 +41,6 @@ module.exports = {
                     }
 
                 } catch (err) {
-                    console.log(err.response.statusCode);
                     if (err.response.statusCode !== 400) {
                         return `FeelsDankMan Error: ${err.response.error}`;
                     }
@@ -82,6 +81,9 @@ module.exports = {
             }
             if (err.name === "TimeoutError") {
                 return `FeelsDankMan api error: ${err.name}`;
+            }
+            if (err.response.statusCode === 404) {
+                return `That user does not exist`;
             }
             return `FeelsDankMan Error: ${err.response.error}`;
         }
