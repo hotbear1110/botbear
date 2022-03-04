@@ -33,12 +33,10 @@ exports.messageHandler = class Cooldown {
             }
         }
 
-        /*
         if (!this.noBanphrase) {
             this.message = await tools.checkAllBanphrases(this.message, this.channel);
         }
 
-        */
         if (talkedRecently[this.channel]) {
             this.noCD = 0
             let tempList = talkedRecently[this.channel]

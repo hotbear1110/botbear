@@ -21,11 +21,18 @@ cc.on("pong", async (latency) => {
 
 cc.connect();
 
+/*
+cc.on("notice", (channel, msgid, message) => {
+    // Do your stuff.
+    console.log(channel, msgid, message)
+});
+*/
+
 let uptime = new Date().getTime();
 
 let activetrivia = {};
 let triviaanswer = {};
-let triviints = {};
+let triviaHints = {};
 let triviaHints2 = {};
 let gothint = {};
 let gothint2 = {};
@@ -40,10 +47,6 @@ async function onMessageHandler(channel, user, msg, self) {
     msg = msg.replaceAll(regex.invisChar, "");
     msg = msg.replaceAll("  ", "");
 
-    if (msg.toLowerCase() === "bb ping") {
-        new messageHandler(channel, `FeelsDankMan Bot is broken, will fix it when I have time :/ Prob this weekend.`).newMessage();
-    }
-    return;
     /*
     const userList = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username]);
 
