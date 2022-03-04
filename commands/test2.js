@@ -1,44 +1,33 @@
-const shell = require("child_process")
 const tools = require("../tools/tools.js");
-const _ = require("underscore");
-const { fchown } = require("fs");
-const got = require("got");
-const { indexOf } = require("underscore");
-let messageHandler = require("../tools/messageHandler.js").messageHandler;
 
 module.exports = {
     name: "test2",
     ping: true,
-    description: 'This is a dev command for testing purposes',
-    permission: 2000,
-    category: "Dev command",
+    description: 'This command will give you the number of 3rd party emotes, that are currently activated in the chat.',
+    permission: 100,
+    category: "Info command",
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {
                 return;
             }
-            let arraytest = ["nymn", "yabbe", "forsen", "xqcow"]
-            input = input.splice(2);
-            input.unshift("filler")
-            console.log(input.toString())
-            input = input.toString().replace(/(^|[@#.,:;\s]+)|([?!.,:;\s]|$)/gm, " ");
-            input = input.split(" ");
-            input = input.filter(String);
-            console.log(input)
-            const test = await tools.query(`SELECT username FROM Users WHERE ` + Array(input.length).fill("username = ?").join(" OR "), input);
-
-            let result = test.map(a => a.username);
-
-            let intersection = result.concat(arraytest.filter(x => !result.includes(x)));
+            const streamer = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+            let emotes = JSON.parse(streamer[0].emote_list);
 
 
-            console.log(intersection)
-            console.log(test)
-            return;
+            let seventvcount = emotes.filter(emote => emote.includes(`["7tv"]`) || emote.includes("7tv") || emote.includes("7tv_ZERO_WIDTH"));
+            let bttvccount = emotes.filter(emote => emote.includes("bttv"));
+            let ffzcount = emotes.filter(emote => emote.includes("ffz"));
 
+            if (!emotes.length) {
+                return `there are no 3rd party emotes in this channel.`
+            }
+            else {
+                return `There are ${emotes.length} 3rd party emotes in this channel | BTTV: ${bttvccount.length} FFZ: ${ffzcount.length} 7TV: ${seventvcount.length}`
+            }
         } catch (err) {
             console.log(err);
-            return `FeelsDankMan Test Failed`;
+            return `FeelsDankMan Sql error: ${err.sqlMessage}`;
         }
     }
 }
