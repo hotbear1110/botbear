@@ -13,7 +13,7 @@ module.exports = {
             }
             const streamer = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
             let emotes = JSON.parse(streamer[0].emote_list);
-s
+
             if (!emotes.length) {
                 return `there are no 3rd party emotes in this channel.`
             }
