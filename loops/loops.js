@@ -357,20 +357,41 @@ setInterval(async function () {
                 let disabledCommands = JSON.parse(stream[0].disabled_commands)
 
                 await tools.query(`UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
-                if (!disabledCommands.includes("cookie")) {
-                    if (stream[0].islive === 0 && User.Mode === 0) {
+                if (User.Mode === 0) {
+                    if (disabledCommands.includes("cookie")) {
+                        new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
+
+                    } else if (stream[0].islive === 1) {
+                        new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+
+                    } else {
                         new messageHandler(User.Channel, `${User.User} Reminder to eat your cookie nymnOkay`).newMessage();
-                    } else if (User.Mode === 1 || stream[0].islive === 1) {
-                        if (stream[0].islive === 1) {
-                            new whisperHandler(User.User, `Reminder to eat your cookie nymnOkay - This reminder is from a channel that is live[${User.Channel}]`).newWhisper();
-                        } else {
-                            new whisperHandler(User.User, `Reminder to eat your cookie nymnOkay`).newWhisper();
-                        }
+                    }
+
+                } else if (User.Mode === 1) {
+                    if (disabledCommands.includes("cookie")) {
+                        new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
+
+                    } else if (stream[0].islive === 1) {
+                        new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+
+                    } else {
+                        new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay`).newMessage();
+
+                    }
+                } else if (User.Mode === 2) {
+                    if (disabledCommands.includes("cookie")) {
+                        new messageHandler(`#botbear1110`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
+
+                    } else if (stream[0].islive === 1) {
+                        new messageHandler(`#botbear1110`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+
+                    } else {
+                        new messageHandler(`#botbear1110`, `${User.User} Reminder to eat your cookie nymnOkay`).newMessage();
                     }
                 }
             }
         }
-
     })
 
 }, 10000);
@@ -385,15 +406,38 @@ setInterval(async function () {
             let disabledCommands = JSON.parse(stream[0].disabled_commands)
 
             await tools.query(`UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
-            if (!disabledCommands.includes("cdr")) {
-                if (stream[0].islive === 0 && User.Mode === 0) {
-                    new messageHandler(User.Channel, `${User.User} Your cookie cdr is ready.`).newMessage();
-                } else if (User.Mode === 1 || stream[0].islive === 1) {
-                    if (stream[0].islive === 1) {
-                        new whisperHandler(User.User, `Your cookie cdr is ready - This reminder is from a channel that is live[${User.Channel}]`).newWhisper();
-                    } else {
-                        new whisperHandler(User.User, `Your cookie cdr is ready.`).newWhisper();
-                    }
+
+            if (User.Mode === 0) {
+                if (disabledCommands.includes("cdr")) {
+                    new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
+
+                } else if (stream[0].islive === 1) {
+                    new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+
+                } else {
+                    new messageHandler(User.Channel, `${User.User} Your cookie cdr is ready`).newMessage();
+                }
+
+            } else if (User.Mode === 1) {
+                if (disabledCommands.includes("cookie")) {
+                    new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that has disabled cdr reminders[${User.Channel}]`).newMessage();
+
+                } else if (stream[0].islive === 1) {
+                    new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+
+                } else {
+                    new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready`).newMessage();
+
+                }
+            } else if (User.Mode === 2) {
+                if (disabledCommands.includes("cdr")) {
+                    new messageHandler(`#botbear1110`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
+
+                } else if (stream[0].islive === 1) {
+                    new messageHandler(`#botbear1110`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+
+                } else {
+                    new messageHandler(`#botbear1110`, `${User.User} Your cookie cdr is ready`).newMessage();
                 }
             }
         }

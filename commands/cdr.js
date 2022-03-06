@@ -19,7 +19,7 @@ module.exports = {
                     if (!register.length) {
                         await tools.query('INSERT INTO Cdr (User) values (?)', [user.username]);
 
-                        return 'You are now registered for cookie cdr notifications (whispers) (The reminders might not work properly untill you use your next cdr)';
+                        return 'You are now registered for cookie cdr notifications (The reminders might not work properly untill you use your next cdr)';
 
                     } else {
                         return 'You are already registered for cookie cdr notifications';
@@ -54,28 +54,66 @@ module.exports = {
 
                     }
                     break;
-                case "whisper":
+                case "mode":
                     const isregistered = await tools.query(`SELECT * FROM Cdr WHERE User=?`, [user.username]);
 
                     if (isregistered.length) {
-                        const cdrmode = await tools.query(`
-                    SELECT Mode
-                    FROM Cdr
-                    WHERE User=?`,
-                            [user.username]);
+                        switch (input[3]) {
+                            case "default": {
+                                let cdrmode = await tools.query(`
+                                    SELECT Mode
+                                    FROM Cdr
+                                    WHERE User=?`,
+                                    [user.username]);
 
-                        let mode = Math.abs(cdrmode[0].Mode - 1);
+                                if (cdrmode[0].Mode !== 0) {
+                                    cdrmode[0].Mode = 0;
+                                    await tools.query(`UPDATE Cdr SET Mode=? WHERE User=?`, [cdrmode[0].Mode, user.username]);
+                                    return "I will now remind you in the chat where you last used your cdr";
+                                } else {
+                                    return "You already use this mode";
+                                }
+                            }
+                                break;
+                            case "mychat": {
+                                let cdrmode = await tools.query(`
+                                    SELECT Mode
+                                    FROM Cdr
+                                    WHERE User=?`,
+                                    [user.username]);
 
-                        await tools.query(`UPDATE Cdr SET Mode=? WHERE User=?`, [mode, user.username]);
+                                if (cdrmode[0].Mode !== 1) {
+                                    cdrmode[0].Mode = 1;
+                                    await tools.query(`UPDATE Cdr SET Mode=? WHERE User=?`, [cdrmode[0].Mode, user.username]);
+                                    return "I will now remind you in your own chat";
+                                } else {
+                                    return "You already use this mode";
+                                }
+                            }
+                                break;
+                            case "botchat": {
+                                let cdrmode = await tools.query(`
+                                        SELECT Mode
+                                        FROM Cdr
+                                        WHERE User=?`,
+                                    [user.username]);
 
-                        if (mode === 1) {
-                            return "I will now remind you in whispers";
+                                if (cdrmode[0].Mode !== 2) {
+                                    cdrmode[0].Mode = 2;
+                                    await tools.query(`UPDATE Cdr SET Mode=? WHERE User=?`, [cdrmode[0].Mode, user.username]);
+                                    return "I will now remind you in #botbear1110";
+                                } else {
+                                    return "You already use this mode";
+                                }
+                            }
+                                break;
+                            default:
+                                return `Do "bb cdr mode default/mychat/botchat" to change response mode  for "ThePositiveBot´s" cdr - "default" Will remind you in the chat where you last used your cdr | "mychat" = your own chat | "botchat" = #botbear1110 (the bots chat)`;
                         }
-
-                        return "I will now remind you in the channel where you last used the command";
                     } else {
                         return `You are not registered for cdr notifications. Do "bb cdr register" to register`;
                     }
+                    break;
                 default:
                     return 'This command is for registering/unregitering you for notifications for "ThePositiveBot´s" cookie cdr. Available cdr commands: "bb cdr register", "bb cdr unregister", "bb cdr status", "bb cdr whisper"'
             }
