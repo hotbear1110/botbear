@@ -190,6 +190,9 @@ async function onMessageHandler(channel, user, msg, self) {
         const cookieStatus = await tools.cookies(user, input, channel);
         let checkmode = await tools.query(`SELECT Mode FROM Cookies WHERE User=?`, [cookieStatus[1]]);
 
+        if (!checkmode.length) {
+            return;
+        }
         if (disabledCommands.includes("cookie") && checkmode[0].Mode === 0 && cookieStatus[0] === "Confirmed") {
             if (cookieStatus[3] === "yes") {
                 new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!) - (The channel you ate your cookie in has reminders turned off)`).newMessage();
@@ -355,8 +358,11 @@ async function onMessageHandler(channel, user, msg, self) {
     const perm = await tools.getPerm(user.username);
 
     let commandCD = await tools.query(`SELECT Cooldown FROM Commands WHERE Name=?`, [input[1]]);
-
-    commandCD = commandCD[0].Cooldown;
+    if (!commandCD.length) {
+        commandCD = null;
+    } else {
+        commandCD = commandCD[0].Cooldown;
+    }
 
     if (commandCD === null) {
         commandCD = 3000;

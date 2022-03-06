@@ -29,7 +29,11 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
           FROM Streamers
           WHERE username=?`,
         [this.channel]);
-    this.banphraseapi = this.data[0].banphraseapi;
+    if (!this.data.length) {
+        this.banphraseapi = null;
+    } else {
+        this.banphraseapi = this.data[0].banphraseapi;
+    }
     try {
         if (this.banphraseapi == null || this.banphraseapi == "NULL" || !this.banphraseapi) {
             this.banphraseapi = "https://pajlada.pajbot.com";
@@ -396,6 +400,7 @@ exports.cdr = (user, command, channel) => new Promise(async (resolve, reject) =>
 exports.refreshCommands = async function () {
     const commands = requireDir("../commands");
     const dbCommands = await tools.query(`SELECT * FROM Commands`);
+    const disableCommand = await tools.query(`SELECT username FROM Streamers WHERE command_default = ?`, [1]);
 
     _.each(commands, async function (command) {
         let iscommand = 0;
@@ -408,7 +413,26 @@ exports.refreshCommands = async function () {
                 return;
             }
         });
+
         if (iscommand === 0) {
+            if (disableCommand.length && command.category !== "Core command" && command.category !== "Dev command") {
+                console.log("yes")
+                _.each(disableCommand, async function (user) {
+                    let disabledList = await tools.query(`
+                    SELECT disabled_commands
+                    FROM Streamers
+                    WHERE username=?`,
+                        [user.username]);
+
+                    console.log(disabledList)
+                    disabledList = JSON.parse(disabledList[0].disabled_commands);
+                    disabledList.push(command.name);
+                    disabledList = JSON.stringify(disabledList);
+
+                    tools.query(`UPDATE Streamers SET disabled_commands=? WHERE username=?`, [disabledList, user.username]);
+
+                })
+            }
             await tools.query('INSERT INTO Commands (Name, Command, Perm, Category, Cooldown) values (?, ?, ?, ?, ?)', [command.name, command.description, command.permission, command.category, command.cooldown]);
         }
 
