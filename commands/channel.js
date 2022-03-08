@@ -68,9 +68,9 @@ module.exports = {
                         }).catch((err) => {
                             console.log(err);
                         });
-                        cc.say(`#${username}`, `👋 nymnDank Hello! I am botbear1110, I was added to the channel by @${user.username}. Here is a list my commands: https://hotbear.org/`);
-                        return `Joined channel: ${username}`;
+                        new messageHandler(`#${username}`, `👋 nymnDank Hello! I am botbear1110, I was added to the channel by @${user.username}. Here is a list my commands: https://hotbear.org/`, true).newMessage();
 
+                        return `Joined channel: ${username}`;
                     }
                 }
                     break;
@@ -104,9 +104,9 @@ module.exports = {
                         }).catch((err) => {
                             console.log(err);
                         });
-                        cc.say(`#${username} `, '👋 nymnDank bye!');
-                        return `Left channel: ${username} `;
+                        new messageHandler(`#${username}`, `👋 nymnDank bye!`, true).newMessage();
 
+                        return `Left channel: ${username} `;
                     }
                 }
                     break;

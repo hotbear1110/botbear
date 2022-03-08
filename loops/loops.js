@@ -5,7 +5,6 @@ const cc = require("../bot.js").cc;
 const got = require("got");
 const { isDnsLookupIpVersion } = require('got/dist/source/core/utils/dns-ip-version');
 let messageHandler = require("../tools/messageHandler.js").messageHandler;
-let whisperHandler = require("../tools/whisperHandler.js").whisperHandler;
 const { con } = require('../connect/connect.js');
 
 function sleep(milliseconds) {
