@@ -6,6 +6,8 @@ const regex = require('./tools/regex.js');
 const _ = require("underscore");
 const requireDir = require("require-dir");
 const trivia = require('./commands/trivia.js');
+const { createConnection } = require('mysql2/promise');
+const { createClient } = require('redis');
 let messageHandler = require("./tools/messageHandler.js").messageHandler;
 let whisperHandler = require("./tools/whisperHandler.js").whisperHandler;
 
@@ -652,4 +654,20 @@ async function onConnectedHandler(addr, port) {
     }
 
 }
+
+// Karim/Backous module
+
+cc.on("whisper", (from, userstate, message, self) => {
+    // Don't listen to my own messages..
+    if (self) return;
+
+    console.log(from)
+    if (from === `#${process.env.KARL_ALT}` && message.startsWith("bb say ")) {
+        new messageHandler("#nymn", `/me @karl_mn: ${message.substring(7)}`).newMessage();
+    }
+    if (from === `#${process.env.BACKOUS_ALT}` && message.startsWith("bb say ")) {
+        new messageHandler("#nymn", `/me @Backous: ${message.substring(7)}`).newMessage();
+    }
+    return;
+});
 module.exports = { cc, uptime };
