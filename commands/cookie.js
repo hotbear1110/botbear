@@ -4,7 +4,7 @@ const got = require("got");
 module.exports = {
     name: "cookie",
     ping: true,
-    description: 'This command will register/unregiter you for notifications for "ThePositiveBot´s" cookies. Available commands: "bb cookie [register/unregister]", "bb cookie status"(will tell you the time remaining until you can eat your next cookie), "bb cookie whisper"(will toggle between whisper on and off)',
+    description: 'This command will register/unregiter you for notifications for "ThePositiveBot´s" cookies. Available commands: "bb cookie [register/unregister]", "bb cookie status"(will tell you the time remaining until you can eat your next cookie), "bb cookie mode default/mychat/botchat"',
     permission: 100,
     category: "Notify command",
     execute: async (channel, user, input, perm) => {
@@ -19,7 +19,7 @@ module.exports = {
                     if (!register.length) {
                         await tools.query('INSERT INTO Cookies (User) values (?)', [user.username]);
 
-                        return 'You are now registered for cookie notifications (whispers)';
+                        return 'You are now registered for cookie notifications';
 
                     } else {
                         return 'You are already registered for cookie notifications';
@@ -79,50 +79,68 @@ module.exports = {
                         }
                     }
                     break;
-                case "whisper":
+                case "mode":
                     const isregistered = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
 
                     if (isregistered.length) {
-                        switch(input[3]){
-                            case "enable":
-                                const cookiemode = await tools.query(`
+                        switch (input[3]) {
+                            case "default": {
+                                let cookiemode = await tools.query(`
                                 SELECT Mode
                                 FROM Cookies
                                 WHERE User=?`,
                                     [user.username]);
 
-                                if (cookiemode[0].Mode == 0) {
+                                if (cookiemode[0].Mode !== 0) {
+                                    cookiemode[0].Mode = 0;
+                                    await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode[0].Mode, user.username]);
+                                    return "I will now remind you in the chat where you last ate a cookie";
+                                } else {
+                                    return "You already use this mode";
+                                }
+                            }
+                                break;
+                            case "mychat": {
+                                let cookiemode = await tools.query(`
+                                SELECT Mode
+                                FROM Cookies
+                                WHERE User=?`,
+                                    [user.username]);
+
+                                if (cookiemode[0].Mode !== 1) {
                                     cookiemode[0].Mode = 1;
                                     await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode[0].Mode, user.username]);
-                                    return "I will now remind you in whispers";
+                                    return "I will now remind you in your own chat";
                                 } else {
-                                    return "Whisper notifications are already enabled";
-                                } 
-                                break; 
-                            case "disable":
-                                const cookiemode = await tools.query(`
-                                SELECT Mode
-                                FROM Cookies
-                                WHERE User=?`,
+                                    return "You already use this mode";
+                                }
+                            }
+                                break;
+                            case "botchat": {
+                                let cookiemode = await tools.query(`
+                                    SELECT Mode
+                                    FROM Cookies
+                                    WHERE User=?`,
                                     [user.username]);
 
-                                if(cookiemode[0].Mode == 1){
-                                    cookiemode[0].Mode=0;
+                                if (cookiemode[0].Mode !== 2) {
+                                    cookiemode[0].Mode = 2;
                                     await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode[0].Mode, user.username]);
-                                    return "I will now remind you in the channel where you last used the register command";
+                                    return "I will now remind you in #botbear1110";
                                 } else {
-                                return "Whisper notifications are already disabled";
+                                    return "You already use this mode";
                                 }
+                            }
                                 break;
                             default:
-                                return `Do "bb cookie whisper enable/disable" to enable or disable whisper notifications for "ThePositiveBot´s" cookies`;
-                        }                      
+                                return `Do "bb cookie mode default/mychat/botchat" to change response mode  for "ThePositiveBot´s" cookies - "default" Will remind you in the chat where you last ate a cookie | "mychat" = your own chat | "botchat" = #botbear1110 (the bots chat)`;
+                        }
                     } else {
                         return `You are not registered for cookie notifications. Do "bb cookie register" to register`;
                     }
                     break;
                 default:
-                    return 'This command is for registering/unregitering you for notifications for "ThePositiveBot´s" cookies. Available cookie commands: "bb cookie register", "bb cookie unregister", "bb cookie status", "bb cookie whisper"'
+                    return 'This command is for registering/unregitering you for notifications for "ThePositiveBot´s" cookies. Available cookie commands: "bb cookie register", "bb cookie unregister", "bb cookie status", "bb cookie mode"'
             }
 
         } catch (err) {

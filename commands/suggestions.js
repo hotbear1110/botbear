@@ -12,7 +12,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            return `List of suggestions: https://hotbear.xyz/suggestions`;
+            return `List of suggestions: https://hotbear.org/suggestions`;
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Sql error: ${err.sqlMessage}`;

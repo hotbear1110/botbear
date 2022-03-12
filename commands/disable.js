@@ -17,7 +17,7 @@ module.exports = {
                 return;
             }
             switch (input[2]) {
-                case "command":
+                case "command": {
                     if (!input[3]) {
                         return `Please specify a command to disable`;
                     }
@@ -72,10 +72,10 @@ module.exports = {
                     tools.query(`UPDATE Streamers SET disabled_commands=? WHERE username=?`, [disabledList, channel]);
 
                     return `${command} is now disabled :)`;
-
+                }
                     break;
 
-                case "category":
+                case "category": {
                     if (!input[3]) {
                         return `Please specify a category to disable`;
                     }
@@ -86,28 +86,28 @@ module.exports = {
                         return `You can't disable core commands`;
                     }
 
-                    let disabledList2 = await tools.query(`
+                    let disabledList = await tools.query(`
                     SELECT disabled_commands
                     FROM Streamers
                     WHERE username=?`,
                         [channel]);
 
-                    disabledList2 = JSON.parse(disabledList2[0].disabled_commands);
+                    disabledList = JSON.parse(disabledList[0].disabled_commands);
 
-                    let commandList2 = await tools.query(`
+                    let commandList = await tools.query(`
                     SELECT *
                     FROM Commands`);
 
                     let iscategory = false;
                     let isdisabled = false;
 
-                    _.each(commandList2, function (commandName) {
+                    _.each(commandList, function (commandName) {
 
                         if (commandName.Category.toLowerCase() === `${category} command`) {
                             iscategory = true;
-                            if (!disabledList2.includes(commandName.Name)) {
+                            if (!disabledList.includes(commandName.Name)) {
                                 isdisabled = true;
-                                disabledList2.push(commandName.Name);
+                                disabledList.push(commandName.Name);
                             }
                         }
 
@@ -121,34 +121,35 @@ module.exports = {
                         return `All ${category} commands are already disabled!`
                     }
 
-                    disabledList2 = JSON.stringify(disabledList2);
+                    disabledList = JSON.stringify(disabledList);
 
 
-                    tools.query(`UPDATE Streamers SET disabled_commands=? WHERE username=?`, [disabledList2, channel]);
+                    tools.query(`UPDATE Streamers SET disabled_commands=? WHERE username=?`, [disabledList, channel]);
 
                     return `All ${category} commands are now disabled :)`;
+                }
                     break;
 
-                case "all":
-                    let disabledList3 = await tools.query(`
+                case "all": {
+                    let disabledList = await tools.query(`
                     SELECT disabled_commands
                     FROM Streamers
                     WHERE username=?`,
                         [channel]);
 
-                    disabledList3 = JSON.parse(disabledList3[0].disabled_commands);
+                    disabledList = JSON.parse(disabledList[0].disabled_commands);
 
-                    let commandList3 = await tools.query(`
+                    let commandList = await tools.query(`
                     SELECT *
                     FROM Commands`);
 
                     let isdisabled3 = false;
 
-                    _.each(commandList3, function (commandName) {
+                    _.each(commandList, function (commandName) {
                         if (commandName.Category !== "Core command" && commandName.Category !== "Dev command") {
-                            if (!disabledList3.includes(commandName.Name.toLowerCase())) {
+                            if (!disabledList.includes(commandName.Name.toLowerCase())) {
                                 isdisabled3 = true;
-                                disabledList3.push(commandName.Name.toLowerCase());
+                                disabledList.push(commandName.Name.toLowerCase());
                             }
                         }
 
@@ -158,14 +159,14 @@ module.exports = {
                         return `All commands are already disabled`
                     }
 
-                    disabledList3 = JSON.stringify(disabledList3);
+                    disabledList = JSON.stringify(disabledList);
 
 
-                    tools.query(`UPDATE Streamers SET disabled_commands=? WHERE username=?`, [disabledList3, channel]);
+                    tools.query(`UPDATE Streamers SET disabled_commands=? WHERE username=?`, [disabledList, channel]);
 
                     return `All commands are now disabled :)`;
+                }
                     break;
-
 
                 default:
                     return 'Please specify if you want to disable: command, category or all. ("disable all" exludes core commands)';

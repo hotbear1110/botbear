@@ -12,7 +12,7 @@ module.exports = {
                 return;
             }
             if (!input[2]) {
-                return 'List of commands: https://hotbear.xyz/ - If you want help with a command, write: "bb help *command*"';
+                return 'List of commands: https://hotbear.org/ - If you want help with a command, write: "bb help *command*"';
             }
 
             let aliasList = await tools.query(`SELECT Aliases FROM Aliases`);
@@ -27,7 +27,7 @@ module.exports = {
                 return;
             }
 
-            return `Command name: ${commandlist[0].Name}. Category: ${commandlist[0].Category}. Description: ${commandlist[0].Command} - Permission lvl: ${commandlist[0].Perm}`;
+            return `${commandlist[0].Command} - Permission lvl: ${commandlist[0].Perm}`;
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Sql error: ${err.sqlMessage}`;

@@ -5,9 +5,10 @@ talkedRecently = {};
 let oldmessage = "";
 
 exports.messageHandler = class Cooldown {
-    constructor(channel, message) {
+    constructor(channel, message, noBanphrase) {
         this.channel = channel;
         this.message = message;
+        this.noBanphrase = noBanphrase || false;
         this.noCD = 0;
     }
     async Cooldown() {
@@ -32,7 +33,9 @@ exports.messageHandler = class Cooldown {
             }
         }
 
-        this.message = await tools.checkAllBanphrases(this.message, this.channel);
+        if (!this.noBanphrase) {
+            this.message = await tools.checkAllBanphrases(this.message, this.channel);
+        }
 
         if (talkedRecently[this.channel]) {
             this.noCD = 0

@@ -27,7 +27,7 @@ const getChannels = () =>
   });
 
 const channelList = [];
-let channelOptions = ["hotbear1110"];
+let channelOptions = ["xx__hooooootbear1110___xx"];
 async function res() {
   if (process.platform === "win32") {
     console.log(`Imported channels from database: ${channelOptions}`);
@@ -35,7 +35,7 @@ async function res() {
   }
   channelList.push(await getChannels());
   await channelList[0].forEach((i) => {
-    if (i.username !== "hotbear1110") {
+    if (i.username !== "xx__hooooootbear1110___xx") {
       channelOptions.push(i.username);
     }
   });

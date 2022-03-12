@@ -1,7 +1,7 @@
 const tools = require("../tools/tools.js");
 
 module.exports = {
-    name: "emotecount",
+    name: "test2",
     ping: true,
     description: 'This command will give you the number of 3rd party emotes, that are currently activated in the chat.',
     permission: 100,

@@ -29,7 +29,11 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
           FROM Streamers
           WHERE username=?`,
         [this.channel]);
-    this.banphraseapi = this.data[0].banphraseapi;
+    if (!this.data.length) {
+        this.banphraseapi = null;
+    } else {
+        this.banphraseapi = this.data[0].banphraseapi;
+    }
     try {
         if (this.banphraseapi == null || this.banphraseapi == "NULL" || !this.banphraseapi) {
             this.banphraseapi = "https://pajlada.pajbot.com";
@@ -221,17 +225,26 @@ exports.notbannedPhrases = (message) => {
 };
 
 exports.massping = (message, channel) => new Promise(async (resolve, reject) => {
+    channel = channel.replace("#", '');
+    message = message.replace(/(^|[@#.,:;\s]+)|([?!.,:;\s]|$)/gm, " ");
+
+    let dblist = ("filler " + message.slice())
+        .split(" ")
+        .filter(String);
+
+    const dbpings = await tools.query(`SELECT username FROM Users WHERE ` + Array(dblist.length).fill("username = ?").join(" OR "), dblist);
+
+    let dbnames = dbpings.map(a => a.username);
     let users = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 }).json();
-    let userlist = users.chatters["broadcaster"];
-    userlist = userlist.concat(users.chatters["vips"]);
-    userlist = userlist.concat(users.chatters["moderators"]);
-    userlist = userlist.concat(users.chatters["staff"]);
-    userlist = userlist.concat(users.chatters["admins"]);
-    userlist = userlist.concat(users.chatters["global_mods"]);
-    userlist = userlist.concat(users.chatters["viewers"]);
+
+    let userlist = [];
+    for (const [_, values] of Object.entries(users.chatters)) {
+        userlist = userlist.concat(values);
+    };
+
+    userlist = userlist.concat(dbnames.filter(x => !userlist.includes(x)));
 
     let pings = 0;
-
     _.each(userlist, async function (user) {
         if (message.includes(user)) {
             pings++;
@@ -387,6 +400,7 @@ exports.cdr = (user, command, channel) => new Promise(async (resolve, reject) =>
 exports.refreshCommands = async function () {
     const commands = requireDir("../commands");
     const dbCommands = await tools.query(`SELECT * FROM Commands`);
+    const disableCommand = await tools.query(`SELECT username FROM Streamers WHERE command_default = ?`, [1]);
 
     _.each(commands, async function (command) {
         let iscommand = 0;
@@ -399,7 +413,26 @@ exports.refreshCommands = async function () {
                 return;
             }
         });
+
         if (iscommand === 0) {
+            if (disableCommand.length && command.category !== "Core command" && command.category !== "Dev command") {
+                console.log("yes")
+                _.each(disableCommand, async function (user) {
+                    let disabledList = await tools.query(`
+                    SELECT disabled_commands
+                    FROM Streamers
+                    WHERE username=?`,
+                        [user.username]);
+
+                    console.log(disabledList)
+                    disabledList = JSON.parse(disabledList[0].disabled_commands);
+                    disabledList.push(command.name);
+                    disabledList = JSON.stringify(disabledList);
+
+                    tools.query(`UPDATE Streamers SET disabled_commands=? WHERE username=?`, [disabledList, user.username]);
+
+                })
+            }
             await tools.query('INSERT INTO Commands (Name, Command, Perm, Category, Cooldown) values (?, ?, ?, ?, ?)', [command.name, command.description, command.permission, command.category, command.cooldown]);
         }
 
@@ -537,14 +570,14 @@ exports.checkAllBanphrases = async function (message, channel) {
         return `[Banphrased] cmonBruh`;
     }
 
+    if (banPhrase === 0) {
+        return "FeelsDankMan banphrase error!!";
+    }
+
     const banPhraseV2 = await tools.banphrasePassV2(message, channel);
 
     if (banPhraseV2 == true) {
         return `[Banphrased] cmonBruh`;
-    }
-
-    if (banPhrase === 0) {
-        return "FeelsDankMan banphrase error!!";
     }
 
     const notabanPhrase = await tools.notbannedPhrases(message.toLowerCase());
@@ -561,6 +594,11 @@ exports.checkAllBanphrases = async function (message, channel) {
     const reallength = await tools.asciiLength(message);
     if (reallength > 30) {
         return "[Too many emojis]";
+    }
+
+    const massping = await tools.massping(message, channel);
+    if (massping === "[MASS PING]") {
+        return "[MASS PING]";
     }
 
     return message;

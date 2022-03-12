@@ -23,7 +23,7 @@ module.exports = {
                     disabledList = JSON.parse(disabledList[0].disabled_commands);
 
                     if (!disabledList.length) {
-                        return `This channel has all commands enabled: https://hotbear.xyz/`;
+                        return `This channel has all commands enabled: https://hotbear.org/`;
                     }
 
                     let commandList = await tools.query(`
@@ -50,7 +50,7 @@ module.exports = {
 
                 }
             }
-            return `List of commands: https://hotbear.xyz/`;
+            return `List of commands: https://hotbear.org/`;
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Sql error: ${err.sqlMessage}`;

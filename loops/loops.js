@@ -5,7 +5,6 @@ const cc = require("../bot.js").cc;
 const got = require("got");
 const { isDnsLookupIpVersion } = require('got/dist/source/core/utils/dns-ip-version');
 let messageHandler = require("../tools/messageHandler.js").messageHandler;
-let whisperHandler = require("../tools/whisperHandler.js").whisperHandler;
 const { con } = require('../connect/connect.js');
 
 function sleep(milliseconds) {
@@ -50,7 +49,7 @@ setInterval(async function () {
                         if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
                             if (users.length) {
                                 _.each(userlist, function (msg, i) {
-                                    new messageHandler(`#${proxychannel}`, `/me ${stream.liveemote} ${stream.username[0].toUpperCase()}\u{E0000}${stream.username.toUpperCase().slice(1)} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`).newMessage();
+                                    new messageHandler(`#${proxychannel}`, `/me ${stream.liveemote} ${stream.username[0].toUpperCase()}\u{E0000}${stream.username.toUpperCase().slice(1)} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`, true).newMessage();
                                 });
                             }
                         }
@@ -62,7 +61,7 @@ setInterval(async function () {
                         if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
                             if (users.length) {
                                 _.each(userlist, function (msg, i) {
-                                    new messageHandler(`#${proxychannel}`, `/me ${stream.offlineemote} ${stream.username[0].toUpperCase()}\u{E0000}${stream.username.toUpperCase().slice(1)} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`).newMessage();
+                                    new messageHandler(`#${proxychannel}`, `/me ${stream.offlineemote} ${stream.username[0].toUpperCase()}\u{E0000}${stream.username.toUpperCase().slice(1)} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`, true).newMessage();
                                 });
                             }
                         }
@@ -118,7 +117,7 @@ setInterval(async function () {
                         if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110") {
                             if (titleusers.length) {
                                 _.each(titleuserlist, function (msg, i) {
-                                    new messageHandler(`#${proxychannel2}`, `/me ${stream.titleemote} NEW TITLE ! ${stream.titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`).newMessage();
+                                    new messageHandler(`#${proxychannel2}`, `/me ${stream.titleemote} NEW TITLE ! ${stream.titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`, true).newMessage();
                                 });
                             }
                         }
@@ -136,7 +135,7 @@ setInterval(async function () {
                         if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110") {
                             if (gameusers.length) {
                                 _.each(gameuserlist, function (msg, i) {
-                                    new messageHandler(`#${proxychannel2}`, `/me ${stream.gameemote} NEW GAME ! ${stream.gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`).newMessage();
+                                    new messageHandler(`#${proxychannel2}`, `/me ${stream.gameemote} NEW GAME ! ${stream.gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`, true).newMessage();
                                 });
                             }
                         }
@@ -357,20 +356,41 @@ setInterval(async function () {
                 let disabledCommands = JSON.parse(stream[0].disabled_commands)
 
                 await tools.query(`UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
-                if (!disabledCommands.includes("cookie")) {
-                    if (stream[0].islive === 0 && User.Mode === 0) {
+                if (User.Mode === 0) {
+                    if (disabledCommands.includes("cookie")) {
+                        new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
+
+                    } else if (stream[0].islive === 1) {
+                        new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+
+                    } else {
                         new messageHandler(User.Channel, `${User.User} Reminder to eat your cookie nymnOkay`).newMessage();
-                    } else if (User.Mode === 1 || stream[0].islive === 1) {
-                        if (stream[0].islive === 1) {
-                            new whisperHandler(User.User, `Reminder to eat your cookie nymnOkay - This reminder is from a channel that is live[${User.Channel}]`).newWhisper();
-                        } else {
-                            new whisperHandler(User.User, `Reminder to eat your cookie nymnOkay`).newWhisper();
-                        }
+                    }
+
+                } else if (User.Mode === 1) {
+                    if (disabledCommands.includes("cookie")) {
+                        new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
+
+                    } else if (stream[0].islive === 1) {
+                        new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+
+                    } else {
+                        new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay`).newMessage();
+
+                    }
+                } else if (User.Mode === 2) {
+                    if (disabledCommands.includes("cookie")) {
+                        new messageHandler(`#botbear1110`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
+
+                    } else if (stream[0].islive === 1) {
+                        new messageHandler(`#botbear1110`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+
+                    } else {
+                        new messageHandler(`#botbear1110`, `${User.User} Reminder to eat your cookie nymnOkay`).newMessage();
                     }
                 }
             }
         }
-
     })
 
 }, 10000);
@@ -385,15 +405,38 @@ setInterval(async function () {
             let disabledCommands = JSON.parse(stream[0].disabled_commands)
 
             await tools.query(`UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
-            if (!disabledCommands.includes("cdr")) {
-                if (stream[0].islive === 0 && User.Mode === 0) {
-                    new messageHandler(User.Channel, `${User.User} Your cookie cdr is ready.`).newMessage();
-                } else if (User.Mode === 1 || stream[0].islive === 1) {
-                    if (stream[0].islive === 1) {
-                        new whisperHandler(User.User, `Your cookie cdr is ready - This reminder is from a channel that is live[${User.Channel}]`).newWhisper();
-                    } else {
-                        new whisperHandler(User.User, `Your cookie cdr is ready.`).newWhisper();
-                    }
+
+            if (User.Mode === 0) {
+                if (disabledCommands.includes("cdr")) {
+                    new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
+
+                } else if (stream[0].islive === 1) {
+                    new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+
+                } else {
+                    new messageHandler(User.Channel, `${User.User} Your cookie cdr is ready`).newMessage();
+                }
+
+            } else if (User.Mode === 1) {
+                if (disabledCommands.includes("cookie")) {
+                    new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that has disabled cdr reminders[${User.Channel}]`).newMessage();
+
+                } else if (stream[0].islive === 1) {
+                    new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+
+                } else {
+                    new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready`).newMessage();
+
+                }
+            } else if (User.Mode === 2) {
+                if (disabledCommands.includes("cdr")) {
+                    new messageHandler(`#botbear1110`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
+
+                } else if (stream[0].islive === 1) {
+                    new messageHandler(`#botbear1110`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+
+                } else {
+                    new messageHandler(`#botbear1110`, `${User.User} Your cookie cdr is ready`).newMessage();
                 }
             }
         }
