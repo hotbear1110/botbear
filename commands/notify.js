@@ -3,7 +3,7 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "notify",
     ping: true,
-    description: 'This command will register you for chat notifications. Available notify commands: "bb notify [live/title/game]"(you will get notified when the streamer goes live/changes title/switches category)',
+    description: 'This command will register you for chat notifications. Available notify commands: "bb notify [live/title/game/all]" (you will get notified when the streamer goes live/changes title/switches category/all of the previous)',
     permission: 100,
     category: "Notify command",
     execute: async (channel, user, input, perm) => {
@@ -73,8 +73,45 @@ module.exports = {
 
                         return 'You are now subscribed to the event "game"';
                     }
+                    break;
+                case "all": {
+                    const liveUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+                    let liveusers = JSON.parse(liveUsers[0].live_ping);
+
+                    const titleUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+                    let titleusers = JSON.parse(titleUsers[0].title_ping);
+
+                    const gameUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+                    let gameusers = JSON.parse(gameUsers[0].game_ping);
+
+                    if(!liveusers.includes(user.username) || !titleusers.includes(user.username) || !gameusers.includes(user.username)){
+                        if (!liveusers.includes(user.username)) {
+                            liveusers.push(user.username);
+                            liveusers = JSON.stringify(liveusers);
+
+                            tools.query(`UPDATE Streamers SET live_ping=? WHERE username=?`, [liveusers, channel]);
+                        }
+                        if (!titleusers.includes(user.username)) {
+                            titleusers.push(user.username);
+                            titleusers = JSON.stringify(titleusers);
+
+                            tools.query(`UPDATE Streamers SET title_ping=? WHERE username=?`, [titleusers, channel]);
+
+                        }
+                        if (!gameusers.includes(user.username)) {
+                            gameusers.push(user.username);
+                            gameusers = JSON.stringify(gameusers);
+
+                            tools.query(`UPDATE Streamers SET game_ping=? WHERE username=?`, [gameusers, channel]);                           
+                        }
+                        return `You are now subscribed to all events`;
+                    } else { 
+                        return `You are already subscribed to all events`;
+                    }
+                    }
+                    break;
                 default:
-                    return `Please specify an event to subscribe to. The following events are available: live, title, game`;
+                    return `Please specify an event to subscribe to. The following events are available: live, title, game, all`;
             }
         } catch (err) {
             console.log(err);
