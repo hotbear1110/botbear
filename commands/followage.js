@@ -24,7 +24,11 @@ module.exports = {
             }
             let realchannel = channel;
             if (input[3]) {
-                realchannel = input[3];
+                if (input[3].startsWith("@")) {
+                    realchannel = input[3].substring(1);
+                } else {
+                    realchannel = input[3];
+                }
             }
 
             const followcheck = await got(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`, { timeout: 10000 }).json();
