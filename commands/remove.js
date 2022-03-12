@@ -63,14 +63,10 @@ module.exports = {
                     }
                     break;
                 case "all": {
-                    const liveUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
-                    let liveusers = JSON.parse(liveUsers[0].live_ping);
-
-                    const titleUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
-                    let titleusers = JSON.parse(titleUsers[0].title_ping);
-
-                    const gameUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
-                    let gameusers = JSON.parse(gameUsers[0].game_ping);
+                    const notifyUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+                    let liveusers = JSON.parse(notifyUsers[0].live_ping);
+                    let titleusers = JSON.parse(notifyUsers[0].title_ping);
+                    let gameusers = JSON.parse(notifyUsers[0].game_ping);
 
                     if(liveusers.includes(user.username) || titleusers.includes(user.username) || gameusers.includes(user.username)){
                         if (liveusers.includes(user.username)) {
