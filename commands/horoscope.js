@@ -13,21 +13,22 @@ module.exports = {
                 return;
             }
             const signs = ['aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius', 'capricorn', 'aquarius', 'pisces']
-            if (!signs.includes(input.toLowerCase())) {
-                return `usage: bb horoscope [${signs.toString()}]`
+            if (!input[2] || !signs.includes(input[2].toLowerCase())) {
+                return `usage: bb horoscope [${signs.toString().replaceAll(",", ", ")}]`
             }
 
-            const url = 'https://sameer-kumar-aztro-v1.p.rapidapi.com/?sign=aquarius&day=today';
+            const url = `https://sameer-kumar-aztro-v1.p.rapidapi.com/?sign=${input[2]}&day=today`;
             const params = {
-                'sign': input,
+                'sign': input[2],
                 'day': 'today'
             }
             const headers = {
                 'x-rapidapi-host': 'sameer-kumar-aztro-v1.p.rapidapi.com',
                 'x-rapidapi-key': `${process.env.AZTRO_API_KEY}`
             }
-            
+
             const response = await got.post(url, { json: params, headers: headers }).json();
+            console.log(response)
             return response.description;
 
         } catch (err) {
