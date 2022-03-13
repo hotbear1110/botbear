@@ -17,7 +17,7 @@ module.exports = {
                 return `usage: bb horoscope [${signs.toString()}]`
             }
 
-            const url = 'https://sameer-kumar-aztro-v1.p.rapidapi.com/?sign=aquarius&day=today';
+            const url = 'https://sameer-kumar-aztro-v1.p.rapidapi.com/';
             const params = {
                 'sign': input,
                 'day': 'today'
