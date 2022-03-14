@@ -1,7 +1,7 @@
 const got = require('got');
 
 module.exports = {
-    name: "pray",
+    name: "bible",
     ping: true,
     description: 'This command will give a random bible quote',
     permission: 100,
@@ -13,9 +13,9 @@ module.exports = {
             }
 
             const url = 'https://labs.bible.org/api/?passage=random&type=json';
-            
-            const response = await got.get(url).json();
-            return `[${response.bookname} ${response.chapter}:${response.verse}]: ${response.text} Prayge`;
+
+            const response = await got(url).json();
+            return `[${response[0].bookname} ${response[0].chapter}:${response[0].verse}]: ${response[0].text} Prayge`;
 
         } catch (err) {
             console.log(err);
