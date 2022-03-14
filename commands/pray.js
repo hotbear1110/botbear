@@ -1,4 +1,3 @@
-require('dotenv').config();
 const got = require('got');
 
 module.exports = {
