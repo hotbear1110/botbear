@@ -21,7 +21,7 @@ module.exports = {
 
         } catch (err) {
             console.log(err);
-            return `FeelsDankMan lost my bible`;
+            return `FeelsDankMan lost my quran`;
         }
     }
 }
