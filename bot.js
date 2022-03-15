@@ -548,6 +548,11 @@ async function onMessageHandler(channel, user, msg, self) {
         }
 
         let result = await commands[realcommand].execute(realchannel, user, input, perm);
+        if (result[0] === "F") {
+            result = [`(Trivia) [ FeelsDankMan ] Question: nymnDank Something went wrong!?!`, "LULE WHO MADE THIS", "This bot is so bad LuL", "MegaLUL @hotbear1110"];
+        }
+
+
 
         if (!result) {
             return;
