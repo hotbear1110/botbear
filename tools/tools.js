@@ -65,7 +65,7 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
     this.message = encodeURIComponent(message).replaceAll("%0A", "%20");
     this.data = await tools.query(`SELECT * FROM Streamers WHERE username=?`, [this.channel]);
 
-    if (this.data[0].length) {
+    if (this.data[0]) {
         this.userid = this.data[0].uid;
         this.banphraseapi2 = this.data[0].banphraseapi2;
     } else {
