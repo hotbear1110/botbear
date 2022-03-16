@@ -29,7 +29,7 @@ module.exports = {
                         },
                         timeout: 10000
                     }).json();
-                    if (userData.length) {
+                    if (userData.data) {
                         uiduser = userData.data[0];
                         uiduser = uiduser["login"];
                         const uidBanned = await got(`https://api.ivr.fi/v2/twitch/user/${uiduser}`, { timeout: 10000 }).json();
@@ -39,21 +39,20 @@ module.exports = {
                             response = `Username found: ${uiduser}`;
                         }
                     }
-
                 } catch (err) {
-                    if (err.response.statusCode !== 400) {
-                        return `FeelsDankMan Error: ${err.response.error}`;
-                    }
                     uiduser = input[2];
+                }
+                try {
+                    userID = await got(`https://api.ivr.fi/v2/twitch/user/${input[2]}`, { timeout: 10000 }).json();
+                } catch (err) {
 
                 }
-                userID = await got(`https://api.ivr.fi/v2/twitch/user/${input[2]}`, { timeout: 10000 }).json();
             } else {
                 userID = await got(`https://api.ivr.fi/v2/twitch/user/${uiduser}`, { timeout: 10000 }).json();
             }
 
             if (response.length) {
-                if (userID.status === 404) {
+                if (userID.status === 404 || userID === "") {
                     return response;
                 }
                 if (userID.banned === true) {
