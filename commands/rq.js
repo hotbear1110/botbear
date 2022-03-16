@@ -3,9 +3,9 @@ const tools = require("../tools/tools.js");
 
 
 module.exports = {
-    name: "rl",
-    ping: false,
-    description: 'This command will give you a random logged line from either a random user or a specified user in the chat (Only works if logs are available in the channel, logs used: "https://logs.ivr.fi/"). Example: "bb rl NymN"',
+    name: "rq",
+    ping: true,
+    description: 'This command will give you a random logged line from either yourself or a specified user in the chat (Only works if logs are available in the channel, logs used: "https://logs.ivr.fi/"). Example: "bb rl NymN"',
     permission: 100,
     category: "Info command",
     execute: async (channel, user, input, perm) => {
@@ -19,23 +19,6 @@ module.exports = {
                     input[2] = input[2].substring(1);
                 }
                 uid = await got(`https://api.ivr.fi/twitch/resolve/${input[2]}`, { timeout: 10000 }).json();
-                uid = uid.id;
-            } else {
-                let chatters = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 }).json();
-
-                let chatterlist = [];
-                chatters = chatters["chatters"];
-                chatterlist = chatterlist.concat(chatters["broadcaster"]);
-                chatterlist = chatterlist.concat(chatters["vips"]);
-                chatterlist = chatterlist.concat(chatters["moderators"]);
-                chatterlist = chatterlist.concat(chatters["staff"]);
-                chatterlist = chatterlist.concat(chatters["admins"]);
-                chatterlist = chatterlist.concat(chatters["global_mods"]);
-                chatterlist = chatterlist.concat(chatters["viewers"]);
-
-                let number = Math.floor(Math.random() * chatterlist.length);
-
-                uid = await got(`https://api.ivr.fi/twitch/resolve/${chatterlist[number]}`, { timeout: 10000 }).json();
                 uid = uid.id;
             }
             let realchannel = channel;
