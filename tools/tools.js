@@ -65,8 +65,12 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
     this.message = encodeURIComponent(message).replaceAll("%0A", "%20");
     this.data = await tools.query(`SELECT * FROM Streamers WHERE username=?`, [this.channel]);
 
-    this.userid = this.data[0].uid;
-    this.banphraseapi2 = this.data[0].banphraseapi2;
+    if (this.data[0].uid) {
+        this.userid = this.data[0].uid;
+        this.banphraseapi2 = this.data[0].banphraseapi2;
+    } else {
+        this.banphraseapi2 = null;
+    }
     if (this.banphraseapi2 !== null) {
         try {
             this.checkBanphrase = await got(`${this.banphraseapi2}/api/channel/${this.userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
