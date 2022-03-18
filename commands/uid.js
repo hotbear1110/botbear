@@ -42,11 +42,9 @@ module.exports = {
                 } catch (err) {
                     uiduser = input[2];
                 }
-                try {
-                    userID = await got(`https://api.ivr.fi/v2/twitch/user/${input[2]}`, { timeout: 10000 }).json();
-                } catch (err) {
 
-                }
+                userID = await got(`https://api.ivr.fi/v2/twitch/user/${input[2]}`, { timeout: 10000 }).json();
+
             } else {
                 userID = await got(`https://api.ivr.fi/v2/twitch/user/${uiduser}`, { timeout: 10000 }).json();
             }
@@ -61,7 +59,7 @@ module.exports = {
                     response = `Multiple users found. ${response} | User-ID found: ${userID["id"]}`
                 }
             } else {
-                if (userID.status === 404) {
+                if (userID.statusCode === 404) {
                     return "No users found";
                 }
                 if (userID.banned === true) {
