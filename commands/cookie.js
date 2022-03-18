@@ -19,7 +19,7 @@ module.exports = {
                     if (!register.length) {
                         await tools.query('INSERT INTO Cookies (User) values (?)', [user.username]);
 
-                        return 'You are now registered for cookie notifications';
+                        return 'You are now registered for cookie notifications. Do "bb cookie mode" to change where the bot responds';
 
                     } else {
                         return 'You are already registered for cookie notifications';
