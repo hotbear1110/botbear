@@ -675,4 +675,11 @@ cc.on("whisper", (from, userstate, message, self) => {
     }
     return;
 });
+
+cc.on("ban", (channel, username, reason, userstate) => {
+    if (channel === "nymn" || channel === "#nymn") {
+        console.log("BANNED USER " + channel, username, reason, userstate)
+    }
+});
+
 module.exports = { cc, uptime };
