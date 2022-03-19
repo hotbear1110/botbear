@@ -667,10 +667,10 @@ cc.on("whisper", (from, userstate, message, self) => {
     if (self) return;
 
     console.log(from)
-    if (from === `#${process.env.KARL_ALT}` && message.startsWith("bb say ")) {
+    if (from === `#${process.env.someguy1}` && message.startsWith("bb say ")) {
         new messageHandler("#nymn", `/me @Retard: ${message.substring(7)}`).newMessage();
     }
-    if (from === `#${process.env.BACKOUS_ALT}` && message.startsWith("bb say ")) {
+    if (from === `#${process.env.someguy2}` && message.startsWith("bb say ")) {
         new messageHandler("#nymn", `/me @Backous: ${message.substring(7)}`).newMessage();
     }
     return;
