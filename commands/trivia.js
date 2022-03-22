@@ -53,7 +53,7 @@ async function getTrivia(genre) {
 module.exports = {
     name: "trivia",
     ping: false,
-    description: 'This command will start a new trivia in chat (The cooldown is 5 minutes and the trivia times out after 60 seconds.). Specific category: "bb trivia sports". Categories: [ https://haste.zneix.eu/uhedagatig.txt ]',
+    description: 'This command will start a new trivia in chat (To see the cooldown on this command, do: "bb check triviacooldown"). Specific category: "bb trivia sports". Categories: [ https://haste.zneix.eu/uhedagatig.txt ]',
     permission: 100,
     category: "Random command",
     execute: async (channel, user, input, perm) => {
