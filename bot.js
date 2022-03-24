@@ -68,6 +68,10 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (activetrivia[channel]) {
+        if (msg.startsWith("bb ask")) {
+            new messageHandler(channel, `NOIDONTTHINKSO No cheating in the trivia`).newMessage();
+            return;
+        }
         if (triviaHints2[channel] !== undefined) {
             let similarity = await tools.similarity(msg.toLowerCase(), triviaanswer[channel].toLowerCase())
             if (await similarity >= 0.8) {
