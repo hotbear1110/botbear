@@ -353,7 +353,13 @@ setInterval(async function () {
         if (User.RemindTime !== null && User.RemindTime < Time) {
             if (User.Status === "Confirmed" || User.Status === "Confirmed2") {
                 const stream = await tools.query('SELECT * FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
-                let disabledCommands = JSON.parse(stream[0].disabled_commands)
+                let disabledCommands = ""
+                try {
+                    disabledCommands = JSON.parse(stream[0].disabled_commands)
+                } catch (arr) {
+                    console.log(User)
+                    console.log(stream)
+                }
 
                 await tools.query(`UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
                 if (User.Mode === 0) {
