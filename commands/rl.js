@@ -15,7 +15,7 @@ module.exports = {
             }
             let uid = user["user-id"];
 
-            const rl = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/random?json`, { timeout: 10000 }).json();
+            const rl = await got(`https://logs.ivr.fi/channel/${channel}/userid/${uid}/random?json`, { timeout: 10000 }).json();
 
             let message = tools.splitLine(rl.messages[0].text, 350)
 
@@ -23,9 +23,9 @@ module.exports = {
 
             if (rl.status !== 404) {
                 if (message[1]) {
-                    return `#${realchannel} ${rl.messages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
+                    return `#${channel} ${rl.messages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
                 }
-                return `#${realchannel[0]}\u{E0000}${realchannel.slice(1)} ${rl.messages[0].displayName}: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
+                return `#${channel[0]}\u{E0000}${channel.slice(1)} ${rl.messages[0].displayName}: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
             }
 
         } catch (err) {

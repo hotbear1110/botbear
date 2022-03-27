@@ -32,15 +32,13 @@ module.exports = {
 
             let number = Math.floor(Math.random() * chatterlist.length);
 
-            realchannel = chatterlist[number];
-
-            const followcount = await got(`https://decapi.me/twitch/followcount/${realchannel}`, { timeout: 10000 }).json();
+            const followcount = await got(`https://decapi.me/twitch/followcount/${chatterlist[number]}`, { timeout: 10000 }).json();
 
             if (followcount === 0) {
                 return `Could not find the channel ${realchannel}`;
             }
 
-            return `#${input[2]} has ${followcount} followers!`;
+            return `#${realchannel} has ${followcount} followers!`;
 
         } catch (err) {
             console.log(err);

@@ -50,13 +50,13 @@ module.exports = {
             if (lm.status !== 404) {
                 if (message[1]) {
                     if (!input[2]) {
-                        return `#${realchannel} ${user.displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
+                        return `#${realchannel} ${user.username}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
                     } else {
                         return `#${realchannel} ${lm.messages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
                     }
                 }
                 if (!input[2]) {
-                    return `nymnDank ${user.displayName}'s last message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
+                    return `nymnDank ${user.username}'s last message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
                 } else {
                     return `nymnDank ${lm.messages[0].displayName}'s last message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
                 }

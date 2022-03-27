@@ -13,7 +13,7 @@ module.exports = {
             }
             const image = await got(`https://dog.ceo/api/breeds/image/random`, { timeout: 10000 }).json();
 
-            return `nymnAww ${image[0].url}`;
+            return `nymnAww ${image.message}`;
 
         } catch (err) {
             console.log(err);

@@ -60,7 +60,7 @@ module.exports = {
             if (fl.status !== 404) {
                 if (message[1]) {
                     if (!input[2]) {
-                        return `#${realchannel} ${user.displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
+                        return `#${realchannel} ${user.username}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
 
                     } else {
                         return `#${realchannel} ${fl.messages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
@@ -68,7 +68,7 @@ module.exports = {
                     }
                 }
                 if (!input[2]) {
-                    return `nymnDank ${user.displayName}'s first message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
+                    return `nymnDank ${user.username}'s first message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
                 } else {
                     return `nymnDank ${fl.messages[0].displayName}'s first message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
                 }

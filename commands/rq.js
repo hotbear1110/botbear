@@ -30,6 +30,7 @@ module.exports = {
             let uid = await got(`https://api.ivr.fi/twitch/resolve/${chatterlist[number]}`, { timeout: 10000 }).json();
             uid = uid.id;
 
+            let realchannel = channel;
             if (input[3]) {
                 realchannel = input[3];
             }
@@ -43,13 +44,13 @@ module.exports = {
             if (rl.status !== 404) {
                 if (message[1]) {
                     if (!input[2]) {
-                        return `#${realchannel} ${user.displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
+                        return `#${realchannel} ${user.username}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
                     } else {
                         return `#${realchannel} ${rl.messages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
                     }
                 }
                 if (!input[2]) {
-                    return `#${realchannel[0]}\u{E0000}${realchannel.slice(1)} ${user.displayName}: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
+                    return `#${realchannel[0]}\u{E0000}${realchannel.slice(1)} ${user.username}: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
                 } else {
                     return `#${realchannel[0]}\u{E0000}${realchannel.slice(1)} ${rl.messages[0].displayName}: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
                 }
