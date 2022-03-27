@@ -20,7 +20,7 @@ module.exports = {
             msg = msg.replaceAll(/(?:^|\W)me(?:$|\W)/g, " you ")
             msg = msg.replaceAll(/(?:^|\W)my(?:$|\W)/g, " your ")
 
-            return `/me I pissed ${msg}`;
+            return `/me I pissed myself`;
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Error`;

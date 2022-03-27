@@ -21,13 +21,15 @@ module.exports = {
 
             const Alias = new tools.Alias(`bb ${input[2]}`, aliasList);
             let realcommand = input[2].replace(Alias.getRegex(), Alias.getReplacement());
-            const commandlist = await tools.query(`SELECT * FROM Commands WHERE Name=?`, [realcommand.toLowerCase()]);
+            const commandlist = await tools.query(`SELECT * FROM Commands`);
+
 
             if (!commandlist.length) {
                 return;
             }
+            let number = Math.floor(Math.random() * (commandlist.length - 0) + 0);
 
-            return `${commandlist[0].Command} - Permission lvl: ${commandlist[0].Perm}`;
+            return `${commandlist[number].Command} - Permission lvl: ${commandlist[number].Perm}`;
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Sql error: ${err.sqlMessage}`;

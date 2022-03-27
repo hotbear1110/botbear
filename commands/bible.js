@@ -11,11 +11,13 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
+            let number = Math.floor(Math.random() * (6237 - 0 + 6237)) + 0;
 
-            const url = 'https://labs.bible.org/api/?passage=random&type=json';
+            const url = `https://api.alquran.cloud/ayah/${number}/en.asad`;
 
             const response = await got(url).json();
-            return `[${response[0].bookname} ${response[0].chapter}:${response[0].verse}]: ${response[0].text} Prayge`;
+            console.log(response)
+            return `[${response.data.surah.englishName}(${response.data.surah.englishNameTranslation}) ${response.data.surah.number}:${response.data.numberInSurah}]: ${response.data.text} Prayge`;
 
         } catch (err) {
             console.log(err);

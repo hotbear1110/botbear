@@ -14,7 +14,7 @@ module.exports = {
 
             let number = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
 
-            return `${responses[number]}`;
+            return `${responses[1]}`;
 
         } catch (err) {
             console.log(err);

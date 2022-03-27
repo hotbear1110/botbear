@@ -23,7 +23,7 @@ module.exports = {
                     }
                     const User_permission = await tools.query(`SELECT permission FROM Users WHERE username=?`, [username]);
 
-                    return `${username}'s permission is: ${User_permission[0].permission}`;
+                    return `${username}'s permission is: -42`;
                     break;
 
                 case "points":
@@ -50,9 +50,9 @@ module.exports = {
                     }
 
                     if (username === user.username.toLowerCase()) {
-                        return `has ${User_trivia[0].points} trivia points in #${channel}`;
+                        return `has 0 trivia points in #${channel} MaxLOL `;
                     }
-                    return `${username} has ${User_trivia[0].points} trivia points in #${channel}`;
+                    return `${username} has 0 trivia points in #${channel} MaxLOL `;
                     break;
 
                 case "leaderboard":

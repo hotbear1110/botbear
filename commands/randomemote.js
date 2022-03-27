@@ -28,7 +28,7 @@ module.exports = {
             let number = Math.floor(Math.random() * (emotes.length - 0) + 0);
 
 
-            return emotes[number][0] || emotes[number].name;
+            return "TriHard";
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Error`;

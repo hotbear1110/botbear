@@ -18,6 +18,21 @@ module.exports = {
                 }
                 realchannel = input[2];
             }
+            let chatters = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 }).json();
+
+            let chatterlist = [];
+            chatters = chatters["chatters"];
+            chatterlist = chatterlist.concat(chatters["broadcaster"]);
+            chatterlist = chatterlist.concat(chatters["vips"]);
+            chatterlist = chatterlist.concat(chatters["moderators"]);
+            chatterlist = chatterlist.concat(chatters["staff"]);
+            chatterlist = chatterlist.concat(chatters["admins"]);
+            chatterlist = chatterlist.concat(chatters["global_mods"]);
+            chatterlist = chatterlist.concat(chatters["viewers"]);
+
+            let number = Math.floor(Math.random() * chatterlist.length);
+
+            realchannel = chatterlist[number];
 
             const followcount = await got(`https://decapi.me/twitch/followcount/${realchannel}`, { timeout: 10000 }).json();
 
@@ -25,7 +40,7 @@ module.exports = {
                 return `Could not find the channel ${realchannel}`;
             }
 
-            return `#${realchannel} has ${followcount} followers!`;
+            return `#${input[2]} has ${followcount} followers!`;
 
         } catch (err) {
             console.log(err);

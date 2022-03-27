@@ -15,7 +15,7 @@ module.exports = {
             }
             let text = "";
             let bmi = (input[3] ** 2) / 10000;
-            bmi = input[2] / bmi;
+            bmi = (input[2] / bmi)*1.5;
 
             if (bmi <= 18.5) {
                 text = "Underweight";

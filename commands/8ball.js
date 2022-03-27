@@ -16,7 +16,7 @@ module.exports = {
             let responses = ["You could say that", "NOIDONTTHINKSO", "YES!", "NO!", "maybe", "Why not", "You shouldn't count on it", "Hmm idk", "How about no", "YES PagMan", "Why"]
 
 
-            return responses[getRandomInt(responses.length - 1)];
+            return "no";
 
         } catch (err) {
             console.log(err);

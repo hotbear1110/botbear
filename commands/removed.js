@@ -19,6 +19,9 @@ module.exports = {
                 return `there are no removed emotes in this channel yet.`
             }
 
+            let number = Math.floor(Math.random() * (emotes.length - 0) + 0);
+
+            input[2] = number;
             if (input[2]) {
                 if (input[2].startsWith("-") || input[2] === "0") {
                     return `2nd input can't be negative or 0`;

@@ -9,7 +9,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            return `Okayge cock!`;
+            return `Sadge I have vagene`;
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Error`;

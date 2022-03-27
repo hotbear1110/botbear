@@ -14,34 +14,6 @@ module.exports = {
                 return;
             }
             let uid = user["user-id"];
-            if (input[2]) {
-                if (input[2].startsWith("@")) {
-                    input[2] = input[2].substring(1);
-                }
-                uid = await got(`https://api.ivr.fi/twitch/resolve/${input[2]}`, { timeout: 10000 }).json();
-                uid = uid.id;
-            } else {
-                let chatters = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 }).json();
-
-                let chatterlist = [];
-                chatters = chatters["chatters"];
-                chatterlist = chatterlist.concat(chatters["broadcaster"]);
-                chatterlist = chatterlist.concat(chatters["vips"]);
-                chatterlist = chatterlist.concat(chatters["moderators"]);
-                chatterlist = chatterlist.concat(chatters["staff"]);
-                chatterlist = chatterlist.concat(chatters["admins"]);
-                chatterlist = chatterlist.concat(chatters["global_mods"]);
-                chatterlist = chatterlist.concat(chatters["viewers"]);
-
-                let number = Math.floor(Math.random() * chatterlist.length);
-
-                uid = await got(`https://api.ivr.fi/twitch/resolve/${chatterlist[number]}`, { timeout: 10000 }).json();
-                uid = uid.id;
-            }
-            let realchannel = channel;
-            if (input[3]) {
-                realchannel = input[3];
-            }
 
             const rl = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/random?json`, { timeout: 10000 }).json();
 

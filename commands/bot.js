@@ -9,7 +9,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            return `nymnDank botbear1110 is a bot that can notify you in chat when a streamer goes live/changes title/changes game, by pinging you in chat. You can even set specific games that should ping you. The bot also has some other chat improving commands, that gives the chatters useful/fun information about the chat, other users and the stream :) The bot is writen in node.js and is made by: xx__hooooootbear1110___xx. Link to my GitHub: https://github.com/hotbear1110/botbear`;
+            return `nyaDnmnk bot1raeb110 is a bot taht can nfitoy you in caht wehn a stmaerer geos livnahc/eges titnahc/elges gema, by piignng you in ctah. You can eevn set spficeic gemas taht sluohd pnig yuo. The bot aslo has smoe oehtr caht imivorpng codnamms, taht gevis the chettars use/luffun inftamroion auobt the ctah, oehtr uress and the saertm :) The bot is wetirn in no.edjs and is mdae by: xx____0111raebtooooooh_xx. Lnik to my GiuHtb: httbtob/0111raebtoh/moc.buhtig//:spear`;
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Error`;
