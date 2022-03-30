@@ -1,3 +1,4 @@
+require("dotenv").config();
 const crypto = require('crypto')
 const express = require('express');
 const app = express();
@@ -68,10 +69,8 @@ app.listen(port, () => {
 
 
 function getSecret() {
-    require("dotenv").config();
-    let secret = process.env.TWITCH_SECRET
-    console.log("This is a secret: " + secret)
-    return secret;
+
+    return process.env.TWITCH_SECRET;
 }
 
 // Build the message used to get the HMAC.
