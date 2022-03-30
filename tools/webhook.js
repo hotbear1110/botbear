@@ -93,9 +93,6 @@ app.post('/eventsub', async function (req, res) {
 
                     await tools.query(`UPDATE Streamers SET game=?, game_time=? WHERE username=?`, [newGame, gameTime, streamers[0].username]);
 
-                    if (newTitle !== streamers[0].title) {
-                        sleep(1500)
-                    }
                     console.log(streamers[0].username + " NEW GAME: " + newGame);
                     if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110") {
                         if (gameusers.length) {
