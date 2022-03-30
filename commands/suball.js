@@ -5,7 +5,7 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "suball",
     ping: false,
-    description: 'dgssgh',
+    description: 'This command is for subbing to channel.update for all streamers in db',
     permission: 2000,
     category: "Dev command",
     execute: async (channel, user, input, perm) => {

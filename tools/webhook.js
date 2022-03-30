@@ -3,6 +3,8 @@ const crypto = require('crypto')
 const express = require('express');
 const app = express();
 const port = 8080;
+let messageHandler = require("../tools/messageHandler.js").messageHandler;
+const tools = require("../tools/tools.js");
 
 // Notification request headers
 const TWITCH_MESSAGE_ID = 'Twitch-Eventsub-Message-Id'.toLowerCase();
@@ -26,7 +28,6 @@ app.use(express.raw({          // Need raw message body for signature verificati
 app.post('/eventsub', (req, res) => {
     let secret = getSecret();
     let message = getHmacMessage(req);
-    console.log(req.headers)
     let hmac = HMAC_PREFIX + getHmac(secret, message);  // Signature to compare
 
     if (true === verifyMessage(hmac, req.headers[TWITCH_MESSAGE_SIGNATURE])) {
@@ -42,6 +43,10 @@ app.post('/eventsub', (req, res) => {
             console.log(JSON.stringify(notification.event, null, 4));
 
             res.sendStatus(204);
+            if (notification.subscription.type === "channel.update") {
+                const streamers = await tools.query('SELECT * FROM Streamers WHERE username=?',);
+                const myping = await tools.query(`SELECT * FROM MyPing`);
+            }
         }
         else if (MESSAGE_TYPE_VERIFICATION === req.headers[MESSAGE_TYPE]) {
             res.status(200).send(notification.challenge);
@@ -89,6 +94,5 @@ function getHmac(secret, message) {
 
 // Verify whether our hash matches the hash that Twitch passed in the header.
 function verifyMessage(hmac, verifySignature) {
-    console.log(hmac + " | " + verifySignature)
     return crypto.timingSafeEqual(Buffer.from(hmac), Buffer.from(verifySignature));
 }

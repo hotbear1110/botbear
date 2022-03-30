@@ -4,7 +4,7 @@ const _ = require("underscore");
 module.exports = {
     name: "deletesubs",
     ping: false,
-    description: 'dgssgh',
+    description: 'This command is for deleting all eventsubs',
     permission: 2000,
     category: "Dev command",
     execute: async (channel, user, input, perm) => {
