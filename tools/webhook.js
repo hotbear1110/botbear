@@ -105,6 +105,58 @@ app.post('/eventsub', async function (req, res) {
                     }
                 };
             }
+
+            if (notification.subscription.type === "stream.online") {
+                const streamers = await tools.query('SELECT * FROM Streamers WHERE uid=?', notification.event.broadcaster_user_id);
+                const myping = await tools.query(`SELECT * FROM MyPing`);
+
+                let disabledCommands = JSON.parse(streamers[0].disabled_commands)
+
+                let users = JSON.parse(streamers[0].live_ping);
+                users = users.toString().replaceAll(',', ' ');
+
+                let proxychannel = streamers[0].username;
+                if (streamers[0].username === "forsen") {
+                    proxychannel = "botbear1110";
+                }
+                let userlist = tools.splitLine(users, 350);
+                console.log(streamers[0].username + " IS NOW LIVE");
+                await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${streamers[0].username}"`);
+                if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
+                    if (users.length) {
+                        _.each(userlist, function (msg, i) {
+                            new messageHandler(`#${proxychannel}`, `/me ${streamers[0].liveemote} ${streamers[0].username[0].toUpperCase()}\u{E0000}${streamers[0].username.toUpperCase().slice(1)} IS NOW LIVE ${streamers[0].liveemote} ${userlist[i]}`, true).newMessage();
+                        });
+                    }
+                }
+
+                if (notification.subscription.type === "stream.online") {
+                    const streamers = await tools.query('SELECT * FROM Streamers WHERE uid=?', notification.event.broadcaster_user_id);
+                    const myping = await tools.query(`SELECT * FROM MyPing`);
+
+                    let disabledCommands = JSON.parse(streamers[0].disabled_commands)
+
+                    let users = JSON.parse(streamers[0].live_ping);
+                    users = users.toString().replaceAll(',', ' ');
+
+                    let proxychannel = streamers[0].username;
+                    if (streamers[0].username === "forsen") {
+                        proxychannel = "botbear1110";
+                    }
+                    let userlist = tools.splitLine(users, 350);
+                    console.log(streamers[0].username + " IS NOW OFFLINE");
+                    await tools.query(`UPDATE Streamers SET islive = 0 WHERE username ="${streamers[0].username}"`);
+                    if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
+                        if (users.length) {
+                            _.each(userlist, function (msg, i) {
+                                new messageHandler(`#${proxychannel}`, `/me ${streamers[0].offlineemote} ${streamers[0].username[0].toUpperCase()}\u{E0000}${streamers[0].username.toUpperCase().slice(1)} IS NOW OFFLINE ${streamers[0].offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`, true).newMessage();
+                            });
+                        }
+                    }
+
+                }
+            }
+
         }
         else if (MESSAGE_TYPE_VERIFICATION === req.headers[MESSAGE_TYPE]) {
             res.status(200).send(notification.challenge);

@@ -20,67 +20,6 @@ sleep(10000);
 
 setInterval(async function () {
     const streamers = await tools.query('SELECT * FROM Streamers');
-    const myping = await tools.query(`SELECT * FROM MyPing`);
-
-    _.each(streamers, async function (stream) {
-        let disabledCommands = JSON.parse(stream.disabled_commands)
-        setTimeout(async function () {
-            await got(`https://api.twitch.tv/helix/streams?user_login=${stream.username}`, {
-                headers: {
-                    'client-id': process.env.TWITCH_CLIENTID,
-                    'Authorization': process.env.TWITCH_AUTH
-                },
-            }).json()
-                .then(async function (response) {
-                    // handle success
-                    const twitchdata = response;
-                    let users = JSON.parse(stream.live_ping);
-                    users = users.toString().replaceAll(',', ' ');
-
-
-                    let proxychannel = stream.username;
-                    if (stream.username === "forsen") {
-                        proxychannel = "botbear1110";
-                    }
-                    if (twitchdata['data'].length !== 0 && stream.islive == 0) {
-                        let userlist = tools.splitLine(users, 350);
-                        console.log(stream.username + " IS NOW LIVE");
-                        await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`);
-                        if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
-                            if (users.length) {
-                                _.each(userlist, function (msg, i) {
-                                    new messageHandler(`#${proxychannel}`, `/me ${stream.liveemote} ${stream.username[0].toUpperCase()}\u{E0000}${stream.username.toUpperCase().slice(1)} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`, true).newMessage();
-                                });
-                            }
-                        }
-                    };
-                    if (twitchdata['data'].length === 0 && stream.islive == 1) {
-                        let userlist = tools.splitLine(users, 350);
-                        console.log(stream.username + " IS NOW OFFLINE");
-                        await tools.query(`UPDATE Streamers SET islive = 0 WHERE username ="${stream.username}"`);
-                        if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
-                            if (users.length) {
-                                _.each(userlist, function (msg, i) {
-                                    new messageHandler(`#${proxychannel}`, `/me ${stream.offlineemote} ${stream.username[0].toUpperCase()}\u{E0000}${stream.username.toUpperCase().slice(1)} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`, true).newMessage();
-                                });
-                            }
-                        }
-                    };
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                })
-                .then(function () {
-                    // always executed
-                });
-        }, 500);
-    }
-    )
-}, 20000);
-
-setInterval(async function () {
-    const streamers = await tools.query('SELECT * FROM Streamers');
 
     _.each(streamers, async function (streamer) {
         setTimeout(async function () {
