@@ -85,6 +85,25 @@ app.post('/eventsub', async function (req, res) {
                         }
                     }
                 };
+
+                if (newGame !== streamers[0].game) {
+                    let gameuserlist = tools.splitLine(gameusers, 400 - newGame.length);
+                    let gameTime = new Date().getTime();
+
+                    await tools.query(`UPDATE Streamers SET game=?, game_time=? WHERE username=?`, [newGame, gameTime, streamers[0].username]);
+
+                    if (newTitle !== streamers[0].title) {
+                        sleep(1500)
+                    }
+                    console.log(streamers[0].username + " NEW GAME: " + newGame);
+                    if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110") {
+                        if (gameusers.length) {
+                            _.each(gameuserlist, function (msg, i) {
+                                new messageHandler(`#${proxychannel2}`, `/me ${streamers[0].gameemote} NEW GAME ! ${streamers[0].gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`, true).newMessage();
+                            });
+                        }
+                    }
+                };
             }
         }
         else if (MESSAGE_TYPE_VERIFICATION === req.headers[MESSAGE_TYPE]) {
