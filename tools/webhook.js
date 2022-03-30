@@ -25,7 +25,7 @@ app.use(express.raw({          // Need raw message body for signature verificati
 }))
 
 
-app.post('/eventsub', (req, res) => async function () {
+app.post('/eventsub', async function (req, res) {
     let secret = getSecret();
     let message = getHmacMessage(req);
     let hmac = HMAC_PREFIX + getHmac(secret, message);  // Signature to compare
