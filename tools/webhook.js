@@ -46,6 +46,42 @@ app.post('/eventsub', async function (req, res) {
             if (notification.subscription.type === "channel.update") {
                 const streamers = await tools.query('SELECT * FROM Streamers WHERE uid=?', notification.event.broadcaster_user_id);
                 const myping = await tools.query(`SELECT * FROM MyPing`);
+
+                let newTitle = notification.event.title;
+                let titleusers = JSON.parse(streamers[0].title_ping);
+                titleusers = titleusers.toString().replaceAll(',', ' ');
+
+                let newGame = notification.event.category_name;
+                let gameusers = JSON.parse(stream.game_ping);
+
+                _.each(myping, async function (userchanel) {
+                    let pingname = JSON.parse(userchanel.username);
+                    let gamename = userchanel.game_pings;
+                    if (pingname.includes(stream.username) && gamename.includes(newGame) && newGame !== "") {
+                        gameusers.push(pingname[0]);
+                    }
+                })
+
+                gameusers = gameusers.toString().replaceAll(',', ' ');
+
+                let proxychannel = streamers[0].username;
+                if (stream.username === "forsen") {
+                    proxychannel = "botbear1110";
+                }
+
+                if (newTitle !== streamers[0].title) {
+                    let titleuserlist = tools.splitLine(titleusers, 400 - newTitle.length);
+                    let titleTime = new Date().getTime();
+                    console.log(streamers[0].username + " NEW TITLE: " + newTitle);
+                    await tools.query(`UPDATE Streamers SET title=?, title_time=? WHERE username=?`, [newTitle, titleTime, streamers[0].username]);
+                    if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
+                        if (titleusers.length) {
+                            _.each(titleuserlist, function (msg, i) {
+                                new messageHandler(`#xx__hooooootbear1110___xx`, `/me [TEST] ${streamers[0].titleemote} NEW TITLE ! ${streamers[0].titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`, true).newMessage();
+                            });
+                        }
+                    }
+                };
             }
         }
         else if (MESSAGE_TYPE_VERIFICATION === req.headers[MESSAGE_TYPE]) {
