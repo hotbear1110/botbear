@@ -130,7 +130,7 @@ app.post('/eventsub', async function (req, res) {
                     }
                 }
 
-                if (notification.subscription.type === "stream.online") {
+                if (notification.subscription.type === "stream.offline") {
                     const streamers = await tools.query('SELECT * FROM Streamers WHERE uid=?', notification.event.broadcaster_user_id);
                     const myping = await tools.query(`SELECT * FROM MyPing`);
 
