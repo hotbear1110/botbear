@@ -70,7 +70,7 @@ app.listen(port, () => {
 
 function getSecret() {
 
-    return process.env.TWITCH_SECRET;
+    return process.env.TWITCH_SECRET.toString();
 }
 
 // Build the message used to get the HMAC.
