@@ -1,4 +1,4 @@
-require("dotenv").config();
+require('dotenv').config();
 const crypto = require('crypto')
 const express = require('express');
 const app = express();
@@ -24,11 +24,11 @@ app.use(express.raw({          // Need raw message body for signature verificati
 
 
 app.post('/eventsub', (req, res) => {
-    console.log(req)
     let secret = getSecret();
     let message = getHmacMessage(req);
+    console.log(req.headers)
     let hmac = HMAC_PREFIX + getHmac(secret, message);  // Signature to compare
-    console.log("yepyep")
+
     if (true === verifyMessage(hmac, req.headers[TWITCH_MESSAGE_SIGNATURE])) {
         console.log("signatures match");
 
@@ -70,7 +70,6 @@ app.listen(port, () => {
 
 
 function getSecret() {
-
     return process.env.TWITCH_SECRET;
 }
 
@@ -90,5 +89,6 @@ function getHmac(secret, message) {
 
 // Verify whether our hash matches the hash that Twitch passed in the header.
 function verifyMessage(hmac, verifySignature) {
+    console.log(hmac + " | " + verifySignature)
     return crypto.timingSafeEqual(Buffer.from(hmac), Buffer.from(verifySignature));
 }
