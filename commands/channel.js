@@ -63,6 +63,9 @@ module.exports = {
                         let gameTime = new Date().getTime();
 
                         await tools.query('INSERT INTO Streamers (username, uid, islive, liveemote, titleemote, gameemote, offlineemote, live_ping, title_ping, game_ping, game_time, emote_list, emote_removed, disabled_commands) values (?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?)', [username, uid, islive, liveemote, liveemote, liveemote, offlineemote, '[""]', '[""]', '[""]', gameTime, '[]', '[]', '[]']);
+
+                        await tools.joinEventSub(uid);
+
                         cc.join(username).then((data) => {
                             // data returns [channel]
                         }).catch((err) => {
@@ -76,8 +79,11 @@ module.exports = {
                     break;
                 case "leave": {
                     let username = user.username;
+                    let uid = user['user-id'];
                     if (channel != "botbear1110" && channel != "xx__hooooootbear1110___xx" && channel != user.username && perm < 2000) { return; }
                     if (input[3]) {
+                        let streamer = await got(`https://api.ivr.fi/twitch/resolve/${input[3]}`, { timeout: 10000 }).json();
+                        uid = streamer.id;
                         username = input[3];
                     }
 
@@ -99,6 +105,8 @@ module.exports = {
 
                     else {
                         await tools.query('DELETE FROM Streamers WHERE username=?', [username]);
+                        await tools.deleteEventSub(uid);
+
                         cc.part(username).then((data) => {
                             // data returns [channel]
                         }).catch((err) => {

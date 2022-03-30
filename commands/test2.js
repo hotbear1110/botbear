@@ -1,5 +1,7 @@
 const tools = require("../tools/tools.js");
 const cc = require("../bot.js").cc;
+require('dotenv').config();
+const got = require("got");
 
 module.exports = {
     name: "test2",
@@ -12,14 +14,30 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            cc.ban(channel, input[2], "test")
-                .then((data) => {
-                    console.log(data)
-                }).catch((err) => {
-                    console.log(err)
-                })
+            let allsubs = [];
+            let haspagnation = true;
+            let pagnation = "";
+            while (haspagnation) {
+                let subs = await got(`https://api.twitch.tv/helix/eventsub/subscriptions?after=${pagnation}`, {
+                    headers: {
+                        'client-id': process.env.TWITCH_CLIENTID,
+                        'Authorization': process.env.TWITCH_AUTH
+                    }
+                });
+                subs = JSON.parse(subs.body);
+                if (subs.pagination.cursor) {
+                    pagnation = subs.pagination.cursor;
+                } else {
+                    haspagnation = false;
+                }
+                subs = subs.data;
+                allsubs = allsubs.concat(subs)
+            }
 
-            return "monkaS ok."
+            console.log(allsubs.length)
+            let realsubs = allsubs.filter(x => x.condition.broadcaster_user_id === "135186096");
+            console.log(realsubs)
+            return;
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Sql error: ${err.sqlMessage}`;
