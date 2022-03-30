@@ -48,6 +48,8 @@ app.post('/eventsub', async function (req, res) {
                 const streamers = await tools.query('SELECT * FROM Streamers WHERE uid=?', notification.event.broadcaster_user_id);
                 const myping = await tools.query(`SELECT * FROM MyPing`);
 
+                let disabledCommands = JSON.parse(streamers[0].disabled_commands)
+
                 let newTitle = notification.event.title;
                 let titleusers = JSON.parse(streamers[0].title_ping);
                 titleusers = titleusers.toString().replaceAll(',', ' ');
