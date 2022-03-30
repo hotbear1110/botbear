@@ -41,10 +41,10 @@ app.post('/eventsub', async function (req, res) {
 
             console.log(`Event type: ${notification.subscription.type}`);
             console.log(JSON.stringify(notification.event, null, 4));
-            console.log(notification.event)
+            console.log(notification.event.broadcaster_user_id)
             res.sendStatus(204);
             if (notification.subscription.type === "channel.update") {
-                const streamers = await tools.query('SELECT * FROM Streamers WHERE username=?',);
+                const streamers = await tools.query('SELECT * FROM Streamers WHERE uid=?', notification.event.broadcaster_user_id);
                 const myping = await tools.query(`SELECT * FROM MyPing`);
             }
         }
