@@ -80,7 +80,7 @@ app.post('/eventsub', async function (req, res) {
                     if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
                         if (titleusers.length) {
                             _.each(titleuserlist, function (msg, i) {
-                                new messageHandler(`#xx__hooooootbear1110___xx`, `/me [TEST] ${streamers[0].titleemote} NEW TITLE ! ${streamers[0].titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`, true).newMessage();
+                                new messageHandler(`#${proxychannel}`, `/me [TEST] ${streamers[0].titleemote} NEW TITLE ! ${streamers[0].titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`, true).newMessage();
                             });
                         }
                     }
@@ -99,7 +99,7 @@ app.post('/eventsub', async function (req, res) {
                     if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110") {
                         if (gameusers.length) {
                             _.each(gameuserlist, function (msg, i) {
-                                new messageHandler(`#xx__hooooootbear1110___xx`, `/me [TEST] ${streamers[0].gameemote} NEW GAME ! ${streamers[0].gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`, true).newMessage();
+                                new messageHandler(`#${proxychannel}`, `/me [TEST] ${streamers[0].gameemote} NEW GAME ! ${streamers[0].gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`, true).newMessage();
                             });
                         }
                     }
