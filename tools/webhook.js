@@ -52,12 +52,12 @@ app.post('/eventsub', async function (req, res) {
                 titleusers = titleusers.toString().replaceAll(',', ' ');
 
                 let newGame = notification.event.category_name;
-                let gameusers = JSON.parse(stream.game_ping);
+                let gameusers = JSON.parse(streamers[0].game_ping);
 
                 _.each(myping, async function (userchanel) {
                     let pingname = JSON.parse(userchanel.username);
                     let gamename = userchanel.game_pings;
-                    if (pingname.includes(stream.username) && gamename.includes(newGame) && newGame !== "") {
+                    if (pingname.includes(streamers[0].username) && gamename.includes(newGame) && newGame !== "") {
                         gameusers.push(pingname[0]);
                     }
                 })
@@ -65,7 +65,7 @@ app.post('/eventsub', async function (req, res) {
                 gameusers = gameusers.toString().replaceAll(',', ' ');
 
                 let proxychannel = streamers[0].username;
-                if (stream.username === "forsen") {
+                if (streamers[0].username === "forsen") {
                     proxychannel = "botbear1110";
                 }
 
