@@ -5,7 +5,7 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "suball",
     ping: false,
-    description: 'This command is for subbing to channel.update, channel.online and channel.offline for all streamers in db',
+    description: 'This command is for subbing to channel.update, stream.online and stream.offline for all streamers in db',
     permission: 2000,
     category: "Dev command",
     execute: async (channel, user, input, perm) => {
@@ -43,7 +43,7 @@ module.exports = {
                     let uid = streamers[i].uid;
 
                     let data = JSON.stringify({
-                        "type": "channel.online",
+                        "type": "stream.online",
                         "version": "1",
                         "condition": { "broadcaster_user_id": uid.toString() },
                         "transport": { "method": "webhook", "callback": "https://hotbear.org/eventsub", "secret": process.env.TWITCH_SECRET }
@@ -63,7 +63,7 @@ module.exports = {
                     let uid = streamers[i].uid;
 
                     let data = JSON.stringify({
-                        "type": "channel.offline",
+                        "type": "stream.offline",
                         "version": "1",
                         "condition": { "broadcaster_user_id": uid.toString() },
                         "transport": { "method": "webhook", "callback": "https://hotbear.org/eventsub", "secret": process.env.TWITCH_SECRET }
