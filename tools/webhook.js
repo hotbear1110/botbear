@@ -69,8 +69,9 @@ app.listen(port, () => {
 
 
 function getSecret() {
-
-    return process.env.TWITCH_SECRET.toString();
+    let secret = process.env.TWITCH_SECRET
+    console.log("This is a secret: " + secret)
+    return secret;
 }
 
 // Build the message used to get the HMAC.
