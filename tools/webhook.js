@@ -5,6 +5,7 @@ const app = express();
 const port = 8080;
 let messageHandler = require("../tools/messageHandler.js").messageHandler;
 const tools = require("../tools/tools.js");
+const _ = require("underscore");
 
 // Notification request headers
 const TWITCH_MESSAGE_ID = 'Twitch-Eventsub-Message-Id'.toLowerCase();
