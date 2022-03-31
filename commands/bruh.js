@@ -19,7 +19,7 @@ module.exports = {
 
             let number = Math.floor(Math.random() * (1 - 0 + 1)) + 0;
 
-            return `/me ${username} ${responses[number]}`;
+            return `/me ${username} ${responses[0]}`;
 
         } catch (err) {
             console.log(err);

@@ -36,7 +36,7 @@ module.exports = {
                 return `${input[2]} is not a command! Do: "bb commands" to see a list of available commands`
             }
 
-            return `https://github.com/hotbear1110/botbear/blob/main/commands/${input[2]}.js`;
+            return `Clueless https://github.com/hotbear1110/botbear/blob/main/commands/${input[2]}.js`;
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Error`;

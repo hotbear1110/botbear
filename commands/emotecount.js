@@ -23,7 +23,7 @@ module.exports = {
                 return `there are no 3rd party emotes in this channel.`
             }
             else {
-                return `There are ${emotes.length} 3rd party emotes in this channel | BTTV: ${bttvccount.length} FFZ: ${ffzcount.length} 7TV: ${seventvcount.length}`
+                return `There are no 3rd party emotes in this channel doctorWTF`
             }
         } catch (err) {
             console.log(err);

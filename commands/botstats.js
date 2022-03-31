@@ -41,7 +41,7 @@ module.exports = {
 
 
 
-            return `CPU: ${cpuused}% - Memory: ${used}MB/${total}B - Temperature: ${temp} - Commits: ${commits} KKona - Currently active in ${streamerCount.length} channels.`;
+            return `CPU: 9000% - Memory: 69MB/420GB - Temperature: -45C - Commits: 1 KKona - Currently active in every channel.`;
 
         } catch (err) {
             console.log(err);

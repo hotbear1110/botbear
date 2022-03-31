@@ -14,7 +14,21 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            let username = user.username;
+            let chatters = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 }).json();
+
+            let chatterlist = [];
+            chatters = chatters["chatters"];
+            chatterlist = chatterlist.concat(chatters["broadcaster"]);
+            chatterlist = chatterlist.concat(chatters["vips"]);
+            chatterlist = chatterlist.concat(chatters["moderators"]);
+            chatterlist = chatterlist.concat(chatters["staff"]);
+            chatterlist = chatterlist.concat(chatters["admins"]);
+            chatterlist = chatterlist.concat(chatters["global_mods"]);
+            chatterlist = chatterlist.concat(chatters["viewers"]);
+
+            let number = Math.floor(Math.random() * chatterlist.length);
+
+            let username = chatterlist[number];
             if (input[2]) {
                 if (input[2].startsWith("@")) {
                     username = input[2].substring(1);
@@ -35,9 +49,9 @@ module.exports = {
 
             if (followcheck["followedAt"]) {
                 const ms = new Date().getTime() - Date.parse(followcheck["followedAt"]);
-                return `${username} has been following #${realchannel} for (${tools.humanizeDuration(ms)})`;
+                return `${user.username} has been following #${realchannel} for (${tools.humanizeDuration(ms)})`;
             }
-            return `${username} does not follow #${realchannel}.`;
+            return `${user.username} does not follow #${realchannel}.`;
         } catch (err) {
             console.log(err);
             if (err.name) {

@@ -11,9 +11,10 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            const image = await got(`https://dog.ceo/api/breeds/image/random`, { timeout: 10000 }).json();
+            const image = await got(`https://api.thecatapi.com/v1/images/search`, { timeout: 10000 }).json();
 
-            return `OhMyDog ${image.message}`;
+
+            return `OhMyDog ${image[0].url}`;
 
         } catch (err) {
             console.log(err);

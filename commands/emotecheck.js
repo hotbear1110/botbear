@@ -16,9 +16,9 @@ module.exports = {
             if (!input[2]) {
                 return `No emote specified. Example: "bb emotecheck TriHard "`
             }
-            let emoteId = input[2];
-            if (user.emotes) {
-                /*
+            let emoteId = "120232?id=true";
+            /*if (user.emotes) {
+                
                  if (input[0].toLowerCase() === "forsenbb") {
                     emoteId = JSON.stringify(user.emotes).split(",")[1].split(":")[0];
                     emoteId = emoteId.substring(1);
@@ -26,7 +26,7 @@ module.exports = {
                     emoteId = JSON.stringify(user.emotes).split(":")[0];
                     emoteId = emoteId.substring(2);
                 }
-                */
+                
                 emoteId = JSON.stringify(user.emotes).split(":")[0];
                 emoteId = emoteId.substring(2);
 
@@ -35,7 +35,7 @@ module.exports = {
                 emoteId = `${emoteId}?id=true`;
             } else if (emoteId.split("_")[0] === "emotesv2") {
                 emoteId = `${emoteId}?id=true`;
-            }
+            }*/
 
             const emotecheck = await got(`https://api.ivr.fi/v2/twitch/emotes/${emoteId}`, { timeout: 10000 }).json();
 

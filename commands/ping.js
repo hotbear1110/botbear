@@ -6,7 +6,7 @@ module.exports = {
     description: 'This command will make the bot respond with "pong!" and the tmi delay aswell as the internal delay, if the bot is online.',
     permission: 100,
     category: "Core command",
-    showDelay: true,
+    showDelay: false,
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {
@@ -15,7 +15,7 @@ module.exports = {
             const latency = await tools.query(`SELECT Latency FROM Latency`);
             let delay = JSON.parse(latency[latency.length - 1].Latency);
 
-            return `nymnDank pong! - Tmi delay: ${delay * 1000}ms - Internal delay:`;
+            return `nymnDank pong! - Tmi delay: ${delay * 1000}ms - Internal delay: 0ms Kappa`;
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Sql error: ${err.sqlMessage}`;

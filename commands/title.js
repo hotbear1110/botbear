@@ -42,12 +42,12 @@ module.exports = {
                 if (oldtitleTime !== null) {
                     const ms = new Date().getTime() - oldtitleTime;
 
-                    return `#${realchannel[0]}\u{E0000}${realchannel.slice(1)}'s current title is: "${title}". Title changed ${tools.humanizeDuration(ms)} ago.`;
+                    return `#${realchannel[0]}\u{E0000}${realchannel.slice(1)}'s current title is... peepoTalkbutpeepoisnottalking `;
                 }
             }
 
 
-            return `#${realchannel}'s current title is: "${title}"`;
+            return `#${realchannel}'s current title is... peepoTalkbutpeepoisnottalking `;
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Sql error: ${err.sqlMessage}`;

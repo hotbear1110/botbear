@@ -9,7 +9,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            return "borpaSpin";
+            return "borpaHalt";
 
         } catch (err) {
             console.log(err);

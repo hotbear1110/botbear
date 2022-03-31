@@ -6,7 +6,7 @@ module.exports = {
     category: "Random command",
     execute: async (channel, user, input, perm) => {
         try {
-            return "TriHard";
+            return "TriEasy";
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Error`;

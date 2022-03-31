@@ -9,7 +9,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            return "doctorWTF";
+            return "DOCING no wife";
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Error`;

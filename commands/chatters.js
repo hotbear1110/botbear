@@ -16,7 +16,7 @@ module.exports = {
             }
             let chatters = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 }).json();
             chattercount = chatters["chatter_count"];
-            return `There are ${chattercount} users in chat rn :O`;
+            return `There is atleast 1 user in chat rn :O`;
         } catch (err) {
             console.log(err);
             if (err.name) {
