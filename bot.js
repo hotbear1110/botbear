@@ -45,9 +45,6 @@ let started = false;
 let oldmessage = "";
 
 async function onMessageHandler(channel, user, msg, self) {
-    if (channel !== "#xx__hooooootbear1110___xx") {
-        return;
-    }
     let start = new Date().getTime();
     msg = msg.replaceAll(regex.invisChar, "");
     msg = msg.replaceAll("  ", "");
