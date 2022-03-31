@@ -204,81 +204,81 @@ async function onMessageHandler(channel, user, msg, self) {
         }
         if (disabledCommands.includes("cookie") && checkmode[0].Mode === 0 && cookieStatus[0] === "Confirmed") {
             if (cookieStatus[3] === "yes") {
-                new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!) - (The channel you ate your cookie in has reminders turned off)`).newMessage();
+                new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} i dont feel like reminding you today, im tired - (The channel you ate your cookie in has reminders turned off)`).newMessage();
 
             } else {
-                new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay - (The channel you ate your cookie in has reminders turned off)`).newMessage();
+                new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} remind THIS - (The channel you ate your cookie in has reminders turned off)`).newMessage();
 
             }
             return;
         }
         if (disabledCommands.includes("cookie") && checkmode[0].Mode === 0 && cookieStatus[0] === "Confirmed2") {
-            new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay - (The channel you ate your cookie in has reminders turned off)`).newMessage();
+            new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} yes, remind some time today... i think - (The channel you ate your cookie in has reminders turned off)`).newMessage();
 
             return;
         }
 
         if (disabledCommands.includes("cookie") && checkmode[0].Mode === 0 && cookieStatus[0] === "CD") {
-            new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} Your cookie is still on cooldown, it will be available in ${cookieStatus[3]} - (The channel you tried to eat your cookie in has reminders turned off)`).newMessage();
+            new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} How are you so dumb? FailFish you have to wait, moron: ${cookieStatus[3]} - (The channel you tried to eat your cookie in has reminders turned off)`).newMessage();
 
             return;
         }
 
         if (cookieStatus[0] === "Confirmed" && checkmode[0].Mode === 0) {
             if (cookieStatus[3] === "yes") {
-                new messageHandler(cookieStatus[2], `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!)`).newMessage();
+                new messageHandler(cookieStatus[2], `${cookieStatus[1]} i wont remind you but use your fucking cdr!`).newMessage();
                 return;
 
             } else {
-                new messageHandler(cookieStatus[2], `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
+                new messageHandler(cookieStatus[2], `${cookieStatus[1]} i will remind you that i fucked your mom`).newMessage();
 
             }
         } else if (cookieStatus[0] === "Confirmed" && checkmode[0].Mode === 1) {
             if (cookieStatus[3] === "yes") {
-                new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!)`).newMessage();
+                new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} i will shit on your next cookie if you dont use your cdr right now`).newMessage();
                 return;
 
             } else {
-                new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
+                new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} cant you tell the time? just remember what time it is in 2 hours`).newMessage();
                 return;
 
             }
         } else if (cookieStatus[0] === "Confirmed" && checkmode[0].Mode === 2) {
             if (cookieStatus[3] === "yes") {
-                new messageHandler(`#botbear1110`, `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!)`).newMessage();
+                new messageHandler(`#botbear1110`, `${cookieStatus[1]} use cdr now or i will delete you`).newMessage();
                 return;
 
             } else {
-                new messageHandler(`#botbear1110`, `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
+                new messageHandler(`#botbear1110`, `${cookieStatus[1]} remind yes, no maybe. ok?`).newMessage();
                 return;
 
             }
         }
 
         if (cookieStatus[0] === "Confirmed2" && checkmode[0].Mode === 0) {
-            new messageHandler(cookieStatus[2], `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
+            new messageHandler(cookieStatus[2], `${cookieStatus[1]} okge remind`).newMessage();
             return;
 
         } else if (cookieStatus[0] === "Confirmed2" && checkmode[0].Mode === 1) {
-            new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
+            new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} i sent this extra message just to annoy you :)`).newMessage();
             return;
 
         } else if (cookieStatus[0] === "Confirmed2" && checkmode[0].Mode === 2) {
-            new messageHandler(`#botbear1110`, `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
+            new messageHandler(`#botbear1110`, `${cookieStatus[1]} i hope your next cookie has hair in it`).newMessage();
             return;
 
         }
 
         if (cookieStatus[0] === "CD" && checkmode[0].Mode === 0) {
-            new messageHandler(cookieStatus[2], `${cookieStatus[1]} Your cookie is still on cooldown, it will be available in ${cookieStatus[3]}`).newMessage();
+            new messageHandler(cookieStatus[2], `${cookieStatus[1]} i ate your cookie, you can get your next one in: ${cookieStatus[3]}`).newMessage();
             return;
 
         } else if (cookieStatus[0] === "CD" && checkmode[0].Mode === 1) {
-            new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} Your cookie is still on cooldown, it will be available in ${cookieStatus[3]}`).newMessage();
+            new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} too early ${cookieStatus[3]}`).newMessage();
             return;
 
         } else if (cookieStatus[0] === "CD" && checkmode[0].Mode === 2) {
-            new messageHandler(`#botbear1110`, `${cookieStatus[1]} Your cookie is still on cooldown, it will be available in ${cookieStatus[3]}`).newMessage();
+            new messageHandler(`#botbear1110`, `${cookieStatus[1]} no! ${cookieStatus[3]}`).newMessage();
             return;
 
         }
@@ -294,20 +294,20 @@ async function onMessageHandler(channel, user, msg, self) {
         let checkmode = await tools.query(`SELECT Mode FROM Cookies WHERE User=?`, [cdrStatus[1]]);
 
         if (disabledCommands.includes("cdr") && cdrStatus[0] === "Confirmed" && checkmode[0].Mode === 0) {
-            new messageHandler(`#${cdrStatus[1]}`, `${cdrStatus[1]} I will remind you to use your cdr in 3 hours nymnOkay - (The channel you used your cdr in has reminders disabled)`).newMessage();
+            new messageHandler(`#${cdrStatus[1]}`, `${cdrStatus[1]} how about you remind yourself today? - (The channel you used your cdr in has reminders disabled)`).newMessage();
             return;
         }
 
         if (cdrStatus[0] === "Confirmed" && checkmode[0].Mode === 0) {
-            new messageHandler(cdrStatus[2], `${cdrStatus[1]} I will remind you to use your cdr in 3 hours nymnOkay`).newMessage();
+            new messageHandler(cdrStatus[2], `${cdrStatus[1]} just remember`).newMessage();
             return;
 
         } else if (cdrStatus[0] === "Confirmed" && checkmode[0].Mode === 1) {
-            new messageHandler(`#${cdrStatus[1]}`, `${cdrStatus[1]} I will remind you to use your cdr in 3 hours nymnOkay`).newMessage();
+            new messageHandler(`#${cdrStatus[1]}`, `${cdrStatus[1]} i wont remind you`).newMessage();
             return;
 
         } else if (cdrStatus[0] === "Confirmed" && checkmode[0].Mode === 2) {
-            new messageHandler(`#botbear1110`, `${cdrStatus[1]} I will remind you to use your cdr in 3 hours nymnOkay`).newMessage();
+            new messageHandler(`#botbear1110`, `${cdrStatus[1]} aaaaaaaaaaaaaaaaaa`).newMessage();
             return;
 
         }

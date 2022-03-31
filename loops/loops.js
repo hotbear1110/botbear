@@ -229,35 +229,35 @@ setInterval(async function () {
                 await tools.query(`UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
                 if (User.Mode === 0) {
                     if (disabledCommands.includes("cookie")) {
-                        new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
+                        new messageHandler(`#${User.User}`, `${User.User} I just ate your cookie :) - ok?[${User.Channel}]`).newMessage();
 
                     } else if (stream[0].islive === 1) {
-                        new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+                        new messageHandler(`#${User.User}`, `${User.User} I just ate your cookie :) - :() [${User.Channel}]`).newMessage();
 
                     } else {
-                        new messageHandler(User.Channel, `${User.User} Reminder to eat your cookie nymnOkay`).newMessage();
+                        new messageHandler(User.Channel, `${User.User} I just ate your cookie :)`).newMessage();
                     }
 
                 } else if (User.Mode === 1) {
                     if (disabledCommands.includes("cookie")) {
-                        new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
+                        new messageHandler(`#${User.User}`, `${User.User} I just ate your cookie :) - THIS [${User.Channel}]`).newMessage();
 
                     } else if (stream[0].islive === 1) {
-                        new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+                        new messageHandler(`#${User.User}`, `${User.User} I just ate your cookie :) - big L +ratio[${User.Channel}]`).newMessage();
 
                     } else {
-                        new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay`).newMessage();
+                        new messageHandler(`#${User.User}`, `${User.User} I just ate your cookie :)`).newMessage();
 
                     }
                 } else if (User.Mode === 2) {
                     if (disabledCommands.includes("cookie")) {
-                        new messageHandler(`#botbear1110`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
+                        new messageHandler(`#botbear1110`, `${User.User} I just ate your cookie :) - loser[${User.Channel}]`).newMessage();
 
                     } else if (stream[0].islive === 1) {
-                        new messageHandler(`#botbear1110`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+                        new messageHandler(`#botbear1110`, `${User.User} I just ate your cookie :) - get fucked[${User.Channel}]`).newMessage();
 
                     } else {
-                        new messageHandler(`#botbear1110`, `${User.User} Reminder to eat your cookie nymnOkay`).newMessage();
+                        new messageHandler(`#botbear1110`, `${User.User} I just ate your cookie :)`).newMessage();
                     }
                 }
             }
@@ -279,35 +279,35 @@ setInterval(async function () {
 
             if (User.Mode === 0) {
                 if (disabledCommands.includes("cdr")) {
-                    new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
+                    new messageHandler(`#${User.User}`, `${User.User} go use your damn cdr NOW! >:(`).newMessage();
 
                 } else if (stream[0].islive === 1) {
-                    new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+                    new messageHandler(`#${User.User}`, `${User.User} go use your damn cdr NOW! >:( - yes[${User.Channel}]`).newMessage();
 
                 } else {
-                    new messageHandler(User.Channel, `${User.User} Your cookie cdr is ready`).newMessage();
+                    new messageHandler(User.Channel, `${User.User} go use your damn cdr NOW! >:(`).newMessage();
                 }
 
             } else if (User.Mode === 1) {
                 if (disabledCommands.includes("cookie")) {
-                    new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that has disabled cdr reminders[${User.Channel}]`).newMessage();
+                    new messageHandler(`#${User.User}`, `${User.User} go use your damn cdr NOW! >:( - bbbbbbbbbbbbbbbb[${User.Channel}]`).newMessage();
 
                 } else if (stream[0].islive === 1) {
-                    new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+                    new messageHandler(`#${User.User}`, `${User.User} go use your damn cdr NOW! >:( - haha[${User.Channel}]`).newMessage();
 
                 } else {
-                    new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready`).newMessage();
+                    new messageHandler(`#${User.User}`, `${User.User} go use your damn cdr NOW! >:(`).newMessage();
 
                 }
             } else if (User.Mode === 2) {
                 if (disabledCommands.includes("cdr")) {
-                    new messageHandler(`#botbear1110`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
+                    new messageHandler(`#botbear1110`, `${User.User} go use your damn cdr NOW! >:( - hello[${User.Channel}]`).newMessage();
 
                 } else if (stream[0].islive === 1) {
-                    new messageHandler(`#botbear1110`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+                    new messageHandler(`#botbear1110`, `${User.User} go use your damn cdr NOW! >:( - aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa[${User.Channel}]`).newMessage();
 
                 } else {
-                    new messageHandler(`#botbear1110`, `${User.User} Your cookie cdr is ready`).newMessage();
+                    new messageHandler(`#botbear1110`, `${User.User} go use your damn cdr NOW! >:(`).newMessage();
                 }
             }
         }
