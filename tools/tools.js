@@ -608,6 +608,94 @@ exports.checkAllBanphrases = async function (message, channel) {
     return message;
 }
 
+exports.joinEventSub = async function (uid) {
+    let data = JSON.stringify({
+        "type": "channel.update",
+        "version": "1",
+        "condition": { "broadcaster_user_id": uid.toString() },
+        "transport": { "method": "webhook", "callback": "https://hotbear.org/eventsub", "secret": process.env.TWITCH_SECRET }
+    });
+    await got.post(`https://api.twitch.tv/helix/eventsub/subscriptions`, {
+        headers: {
+            'client-id': process.env.TWITCH_CLIENTID,
+            'Authorization': process.env.TWITCH_AUTH,
+            'Content-Type': 'application/json'
+        },
+        body: data
+    });
+
+    data = JSON.stringify({
+        "type": "stream.online",
+        "version": "1",
+        "condition": { "broadcaster_user_id": uid.toString() },
+        "transport": { "method": "webhook", "callback": "https://hotbear.org/eventsub", "secret": process.env.TWITCH_SECRET }
+    });
+    await got.post(`https://api.twitch.tv/helix/eventsub/subscriptions`, {
+        headers: {
+            'client-id': process.env.TWITCH_CLIENTID,
+            'Authorization': process.env.TWITCH_AUTH,
+            'Content-Type': 'application/json'
+        },
+        body: data
+    });
+
+    data = JSON.stringify({
+        "type": "stream.offline",
+        "version": "1",
+        "condition": { "broadcaster_user_id": uid.toString() },
+        "transport": { "method": "webhook", "callback": "https://hotbear.org/eventsub", "secret": process.env.TWITCH_SECRET }
+    });
+    await got.post(`https://api.twitch.tv/helix/eventsub/subscriptions`, {
+        headers: {
+            'client-id': process.env.TWITCH_CLIENTID,
+            'Authorization': process.env.TWITCH_AUTH,
+            'Content-Type': 'application/json'
+        },
+        body: data
+    });
+
+    return true;
+}
+
+exports.deleteEventSub = async function (uid) {
+    let allsubs = [];
+    let haspagnation = true;
+    let pagnation = "";
+    while (haspagnation) {
+        let subs = await got(`https://api.twitch.tv/helix/eventsub/subscriptions?after=${pagnation}`, {
+            headers: {
+                'client-id': process.env.TWITCH_CLIENTID,
+                'Authorization': process.env.TWITCH_AUTH
+            }
+        });
+        subs = JSON.parse(subs.body);
+        if (subs.pagination.cursor) {
+            pagnation = subs.pagination.cursor;
+        } else {
+            haspagnation = false;
+        }
+        subs = subs.data;
+        allsubs = allsubs.concat(subs)
+    }
+
+    let realsubs = allsubs.filter(x => x.condition.broadcaster_user_id === uid);
+
+    if (realsubs.length) {
+        for (let i = 0; i < realsubs.length; i++) {
+            setTimeout(async function () {
+
+                let sub = realsubs[i];
+                await got.delete(`https://api.twitch.tv/helix/eventsub/subscriptions?id=${sub.id}`, {
+                    headers: {
+                        'client-id': process.env.TWITCH_CLIENTID,
+                        'Authorization': process.env.TWITCH_AUTH
+                    },
+                });
+            }, 100 * i)
+        }
+    }
+    return;
+}
 exports.tranlate = async function (text) {
     const { Translate } = require('@google-cloud/translate').v2;
 
