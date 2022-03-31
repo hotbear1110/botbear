@@ -94,7 +94,7 @@ app.post('/eventsub', async function (req, res) {
                     await tools.query(`UPDATE Streamers SET game=?, game_time=? WHERE username=?`, [newGame, gameTime, streamers[0].username]);
 
                     console.log(streamers[0].username + " NEW GAME: " + newGame);
-                    if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110") {
+                    if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
                         if (gameusers.length) {
                             _.each(gameuserlist, function (msg, i) {
                                 new messageHandler(`#${proxychannel}`, `/me ${streamers[0].gameemote} NEW GAME ! ${streamers[0].gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`, true).newMessage();
