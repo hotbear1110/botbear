@@ -607,3 +607,24 @@ exports.checkAllBanphrases = async function (message, channel) {
 
     return message;
 }
+
+exports.tranlate = async function (text) {
+    const { Translate } = require('@google-cloud/translate').v2;
+
+    let languages = ["af", "sq", "am", "ar", "hy", "az", "eu", "be", "bn", "bs", "bg", "ca", "ceb", "zh-CN", "zh-TW", "co", "hr", "cs", "da", "nl", "en", "eo", "et", "fi", "fr", "fy", "gl", "ka", "de", "el", "gu", "ht", "ha", "haw", "iw", "hi", "hmn", "hu", "is", "ig", "id", "ga", "it", "ja", "jv", "kn", "kk", "km", "rw", "ko", "ku", "ky", "lo", "lv", "lt", "lb", "mk", "mg", "ms", "ml", "mt", "mi", "mr", "mn", "my", "ne", "no", "ny", "or", "ps", "fa", "pl", "pt", "pa", "ro", "ru", "sm", "gd", "sr", "st", "sn", "sd", "si", "sk", "sl", "so", "es", "su", "sw", "sv", "tl", "tg", "ta", "tt", "te", "th", "tr", "tk", "uk", "ur", "ug", "uz", "vi", "cy", "xh", "yi", "yo", "zu"];
+    let number = Math.floor(Math.random() * (languages.length - 0) + 0);
+
+    const target = languages[number];
+
+    const projectId = 'eloquent-env-345816'
+    const keyFilename = "google.env";
+    const translate = new Translate({ projectId, keyFilename });
+
+    // Translates the text into the target language. "text" can be a string for
+    // translating a single piece of text, or an array of strings for translating
+    // multiple texts.
+    let [translations] = await translate.translate(text, target);
+    console.log(translations)
+
+    return translations;
+}

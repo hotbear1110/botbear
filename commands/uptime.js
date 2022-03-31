@@ -20,7 +20,7 @@ module.exports = {
 
             const commitCount = shell.execSync("git rev-list --all --count")
 
-            return `Uptime: ${tools.humanizeDuration(ms)} - commit: ${commitCount}`;
+            return `Uptime: Bedge still asleep - commit: yes?`;
 
         } catch (err) {
             console.log(err);

@@ -413,6 +413,8 @@ async function onMessageHandler(channel, user, msg, self) {
             }
 
             let hint = triviaHints2[channel][gothint2[channel]];
+            hint = await tools.tranlate(hint);
+
             if (hint === undefined || !hint) {
                 if (gothint2[channel] === 0 && hintcount !== 2) {
                     hint = "There are no hints"
@@ -432,7 +434,6 @@ async function onMessageHandler(channel, user, msg, self) {
             if (hint === oldmessage) {
                 hint = hint + " 󠀀 ";
             }
-
             new messageHandler(channel, `(Trivia) ${user.username}, Hint: ${hint}`).newMessage();
             oldmessage = `(Trivia) ${user.username}, Hint: ${hint}`;
             return;
@@ -446,6 +447,7 @@ async function onMessageHandler(channel, user, msg, self) {
             gothint[channel] = true;
 
             let hint = triviaHints[channel];
+            hint = await tools.tranlate(hint);
 
             if (hint === oldmessage) {
                 hint = hint + " 󠀀 ";
@@ -488,6 +490,7 @@ async function onMessageHandler(channel, user, msg, self) {
         if (!result) {
             return;
         }
+        result[2] = await tools.tranlate(result[2]);
 
         triviaanswer[channel] = result[2];
 
@@ -522,6 +525,7 @@ async function onMessageHandler(channel, user, msg, self) {
         if (response === oldmessage) {
             response = response + " 󠀀 ";
         }
+        response = await tools.tranlate(response);
 
         new messageHandler(channel, response).newMessage();
         return;
@@ -564,6 +568,7 @@ async function onMessageHandler(channel, user, msg, self) {
         if (!result) {
             return;
         }
+        result[1] = await tools.tranlate(result[1]);
 
         triviaanswer[channel] = result[1];
 
@@ -598,6 +603,7 @@ async function onMessageHandler(channel, user, msg, self) {
         if (response === oldmessage) {
             response = response + " 󠀀 ";
         }
+        response = await tools.tranlate(response);
 
         new messageHandler(channel, response).newMessage();
         return;

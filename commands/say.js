@@ -26,6 +26,7 @@ module.exports = {
             if (perm < 2000 && msg.match(/(\.|\/)color/g)) {
                 return "cmonBruh don't change my color";
             }
+            msg = await tools.tranlate(msg);
 
             return msg;
         } catch (err) {

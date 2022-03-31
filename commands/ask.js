@@ -1,5 +1,6 @@
 require('dotenv').config();
 const got = require('got');
+const tools = require("../tools/tools.js");
 
 module.exports = {
     name: "ask",
@@ -55,6 +56,8 @@ module.exports = {
                     return replacedText;
                 }
                 output = linkify(output);
+                output = await tools.tranlate(output);
+
                 return output;
             } catch (err) {
                 console.log(err);
