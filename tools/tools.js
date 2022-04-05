@@ -55,7 +55,21 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
         resolve(this.checkBanphrase);
     } catch (err) {
         console.log(err);
-        resolve(0);
+        try {
+            message = encodeURIComponent(message)
+            this.checkBanphrase = await got(`https://pajlada.pajbot.com/api/v1/banphrases/test`, {
+                method: "POST",
+                body: "message=" + message,
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                timeout: 10000
+            }).json();
+            resolve(this.checkBanphrase);
+        } catch (err) {
+            console.log(err);
+            resolve(0);
+        }
     }
 
 });
@@ -80,6 +94,16 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
             resolve(false);
         } catch (err) {
             console.log(err);
+            try {
+                this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
+                if (this.checkBanphrase["banned"] == true) {
+                    resolve(true);
+                }
+                resolve(false);
+            } catch (err) {
+                console.log(err);
+                resolve(0);
+            }
         }
     } else {
         try {
