@@ -720,3 +720,10 @@ exports.deleteEventSub = async function (uid) {
     }
     return;
 }
+
+exports.removeTrailingSpaces = function (message) {
+    while (message[message.length - 1] === " ") {
+        message = message.slice(0, -1);
+    }
+    return message;
+}
