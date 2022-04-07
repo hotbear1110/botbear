@@ -607,16 +607,7 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
-    if (commands[realcommand].ping == true) {
-        result = `${user['display-name']}, ${result}`;
-    }
-
-    let end = new Date().getTime();
-
-    if (commands[realcommand].showDelay == true) {
-        result = `${result} ${end - start}ms`;
-    }
-    new messageHandler(channel, result).newMessage();
+    new messageHandler(channel, result, commands[realcommand].noBanphrase, commands[realcommand].showDelay, start, commands[realcommand].ping, user).newMessage();
     return;
 }
 
