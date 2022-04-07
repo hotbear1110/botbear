@@ -107,22 +107,14 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
         }
     } else {
         try {
-            this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/${this.userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
+            this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
             if (this.checkBanphrase["banned"] == true) {
                 resolve(true);
             }
             resolve(false);
         } catch (err) {
-            try {
-                this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
-                if (this.checkBanphrase["banned"] == true) {
-                    resolve(true);
-                }
-                resolve(false);
-            } catch (err) {
-                console.log(err);
-                resolve(0);
-            }
+            console.log(err);
+            resolve(0);
         }
     }
 
