@@ -14,16 +14,9 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            let username = user.username;
-            if (input[2]) {
-                if (input[2].startsWith("@")) {
-                    input[2] = input[2].substring(1);
-                }
-                username = input[2].toLowerCase();
-            }
             let realchannel = channel;
-            if (input[3]) {
-                realchannel = input[3];
+            if (input[2]) {
+                realchannel = input[2];
             }
             let modcheck = await got(`https://api.ivr.fi/twitch/modsvips/${realchannel}`, { timeout: 10000 }).json();
             let mods = modcheck["mods"];
