@@ -23,7 +23,7 @@ module.exports = {
             let number = Math.floor(Math.random() * (vips.length - 0) + 0);
 
             let ms = new Date().getTime() - Date.parse(vips[number].grantedAt)
-            return `Random vip😬 in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} is ${vips[number].displayName}, they were added ${tools.humanizeDuration(ms)} ago.`;
+            return `Random vip😬 in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} 👉  ${vips[number].displayName}, they were added ${tools.humanizeDuration(ms)} ago.`;
 
         } catch (err) {
             console.log(err);

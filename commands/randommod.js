@@ -23,7 +23,7 @@ module.exports = {
             let number = Math.floor(Math.random() * (mods.length - 0) + 0);
 
             let ms = new Date().getTime() - Date.parse(mods[number].grantedAt)
-            return `Random M OMEGALUL D in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} is ${mods[number].displayName}, they were added ${tools.humanizeDuration(ms)} ago.`;
+            return `Random M OMEGALUL D in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} 👉  ${mods[number].displayName}, they were added ${tools.humanizeDuration(ms)} ago.`;
 
         } catch (err) {
             console.log(err);
