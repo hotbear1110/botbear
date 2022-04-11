@@ -4,7 +4,7 @@ const tools = require("../tools/tools.js");
 
 
 module.exports = {
-    name: "latestmod",
+    name: "latestvip",
     ping: true,
     description: 'This command will give you the name if the newest mod in a given channel',
     permission: 100,
@@ -18,11 +18,11 @@ module.exports = {
             if (input[2]) {
                 realchannel = input[2];
             }
-            let modcheck = await got(`https://api.ivr.fi/twitch/modsvips/${realchannel}`, { timeout: 10000 }).json();
-            let mods = modcheck["mods"];
+            let vipcheck = await got(`https://api.ivr.fi/twitch/modsvips/${realchannel}`, { timeout: 10000 }).json();
+            let vips = vipcheck["vips"];
 
-            let ms = new Date().getTime() - Date.parse(mods[mods.length - 1].grantedAt)
-            return `The newest M OMEGALUL D in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} is ${mods[mods.length - 1].displayName}, they were added ${tools.humanizeDuration(ms)} ago.`;
+            let ms = new Date().getTime() - Date.parse(vips[vips.length - 1].grantedAt)
+            return `The newest vip😬 in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} is ${vips[vips.length - 1].displayName}, they were added ${tools.humanizeDuration(ms)} ago.`;
 
         } catch (err) {
             console.log(err);
