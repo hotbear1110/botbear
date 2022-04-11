@@ -28,7 +28,7 @@ module.exports = {
             let modcheck = await got(`https://api.ivr.fi/twitch/modsvips/${realchannel}`, { timeout: 10000 }).json();
             let mods = modcheck["mods"];
 
-            let ms = mods[mods.length - 1].grantedAt
+            let ms = new Date().getTime() - Date.parse(mods[mods.length - 1].grantedAt)
             return `The newest M OMEGALUL D in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} is ${mods[mods.length - 1].displayName}, they were added ${tools.humanizeDuration(ms)} ago.`;
 
         } catch (err) {
