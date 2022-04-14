@@ -13,9 +13,9 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            /*if (channel !== "nymn" && channel !== "xx__hooooootbear1110___xx") {
+            if (channel !== "nymn" && channel !== "xx__hooooootbear1110___xx") {
                 return "This command is currently disabled due to edgy responses :)";
-            }*/
+            }
 
             input = input.splice(2);
             let msg = input.toString().replaceAll(',', ' ');
