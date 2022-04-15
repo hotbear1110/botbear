@@ -9,6 +9,7 @@ const hastebin = require('better-hastebin');
 const humanize = require('humanize-duration');
 const requireDir = require("require-dir");
 const regex = require('./regex.js');
+let messageHandler = require("./messageHandler.js").messageHandler;
 
 exports.query = (query, data = []) =>
     new Promise((resolve, reject) => {
@@ -718,4 +719,153 @@ exports.removeTrailingSpaces = function (message) {
         message = message.slice(0, -1);
     }
     return message;
+}
+
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds) {
+            break;
+        }
+    }
+}
+
+exports.checkLiveStatus = async function () {
+    const streamers = await tools.query('SELECT * FROM Streamers');
+    console.log("test")
+    _.each(streamers, async function (stream) {
+        let disabledCommands = JSON.parse(stream.disabled_commands)
+        setTimeout(async function () {
+            await got(`https://api.twitch.tv/helix/streams?user_login=${stream.username}`, {
+                headers: {
+                    'client-id': process.env.TWITCH_CLIENTID,
+                    'Authorization': process.env.TWITCH_AUTH
+                },
+            }).json()
+                .then(async function (response) {
+                    // handle success
+                    const twitchdata = response;
+                    let users = JSON.parse(stream.live_ping);
+                    users = users.toString().replaceAll(',', ' ');
+
+
+                    let proxychannel = stream.username;
+                    if (stream.username === "forsen") {
+                        proxychannel = "botbear1110";
+                    }
+                    if (twitchdata['data'].length !== 0 && stream.islive == 0) {
+                        let userlist = tools.splitLine(users, 350);
+                        console.log(stream.username + " IS NOW LIVE");
+                        await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`);
+                        if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
+                            if (users.length) {
+                                _.each(userlist, function (msg, i) {
+                                    new messageHandler(`#${proxychannel}`, `/me ${stream.liveemote} ${stream.username[0].toUpperCase()}\u{E0000}${stream.username.toUpperCase().slice(1)} IS NOW LIVE ${stream.liveemote} ${userlist[i]}`, true).newMessage();
+                                });
+                            }
+                        }
+                    };
+                    if (twitchdata['data'].length === 0 && stream.islive == 1) {
+                        let userlist = tools.splitLine(users, 350);
+                        console.log(stream.username + " IS NOW OFFLINE");
+                        await tools.query(`UPDATE Streamers SET islive = 0 WHERE username ="${stream.username}"`);
+                        if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
+                            if (users.length) {
+                                _.each(userlist, function (msg, i) {
+                                    new messageHandler(`#${proxychannel}`, `/me ${stream.offlineemote} ${stream.username[0].toUpperCase()}\u{E0000}${stream.username.toUpperCase().slice(1)} IS NOW OFFLINE ${stream.offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`, true).newMessage();
+                                });
+                            }
+                        }
+                    };
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+                .then(function () {
+                    // always executed
+                });
+        }, 500);
+    }
+    )
+    return;
+}
+
+exports.checkTitleandGame = async function () {
+    const streamers = await tools.query('SELECT * FROM Streamers');
+    const myping = await tools.query(`SELECT * FROM MyPing`);
+
+    _.each(streamers, async function (stream) {
+        let disabledCommands = JSON.parse(stream.disabled_commands)
+        await got(`https://api.twitch.tv/helix/channels?broadcaster_id=${stream.uid}`, {
+            headers: {
+                'client-id': process.env.TWITCH_CLIENTID,
+                'Authorization': process.env.TWITCH_AUTH
+            },
+        }).json()
+            .then(async function (response) {
+                // handle success
+                const twitchdata = response;
+                let newTitle = twitchdata.data[0].title;
+                let titleusers = JSON.parse(stream.title_ping);
+                titleusers = titleusers.toString().replaceAll(',', ' ');
+
+                let newGame = twitchdata.data[0].game_name;
+                let gameusers = JSON.parse(stream.game_ping);
+                _.each(myping, async function (userchanel) {
+                    let pingname = JSON.parse(userchanel.username);
+                    let gamename = userchanel.game_pings;
+                    if (pingname.includes(stream.username) && gamename.includes(newGame) && newGame !== "") {
+                        gameusers.push(pingname[0]);
+                    }
+                })
+                gameusers = gameusers.toString().replaceAll(',', ' ');
+
+                let proxychannel2 = stream.username;
+                if (stream.username === "forsen") {
+                    proxychannel2 = "botbear1110";
+                }
+
+                if (newTitle !== stream.title) {
+                    let titleuserlist = tools.splitLine(titleusers, 400 - newTitle.length);
+                    let titleTime = new Date().getTime();
+                    console.log(stream.username + " NEW TITLE: " + newTitle);
+                    await tools.query(`UPDATE Streamers SET title=?, title_time=? WHERE username=?`, [newTitle, titleTime, stream.username]);
+                    if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110") {
+                        if (titleusers.length) {
+                            _.each(titleuserlist, function (msg, i) {
+                                new messageHandler(`#${proxychannel2}`, `/me ${stream.titleemote} NEW TITLE ! ${stream.titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`, true).newMessage();
+                            });
+                        }
+                    }
+                };
+                if (newGame !== stream.game) {
+                    let gameuserlist = tools.splitLine(gameusers, 400 - newGame.length);
+                    let gameTime = new Date().getTime();
+
+                    await tools.query(`UPDATE Streamers SET game=?, game_time=? WHERE username=?`, [newGame, gameTime, stream.username]);
+
+                    if (newTitle !== stream.title) {
+                        sleep(1500)
+                    }
+                    console.log(stream.username + " NEW GAME: " + newGame);
+                    if (!disabledCommands.includes("notify") || proxychannel2 === "botbear1110") {
+                        if (gameusers.length) {
+                            _.each(gameuserlist, function (msg, i) {
+                                new messageHandler(`#${proxychannel2}`, `/me ${stream.gameemote} NEW GAME ! ${stream.gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`, true).newMessage();
+                            });
+                        }
+                    }
+                };
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
+            });
+    }
+    )
+    return;
 }
