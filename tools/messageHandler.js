@@ -59,6 +59,9 @@ exports.messageHandler = class Cooldown {
         } else {
             if (!(this.message.includes("Reminder to eat your cookie nymnOkay") || this.message.includes("Reminder to eat your cookie nymnOkay 󠀀 ")) || oldmessage !== this.message) {
                 if (!(this.message.includes("Your cookie cdr is ready.") || this.message.includes("Your cookie cdr is ready. 󠀀 ")) || oldmessage !== this.message) {
+                    if (this.message === oldmessage) {
+                        this.message = this.message + " 󠀀 ";
+                    }
                     cc.say(this.channel, this.message);
                 }
             }
