@@ -140,7 +140,7 @@ module.exports = {
                     }
                     break;
                 default:
-                    return 'This command is for registering/unregitering you for notifications for "ThePositiveBot´s" cookies. Available cookie commands: "bb cookie register", "bb cookie unregister", "bb cookie status", "bb cookie mode"'
+                    return 'This command is for registering/unregistering you for notifications for "ThePositiveBot´s" cookies. Available cookie commands: "bb cookie register", "bb cookie unregister", "bb cookie status", "bb cookie mode"'
             }
 
         } catch (err) {
