@@ -650,8 +650,8 @@ async function onConnectedHandler(addr, port) {
                 new messageHandler("#botbear1110", `Left channel ${name[1]}. Reason: Name change detected, ${name[1]} -> ${name[0]}`).newMessage();
             })
         }
-        await tools.checkLiveStatus();
-        await tools.checkTitleandGame();
+        //await tools.checkLiveStatus();
+        //await tools.checkTitleandGame();
         started = true;
     }
 
