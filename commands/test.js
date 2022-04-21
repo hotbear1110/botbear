@@ -14,10 +14,20 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            let message = "This is a test    .   "
-            console.log(`"${message}"`)
-            message = tools.removeTrailingSpaces(message);
-            console.log(message)
+            let data = JSON.stringify({
+                "type": "stream.online",
+                "version": "1",
+                "condition": { "broadcaster_user_id": "44445592" },
+                "transport": { "method": "webhook", "callback": "https://hotbear.org/eventsub", "secret": process.env.TWITCH_SECRET }
+            });
+            await got.post(`https://api.twitch.tv/helix/eventsub/subscriptions`, {
+                headers: {
+                    'client-id': process.env.TWITCH_CLIENTID,
+                    'Authorization': process.env.TWITCH_AUTH,
+                    'Content-Type': 'application/json'
+                },
+                body: data
+            });
             return `"${message}"`;
         } catch (err) {
             console.log(err);

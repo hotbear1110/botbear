@@ -639,7 +639,6 @@ async function onConnectedHandler(addr, port) {
                 }).catch((err) => {
                     console.log(err);
                 });
-
                 cc.part(name[1]).then((data) => {
                     // data returns [channel]
                 }).catch((err) => {

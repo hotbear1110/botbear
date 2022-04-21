@@ -12,18 +12,30 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            let subs = await got(`https://api.twitch.tv/helix/eventsub/subscriptions`, {
-                headers: {
-                    'client-id': process.env.TWITCH_CLIENTID,
-                    'Authorization': process.env.TWITCH_AUTH
-                },
-            }).json();
-            subs = subs.data;
+            let allsubs = [];
+            let haspagnation = true;
+            let pagnation = "";
+            while (haspagnation) {
+                let subs = await got(`https://api.twitch.tv/helix/eventsub/subscriptions?after=${pagnation}`, {
+                    headers: {
+                        'client-id': process.env.TWITCH_CLIENTID,
+                        'Authorization': process.env.TWITCH_AUTH
+                    }
+                });
+                subs = JSON.parse(subs.body);
+                if (subs.pagination.cursor) {
+                    pagnation = subs.pagination.cursor;
+                } else {
+                    haspagnation = false;
+                }
+                subs = subs.data;
+                allsubs = allsubs.concat(subs)
+            }
 
-            for (let i = 0; i < subs.length; i++) {
+            for (let i = 0; i < allsubs.length; i++) {
                 setTimeout(async function () {
 
-                    let sub = subs[i];
+                    let sub = allsubs[i];
                     console.log(sub)
                     await got.delete(`https://api.twitch.tv/helix/eventsub/subscriptions?id=${sub.id}`, {
                         headers: {
@@ -33,6 +45,8 @@ module.exports = {
                     });
                 }, 100 * i)
             }
+
+
             return "Okayge done!!";
         } catch (err) {
             console.log(err);
