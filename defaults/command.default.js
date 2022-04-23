@@ -3,6 +3,7 @@ module.exports = {
     ping: true,
     description: 'DESCRIPTION',
     permission: 100,
+    cooldown: 3, //in seconds
     category: "CATEGORY [ ./command.category.default.js ]",
     execute: async (channel, user, input, perm) => {
         try {
