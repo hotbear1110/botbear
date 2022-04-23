@@ -11,10 +11,11 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            let message = input;
+            let message = input.slice();
             message.shift()
             message.shift()
             message.shift()
+
             message = message.toString().replaceAll(",", " ");
 
             for (let i = 0; i < input[2]; i++) {
