@@ -12,10 +12,10 @@ module.exports = {
                 return;
             }
             let message = input;
-            message = message.toString()
             message.shift()
             message.shift()
             message.shift()
+            message = message.toString().replaceAll(",", " ");
 
             for (let i = 0; i < input[2]; i++) {
                 cc.say(channel, message);
