@@ -15,6 +15,7 @@ module.exports = {
             message = message.toString()
             message.shift()
             message.shift()
+            message.shift()
 
             for (let i = 0; i < input[2]; i++) {
                 cc.say(channel, message);
