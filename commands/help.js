@@ -27,7 +27,12 @@ module.exports = {
                 return;
             }
 
-            return `${commandlist[0].Command} - Permission lvl: ${commandlist[0].Perm}`;
+            let cooldown = commandlist[0].Cooldown;
+            if (!commandlist[0].Cooldown) {
+                cooldown = 3;
+            }
+
+            return `${commandlist[0].Command} - Permission lvl: ${commandlist[0].Perm} - Cooldown: ${cooldown}s`;
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Sql error: ${err.sqlMessage}`;
