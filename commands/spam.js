@@ -18,8 +18,10 @@ module.exports = {
 
             message = message.toString().replaceAll(",", " ");
 
-            for (let i = 0; i < input[2]; i++) {
+            var i = 0
+            while (i < input[2]) {
                 cc.say(channel, message);
+                i++
             }
 
             return;
