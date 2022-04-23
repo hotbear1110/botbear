@@ -11,7 +11,8 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            let message = input.toString();
+            let message = input;
+            message = message.toString()
             message.shift()
             message.shift()
 
