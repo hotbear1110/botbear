@@ -4,7 +4,7 @@ module.exports = {
     name: "spam",
     ping: true,
     description: 'spam something',
-    permission: 100,
+    permission: 2000,
     category: "Dev command",
     execute: async (channel, user, input, perm) => {
         try {
