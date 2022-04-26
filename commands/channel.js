@@ -8,7 +8,7 @@ const _ = require("underscore");
 module.exports = {
     name: "channel",
     ping: true,
-    description: '"bb channel join/leave" the bot joins or leaves your channel(only works in xx__hooooootbear1110___xx/botbear1110 chats). "bb channel [live/offline/title/game]emote *emote*" this changes the notify emotes. "bb channel trivia *seconds*" this changes the trivia cooldown(Default is 300s, if cd is too low, it can bug out)',
+    description: '"bb channel join/leave" the bot joins or leaves your channel(only works in hottestbear/botbear1110 chats). "bb channel [live/offline/title/game]emote *emote*" this changes the notify emotes. "bb channel trivia *seconds*" this changes the trivia cooldown(Default is 300s, if cd is too low, it can bug out)',
     permission: 100,
     category: "Core command",
     execute: async (channel, user, input, perm) => {
@@ -30,7 +30,7 @@ module.exports = {
             Promise.all([modresponse])
             switch (input[2]) {
                 case "join": {
-                    if (channel !== "botbear1110" && channel !== "xx__hooooootbear1110___xx" && perm < 2000) { return; }
+                    if (channel !== "botbear1110" && channel !== "hottestbear" && perm < 2000) { return; }
                     let username = user.username;
                     let uid = user['user-id'];
 
@@ -80,7 +80,7 @@ module.exports = {
                 case "leave": {
                     let username = user.username;
                     let uid = user['user-id'];
-                    if (channel != "botbear1110" && channel != "xx__hooooootbear1110___xx" && channel != user.username && perm < 2000) { return; }
+                    if (channel != "botbear1110" && channel != "hottestbear" && channel != user.username && perm < 2000) { return; }
                     if (input[3]) {
                         let streamer = await got(`https://api.ivr.fi/twitch/resolve/${input[3]}`, { timeout: 10000 }).json();
                         uid = streamer.id;
@@ -120,7 +120,7 @@ module.exports = {
                     break;
                 case "liveemote": {
                     let username = user.username;
-                    if (channel != "botbear1110" && channel != "xx__hooooootbear1110___xx" && perm < 2000 && !tools.isMod(user, channel)) { return; }
+                    if (channel != "botbear1110" && channel != "hottestbear" && perm < 2000 && !tools.isMod(user, channel)) { return; }
                     if (!input[3]) {
                         return;
                     }
@@ -148,7 +148,7 @@ module.exports = {
                     break;
                 case "gameemote": {
                     let username = user.username;
-                    if (channel != "botbear1110" && channel != "xx__hooooootbear1110___xx" && perm < 2000 && !tools.isMod(user, channel)) { return; }
+                    if (channel != "botbear1110" && channel != "hottestbear" && perm < 2000 && !tools.isMod(user, channel)) { return; }
                     if (!input[3]) {
                         return;
                     }
@@ -176,7 +176,7 @@ module.exports = {
                     break;
                 case "titleemote": {
                     let username = user.username;
-                    if (channel != "botbear1110" && channel != "xx__hooooootbear1110___xx" && perm < 2000 && !tools.isMod(user, channel)) { return; }
+                    if (channel != "botbear1110" && channel != "hottestbear" && perm < 2000 && !tools.isMod(user, channel)) { return; }
                     if (!input[3]) {
                         return;
                     }
@@ -204,7 +204,7 @@ module.exports = {
                     break;
                 case "offlineemote": {
                     let username = user.username;
-                    if (channel != "botbear1110" && channel != "xx__hooooootbear1110___xx" && perm < 2000 && !tools.isMod(user, channel)) { return; }
+                    if (channel != "botbear1110" && channel != "hottestbear" && perm < 2000 && !tools.isMod(user, channel)) { return; }
                     if (!input[3]) {
                         return;
                     }
