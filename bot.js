@@ -57,7 +57,7 @@ async function onMessageHandler(channel, user, msg, self) {
     }
     */
 
-    if (self) {
+    if (self || (!activetrivia[channel] && !msg.startsWith("bb "))) {
         return;
     }
 
