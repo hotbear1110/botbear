@@ -26,6 +26,10 @@ module.exports = {
                 realchannel = input[3];
             }
 
+            if (channel === realchannel && user["user-id"] === uid) {
+                return "nymnDank But you are right here ❓❗"
+            }
+
             const lm = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}?json&reverse`, { timeout: 10000 }).json();
 
             let message = tools.splitLine(lm.messages[0].text, 350)
