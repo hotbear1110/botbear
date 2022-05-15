@@ -5,7 +5,7 @@ module.exports = {
     permission: 100,
     cooldown: 3, //in seconds
     category: "CATEGORY [ ./command.category.default.js ]",
-    execute: async (channel, user, input, perm) => {
+    execute: async (channel, user, input, perm, aliascommand) => {
         try {
             if (module.exports.permission > perm) {
                 return;
