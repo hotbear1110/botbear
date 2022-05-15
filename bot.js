@@ -327,9 +327,9 @@ async function onMessageHandler(channel, user, msg, self) {
     aliasList = JSON.parse(aliasList[0].Aliases);
 
     const Alias = new tools.Alias(msg, aliasList);
+    let aliascommand = input[1].toLowerCase();
     input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
     let realcommand = input[1].toLowerCase();
-
     if (realcommand === "say" && realcommand === "channel" && realcommand === "emotecheck" && realcommand === "cum" && realcommand === "suggest" && realcommand === "shit" && realcommand === "code" && realcommand === "test2") {
         input = input.toString().replaceAll(",", " ");
     }
@@ -479,7 +479,6 @@ async function onMessageHandler(channel, user, msg, self) {
             new messageHandler(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
             return;
         }
-
         let result = await commands[realcommand].execute(realchannel, user, input, perm);
 
         if (!result) {
@@ -600,7 +599,8 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
 
     }
-    let result = await commands[realcommand].execute(realchannel, user, input, perm);
+
+    let result = await commands[realcommand].execute(realchannel, user, input, perm, aliascommand);
 
 
     if (!result) {

@@ -6,7 +6,7 @@ module.exports = {
     description: 'Pings a random chatter with YOURM0M',
     permission: 100,
     category: "Random command",
-    execute: async (channel, user, input, perm) => {
+    execute: async (channel, user, input, perm, aliascommand) => {
         try {
             if (module.exports.permission > perm) {
                 return;
@@ -24,8 +24,14 @@ module.exports = {
             chatterlist = chatterlist.concat(chatters["viewers"]);
 
             let number = Math.floor(Math.random() * chatterlist.length);
-
-            return `YOURM0M ${chatterlist[number]}`;
+            switch (aliascommand) {
+                case "yourm0m": {
+                    return `YOURM0M ${chatterlist[number]}`;
+                }
+                case "yourmom": {
+                    return `YOURMOM ${chatterlist[number]}`;
+                }
+            }
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Error`;
