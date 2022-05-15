@@ -24,14 +24,9 @@ module.exports = {
             chatterlist = chatterlist.concat(chatters["viewers"]);
 
             let number = Math.floor(Math.random() * chatterlist.length);
-            switch (aliascommand) {
-                case "yourm0m": {
-                    return `YOURM0M ${chatterlist[number]}`;
-                }
-                case "yourmom": {
-                    return `YOURMOM ${chatterlist[number]}`;
-                }
-            }
+
+            return `${aliascommand} ${chatterlist[number]}`;
+
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Error`;

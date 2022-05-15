@@ -327,7 +327,7 @@ async function onMessageHandler(channel, user, msg, self) {
     aliasList = JSON.parse(aliasList[0].Aliases);
 
     const Alias = new tools.Alias(msg, aliasList);
-    let aliascommand = input[1].toLowerCase();
+    let aliascommand = input[1];
     input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
     let realcommand = input[1].toLowerCase();
     if (realcommand === "say" && realcommand === "channel" && realcommand === "emotecheck" && realcommand === "cum" && realcommand === "suggest" && realcommand === "shit" && realcommand === "code" && realcommand === "test2") {
