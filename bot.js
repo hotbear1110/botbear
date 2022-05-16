@@ -57,7 +57,7 @@ async function onMessageHandler(channel, user, msg, self) {
     }
     */
 
-    if (self || (!activetrivia[channel] && !msg.startsWith("bb "))) {
+    if (self || (!user["user-id"] == 425363834 && !activetrivia[channel] && !msg.startsWith("bb "))) {
         return;
     }
 
