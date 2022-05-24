@@ -7,6 +7,7 @@ module.exports = {
     permission: 100,
     category: "Core command",
     showDelay: true,
+    noBanphrase: true,
     execute: async (channel, user, input, perm) => {
         try {
             if (module.exports.permission > perm) {
