@@ -616,7 +616,7 @@ async function onConnectedHandler(addr, port) {
 
     await tools.refreshCommands();
     if (started === false) {
-
+/*
         let bannedUsers = await tools.bannedStreamer;
 
         if (await bannedUsers.length) {
@@ -629,7 +629,7 @@ async function onConnectedHandler(addr, port) {
                 new messageHandler("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`).newMessage();
             })
         }
-
+*/
         let namechange = await tools.nameChanges;
 
         if (await namechange.length) {
