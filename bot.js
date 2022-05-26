@@ -62,7 +62,7 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
     
-    if (channel === "#pajlada" && user["user-id"] === 229225576  && msg === "/announce 2⃣ _? 😂") {
+    if (channel === "#pajlada" && user["user-id"] === 229225576  && msg.startsWith("/announce")) {
         new messageHandler(channel, `. /announce æ ø å? NOTDANKENOUGH`, true).newMessage();
         return;
     }
