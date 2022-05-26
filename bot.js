@@ -66,8 +66,6 @@ async function onMessageHandler(channel, user, msg, self) {
         new messageHandler(channel, `/me pajaLada 🚨 WHAT HAPPENED`, true).newMessage();
         return;
     }
-    
-    new messageHandler(channel, result, commands[realcommand].noBanphrase, commands[realcommand].showDelay, start, commands[realcommand].ping, user).newMessage();
 
     if (self || (!user["user-id"] == 425363834 && !activetrivia[channel] && !msg.startsWith("bb "))) {
         return;
