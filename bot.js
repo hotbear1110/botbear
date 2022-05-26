@@ -61,9 +61,9 @@ async function onMessageHandler(channel, user, msg, self) {
         new messageHandler(channel, `/me pajaLada 🚨 WHAT HAPPENED`, true).newMessage();
         return;
     }
-
-    if (channel === "#pajlada" && user["user-id"] === 229225576  && msg === ". /announce æ ø å? NOTDANKENOUGH") {
-        new messageHandler(channel, `/me pajaLada 🚨 WHAT HAPPENED`, true).newMessage();
+    
+    if (channel === "#pajlada" && user["user-id"] === 229225576  && msg === "/announce 2⃣ _? 😂") {
+        new messageHandler(channel, `. /announce æ ø å? NOTDANKENOUGH`, true).newMessage();
         return;
     }
 
