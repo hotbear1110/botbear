@@ -56,7 +56,14 @@ async function onMessageHandler(channel, user, msg, self) {
         await tools.query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
     }
     */
-     
+   if (channel === "hottestbear") {
+   console.log(channel, user["user-id"], msg)
+       }
+           if (channel === "#hottestbear" && user["user-id"] === 135186096 && msg.startsWith("/announce")) {
+        new messageHandler(channel, `. /announce æ ø å? NOTDANKENOUGH`, true).newMessage();
+        return;
+    }
+
     if (channel === "#pajlada" && user["user-id"] === 82008718 && msg === "pajaS 🚨 ALERT") {
         new messageHandler(channel, `/me pajaLada 🚨 WHAT HAPPENED`, true).newMessage();
         return;
