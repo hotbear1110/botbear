@@ -56,6 +56,18 @@ async function onMessageHandler(channel, user, msg, self) {
         await tools.query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
     }
     */
+     
+    if (channel === "#pajlada" && user["user-id"] === 82008718 && msg === "pajaS 🚨 ALERT") {
+        new messageHandler(channel, `/me pajaLada 🚨 WHAT HAPPENED`, true).newMessage();
+        return;
+    }
+
+    if (channel === "#pajlada" && user["user-id"] === 229225576  && msg === ". /announce æ ø å? NOTDANKENOUGH") {
+        new messageHandler(channel, `/me pajaLada 🚨 WHAT HAPPENED`, true).newMessage();
+        return;
+    }
+    
+    new messageHandler(channel, result, commands[realcommand].noBanphrase, commands[realcommand].showDelay, start, commands[realcommand].ping, user).newMessage();
 
     if (self || (!user["user-id"] == 425363834 && !activetrivia[channel] && !msg.startsWith("bb "))) {
         return;
