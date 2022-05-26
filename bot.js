@@ -58,8 +58,9 @@ async function onMessageHandler(channel, user, msg, self) {
     */
    if (channel === "#hottestbear") {
    console.log(channel, user["user-id"], msg)
+   console.log(user["user-id"] == 135186096)
        }
-           if (channel === "#hottestbear" && user["user-id"] === 135186096 && msg.startsWith("/announce")) {
+           if (channel === "#hottestbear" && user["user-id"] == 135186096 && msg.startsWith("/announce")) {
         new messageHandler(channel, `. /announce æ ø å? NOTDANKENOUGH`, true).newMessage();
         return;
     }
