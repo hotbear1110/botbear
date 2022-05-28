@@ -58,12 +58,12 @@ async function onMessageHandler(channel, user, msg, self) {
     */
 
     if (channel === "#pajlada" && user["user-id"] == 82008718 && msg === "pajaS 🚨 ALERT") {
-        new messageHandler(channel, `/me pajaLada 🚨 WHAT HAPPENED`, true).newMessage();
+        cc.say(channel, `/me pajaLada 🚨 WHAT HAPPENED`);
         return;
     }
     
     if (channel === "#pajlada" && user["user-id"] == 137690566 && msg.startsWith("/announce")) {
-        new messageHandler(channel, `. /announce æ ø å? NOTDANKENOUGH`, true).newMessage();
+        cc.say(channel, `. /announce æ ø å? NOTDANKENOUGH`);
         return;
     }
 
