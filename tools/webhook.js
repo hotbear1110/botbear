@@ -133,7 +133,7 @@ app.post('/eventsub', async function (req, res) {
 
                 let disabledCommands = JSON.parse(streamers[0].disabled_commands)
 
-                let users = JSON.parse(streamers[0].live_ping);
+                let users = JSON.parse(streamers[0].offline_ping);
                 users = users.toString().replaceAll(',', ' ');
 
                 let proxychannel = streamers[0].username;

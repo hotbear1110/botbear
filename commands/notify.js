@@ -3,7 +3,7 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "notify",
     ping: true,
-    description: 'This command will register you for chat notifications. Available notify commands: "bb notify [live/title/game/all]" (you will get notified when the streamer goes live/changes title/switches category/all of the previous)',
+    description: 'This command will register you for chat notifications. Available notify commands: "bb notify [live/offline/title/game/all]" (you will get notified when the streamer goes live/goes offline/changes title/switches category/all of the previous)',
     permission: 100,
     category: "Notify command",
     execute: async (channel, user, input, perm) => {
@@ -26,6 +26,22 @@ module.exports = {
                         tools.query(`UPDATE Streamers SET live_ping=? WHERE username=?`, [liveusers, channel]);
 
                         return 'You are now subscribed to the event "live"';
+                    }
+                    break;
+                case "offline":
+                    const offlineUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+                    let offlineusers = JSON.parse(offlineUsers[0].offline_ping);
+
+                    if (offlineusers.includes(user.username)) {
+                        return 'You already have a subscription for the event "offline". If you want to unsubscribe, type "bb remove offline".';
+                    }
+                    else {
+                        offlineusers.push(user.username);
+                        offlineusers = JSON.stringify(offlineusers);
+
+                        tools.query(`UPDATE Streamers SET offline_ping=? WHERE username=?`, [offlineusers, channel]);
+
+                        return 'You are now subscribed to the event "offline"';
                     }
                     break;
                 case "title":
@@ -78,15 +94,22 @@ module.exports = {
                     const notifyUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
                     
                     let liveusers = JSON.parse(notifyUsers[0].live_ping);
+                    let offlineusers = JSON.parse(notifyUsers[0].offline_ping);
                     let titleusers = JSON.parse(notifyUsers[0].title_ping);
                     let gameusers = JSON.parse(notifyUsers[0].game_ping);
 
-                    if(!liveusers.includes(user.username) || !titleusers.includes(user.username) || !gameusers.includes(user.username)){
+                    if(!liveusers.includes(user.username) || !titleusers.includes(user.username) || !gameusers.includes(user.username) || !offlineusers.includes(user.username)){
                         if (!liveusers.includes(user.username)) {
                             liveusers.push(user.username);
                             liveusers = JSON.stringify(liveusers);
 
                             tools.query(`UPDATE Streamers SET live_ping=? WHERE username=?`, [liveusers, channel]);
+                        }
+                        if (!offlineusers.includes(user.username)) {
+                            offlineusers.push(user.username);
+                            offlineusers = JSON.stringify(offlineusers);
+
+                            tools.query(`UPDATE Streamers SET offline_ping=? WHERE username=?`, [offlineusers, channel]);
                         }
                         if (!titleusers.includes(user.username)) {
                             titleusers.push(user.username);
@@ -108,7 +131,7 @@ module.exports = {
                     }
                     break;
                 default:
-                    return `Please specify an event to subscribe to. The following events are available: live, title, game, all`;
+                    return `Please specify an event to subscribe to. The following events are available: live, offline, title, game, all`;
             }
         } catch (err) {
             console.log(err);
