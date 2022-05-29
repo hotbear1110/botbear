@@ -32,7 +32,7 @@ module.exports = {
                     break;
                 case "offline":
                     const offlineUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
-                    let offlineusers = JSON.parse(offlineUsers[0].live_ping);
+                    let offlineusers = JSON.parse(offlineUsers[0].offline_ping);
 
                     if (offlineusers.includes(user.username)) {
                         offlineusers.splice(offlineusers.indexOf(user.username), 1);
