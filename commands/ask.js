@@ -57,8 +57,7 @@ module.exports = {
                 output = linkify(output);
                 return output;
             } catch (err) {
-                console.log(err.code);
-
+                console.log(err.response.statusCode);
             }
 
         } catch (err) {
