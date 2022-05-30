@@ -57,7 +57,10 @@ module.exports = {
                 output = linkify(output);
                 return output;
             } catch (err) {
-                console.log(err.response.statusCode);
+                console.log(err.response);
+                if (err.response.statusCode === 429) {
+                    return "Nime you have used all of this months bb ask";
+                }
             }
 
         } catch (err) {
