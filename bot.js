@@ -626,7 +626,6 @@ async function onMessageHandler(channel, user, msg, self) {
 async function onConnectedHandler(addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
     let users = await tools.query(`SELECT username FROM Users`,);
-    console.log(users)
     userList = users.map(a => a.username);
 
     await tools.refreshCommands();
