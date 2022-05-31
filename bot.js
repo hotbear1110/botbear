@@ -44,9 +44,7 @@ let started = false;
 
 let oldmessage = "";
 
-let userList = tools.query(`SELECT username FROM Users`,);
-console.log(userList)
-userList = userList.map(a => a.username);
+let userList = [];
 
 async function onMessageHandler(channel, user, msg, self) {
     let start = new Date().getTime();
@@ -625,6 +623,10 @@ async function onMessageHandler(channel, user, msg, self) {
 
 async function onConnectedHandler(addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
+    let users = await tools.query(`SELECT username FROM Users`,);
+    console.log(users)
+    users = users.map(a => a.username);
+    userList = userList.push(users);
 
     await tools.refreshCommands();
     if (started === false) {
