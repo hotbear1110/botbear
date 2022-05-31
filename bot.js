@@ -626,8 +626,7 @@ async function onConnectedHandler(addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
     let users = await tools.query(`SELECT username FROM Users`,);
     console.log(users)
-    users = users.map(a => a.username);
-    userList.push(users);
+    userList = users.map(a => a.username);
 
     await tools.refreshCommands();
     if (started === false) {
