@@ -50,10 +50,11 @@ async function onMessageHandler(channel, user, msg, self) {
     let start = new Date().getTime();
     msg = msg.replaceAll(regex.invisChar, "");
     msg = msg.replaceAll("  ", "");
-console.log(userList)
+
     if (!userList.includes(user.username) && user.username != null) {
         await tools.query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
         userList.push(user.username);
+        console.log(user.username);
     }
     
 
