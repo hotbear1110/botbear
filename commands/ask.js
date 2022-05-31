@@ -13,7 +13,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            if (channel !== "nymn" && channel !== "xx__hooooootbear1110___xx") {
+            if (channel !== "nymn" && channel !== "hottestbear") {
                 return "This command is currently disabled due to edgy responses :)";
             }
 
@@ -57,7 +57,10 @@ module.exports = {
                 output = linkify(output);
                 return output;
             } catch (err) {
-                console.log(err);
+                console.log(err.response);
+                if (err.response.statusCode === 429) {
+                    return "Nime you have used all of this months bb ask";
+                }
             }
 
         } catch (err) {

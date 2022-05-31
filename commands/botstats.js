@@ -28,7 +28,7 @@ module.exports = {
             const cpu = shell.execSync("mpstat")
 
             let cpuused = cpu.toString().split("all")[1]
-            cpuused = cpuused.split(" ")[4]
+            cpuused = cpuused.split(" ")[3]
 
             let temp = shell.execSync("sensors");
 

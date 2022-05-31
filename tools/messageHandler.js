@@ -5,10 +5,14 @@ talkedRecently = {};
 let oldmessage = "";
 
 exports.messageHandler = class Cooldown {
-    constructor(channel, message, noBanphrase) {
+    constructor(channel, message, noBanphrase, showDelay, start, ping, user) {
         this.channel = channel;
         this.message = message;
         this.noBanphrase = noBanphrase || false;
+        this.showDelay = showDelay || false;
+        this.ping = ping || false;
+        this.start = start;
+        this.user = user;
         this.noCD = 0;
     }
     async Cooldown() {
@@ -22,6 +26,8 @@ exports.messageHandler = class Cooldown {
 
     async newMessage() {
         const cc = require("../bot.js").cc;
+        const start = require("../bot.js").start;
+
         if (this.channel === "#forsen") {
             let newmessage = tools.splitLine(this.message, 150)
             if (newmessage[1]) {
@@ -36,6 +42,14 @@ exports.messageHandler = class Cooldown {
         if (!this.noBanphrase) {
             this.message = await tools.checkAllBanphrases(this.message, this.channel);
         }
+        if (this.ping) {
+            this.message = `${this.user['display-name']}, ${this.message}`;
+        }
+        if (this.showDelay) {
+            this.end = new Date().getTime();
+            this.message = `${this.message} ${this.end - this.start}ms`;
+
+        }
 
         if (talkedRecently[this.channel]) {
             this.noCD = 0
@@ -45,6 +59,9 @@ exports.messageHandler = class Cooldown {
         } else {
             if (!(this.message.includes("Reminder to eat your cookie nymnOkay") || this.message.includes("Reminder to eat your cookie nymnOkay 󠀀 ")) || oldmessage !== this.message) {
                 if (!(this.message.includes("Your cookie cdr is ready.") || this.message.includes("Your cookie cdr is ready. 󠀀 ")) || oldmessage !== this.message) {
+                    if (this.message === oldmessage) {
+                        this.message = this.message + " 󠀀 ";
+                    }
                     cc.say(this.channel, this.message);
                 }
             }

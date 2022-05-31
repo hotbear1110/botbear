@@ -3,9 +3,9 @@ const tools = require("../tools/tools.js");
 
 
 module.exports = {
-    name: "lm",
+    name: "rq",
     ping: true,
-    description: 'This command will give you the last logged line from a specific user in the chat (Only works if logs are available in the channel, logs used: "https://logs.ivr.fi/"). Example: "bb fl NymN"',
+    description: 'This command will give you a random logged line from either yourself or a specified user in the chat (Only works if logs are available in the channel, logs used: "https://logs.ivr.fi/"). Example: "bb rl NymN"',
     permission: 100,
     category: "Info command",
     execute: async (channel, user, input, perm) => {
@@ -26,26 +26,21 @@ module.exports = {
                 realchannel = input[3];
             }
 
-            if (channel === realchannel && user["user-id"] === uid) {
-                return "nymnDank But you are right here ❓❗"
-            }
+            const rl = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/random?json`, { timeout: 10000 }).json();
 
-            const lm = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}?json&reverse`, { timeout: 10000 }).json();
+            let message = tools.splitLine(rl.messages[0].text, 350)
 
-            let message = tools.splitLine(lm.messages[0].text, 350)
+            const timeago = new Date().getTime() - Date.parse(rl.messages[0].timestamp);
 
-            const timeago = new Date().getTime() - Date.parse(lm.messages[0].timestamp);
-
-            if (lm.status !== 404) {
+            if (rl.status !== 404) {
                 if (message[1]) {
-                    return `#${realchannel} ${lm.messages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
+                    return `#${realchannel} ${rl.messages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
                 }
-                return `nymnDank ${lm.messages[0].displayName}'s last message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
+                return `#${realchannel[0]}\u{E0000}${realchannel.slice(1)} ${rl.messages[0].displayName}: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
             }
 
         } catch (err) {
             console.log(err);
-
             if (err.toString().startsWith("HTTPError: Response code 403 (Forbidden)")) {
                 return "User or channel has opted out";
             }

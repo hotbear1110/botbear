@@ -26,26 +26,27 @@ module.exports = {
             if (!commandlist.length) {
                 return 'Command not found FeelsDankMan';
             }
+          
+            let cooldown = commandlist[0].Cooldown;
+            if (!commandlist[0].Cooldown) {
+                cooldown = 3;
+            }
 
             if (commandlist[0].Name === 'trivia' || commandlist[0].Name === 'trivia2') {
-                let realchannel = channel.substring(1);
-                let cd = await tools.query("SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?", [realchannel]);
+                let cd = await tools.query("SELECT trivia_cooldowns FROM Streamers WHERE username = ?", [channel]);
 
                 if (cd[0].trivia_cooldowns === null) {
                     cd[0].trivia_cooldowns === 30000;
-                    tools.query("UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?", [realchannel]);
+                    tools.query("UPDATE Streamers SET trivia_cooldowns = 30000 WHERE username = ?", [channel]);
                 } 
 
-                if(commandlist[0].Name === 'trivia'){
-                    return `This command will start a new trivia in chat (The cooldown is at ${cd[0].trivia_cooldowns.formattedTime()} and the trivia times out after 60 seconds.).
-                                Specific category: "bb trivia sports". Categories: [ https://haste.zneix.eu/uhedagatig.txt ] - Permission lvl: ${commandlist[0].Perm}`;
-                } else {
-                    return `This command will start a new trivia in chat (The cooldown is at ${cd[0].trivia_cooldowns.formattedTime()} and the trivia times out after 60 seconds.)
-                                 - Api used: [ https://gazatu.xyz/ ] - Permission lvl: ${commandlist[0].Perm}`;
-                }      
-            } else {
-                return `${commandlist[0].Command} - Permission lvl: ${commandlist[0].Perm}`; 
-            }  
+              cooldown = cd[0].trivia_cooldowns / 1000;
+            }
+
+            
+
+            return `${commandlist[0].Command} - Permission lvl: ${commandlist[0].Perm} - Cooldown: ${cooldown}s`;
+
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Sql error: ${err.sqlMessage}`;

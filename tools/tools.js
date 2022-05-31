@@ -9,6 +9,7 @@ const hastebin = require('better-hastebin');
 const humanize = require('humanize-duration');
 const requireDir = require("require-dir");
 const regex = require('./regex.js');
+let messageHandler = require("./messageHandler.js").messageHandler;
 
 exports.query = (query, data = []) =>
     new Promise((resolve, reject) => {
@@ -55,7 +56,21 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
         resolve(this.checkBanphrase);
     } catch (err) {
         console.log(err);
-        resolve(0);
+        try {
+            message = encodeURIComponent(message)
+            this.checkBanphrase = await got(`https://pajlada.pajbot.com/api/v1/banphrases/test`, {
+                method: "POST",
+                body: "message=" + message,
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                timeout: 10000
+            }).json();
+            resolve(this.checkBanphrase);
+        } catch (err) {
+            console.log(err);
+            resolve(0);
+        }
     }
 
 });
@@ -65,8 +80,12 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
     this.message = encodeURIComponent(message).replaceAll("%0A", "%20");
     this.data = await tools.query(`SELECT * FROM Streamers WHERE username=?`, [this.channel]);
 
-    this.userid = this.data[0].uid;
-    this.banphraseapi2 = this.data[0].banphraseapi2;
+    if (this.data[0]) {
+        this.userid = this.data[0].uid;
+        this.banphraseapi2 = this.data[0].banphraseapi2;
+    } else {
+        this.banphraseapi2 = null;
+    }
     if (this.banphraseapi2 !== null) {
         try {
             this.checkBanphrase = await got(`${this.banphraseapi2}/api/channel/${this.userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
@@ -76,15 +95,6 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
             resolve(false);
         } catch (err) {
             console.log(err);
-        }
-    } else {
-        try {
-            this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/${this.userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
-            if (this.checkBanphrase["banned"] == true) {
-                resolve(true);
-            }
-            resolve(false);
-        } catch (err) {
             try {
                 this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
                 if (this.checkBanphrase["banned"] == true) {
@@ -95,6 +105,17 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reje
                 console.log(err);
                 resolve(0);
             }
+        }
+    } else {
+        try {
+            this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
+            if (this.checkBanphrase["banned"] == true) {
+                resolve(true);
+            }
+            resolve(false);
+        } catch (err) {
+            console.log(err);
+            resolve(0);
         }
     }
 
@@ -602,4 +623,209 @@ exports.checkAllBanphrases = async function (message, channel) {
     }
 
     return message;
+}
+
+exports.joinEventSub = async function (uid) {
+    let data = JSON.stringify({
+        "type": "channel.update",
+        "version": "1",
+        "condition": { "broadcaster_user_id": uid.toString() },
+        "transport": { "method": "webhook", "callback": "https://hotbear.org/eventsub", "secret": process.env.TWITCH_SECRET }
+    });
+    await got.post(`https://api.twitch.tv/helix/eventsub/subscriptions`, {
+        headers: {
+            'client-id': process.env.TWITCH_CLIENTID,
+            'Authorization': process.env.TWITCH_AUTH,
+            'Content-Type': 'application/json'
+        },
+        body: data
+    });
+
+    data = JSON.stringify({
+        "type": "stream.online",
+        "version": "1",
+        "condition": { "broadcaster_user_id": uid.toString() },
+        "transport": { "method": "webhook", "callback": "https://hotbear.org/eventsub", "secret": process.env.TWITCH_SECRET }
+    });
+    await got.post(`https://api.twitch.tv/helix/eventsub/subscriptions`, {
+        headers: {
+            'client-id': process.env.TWITCH_CLIENTID,
+            'Authorization': process.env.TWITCH_AUTH,
+            'Content-Type': 'application/json'
+        },
+        body: data
+    });
+
+    data = JSON.stringify({
+        "type": "stream.offline",
+        "version": "1",
+        "condition": { "broadcaster_user_id": uid.toString() },
+        "transport": { "method": "webhook", "callback": "https://hotbear.org/eventsub", "secret": process.env.TWITCH_SECRET }
+    });
+    await got.post(`https://api.twitch.tv/helix/eventsub/subscriptions`, {
+        headers: {
+            'client-id': process.env.TWITCH_CLIENTID,
+            'Authorization': process.env.TWITCH_AUTH,
+            'Content-Type': 'application/json'
+        },
+        body: data
+    });
+
+    return true;
+}
+
+exports.deleteEventSub = async function (uid) {
+    let allsubs = [];
+    let haspagnation = true;
+    let pagnation = "";
+    while (haspagnation) {
+        let subs = await got(`https://api.twitch.tv/helix/eventsub/subscriptions?after=${pagnation}`, {
+            headers: {
+                'client-id': process.env.TWITCH_CLIENTID,
+                'Authorization': process.env.TWITCH_AUTH
+            }
+        });
+        subs = JSON.parse(subs.body);
+        if (subs.pagination.cursor) {
+            pagnation = subs.pagination.cursor;
+        } else {
+            haspagnation = false;
+        }
+        subs = subs.data;
+        allsubs = allsubs.concat(subs)
+    }
+
+    let realsubs = allsubs.filter(x => x.condition.broadcaster_user_id === uid);
+
+    if (realsubs.length) {
+        for (let i = 0; i < realsubs.length; i++) {
+            setTimeout(async function () {
+
+                let sub = realsubs[i];
+                await got.delete(`https://api.twitch.tv/helix/eventsub/subscriptions?id=${sub.id}`, {
+                    headers: {
+                        'client-id': process.env.TWITCH_CLIENTID,
+                        'Authorization': process.env.TWITCH_AUTH
+                    },
+                });
+            }, 100 * i)
+        }
+    }
+    return;
+}
+
+exports.removeTrailingSpaces = function (message) {
+    while (message[message.length - 1] === " ") {
+        message = message.slice(0, -1);
+    }
+    return message;
+}
+
+function sleep(milliseconds) {
+    var start = new Date().getTime();
+    for (var i = 0; i < 1e7; i++) {
+        if ((new Date().getTime() - start) > milliseconds) {
+            break;
+        }
+    }
+}
+
+exports.checkLiveStatus = async function () {
+    const streamers = await tools.query('SELECT * FROM Streamers');
+    console.log("test")
+    _.each(streamers, async function (stream) {
+        setTimeout(async function () {
+            await got(`https://api.twitch.tv/helix/streams?user_login=${stream.username}`, {
+                headers: {
+                    'client-id': process.env.TWITCH_CLIENTID,
+                    'Authorization': process.env.TWITCH_AUTH
+                },
+            }).json()
+                .then(async function (response) {
+                    // handle success
+                    const twitchdata = response;
+                    let users = JSON.parse(stream.live_ping);
+                    users = users.toString().replaceAll(',', ' ');
+
+
+                    let proxychannel = stream.username;
+                    if (stream.username === "forsen") {
+                        proxychannel = "botbear1110";
+                    }
+                    if (twitchdata['data'].length !== 0 && stream.islive == 0) {
+                        console.log(stream.username + " IS NOW LIVE");
+                        await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`);
+
+                    };
+                    if (twitchdata['data'].length === 0 && stream.islive == 1) {
+                        console.log(stream.username + " IS NOW OFFLINE");
+                        await tools.query(`UPDATE Streamers SET islive = 0 WHERE username ="${stream.username}"`);
+
+                    };
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                })
+                .then(function () {
+                    // always executed
+                });
+        }, 500);
+    }
+    )
+    return;
+}
+
+exports.checkTitleandGame = async function () {
+    const streamers = await tools.query('SELECT * FROM Streamers');
+
+    _.each(streamers, async function (stream) {
+        await got(`https://api.twitch.tv/helix/channels?broadcaster_id=${stream.uid}`, {
+            headers: {
+                'client-id': process.env.TWITCH_CLIENTID,
+                'Authorization': process.env.TWITCH_AUTH
+            },
+        }).json()
+            .then(async function (response) {
+                // handle success
+                const twitchdata = response;
+                let newTitle = twitchdata.data[0].title;
+                let titleusers = JSON.parse(stream.title_ping);
+                titleusers = titleusers.toString().replaceAll(',', ' ');
+
+                let newGame = twitchdata.data[0].game_name;
+                let gameusers = JSON.parse(stream.game_ping);
+
+                gameusers = gameusers.toString().replaceAll(',', ' ');
+
+                let proxychannel2 = stream.username;
+                if (stream.username === "forsen") {
+                    proxychannel2 = "botbear1110";
+                }
+
+                if (newTitle !== stream.title) {
+                    let titleTime = new Date().getTime();
+                    console.log(stream.username + " NEW TITLE: " + newTitle);
+                    await tools.query(`UPDATE Streamers SET title=?, title_time=? WHERE username=?`, [newTitle, titleTime, stream.username]);
+
+                };
+                if (newGame !== stream.game) {
+                    let gameTime = new Date().getTime();
+
+                    await tools.query(`UPDATE Streamers SET game=?, game_time=? WHERE username=?`, [newGame, gameTime, stream.username]);
+
+                    console.log(stream.username + " NEW GAME: " + newGame);
+
+                };
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            .then(function () {
+                // always executed
+            });
+    }
+    )
+    return;
 }

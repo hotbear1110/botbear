@@ -1,5 +1,6 @@
 const got = require("got");
 const _ = require("underscore");
+const tools = require("../tools/tools.js");
 
 // https://opentdb.com/api_config.php
 const OTDB_Categories = {
@@ -53,7 +54,7 @@ async function getTrivia(genre) {
 module.exports = {
     name: "trivia",
     ping: false,
-    description: 'This command will start a new trivia in chat (The cooldown is 5 minutes and the trivia times out after 60 seconds.). Specific category: "bb trivia sports". Categories: [ https://haste.zneix.eu/uhedagatig.txt ]',
+    description: 'This command will start a new trivia in chat (To see the cooldown on this command, do: "bb check triviacooldown"). Specific category: "bb trivia sports". Categories: [ https://haste.zneix.eu/uhedagatig.txt ]',
     permission: 100,
     category: "Random command",
     execute: async (channel, user, input, perm) => {
@@ -105,6 +106,7 @@ module.exports = {
             answerToString = decodeURIComponent(answerToString);
 
             correct_answer = decodeURIComponent(correct_answer);
+            correct_answer = tools.removeTrailingSpaces(correct_answer);
 
             if (question.toLowerCase().includes("which of these") || question.toLowerCase().includes("which one of these") || question.toLowerCase().includes("which of the following") || question.toLowerCase().includes("all of the following") || question.toLowerCase().includes("which one of the following")) {
                 return [`(Trivia) [${category}] Question: ${question} - [${answerToString}]`, "FeelsDankMan you already got the hint.", correct_answer];

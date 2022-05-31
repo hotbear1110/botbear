@@ -1,10 +1,11 @@
 const got = require("got");
 const _ = require("underscore");
+const tools = require("../tools/tools.js");
 
 module.exports = {
     name: "trivia2",
     ping: false,
-    description: 'This command will start a new trivia in chat (The cooldown is 5 minutes and the trivia times out after 60 seconds.) - Api used: https://gazatu.xyz/',
+    description: 'This command will start a new trivia in chat (To see the cooldown on this command, do: "bb check triviacooldown") - Api used: https://gazatu.xyz/',
     permission: 100,
     category: "Random command",
     execute: async (channel, user, input, perm) => {
@@ -21,6 +22,7 @@ module.exports = {
             let hint2 = questions[0].hint2;
             let category = decodeURIComponent(questions[0].category);
             let submitter = decodeURIComponent(questions[0].submitter);
+            correct_answer = tools.removeTrailingSpaces(correct_answer)
 
             return [`(Trivia) [${category}] Question: ${question}`, correct_answer, hint1, hint2];
 

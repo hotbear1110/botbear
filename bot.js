@@ -44,20 +44,31 @@ let started = false;
 
 let oldmessage = "";
 
+let userList = [];
+
 async function onMessageHandler(channel, user, msg, self) {
     let start = new Date().getTime();
     msg = msg.replaceAll(regex.invisChar, "");
     msg = msg.replaceAll("  ", "");
 
-    /*
-    const userList = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username]);
-
-    if (!userList.length && user.username != null) {
+    if (!userList.includes(user.username) && user.username != null) {
         await tools.query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
+        userList.push(user.username);
+        console.log(user.username);
     }
-    */
+    
 
-    if (self) {
+    if (channel === "#pajlada" && user["user-id"] == 82008718 && msg === "pajaS 🚨 ALERT") {
+        cc.say(channel, `/me pajaLada 🚨 WHAT HAPPENED`);
+        return;
+    }
+    
+    if (channel === "#pajlada" && user["user-id"] == 137690566 && msg.startsWith("/announce")) {
+        cc.say(channel, `. /announce æ ø å? NOTDANKENOUGH`);
+        return;
+    }
+
+    if (self || (!user["user-id"] == 425363834 && !activetrivia[channel] && !msg.startsWith("bb "))) {
         return;
     }
 
@@ -68,6 +79,10 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (activetrivia[channel]) {
+        if (msg.startsWith("bb ask")) {
+            new messageHandler(channel, `NOIDONTTHINKSO No cheating in the trivia`).newMessage();
+            return;
+        }
         if (triviaHints2[channel] !== undefined) {
             let similarity = await tools.similarity(msg.toLowerCase(), triviaanswer[channel].toLowerCase())
             if (await similarity >= 0.8) {
@@ -323,13 +338,14 @@ async function onMessageHandler(channel, user, msg, self) {
     aliasList = JSON.parse(aliasList[0].Aliases);
 
     const Alias = new tools.Alias(msg, aliasList);
+    let aliascommand = input[1];
     input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
     let realcommand = input[1].toLowerCase();
-
     if (realcommand === "say" && realcommand === "channel" && realcommand === "emotecheck" && realcommand === "cum" && realcommand === "suggest" && realcommand === "shit" && realcommand === "code" && realcommand === "test2") {
         input = input.toString().replaceAll(",", " ");
     }
 
+    /*
     const userList = await tools.query(`SELECT * FROM Users WHERE uid=?`, [user["user-id"]]);
 
     if (!userList.length && user.username != null) {
@@ -337,7 +353,7 @@ async function onMessageHandler(channel, user, msg, self) {
     } else if (user.username !== userList[0].username && user.username != null) {
         await tools.query('UPDATE Users SET username=? WHERE uid=?', [user.username, user["user-id"]]);
     }
-
+*/
     let disabledCheck = await tools.query(`
     SELECT disabled_commands
     FROM Streamers
@@ -475,7 +491,6 @@ async function onMessageHandler(channel, user, msg, self) {
             new messageHandler(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
             return;
         }
-
         let result = await commands[realcommand].execute(realchannel, user, input, perm);
 
         if (!result) {
@@ -548,6 +563,11 @@ async function onMessageHandler(channel, user, msg, self) {
         }
 
         let result = await commands[realcommand].execute(realchannel, user, input, perm);
+        if (result[0] === "F") {
+            result = [`(Trivia) [ FeelsDankMan ] Question: nymnDank Something went wrong!?!`, "LULE WHO MADE THIS", "This bot is so bad LuL", "MegaLUL @hotbear1110"];
+        }
+
+
 
         if (!result) {
             return;
@@ -591,32 +611,26 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
 
     }
-    let result = await commands[realcommand].execute(realchannel, user, input, perm);
+
+    let result = await commands[realcommand].execute(realchannel, user, input, perm, aliascommand);
 
 
     if (!result) {
         return;
     }
 
-    if (commands[realcommand].ping == true) {
-        result = `${user['display-name']}, ${result}`;
-    }
-
-    let end = new Date().getTime();
-
-    if (commands[realcommand].showDelay == true) {
-        result = `${result} ${end - start}ms`;
-    }
-    new messageHandler(channel, result).newMessage();
+    new messageHandler(channel, result, commands[realcommand].noBanphrase, commands[realcommand].showDelay, start, commands[realcommand].ping, user).newMessage();
     return;
 }
 
 async function onConnectedHandler(addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
+    let users = await tools.query(`SELECT username FROM Users`,);
+    userList = users.map(a => a.username);
 
     await tools.refreshCommands();
     if (started === false) {
-
+/*
         let bannedUsers = await tools.bannedStreamer;
 
         if (await bannedUsers.length) {
@@ -629,7 +643,7 @@ async function onConnectedHandler(addr, port) {
                 new messageHandler("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`).newMessage();
             })
         }
-
+*/
         let namechange = await tools.nameChanges;
 
         if (await namechange.length) {
@@ -639,7 +653,6 @@ async function onConnectedHandler(addr, port) {
                 }).catch((err) => {
                     console.log(err);
                 });
-
                 cc.part(name[1]).then((data) => {
                     // data returns [channel]
                 }).catch((err) => {
@@ -650,6 +663,8 @@ async function onConnectedHandler(addr, port) {
                 new messageHandler("#botbear1110", `Left channel ${name[1]}. Reason: Name change detected, ${name[1]} -> ${name[0]}`).newMessage();
             })
         }
+        await tools.checkLiveStatus();
+        await tools.checkTitleandGame();
         started = true;
     }
 
@@ -662,12 +677,19 @@ cc.on("whisper", (from, userstate, message, self) => {
     if (self) return;
 
     console.log(from)
-    if (from === `#${process.env.KARL_ALT}` && message.startsWith("bb say ")) {
-        new messageHandler("#nymn", `/me @karl_mn: ${message.substring(7)}`).newMessage();
+    if (from === `#${process.env.someguy1}` && message.startsWith("bb say ")) {
+        new messageHandler("#nymn", `/me @Retard: ${message.substring(7)}`).newMessage();
     }
-    if (from === `#${process.env.BACKOUS_ALT}` && message.startsWith("bb say ")) {
+    if (from === `#${process.env.someguy2}` && message.startsWith("bb say ")) {
         new messageHandler("#nymn", `/me @Backous: ${message.substring(7)}`).newMessage();
     }
     return;
 });
+
+cc.on("ban", (channel, username, reason, userstate) => {
+    if (channel === "nymn" || channel === "#nymn") {
+        console.log("BANNED USER " + channel, username, reason, userstate)
+    }
+});
+
 module.exports = { cc, uptime };

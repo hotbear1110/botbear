@@ -22,7 +22,7 @@ module.exports = {
                         return 'You are now registered for cookie cdr notifications (The reminders might not work properly untill you use your next cdr)';
 
                     } else {
-                        return 'You are already registered for cookie cdr notifications';
+                        return 'You are already registered for cookie cdr notifications.  Do "bb cdr mode" to change where the bot responds';
                     }
                     break;
                 case "unregister":

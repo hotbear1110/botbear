@@ -1,12 +1,10 @@
-const tools = require("../tools/tools.js");
-const cc = require("../bot.js").cc;
-require('dotenv').config();
 const got = require("got");
+const _ = require("underscore");
 
 module.exports = {
-    name: "test2",
-    ping: true,
-    description: 'test',
+    name: "deletesubs",
+    ping: false,
+    description: 'This command is for deleting all eventsubs',
     permission: 2000,
     category: "Dev command",
     execute: async (channel, user, input, perm) => {
@@ -34,13 +32,25 @@ module.exports = {
                 allsubs = allsubs.concat(subs)
             }
 
-            console.log(allsubs.length)
-            let realsubs = allsubs.filter(x => x.condition.broadcaster_user_id === "135186096");
-            console.log(realsubs)
-            return;
+            for (let i = 0; i < allsubs.length; i++) {
+                setTimeout(async function () {
+
+                    let sub = allsubs[i];
+                    console.log(sub)
+                    await got.delete(`https://api.twitch.tv/helix/eventsub/subscriptions?id=${sub.id}`, {
+                        headers: {
+                            'client-id': process.env.TWITCH_CLIENTID,
+                            'Authorization': process.env.TWITCH_AUTH
+                        },
+                    });
+                }, 100 * i)
+            }
+
+
+            return "Okayge done!!";
         } catch (err) {
             console.log(err);
-            return `FeelsDankMan Sql error: ${err.sqlMessage}`;
+            return `FeelsDankMan Error`;
         }
     }
 }

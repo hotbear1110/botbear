@@ -1,7 +1,7 @@
 const tools = require("../tools/tools.js");
 
 module.exports = {
-    name: "enablenewcommands.js",
+    name: "enablenewcommands",
     ping: true,
     description: 'Decide if you want new commands to be enabled or disabled as default',
     permission: 100,
