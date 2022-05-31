@@ -53,7 +53,7 @@ async function onMessageHandler(channel, user, msg, self) {
 console.log(userList)
     if (!userList.includes(user.username) && user.username != null) {
         await tools.query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
-        userList = userList.push(user.username);
+        userList.push(user.username);
     }
     
 
@@ -627,7 +627,7 @@ async function onConnectedHandler(addr, port) {
     let users = await tools.query(`SELECT username FROM Users`,);
     console.log(users)
     users = users.map(a => a.username);
-    userList = userList.push(users);
+    userList.push(users);
 
     await tools.refreshCommands();
     if (started === false) {
