@@ -25,8 +25,10 @@ module.exports = {
             const params = {
                 "prompt": prompt,
                 "max_tokens": 160,
-                "temperature": 0.7,
-                "frequency_penalty": 0.5
+                "temperature": 0,
+                "frequency_penalty": 0.0,
+                "top_p": 1,
+                "presence_penalty": 0.0
             };
             const headers = {
                 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
