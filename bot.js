@@ -44,7 +44,7 @@ let started = false;
 
 let oldmessage = "";
 
-let userList = await tools.query(`SELECT * FROM Users`,).json();
+let userList = tools.query(`SELECT * FROM Users`,).json();
 userList = userList.map(a => a.username);
 
 async function onMessageHandler(channel, user, msg, self) {
