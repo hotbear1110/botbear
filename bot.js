@@ -44,18 +44,19 @@ let started = false;
 
 let oldmessage = "";
 
+let userList = await tools.query(`SELECT * FROM Users`,).json();
+userList = userList.map(a => a.username);
+
 async function onMessageHandler(channel, user, msg, self) {
     let start = new Date().getTime();
     msg = msg.replaceAll(regex.invisChar, "");
     msg = msg.replaceAll("  ", "");
 
-    /*
-    const userList = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username]);
-
-    if (!userList.length && user.username != null) {
+    if (!userList.includes(user.username) && user.username != null) {
         await tools.query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
+        userList = userList.push(user.username);
     }
-    */
+    
 
     if (channel === "#pajlada" && user["user-id"] == 82008718 && msg === "pajaS 🚨 ALERT") {
         cc.say(channel, `/me pajaLada 🚨 WHAT HAPPENED`);
