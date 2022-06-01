@@ -21,6 +21,12 @@ cc.on("pong", async (latency) => {
 
 });
 
+cc.on("ban", (channel, username, reason, userstate) => {
+    if(channel === "#nymn") {
+        console.log(`${username} ${userstate} - Reason: ${reason}`)
+    }
+});
+
 cc.connect();
 
 
