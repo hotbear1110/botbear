@@ -13,7 +13,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            if (channel !== "nymn" && channel !== "hottestbear") {
+            if (channel !== "nymn" && channel !== "hottestbear" && channel !== "elina") {
                 return "This command is currently disabled due to edgy responses :)";
             }
 
