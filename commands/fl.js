@@ -60,14 +60,14 @@ module.exports = {
                 realmessages = messages;
             }
 
-            let message = tools.splitLine(messages[0].text, 350)
+            let message = tools.splitLine(realmessages[0].text, 350)
 
-            const timeago = new Date().getTime() - Date.parse(messages[0].timestamp);
+            const timeago = new Date().getTime() - Date.parse(realmessages[0].timestamp);
             if (fl.status !== 404) {
                 if (message[1]) {
-                    return `#${realchannel} ${messages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
+                    return `#${realchannel} ${realmessages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
                 }
-                return `nymnDank ${messages[0].displayName}'s first message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
+                return `nymnDank ${realmessages[0].displayName}'s first message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
             }
 
         } catch (err) {
