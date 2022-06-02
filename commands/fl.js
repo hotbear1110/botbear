@@ -14,11 +14,13 @@ module.exports = {
                 return;
             }
             let uid = user["user-id"];
+            let realname = user.username;
             if (input[2]) {
                 if (input[2].startsWith("@")) {
                     input[2] = input[2].substring(1);
                 }
                 uid = await got(`https://api.ivr.fi/twitch/resolve/${input[2]}`, { timeout: 10000 }).json();
+                realname = uid.login
                 uid = uid.id;
             }
             let realchannel = channel;
@@ -38,8 +40,8 @@ module.exports = {
             const fl = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/${year}/${month}?json`, { timeout: 10000 }).json();
 
             function filterByName(message) {
-                console.log(message.username + " + " + uid)
-                if (message.username !== uid.login) {
+                console.log(message.username + " + " + realname)
+                if (message.username !== realname) {
                         return false
                 }
                     return true
