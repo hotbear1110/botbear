@@ -43,9 +43,9 @@ module.exports = {
                 }
                     return true
                 }
-
-
-            let realfl = fl;
+            fl = fl[0]|fl
+console.log(fl)
+            let realfl = fl[0];
 
             console.log(fl.length)
             if (fl.messages.length > 1) {
