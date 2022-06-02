@@ -52,8 +52,8 @@ module.exports = {
             realmessages = messages.filter(filterByName);
             }
 
-            if(!realfl) {
-                realfl = fl;
+            if(!realmessages) {
+                realmessages = messages;
             }
 
             let message = tools.splitLine(messages[0].text, 350)
