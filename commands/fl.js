@@ -38,7 +38,7 @@ module.exports = {
             const fl = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/${year}/${month}?json`, { timeout: 10000 }).json();
 
             function filterByName(message) {
-                console.log(message)
+                console.log(message.username + " + " + uid.login)
                 if (message.username !== uid.login) {
                         return false
                 }
