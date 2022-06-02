@@ -47,6 +47,7 @@ module.exports = {
 
             let realfl = fl
 
+            console.log(fl.length)
             if (fl.length > 1) {
             realfl = fl.filter(filterByName);
             }
