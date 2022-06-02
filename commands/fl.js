@@ -35,7 +35,7 @@ module.exports = {
             let month = logDate.month;
 
 
-            let fl = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/${year}/${month}?json`, { timeout: 10000 }).json();
+            const fl = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/${year}/${month}?json`, { timeout: 10000 }).json();
 
             function filterByName(message) {
                 if (message.messages.username !== uid.login) {
@@ -43,29 +43,28 @@ module.exports = {
                 }
                     return true
                 }
-                console.log(fl.messages)
-            fl = fl[0] ? fl[0] : fl;
-console.log(fl)
-            let realfl = fl[0];
+            let messages = fl.messages;
 
-            console.log(fl.length)
-            if (fl.messages.length > 1) {
-            realfl = fl.filter(filterByName);
+            let realmessages = messages;
+
+            console.log(messages.length)
+            if (messages.length > 1) {
+            realmessages = messages.filter(filterByName);
             }
 
             if(!realfl) {
                 realfl = fl;
             }
 
-            let message = tools.splitLine(fl.messages[0].text, 350)
+            let message = tools.splitLine(messages[0].text, 350)
 
-            const timeago = new Date().getTime() - Date.parse(fl.messages[0].timestamp);
+            const timeago = new Date().getTime() - Date.parse(messages[0].timestamp);
             console.log(fl)
             if (fl.status !== 404) {
                 if (message[1]) {
-                    return `#${realchannel} ${fl.messages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
+                    return `#${realchannel} ${messages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
                 }
-                return `nymnDank ${fl.messages[0].displayName}'s first message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
+                return `nymnDank ${messages[0].displayName}'s first message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
             }
 
         } catch (err) {
