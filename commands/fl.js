@@ -40,7 +40,6 @@ module.exports = {
             const fl = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/${year}/${month}?json`, { timeout: 10000 }).json();
 
             function filterByName(message) {
-                console.log(message.username + " + " + realname)
                 if (message.username !== realname) {
                         return false
                 }
@@ -50,10 +49,8 @@ module.exports = {
 
             let realmessages = messages;
 
-            console.log(messages.length)
-            if (messages.length > 1 && message[0].username !== realname) {
+            if (messages.length > 1 && messages[0].username !== realname) {
             realmessages = messages.filter(filterByName);
-            console.log(realmessages)
             }
 
             if(!realmessages[0]) {
