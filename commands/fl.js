@@ -56,7 +56,7 @@ module.exports = {
             console.log(realmessages)
             }
 
-            if(!realmessages) {
+            if(!realmessages[0]) {
                 realmessages = messages;
             }
 
