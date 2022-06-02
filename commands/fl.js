@@ -43,7 +43,7 @@ module.exports = {
                 }
                     return true
                 }
-            fl = fl[0]|fl
+            fl = fl[0]?
 console.log(fl)
             let realfl = fl[0];
 
