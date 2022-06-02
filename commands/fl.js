@@ -53,6 +53,7 @@ module.exports = {
             console.log(messages.length)
             if (messages.length > 1) {
             realmessages = messages.filter(filterByName);
+            console.log(realmessages)
             }
 
             if(!realmessages) {
@@ -62,7 +63,6 @@ module.exports = {
             let message = tools.splitLine(messages[0].text, 350)
 
             const timeago = new Date().getTime() - Date.parse(messages[0].timestamp);
-            console.log(messages)
             if (fl.status !== 404) {
                 if (message[1]) {
                     return `#${realchannel} ${messages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
