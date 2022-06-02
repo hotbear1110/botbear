@@ -59,7 +59,7 @@ module.exports = {
             let message = tools.splitLine(messages[0].text, 350)
 
             const timeago = new Date().getTime() - Date.parse(messages[0].timestamp);
-            console.log(fl)
+            console.log(messages)
             if (fl.status !== 404) {
                 if (message[1]) {
                     return `#${realchannel} ${messages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
