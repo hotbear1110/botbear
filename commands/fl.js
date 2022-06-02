@@ -37,6 +37,21 @@ module.exports = {
 
             const fl = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/${year}/${month}?json`, { timeout: 10000 }).json();
 
+            function filterByName(message) {
+                if (message.username !== uid.login) {
+                        return false
+                }
+                    return true
+                }
+
+
+
+            let realfl = fl.filter(filterByName);
+            
+            if(!realfl) {
+                realfl = fl;
+            }
+            
             let message = tools.splitLine(fl.messages[0].text, 350)
 
             const timeago = new Date().getTime() - Date.parse(fl.messages[0].timestamp);
