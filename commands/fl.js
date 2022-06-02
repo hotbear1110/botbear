@@ -51,7 +51,7 @@ module.exports = {
             let realmessages = messages;
 
             console.log(messages.length)
-            if (messages.length > 1) {
+            if (messages.length > 1 && message[0].username !== realname) {
             realmessages = messages.filter(filterByName);
             console.log(realmessages)
             }
