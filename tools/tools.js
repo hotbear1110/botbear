@@ -830,7 +830,7 @@ exports.checkTitleandGame = async function () {
     return;
 }
 
-exports.transformNumbers(function (message) {
+exports.transformNumbers = function (message) {
     if (!["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen", "twenty"].includes(message.toLowerCase())) {
         return;
     }
@@ -861,4 +861,4 @@ exports.transformNumbers(function (message) {
 
     message = numberConversion[message];
     return message;
-})
+}
