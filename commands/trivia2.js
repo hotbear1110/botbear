@@ -22,7 +22,7 @@ module.exports = {
             let hint2 = questions[0].hint2;
             let category = decodeURIComponent(questions[0].category);
             let submitter = decodeURIComponent(questions[0].submitter);
-            correct_answer = tools.removeTrailingSpaces(correct_answer)
+            correct_answer = tools.removeTrailingStuff(correct_answer)
 
             return [`(Trivia) [${category}] Question: ${question}`, correct_answer, hint1, hint2];
 
