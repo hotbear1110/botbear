@@ -84,8 +84,8 @@ async function onMessageHandler(channel, user, msg, self) {
             return;
         }
         if (triviaHints2[channel] !== undefined) {
-            let fileranswer = tools.transformNumbers(triviaanswer[channel].toLowerCase());
-            let similarity = await tools.similarity(msg.toLowerCase(), fileranswer.toLowerCase())
+            let filteranswer = tools.transformNumbers(triviaanswer[channel].toLowerCase());
+            let similarity = await tools.similarity(msg.toLowerCase(), filteranswer.toLowerCase())
             if (await similarity >= 0.8) {
 
                 similarity = similarity * 100
