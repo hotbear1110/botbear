@@ -24,7 +24,7 @@ module.exports = {
             let submitter = decodeURIComponent(questions[0].submitter);
             correct_answer = tools.removeTrailingStuff(correct_answer)
 
-            return [`(Trivia) [${category}] Question: ${question}`, correct_answer, hint1, hint2];
+            return [`(Trivia) [${category}] Question: ${question}`, "five", hint1, hint2];
 
         } catch (err) {
             console.log(err);
