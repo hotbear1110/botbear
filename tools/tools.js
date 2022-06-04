@@ -883,11 +883,13 @@ exports.transformNumbers = function (message) {
             19 : "nineteen",
             20 : "twenty"
         }
-        
+
         message = numberConversion[message];
         return message;
     }
-    return;
+    return message;
 
     
 }
+
+
