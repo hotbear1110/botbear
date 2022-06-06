@@ -27,7 +27,8 @@ const getChannels = () =>
   });
 
 const channelList = [];
-let channelOptions = ["hottestbear"];
+//Temp adding xqc, to test performance
+let channelOptions = ["hottestbear", "xqc"];
 async function res() {
   if (process.platform === "win32") {
     console.log(`Imported channels from database: ${channelOptions}`);

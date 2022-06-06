@@ -56,7 +56,10 @@ async function onMessageHandler(channel, user, msg, self) {
         userList.push(user.username);
         console.log(user.username);
     }
-    
+    //Temp exception for xqc's chat, since I want to test perfomance without the bot being able to respond there
+    if (channel === "#xqc") {
+        return;
+    }
 
     if (channel === "#pajlada" && user["user-id"] == 82008718 && msg === "pajaS 🚨 ALERT") {
         cc.say(channel, `/me pajaLada 🚨 WHAT HAPPENED`);
