@@ -26,9 +26,9 @@ module.exports = {
             total = total.slice(0, -1);
 
             const cpu = shell.execSync("mpstat")
-            console.log(cpu)
 
             let cpuused = cpu.toString().split("all")[1]
+            console.log(cpuused)
             cpuused = cpuused.split(" ")[3]
 
             let temp = shell.execSync("sensors");
