@@ -22,6 +22,7 @@ module.exports = {
             let used = total[17];
             total = total[10];
 
+            totalused = used.slice(3, -1);
             used = used.slice(0, -2);
             total = total.slice(0, -1);
 
@@ -29,7 +30,7 @@ module.exports = {
 
             let cpuused = cpu.toString().split("all")[1]
             console.log(cpuused)
-            cpuused = cpuused.split(" ")[3]
+            cpuused = `${cpuused.split(".")[0].replaceAll(" ", "")}.${cpuused.split(".")[1].slice(0, -2).replaceAll(" ", "")}`;
 
             let temp = shell.execSync("sensors");
 
@@ -42,7 +43,7 @@ module.exports = {
 
 
 
-            return `CPU: ${cpuused}% - Memory: ${used}MB/${total}B - Temperature: ${temp} - Commits: ${commits} KKona - Currently active in ${streamerCount.length} channels.`;
+            return `CPU: ${cpuused}% - Memory: ${used}${totalused}B/${total}B - Temperature: ${temp} - Commits: ${commits} KKona - Currently active in ${streamerCount.length} channels.`;
 
         } catch (err) {
             console.log(err);
