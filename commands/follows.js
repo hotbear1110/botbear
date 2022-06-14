@@ -33,7 +33,7 @@ module.exports = {
         }).json();
 
         console.log(follows.data[0])
-            let followscount = follows.data[0].total;
+            let followscount = follows.data.total;
             return `${realuser} is following ${followscount} users`;
 
         } catch (err) {
