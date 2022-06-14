@@ -32,7 +32,7 @@ module.exports = {
             },timeout: 10000 
         }).json();
 
-        console.log(follows.data[0])
+        console.log(follows.data)
             let followscount = follows.data.total;
             return `${realuser} is following ${followscount} users`;
 
