@@ -17,7 +17,6 @@ module.exports = {
             if(input[2]) {
                 try {
                 const getuid = await got(`https://api.ivr.fi/v2/twitch/user/${input[2]}`, { timeout: 10000 }).json();
-                console.log(getuid)
                 realuid = getuid.id;
                 realuser = input[2];
                 }
@@ -32,9 +31,11 @@ module.exports = {
             },timeout: 10000 
         }).json();
 
-        console.log(follows.total)
             let followscount = follows.total;
-            return `${realuser} is following ${followscount} users`;
+            if (input[2]) {
+                return `${realuser} is following ${followscount} users`;
+            }
+            return `You are following ${followscount} users`
 
         } catch (err) {
             console.log(err);
