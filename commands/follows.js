@@ -25,7 +25,7 @@ module.exports = {
                     return `User "${input[2]}" was not found`
                     }
             }
-            const follows = await got(`https://api.twitch.tv/helix/users/follows?from_id=${user["user-id"]}`, { 
+            const follows = await got(`https://api.twitch.tv/helix/users/follows?from_id=${realuid}`, { 
                 headers: {
                 'client-id': process.env.TWITCH_CLIENTID,
                 'Authorization': process.env.TWITCH_AUTH
