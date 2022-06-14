@@ -16,7 +16,12 @@ module.exports = {
 
             if(input[2]) {
                 try {
-                const getuid = await got(`https://api.ivr.fi/v2/twitch/user/${input[2]}`, { timeout: 10000 }).json();
+                const getuid = await got(`https://api.ivr.fi/v2/twitch/user/${input[2]}`, { headers: {
+                    'client-id': process.env.TWITCH_CLIENTID,
+                    'Authorization': process.env.TWITCH_AUTH
+                },
+                timeout: 10000 
+            }).json();
                 realuid = getuid.data[0].id;
                 realuser = input[2];
                 }
