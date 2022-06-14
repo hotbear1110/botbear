@@ -18,7 +18,7 @@ module.exports = {
                 try {
                 const getuid = await got(`https://api.ivr.fi/v2/twitch/user/${input[2]}`, { timeout: 10000 }).json();
                 console.log(getuid)
-                realuid = getuid.data[0].id;
+                realuid = getuid.id;
                 realuser = input[2];
                 }
                 catch (err){
