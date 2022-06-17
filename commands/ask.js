@@ -16,6 +16,14 @@ module.exports = {
             if (channel !== "nymn" && channel !== "hottestbear" && channel !== "elina") {
                 return "This command is currently disabled due to edgy responses :)";
             }
+            
+            let bannedPhrases = ["racist"];
+
+            const found = bannedPhrases.some(r=> input.indexOf(r) >= 0)
+
+            if (found) {
+                return "Because chat is a bunch of 12 year olds, I am unable to answer that prompt WeirdChamp "
+            }
 
             input = input.splice(2);
             let msg = input.toString().replaceAll(',', ' ');
