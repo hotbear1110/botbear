@@ -17,11 +17,11 @@ module.exports = {
                 return "This command is currently disabled due to edgy responses :)";
             }
             
-            let bannedPhrases = ["racist", "racists", "racism", "race"];
+            let bannedPhrases = /(\W|^)(racists|racist|racism|race)(\W|$)/gi;
 
-            const found = bannedPhrases.some(r=> input.indexOf(r) >= 0)
+            const stringmessage = input.join(" ");
 
-            if (found) {
+            if (stringmessage.match(bannedPhrases)) {
                 return "Because chat is a bunch of 12 year olds, I am unable to answer that prompt WeirdChamp "
             }
 
