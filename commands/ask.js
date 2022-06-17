@@ -17,7 +17,7 @@ module.exports = {
                 return "This command is currently disabled due to edgy responses :)";
             }
             
-            let bannedPhrases = ["racist"];
+            let bannedPhrases = ["racist", "racists", "racism", "race"];
 
             const found = bannedPhrases.some(r=> input.indexOf(r) >= 0)
 
