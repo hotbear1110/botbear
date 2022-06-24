@@ -44,7 +44,7 @@ async function res() {
   console.log(`Imported channels from database: ${channelOptions}`);
 }
 
-if (!process.env.TWITCH_USER === "devbear1110") {
+if (process.env.TWITCH_USER !== "devbear1110") {
   res();
 }
 
