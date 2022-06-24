@@ -1,5 +1,5 @@
 const tools = require("./tools.js");
-
+require("dotenv");
 talkedRecently = {};
 
 let oldmessage = "";
@@ -28,6 +28,9 @@ exports.messageHandler = class Cooldown {
         const cc = require("../bot.js").cc;
         const start = require("../bot.js").start;
 
+        if (process.env.TWITCH_USER === "devbear1110" && this.channel !== "#hottestbear") {
+            return;
+        }
         if (this.channel === "#forsen") {
             let newmessage = tools.splitLine(this.message, 150)
             if (newmessage[1]) {
