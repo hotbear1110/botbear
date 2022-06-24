@@ -125,7 +125,7 @@ module.exports = {
                         return;
                     }
 
-                    if (tools.isMod(user, channel)) {
+                    if (tools.isMod(user, channel) || perm >= 2000) {
                         username = channel;
                     }
 
@@ -153,7 +153,7 @@ module.exports = {
                         return;
                     }
 
-                    if (tools.isMod(user, channel)) {
+                    if (tools.isMod(user, channel) || perm >= 2000) {
                         username = channel;
                     }
 
@@ -181,7 +181,7 @@ module.exports = {
                         return;
                     }
 
-                    if (tools.isMod(user, channel)) {
+                    if (tools.isMod(user, channel) || perm >= 2000) {
                         username = channel;
                     }
 
@@ -209,7 +209,7 @@ module.exports = {
                         return;
                     }
 
-                    if (tools.isMod(user, channel)) {
+                    if (tools.isMod(user, channel) || perm >= 2000) {
                         username = channel;
                     }
 
@@ -230,7 +230,7 @@ module.exports = {
                 }
                     break;
                 case "trivia": {
-                    if (!tools.isMod(user, channel)) {
+                    if (!tools.isMod(user, channel) || perm >= 2000) {
                         return;
                     }
 
@@ -250,7 +250,7 @@ module.exports = {
                 }
 
                 case "pb1": {
-                    if (!tools.isMod(user, channel)) {
+                    if (!tools.isMod(user, channel) || perm >= 2000) {
                         return;
                     }
 
@@ -269,7 +269,7 @@ module.exports = {
                 }
 
                 case "pb2": {
-                    if (!tools.isMod(user, channel)) {
+                    if (!tools.isMod(user, channel) || perm >= 2000) {
                         return;
                     }
 
