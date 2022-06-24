@@ -654,24 +654,28 @@ async function onConnectedHandler(addr, port) {
                     })
                 }
         */
-        let namechange = await tools.nameChanges;
 
-        if (await namechange.length) {
-            _.each(namechange, async function (name) {
-                cc.join(name[0]).then((data) => {
-                    // data returns [channel]
-                }).catch((err) => {
-                    console.log(err);
-                });
-                cc.part(name[1]).then((data) => {
-                    // data returns [channel]
-                }).catch((err) => {
-                    console.log(err);
-                });
+        if (process.env.TWITCH_USER !== "devbear1110") {
 
-                cc.say(`#${name[0]}`, `Name change detected, ${name[1]} -> ${name[0]}`);
-                new messageHandler("#botbear1110", `Left channel ${name[1]}. Reason: Name change detected, ${name[1]} -> ${name[0]}`).newMessage();
-            })
+            let namechange = await tools.nameChanges;
+
+            if (await namechange.length) {
+                _.each(namechange, async function (name) {
+                    cc.join(name[0]).then((data) => {
+                        // data returns [channel]
+                    }).catch((err) => {
+                        console.log(err);
+                    });
+                    cc.part(name[1]).then((data) => {
+                        // data returns [channel]
+                    }).catch((err) => {
+                        console.log(err);
+                    });
+
+                    cc.say(`#${name[0]}`, `Name change detected, ${name[1]} -> ${name[0]}`);
+                    new messageHandler("#botbear1110", `Left channel ${name[1]}. Reason: Name change detected, ${name[1]} -> ${name[0]}`).newMessage();
+                })
+            }
         }
         await tools.checkLiveStatus();
         await tools.checkTitleandGame();
