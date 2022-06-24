@@ -1,5 +1,6 @@
 require('dotenv').config();
 const got = require('got');
+const { activetrivia, triviaanswer } = require("../bot.js");
 
 module.exports = {
     name: "ask",
@@ -65,6 +66,16 @@ module.exports = {
                     return replacedText;
                 }
                 output = linkify(output);
+
+                if (activetrivia[`#${channel}`]) {
+
+                    let triviaRegex = new RegExp(triviaanswer[`#${channel}`], "gi");
+
+                    if (triviaRegex.exec(output)) {
+                        return "forsenCD this reply contains the answer to the current trivia";
+                    }
+                }
+
                 return output;
             } catch (err) {
                 console.log(err.response);

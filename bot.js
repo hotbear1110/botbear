@@ -87,10 +87,6 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (activetrivia[channel]) {
-        if (msg.startsWith(prefix + " ask")) {
-            new messageHandler(channel, `NOIDONTTHINKSO No cheating in the trivia`).newMessage();
-            return;
-        }
         if (triviaHints2[channel] !== undefined) {
             let filteranswer = tools.transformNumbers(triviaanswer[channel].toLowerCase());
             let filtermsg = tools.transformNumbers(msg.toLowerCase());
@@ -404,6 +400,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
     let realchannel = channel.substring(1);
 
+
     if (realcommand === "hint" && activetrivia[channel] && gothint[channel] === false) {
         if (triviaHints2[channel] !== undefined && gothint2[channel] !== 1) {
             const ms = new Date().getTime() - triviaTime[channel];
@@ -706,4 +703,4 @@ cc.on("ban", (channel, username, reason, userstate) => {
     }
 });
 
-module.exports = { cc, uptime };
+module.exports = { cc, uptime, triviaanswer, activetrivia };
