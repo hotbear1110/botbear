@@ -26,7 +26,7 @@ module.exports = {
             if (!commandlist.length) {
                 return 'Command not found FeelsDankMan';
             }
-          
+
             let cooldown = commandlist[0].Cooldown;
             if (!commandlist[0].Cooldown) {
                 cooldown = 3;
@@ -38,12 +38,12 @@ module.exports = {
                 if (cd[0].trivia_cooldowns === null) {
                     cd[0].trivia_cooldowns === 30000;
                     tools.query("UPDATE Streamers SET trivia_cooldowns = 30000 WHERE username = ?", [channel]);
-                } 
+                }
 
-              cooldown = cd[0].trivia_cooldowns / 1000;
+                cooldown = cd[0].trivia_cooldowns / 1000;
             }
 
-            
+
 
             return `${commandlist[0].Command} - Permission lvl: ${commandlist[0].Perm} - Cooldown: ${cooldown}s`;
 

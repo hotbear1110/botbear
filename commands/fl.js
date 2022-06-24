@@ -41,19 +41,19 @@ module.exports = {
 
             function filterByName(message) {
                 if (message.username !== realname) {
-                        return false
+                    return false
                 }
-                    return true
-                }
+                return true
+            }
             let messages = fl.messages;
 
             let realmessages = messages;
 
             if (messages.length > 1 && messages[0].username !== realname) {
-            realmessages = messages.filter(filterByName);
+                realmessages = messages.filter(filterByName);
             }
 
-            if(!realmessages[0]) {
+            if (!realmessages[0]) {
                 realmessages = messages;
             }
 

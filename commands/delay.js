@@ -14,14 +14,14 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            input.splice(1,1);
+            input.splice(1, 1);
 
             let msg = input.toString().replaceAll(",", " ")
             const Alias = new tools.Alias(msg);
             input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
             let realcommand = input[1];
 
-            if (realcommand === "ping" || realcommand === "delay")  {
+            if (realcommand === "ping" || realcommand === "delay") {
                 return;
             }
 
@@ -43,7 +43,7 @@ module.exports = {
 
         } catch (err) {
             console.log(err);
-            return `FeelsDankMan Error`;        
+            return `FeelsDankMan Error`;
         }
     }
 }

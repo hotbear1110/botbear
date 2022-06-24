@@ -16,7 +16,7 @@ module.exports = {
             if (channel !== "nymn" && channel !== "hottestbear" && channel !== "elina") {
                 return "This command is currently disabled due to edgy responses :)";
             }
-            
+
             let bannedPhrases = /(\W|^)(racists|racist|racism|race)(\W|$)/gi;
 
             const stringmessage = input.join(" ");

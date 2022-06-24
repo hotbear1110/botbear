@@ -85,19 +85,19 @@ module.exports = {
                     let titleusers = JSON.parse(notifyUsers[0].title_ping);
                     let gameusers = JSON.parse(notifyUsers[0].game_ping);
 
-                    if(liveusers.includes(user.username) || titleusers.includes(user.username) || gameusers.includes(user.username) || offlineusers.includes(user.username)){
+                    if (liveusers.includes(user.username) || titleusers.includes(user.username) || gameusers.includes(user.username) || offlineusers.includes(user.username)) {
                         if (liveusers.includes(user.username)) {
                             liveusers.splice(liveusers.indexOf(user.username), 1);
                             liveusers = JSON.stringify(liveusers);
 
                             tools.query(`UPDATE Streamers SET live_ping=? WHERE username=?`, [liveusers, channel]);
-                        }  
+                        }
                         if (offlineusers.includes(user.username)) {
                             offlineusers.splice(offlineusers.indexOf(user.username), 1);
                             offlineusers = JSON.stringify(offlineusers);
 
                             tools.query(`UPDATE Streamers SET offline_ping=? WHERE username=?`, [offlineusers, channel]);
-                        } 
+                        }
                         if (titleusers.includes(user.username)) {
                             titleusers.splice(titleusers.indexOf(user.username), 1);
                             titleusers = JSON.stringify(titleusers);
@@ -116,7 +116,7 @@ module.exports = {
                     } else {
                         return `You aren't subscribed to any events. If you want to subscribe, type "bb notify [live/title/game/all]".`;
                     }
-                    }
+                }
                     break;
                 default:
                     return `Please specify an event to un-subscribe to. The following events are available: live, offline, title, game, all`;

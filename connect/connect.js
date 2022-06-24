@@ -27,8 +27,7 @@ const getChannels = () =>
   });
 
 const channelList = [];
-//Temp adding xqc, to test performance
-let channelOptions = ["hottestbear", "xqc"];
+let channelOptions = ["hottestbear"];
 async function res() {
   if (process.platform === "win32") {
     console.log(`Imported channels from database: ${channelOptions}`);
@@ -40,10 +39,14 @@ async function res() {
       channelOptions.push(i.username);
     }
   });
+  //Temp adding xqc, to test performance
+  channelOptions.push("xqc")
   console.log(`Imported channels from database: ${channelOptions}`);
 }
 
-res();
+if (!process.env.TWITCH_USER === "devbear1110") {
+  res();
+}
 
 let options = {
   options: {

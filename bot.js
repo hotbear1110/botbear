@@ -29,6 +29,11 @@ cc.on("notice", (channel, msgid, message) => {
     console.log(channel, msgid, message)
 });
 
+let prefix = "bb"
+if (process.env.TWITCH_USER === "devbear1110") {
+    prefix = "db";
+}
+
 
 let uptime = new Date().getTime();
 
@@ -65,13 +70,13 @@ async function onMessageHandler(channel, user, msg, self) {
         cc.say(channel, `/me pajaLada 🚨 WHAT HAPPENED`);
         return;
     }
-    
+
     if (channel === "#pajlada" && user["user-id"] == 137690566 && msg.startsWith("/announce")) {
         cc.say(channel, `. /announce æ ø å? NOTDANKENOUGH`);
         return;
     }
 
-    if (self || (!user["user-id"] == 425363834 && !activetrivia[channel] && !msg.startsWith("bb "))) {
+    if (self || (!user["user-id"] == 425363834 && !activetrivia[channel] && !msg.startsWith(prefix + " "))) {
         return;
     }
 
@@ -82,7 +87,7 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (activetrivia[channel]) {
-        if (msg.startsWith("bb ask")) {
+        if (msg.startsWith(prefix + " ask")) {
             new messageHandler(channel, `NOIDONTTHINKSO No cheating in the trivia`).newMessage();
             return;
         }
@@ -329,7 +334,7 @@ async function onMessageHandler(channel, user, msg, self) {
     if (input[0] === undefined) {
         return;
     }
-    if (input[0].toLowerCase() !== "bb" && input[0] !== "forsenBB") {
+    if (input[0].toLowerCase() !== prefix) {
         return;
     }
 
@@ -635,20 +640,20 @@ async function onConnectedHandler(addr, port) {
 
     await tools.refreshCommands();
     if (started === false) {
-/*
-        let bannedUsers = await tools.bannedStreamer;
-
-        if (await bannedUsers.length) {
-            _.each(bannedUsers, async function (user) {
-                cc.part(user).then((data) => {
-                    // data returns [channel]
-                }).catch((err) => {
-                    console.log(err);
-                });
-                new messageHandler("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`).newMessage();
-            })
-        }
-*/
+        /*
+                let bannedUsers = await tools.bannedStreamer;
+        
+                if (await bannedUsers.length) {
+                    _.each(bannedUsers, async function (user) {
+                        cc.part(user).then((data) => {
+                            // data returns [channel]
+                        }).catch((err) => {
+                            console.log(err);
+                        });
+                        new messageHandler("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`).newMessage();
+                    })
+                }
+        */
         let namechange = await tools.nameChanges;
 
         if (await namechange.length) {
@@ -682,10 +687,10 @@ cc.on("whisper", (from, userstate, message, self) => {
     if (self) return;
 
     console.log(from)
-    if (from === `#${process.env.someguy1}` && message.startsWith("bb say ")) {
+    if (from === `#${process.env.someguy1}` && message.startsWith(prefix + " say ")) {
         new messageHandler("#nymn", `/me @Retard: ${message.substring(7)}`).newMessage();
     }
-    if (from === `#${process.env.someguy2}` && message.startsWith("bb say ")) {
+    if (from === `#${process.env.someguy2}` && message.startsWith(prefix + " say ")) {
         new messageHandler("#nymn", `/me @Backous: ${message.substring(7)}`).newMessage();
     }
     return;
