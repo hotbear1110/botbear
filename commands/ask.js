@@ -7,7 +7,7 @@ module.exports = {
     ping: true,
     description: 'Ask botbear any question and it will tell you the answer! - The cooldown on this is 2 min.',
     permission: 100,
-    cooldown: 120,
+    cooldown: 1,
     category: "Random command",
     execute: async (channel, user, input, perm) => {
         try {
