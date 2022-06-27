@@ -49,9 +49,9 @@ module.exports = {
                 console.log(output);
                 output = output.substring(prompt.length);
 
-                let regex = /(https?\:\/\/)?(\w+\.?\w+)(\.\w+)(\.\w+)?/gim;
+                let regex = /(https?\:\/\/)?(\w+\.?\w+)(\.\w+)(\.\w+)?(\/\S+)?/gim;
 
-                output = output.replace(regex, '$1[DOMAIN]$3$4');
+                output = output.replace(regex, '$1[DOMAIN]$3$4$5');
 
 
                 if (activetrivia[`#${channel}`]) {
