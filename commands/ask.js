@@ -49,23 +49,10 @@ module.exports = {
                 console.log(output);
                 output = output.substring(prompt.length);
 
-                function linkify(inputText) {
-                    var replacedText, replacePattern1, replacePattern2, replacePattern3;
+                let regex = /(https?\:\/\/)?(\w+\.?\w+)(\.\w+)(\.\w+)?/gim;
 
-                    //URLs starting with http://, https://, or ftp://
-                    replacePattern1 = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
-                    replacedText = inputText.replace(replacePattern1, '*LINK*');
+                output = output.replace(regex, '$1[DOMAIN]$3$4');
 
-                    //URLs starting with "www." (without // before it, or it'd re-link the ones done above).
-                    replacePattern2 = /(^|[^\/])(www\.[\S]+(\b|$))/gim;
-                    replacedText = replacedText.replace(replacePattern2, '*LINK*');
-
-                    replacePattern3 = /[a-z|0-9|A-Z]{1,}\.([a-z|A-Z])([a-z|A-Z|0-9]{1,})/g;
-                    replacedText = replacedText.replace(replacePattern3, '*LINK*');
-
-                    return replacedText;
-                }
-                output = linkify(output);
 
                 if (activetrivia[`#${channel}`]) {
 

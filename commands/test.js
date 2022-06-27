@@ -14,21 +14,13 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            let data = JSON.stringify({
-                "type": "stream.online",
-                "version": "1",
-                "condition": { "broadcaster_user_id": "44445592" },
-                "transport": { "method": "webhook", "callback": "https://hotbear.org/eventsub", "secret": process.env.TWITCH_SECRET }
-            });
-            await got.post(`https://api.twitch.tv/helix/eventsub/subscriptions`, {
-                headers: {
-                    'client-id': process.env.TWITCH_CLIENTID,
-                    'Authorization': process.env.TWITCH_AUTH,
-                    'Content-Type': 'application/json'
-                },
-                body: data
-            });
-            return `"${message}"`;
+            let url = "https://www.google.co.uk/lulexd";
+
+            let regex = /\.(.+?)\./gim;
+
+            let newurl = url.replace(regex, '.(some-site).');
+
+            return `${url} -> ${newurl}`;
         } catch (err) {
             console.log(err);
             return `FeelsDankMan Sql error: ${err.sqlMessage}`;
