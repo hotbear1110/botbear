@@ -74,7 +74,13 @@ app.post('/eventsub', async function (req, res) {
                 }
 
                 if (newTitle !== streamers[0].title) {
-                    let titleuserlist = tools.splitLine(titleusers, 400 - newTitle.length);
+                    let titleuserlist = "";
+                    //temp edit
+                    if (proxychannel === "yabbe") {
+                        titleuserlist = tools.splitLine(titleusers, 290 - newTitle.length);
+                    } else {
+                        titleuserlist = tools.splitLine(titleusers, 400);
+                    }
                     let titleTime = new Date().getTime();
                     console.log(streamers[0].username + " NEW TITLE: " + newTitle);
                     await tools.query(`UPDATE Streamers SET title=?, title_time=? WHERE username=?`, [newTitle, titleTime, streamers[0].username]);
@@ -88,7 +94,13 @@ app.post('/eventsub', async function (req, res) {
                 };
 
                 if (newGame !== streamers[0].game) {
-                    let gameuserlist = tools.splitLine(gameusers, 400 - newGame.length);
+                    //temp edit
+                    let gameuserlist = "";
+                    if (proxychannel === "yabbe") {
+                        gameuserlist = tools.splitLine(gameusers, 290 - newGame.length);
+                    } else {
+                        gameuserlist = tools.splitLine(gameusers, 400);
+                    }
                     let gameTime = new Date().getTime();
 
                     await tools.query(`UPDATE Streamers SET game=?, game_time=? WHERE username=?`, [newGame, gameTime, streamers[0].username]);
@@ -116,7 +128,13 @@ app.post('/eventsub', async function (req, res) {
                 if (streamers[0].username === "forsen") {
                     proxychannel = "botbear1110";
                 }
-                let userlist = tools.splitLine(users, 350);
+                //temp edit
+                let userlist = "";
+                if (proxychannel === "yabbe") {
+                    userlist = tools.splitLine(users, 290);
+                } else {
+                    userlist = tools.splitLine(users, 350);
+                }
                 console.log(streamers[0].username + " IS NOW LIVE");
                 await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${streamers[0].username}"`);
                 if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
@@ -140,7 +158,13 @@ app.post('/eventsub', async function (req, res) {
                 if (streamers[0].username === "forsen") {
                     proxychannel = "botbear1110";
                 }
-                let userlist = tools.splitLine(users, 350);
+                //temp edit
+                let userlist = "";
+                if (proxychannel === "yabbe") {
+                    userlist = tools.splitLine(users, 290);
+                } else {
+                    userlist = tools.splitLine(users, 350);
+                }
                 console.log(streamers[0].username + " IS NOW OFFLINE");
                 await tools.query(`UPDATE Streamers SET islive = 0 WHERE username ="${streamers[0].username}"`);
                 if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
