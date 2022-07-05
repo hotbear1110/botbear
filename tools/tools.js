@@ -589,7 +589,7 @@ exports.checkAllBanphrases = async function (message, channel) {
     const banPhrase = await tools.banphrasePass(message, channel);
 
     if (banPhrase.banned) {
-        return `[Banphrased] cmonBruh`;
+        return `[Banphrased] nymnS`;
     }
 
     if (banPhrase === 0) {
@@ -599,7 +599,7 @@ exports.checkAllBanphrases = async function (message, channel) {
     const banPhraseV2 = await tools.banphrasePassV2(message, channel);
 
     if (banPhraseV2 == true) {
-        return `[Banphrased] cmonBruh`;
+        return `[Banphrased] nymnS`;
     }
 
     const notabanPhrase = await tools.notbannedPhrases(message.toLowerCase());
@@ -610,7 +610,7 @@ exports.checkAllBanphrases = async function (message, channel) {
 
     const badWord = message.match(regex.racism);
     if (badWord != null) {
-        return `[Bad word detected] cmonBruh`;
+        return `[Bad word detected] nymnS`;
     }
 
     const reallength = await tools.asciiLength(message);
