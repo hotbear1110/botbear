@@ -14,7 +14,7 @@ module.exports = {
                 return;
             }
 
-            let questions = await got(`https://api.gazatu.xyz/trivia/questions?count=1&exclude=[Anime,Hentai,Weeb]`, { timeout: 10000 }).json();
+            let questions = await got(`https://api.gazatu.xyz/trivia/questions?count=1&exclude=[Anime,Hentai,Weeb,Dota]`, { timeout: 10000 }).json();
 
             let question = decodeURIComponent(questions[0].question);
             let correct_answer = decodeURIComponent(questions[0].answer);
