@@ -24,7 +24,8 @@ exports.query = (query, data = []) =>
     });
 
 exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject) => {
-    this.channel = channel.substring(1);;
+    this.channel = channel.substring(1);
+    this.message = message.replace(/^\/me /, "");
     this.data = await tools.query(`
           SELECT banphraseapi
           FROM Streamers
@@ -44,10 +45,10 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
         resolve(0);
     }
     try {
-        message = encodeURIComponent(message)
+        this.message = encodeURIComponent(this.message)
         this.checkBanphrase = await got(`${this.banphraseapi}/api/v1/banphrases/test`, {
             method: "POST",
-            body: "message=" + message,
+            body: "message=" + this.message,
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
@@ -57,10 +58,10 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
     } catch (err) {
         console.log(err);
         try {
-            message = encodeURIComponent(message)
+            this.message = encodeURIComponent(this.message)
             this.checkBanphrase = await got(`https://pajlada.pajbot.com/api/v1/banphrases/test`, {
                 method: "POST",
-                body: "message=" + message,
+                body: "message=" + this.message,
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded"
                 },
@@ -77,7 +78,7 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve, reject
 
 exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve, reject) => {
     this.channel = channel.replace("#", '');
-    this.message = encodeURIComponent(message).replaceAll("%0A", "%20");
+    this.message = encodeURIComponent(message).replaceAll("%0A", "%20").replace(/^\/me /, "");
     this.data = await tools.query(`SELECT * FROM Streamers WHERE username=?`, [this.channel]);
 
     if (this.data[0]) {
