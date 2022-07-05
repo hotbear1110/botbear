@@ -13,8 +13,9 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
+            let excludeCategories = encodeURIComponent("[Anime,Hentai,Weeb,D DansGame TA]");
 
-            let questions = await got(`https://api.gazatu.xyz/trivia/questions?count=1&exclude=[Anime,Hentai,Weeb,${encodeURIComponent('D DansGame TA')}]`, { timeout: 10000 }).json();
+            let questions = await got(`https://api.gazatu.xyz/trivia/questions?count=1&exclude=${excludeCategories}`, { timeout: 10000 }).json();
 
             let question = decodeURIComponent(questions[0].question);
             let correct_answer = decodeURIComponent(questions[0].answer);
