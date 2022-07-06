@@ -31,16 +31,15 @@ module.exports = {
             let logDate = await got(`https://logs.ivr.fi/list?channel=${realchannel}&userid=${uid}`, { timeout: 10000 }).json();
 
             logDate = logDate.availableLogs;
-            logDate = logDate[logDate.length - 1];
 
-            let year = logDate.year;
-            let month = logDate.month;
+            let year = logDate[logDate.length - 1].year;
+            let month = logDate[logDate.length - 1].month;
 
 
             const fl = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/${year}/${month}?json`, { timeout: 10000 }).json();
 
-            function filterByName(message) {
-                if (message.username !== realname) {
+            function filterByID(message) {
+                if (message.type !== 1) {
                     return false
                 }
                 return true
@@ -49,9 +48,8 @@ module.exports = {
 
             let realmessages = messages;
 
-            if (messages.length > 1 && messages[0].username !== realname) {
-                realmessages = messages.filter(filterByName);
-            }
+            realmessages = messages.filter(filterByID);
+
 
             if (!realmessages[0]) {
                 realmessages = messages;

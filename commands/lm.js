@@ -32,15 +32,32 @@ module.exports = {
 
             const lm = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}?json&reverse`, { timeout: 10000 }).json();
 
-            let message = tools.splitLine(lm.messages[0].text, 350)
+            function filterByID(message) {
+                if (message.type !== 1) {
+                    return false
+                }
+                return true
+            }
+            let messages = lm.messages;
 
-            const timeago = new Date().getTime() - Date.parse(lm.messages[0].timestamp);
+            let realmessages = messages;
+
+            realmessages = messages.filter(filterByID);
+
+
+            if (!realmessages[0]) {
+                realmessages = messages;
+            }
+
+            let message = tools.splitLine(realmessages[0].text, 350)
+
+            const timeago = new Date().getTime() - Date.parse(realmessages[0].timestamp);
 
             if (lm.status !== 404) {
                 if (message[1]) {
-                    return `#${realchannel} ${lm.messages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
+                    return `#${realchannel} ${realmessages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
                 }
-                return `nymnDank ${lm.messages[0].displayName}'s last message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
+                return `nymnDank ${realmessages[0].displayName}'s last message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
             }
 
         } catch (err) {
