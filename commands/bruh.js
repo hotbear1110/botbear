@@ -1,3 +1,5 @@
+const tools = require("../tools/tools.js");
+
 module.exports = {
     name: "bruh",
     ping: false,
@@ -13,6 +15,9 @@ module.exports = {
 
             if (input[2]) {
                 username = input[2];
+                if (tools.isMod(user, channel) === false && perm < 2000 && username.match(/[&|$|/|.|?|!|-]|\bkb\b|^\bmelon\b/g)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
+                    username = username.charAt(0) + "\u{E0000}" + username.substring(1);
+                }
             }
 
             let responses = ["did not pass the BRUH test... nymnBRUH TeaTime", "passed the BRUH test, RlyTho  👍"]
