@@ -76,7 +76,7 @@ module.exports = {
             }
             if (err.name) {
                 if (err.name === "HTTPError") {
-                    return "That user does not exist";
+                    return "No logs available for the user/channel";
                 }
                 return `FeelsDankMan api error: ${err.name}`;
             }
