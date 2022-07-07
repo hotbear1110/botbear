@@ -1,3 +1,4 @@
+require('dotenv').config();
 const cc = require("../bot.js").cc;
 const tools = require("../tools/tools.js");
 const regex = require('../tools/regex.js');
@@ -25,6 +26,10 @@ module.exports = {
 
             if (perm < 2000 && msg.match(/(\.|\/)color/g)) {
                 return "cmonBruh don't change my color";
+            }
+
+            if (msg.toLowerCase() === `/ban ${process.env.TWITCH_OWNERNAME}`) {
+                return `nymnWeird too far @${user.username}`;
             }
 
             return msg;
