@@ -64,7 +64,6 @@ module.exports = {
                 }
             }
 
-            console.log(realmessages)
             let message = tools.splitLine(realmessages.text, 350)
 
             const timeago = new Date().getTime() - Date.parse(realmessages.timestamp);

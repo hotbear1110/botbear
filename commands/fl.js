@@ -32,37 +32,43 @@ module.exports = {
 
             logDate = logDate.availableLogs;
 
-            let year = logDate[logDate.length - 1].year;
-            let month = logDate[logDate.length - 1].month;
+            let messageFound = false;
+            let i = 1;
+            let realmessages = "";
+            let lm = "";
+            while (!messageFound) {
+                let year = logDate[logDate.length - i].year;
+                let month = logDate[logDate.length - i].month;
 
+                fl = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/${year}/${month}?json`, { timeout: 10000 }).json();
 
-            const fl = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/${year}/${month}?json`, { timeout: 10000 }).json();
-
-            function filterByID(message) {
-                if (message.type !== 1) {
-                    return false
+                function filterByID(message) {
+                    if (message.type !== 1) {
+                        return false
+                    }
+                    return true
                 }
-                return true
+
+                realmessages = fl.messages.filter(filterByID);
+
+                if (realmessages[0]) {
+                    messageFound = true;
+                    realmessages = realmessages[0];
+                }
+                i++
+                if (i - 1 === logDate.length) {
+                    return `FeelsDankMan @${realname}, has never said anything in #${realchannel}`;
+                }
             }
-            let messages = fl.messages;
 
-            let realmessages = messages;
+            let message = tools.splitLine(realmessages.text, 350)
 
-            realmessages = messages.filter(filterByID);
-
-
-            if (!realmessages[0]) {
-                realmessages = messages;
-            }
-
-            let message = tools.splitLine(realmessages[0].text, 350)
-
-            const timeago = new Date().getTime() - Date.parse(realmessages[0].timestamp);
+            const timeago = new Date().getTime() - Date.parse(realmessages.timestamp);
             if (fl.status !== 404) {
                 if (message[1]) {
-                    return `#${realchannel} ${realmessages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
+                    return `#${realchannel} ${realmessages.displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
                 }
-                return `nymnDank ${realmessages[0].displayName}'s first message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
+                return `nymnDank ${realmessages.displayName}'s first message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
             }
 
         } catch (err) {
