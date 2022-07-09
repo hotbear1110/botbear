@@ -54,12 +54,12 @@ module.exports = {
 
                 realmessages = lm.messages.filter(filterByID);
 
+
+                i++
                 if (realmessages[0]) {
                     messageFound = true;
                     realmessages = realmessages[0];
-                }
-                i++
-                if (i > logDate.length) {
+                } else if (i > logDate.length - 1) {
                     return `FeelsDankMan @${realuser}, has never said anything in #${realchannel}`;
                 }
             }
