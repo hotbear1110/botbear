@@ -5,7 +5,7 @@ const tools = require("../tools/tools.js");
 module.exports = {
     name: "rl",
     ping: false,
-    description: 'This command will give you a random logged line from either a random user or a specified user in the chat (Only works if logs are available in the channel, logs used: "https://logs.ivr.fi/"). Example: "bb rl NymN"',
+    description: 'This command will give you a random logged line from either a random user in the chat (Only works if logs are available in the channel, logs used: "https://logs.ivr.fi/"). Example: "bb rl NymN"',
     permission: 100,
     category: "Info command",
     execute: async (channel, user, input, perm) => {
@@ -13,84 +13,21 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            let uid = user["user-id"];
-            let realuser = user.username;
             if (input[2]) {
-                if (input[2].startsWith("@")) {
-                    input[2] = input[2].substring(1);
-                }
-                uid = await got(`https://api.ivr.fi/twitch/resolve/${input[2]}`, { timeout: 10000 }).json();
-                uid = uid.id;
-                realuser = input[2];
-            } else {
-                let chatters = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 }).json();
-
-                let chatterlist = [];
-                chatters = chatters["chatters"];
-                chatterlist = chatterlist.concat(chatters["broadcaster"]);
-                chatterlist = chatterlist.concat(chatters["vips"]);
-                chatterlist = chatterlist.concat(chatters["moderators"]);
-                chatterlist = chatterlist.concat(chatters["staff"]);
-                chatterlist = chatterlist.concat(chatters["admins"]);
-                chatterlist = chatterlist.concat(chatters["global_mods"]);
-                chatterlist = chatterlist.concat(chatters["viewers"]);
-
-                let number = Math.floor(Math.random() * chatterlist.length);
-
-                uid = await got(`https://api.ivr.fi/twitch/resolve/${chatterlist[number]}`, { timeout: 10000 }).json();
-                uid = uid.id;
-            }
-            let realchannel = channel;
-            if (input[3]) {
-                realchannel = input[3];
+                channel = input[2];
             }
 
-            let logDate = await got(`https://logs.ivr.fi/list?channel=${realchannel}&userid=${uid}`, { timeout: 10000 }).json();
+            const rl = await got(`https://logs.ivr.fi/channel/nymn/random/?json`, { timeout: 10000 }).json();
 
-            logDate = logDate.availableLogs;
+            let message = tools.splitLine(rl.messages[0].text, 350);
 
-
-            let logsOrder = [...Array(logDate.length).keys()];
-            logsOrder = shuffle(logsOrder);
-            let messageFound = false;
-            let i = 0;
-            let realmessages = "";
-            let rl = "";
-            while (!messageFound) {
-                let year = logDate[logsOrder[i]].year;
-                let month = logDate[logsOrder[i]].month;
-
-                rl = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/${year}/${month}?json`, { timeout: 10000 }).json();
-
-                function filterByID(message) {
-                    if (message.type !== 1) {
-                        return false
-                    }
-                    return true
-                }
-
-                realmessages = rl.messages.filter(filterByID);
-
-
-                i++
-                if (realmessages[0]) {
-                    messageFound = true;
-                    let number = Math.floor(Math.random() * realmessages.length);
-                    realmessages = realmessages[number];
-                } else if (i > logsOrder.length - 1) {
-                    return `FeelsDankMan @${realuser}, has never said anything in #${realchannel}`;
-                }
-            }
-
-            let message = tools.splitLine(realmessages.text, 350)
-
-            const timeago = new Date().getTime() - Date.parse(realmessages.timestamp);
+            const timeago = new Date().getTime() - Date.parse(rl.messages[0].timestamp);
 
             if (rl.status !== 404) {
                 if (message[1]) {
-                    return `#${realchannel} ${realmessages.displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
+                    return `#${channel} ${rl.messages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
                 }
-                return `#${realchannel[0]}\u{E0000}${realchannel.slice(1)} ${realmessages.displayName}: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
+                return `#${channel[0]}\u{E0000}${channel.slice(1)} ${rl.messages[0].displayName}: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
             }
 
         } catch (err) {
@@ -110,22 +47,4 @@ module.exports = {
             return `FeelsDankMan Error`;
         }
     }
-}
-
-function shuffle(array) {
-    let currentIndex = array.length, randomIndex;
-
-    // While there remain elements to shuffle.
-    while (currentIndex != 0) {
-
-        // Pick a remaining element.
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-
-        // And swap it with the current element.
-        [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]];
-    }
-
-    return array;
 }
