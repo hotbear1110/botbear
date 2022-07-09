@@ -59,7 +59,7 @@ module.exports = {
                     realmessages = realmessages[0];
                 }
                 i++
-                if (i >= logDate.length) {
+                if (i > logDate.length) {
                     return `FeelsDankMan @${realuser}, has never said anything in #${realchannel}`;
                 }
             }
