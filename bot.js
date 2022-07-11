@@ -56,11 +56,11 @@ async function onMessageHandler(channel, user, msg, self) {
     msg = msg.replaceAll(regex.invisChar, "");
     msg = msg.replaceAll("  ", "");
 
-    if (!userList.includes(user.username) && user.username != null) {
-        await tools.query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
-        userList.push(user.username);
-        console.log(user.username);
-    }
+    /* if (!userList.includes(user.username) && user.username != null) {
+         await tools.query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
+         userList.push(user.username);
+         console.log(user.username);
+     }*/
     //Temp exception for xqc's chat, since I want to test perfomance without the bot being able to respond there
     if (channel === "#xqc") {
         return;
