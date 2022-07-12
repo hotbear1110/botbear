@@ -6,3 +6,10 @@ Made by: Mads Hauberg
 
 DB docs I guess:
 https://pastebin.com/GAF21Fmr
+
+
+## Dev Setup
+```bash
+pip install pre-commit
+pre-commit install
+```

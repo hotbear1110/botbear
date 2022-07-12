@@ -1,54 +1,50 @@
-const shell = require("child_process")
-const tools = require("../tools/tools.js");
-const sql = require("./../sql/index.js");
+const shell = require('child_process');
+const sql = require('./../sql/index.js');
 
 module.exports = {
-    name: "botstats",
-    ping: true,
-    description: 'This command will give you some info about the bot',
-    permission: 100,
-    category: "Info command",
-    execute: async (channel, user, input, perm) => {
-        try {
-            if (module.exports.permission > perm) {
-                return;
-            }
+	name: 'botstats',
+	ping: true,
+	description: 'This command will give you some info about the bot',
+	permission: 100,
+	category: 'Info command',
+	execute: async (channel, user, input, perm) => {
+		try {
+			if (module.exports.permission > perm) {
+				return;
+			}
 
-            const test = shell.execSync("free -h")
+			const test = shell.execSync('free -h');
 
-            let total = test.toString().split(":")[1]
+			let total = test.toString().split(':')[1];
 
-            total = total.split(" ")
+			total = total.split(' ');
 
-            let used = total[17];
-            total = total[10];
+			let used = total[17];
+			total = total[10];
 
-            totalused = used.slice(3, -1);
-            used = used.slice(0, -2);
-            total = total.slice(0, -1);
+			const totalused = used.slice(3, -1);
+			used = used.slice(0, -2);
+			total = total.slice(0, -1);
 
-            const cpu = shell.execSync("mpstat")
+			const cpu = shell.execSync('mpstat');
 
-            let cpuused = cpu.toString().split("all")[1]
-            console.log(cpuused)
-            cpuused = `${cpuused.split(".")[0].replaceAll(" ", "")}.${cpuused.split(".")[1].slice(0, -2).replaceAll(" ", "")}`;
+			let cpuused = cpu.toString().split('all')[1];
+			console.log(cpuused);
+			cpuused = `${cpuused.split('.')[0].replaceAll(' ', '')}.${cpuused.split('.')[1].slice(0, -2).replaceAll(' ', '')}`;
 
-            let temp = shell.execSync("sensors");
+			let temp = shell.execSync('sensors');
 
-            temp = temp.toString().split("+")[1];
-            temp = temp.split(" ")[0]
+			temp = temp.toString().split('+')[1];
+			temp = temp.split(' ')[0];
 
-            const commits = shell.execSync('git rev-list --all --count');
+			const commits = shell.execSync('git rev-list --all --count');
 
-            let streamerCount = await sql.Query(`SELECT * FROM Streamers`);
+			let streamerCount = await sql.Query('SELECT * FROM Streamers');
 
-
-
-            return `CPU: ${cpuused}% - Memory: ${used}${totalused}B/${total}B - Temperature: ${temp} - Commits: ${commits} KKona - Currently active in ${streamerCount.length} channels.`;
-
-        } catch (err) {
-            console.log(err);
-            return `FeelsDankMan Error`;
-        }
-    }
-}
+			return `CPU: ${cpuused}% - Memory: ${used}${totalused}B/${total}B - Temperature: ${temp} - Commits: ${commits} KKona - Currently active in ${streamerCount.length} channels.`;
+		} catch (err) {
+			console.log(err);
+			return 'FeelsDankMan Error';
+		}
+	}
+};

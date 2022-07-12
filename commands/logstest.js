@@ -1,24 +1,25 @@
-const shell = require("child_process")
-const tools = require("../tools/tools.js");
-const _ = require("underscore");
-const { fchown } = require("fs");
-const got = require("got");
-let messageHandler = require("../tools/messageHandler.js").messageHandler;
-const sql = require("./../sql/index.js");
+/* eslint-disable no-unused-vars */
+const shell = require('child_process');
+const tools = require('../tools/tools.js');
+const _ = require('underscore');
+const { fchown } = require('fs');
+const got = require('got');
+let messageHandler = require('../tools/messageHandler.js').messageHandler;
+const sql = require('./../sql/index.js');
 
 //const redisC = require("../tools/logger.js").redisC;
 
 module.exports = {
-    name: "logstest",
-    ping: true,
-    description: 'This is a dev command for testing purposes',
-    permission: 2000,
-    category: "Dev command",
-    execute: async (channel, user, input, perm) => {
-        try {
-            if (module.exports.permission > perm) {
-                return;
-            }/*
+	name: 'logstest',
+	ping: true,
+	description: 'This is a dev command for testing purposes',
+	permission: 2000,
+	category: 'Dev command',
+	execute: async (channel, user, input, perm) => {
+		try {
+			if (module.exports.permission > perm) {
+				return;
+			}/*
             if (input[2]) {
                 channel = input[2];
             }
@@ -44,11 +45,11 @@ module.exports = {
             })
         })
 */
-            return;
+			return;
 
-        } catch (err) {
-            console.log(err);
-            return `FeelsDankMan Test Failed`;
-        }
-    }
-}
+		} catch (err) {
+			console.log(err);
+			return 'FeelsDankMan Test Failed';
+		}
+	}
+};

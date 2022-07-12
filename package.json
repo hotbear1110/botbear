@@ -4,7 +4,8 @@
   "description": "Dank bot, idk",
   "main": "bot.js",
   "scripts": {
-    "start": "node ./start.js"
+    "start": "node ./start.js",
+    "lint": "eslint . --ext .js"
   },
   "repository": {
     "type": "git",
@@ -37,5 +38,8 @@
     "tmi.js": "^1.8.5",
     "underscore": "^1.13.1"
   },
-  "types": "./@types/index.d.ts"
+  "types": "./@types/index.d.ts",
+  "devDependencies": {
+    "eslint": "^8.19.0"
+  }
 }
