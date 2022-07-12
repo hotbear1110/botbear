@@ -59,17 +59,9 @@ async function onMessageHandler(channel, user, msg, self) {
          console.log(user.username);
      }*/
     //Temp exception for xqc's chat, since I want to test perfomance without the bot being able to respond there
-    if (channel === "#xqc") {
-        return;
-    }
 
     if (channel === "#pajlada" && user["user-id"] == 82008718 && msg === "pajaS 🚨 ALERT") {
         cc.say(channel, `/me pajaLada 🚨 WHAT HAPPENED`);
-        return;
-    }
-
-    if (channel === "#pajlada" && user["user-id"] == 137690566 && msg.startsWith("/announce")) {
-        cc.say(channel, `. /announce æ ø å? NOTDANKENOUGH`);
         return;
     }
 
@@ -192,14 +184,14 @@ async function onMessageHandler(channel, user, msg, self) {
 
     let input = msg.split(" ");
 
-    for (let i = 0; i < input.length; i++) {
+    /*for (let i = 0; i < input.length; i++) {
         if (new RegExp(/[\uDB40-\uDC00]/).test(input[i])) {
             input[i] = input[i].replace(new RegExp(/[\uDB40-\uDC00\u034f\u2800\u{E0000}\u180e\ufeff\u2000-\u200d\u206D]/g), "");
             input[i] = input[i].replace(/\s\s+/g, ' ').trim();
             input[i] = input[i].replace("  ", "");
             input.splice(i)
         }
-    }
+    }*/
     input = input.filter(e => e);
 
     if (input[0] === "[Cookies]" && user["user-id"] == 425363834 && !msg.includes("rankup") && !msg.includes("you are currently rank")) {
