@@ -30,10 +30,6 @@ module.exports =  {
         for (const command of commands) {
             const UpdateDatabase = async () => {
                 for (const dbcommand of dbCommands) {
-                    if (dbcommand.Name !== command.name) {
-                        await sql.Query('DELETE FROM Commands WHERE Name=?', [dbcommand.Name]);
-                    }
-                    
                     if (dbcommand.Name === command.name) {
                         if (
                             dbcommand.Command !== command.description || 
@@ -70,6 +66,18 @@ module.exports =  {
             }
             await sql.Query('INSERT INTO Commands (Name, Command, Perm, Category, Cooldown) values (?, ?, ?, ?, ?)', [command.name, command.description, command.permission, command.category, command.cooldown]);
             }
+
+            let okay = true;
+            for (const dbcommand of dbCommands) {
+                if (dbcommand.Name === command.name) {
+                    okay = false
+                    break;
+                }
+            }
+            if (okay) {
+                await sql.Query('DELETE FROM Commands WHERE Name=?', [dbcommand.Name]);
+            }
         }
+        
     }
 };
