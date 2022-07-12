@@ -1,4 +1,5 @@
 const tools = require("../tools/tools.js");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "notify",
@@ -13,7 +14,7 @@ module.exports = {
             }
             switch (input[2]) {
                 case "live":
-                    const liveUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+                    const liveUsers = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
                     let liveusers = JSON.parse(liveUsers[0].live_ping);
 
                     if (liveusers.includes(user.username)) {
@@ -23,13 +24,13 @@ module.exports = {
                         liveusers.push(user.username);
                         liveusers = JSON.stringify(liveusers);
 
-                        tools.query(`UPDATE Streamers SET live_ping=? WHERE username=?`, [liveusers, channel]);
+                        sql.Query(`UPDATE Streamers SET live_ping=? WHERE username=?`, [liveusers, channel]);
 
                         return 'You are now subscribed to the event "live"';
                     }
                     break;
                 case "offline":
-                    const offlineUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+                    const offlineUsers = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
                     let offlineusers = JSON.parse(offlineUsers[0].offline_ping);
 
                     if (offlineusers.includes(user.username)) {
@@ -39,13 +40,13 @@ module.exports = {
                         offlineusers.push(user.username);
                         offlineusers = JSON.stringify(offlineusers);
 
-                        tools.query(`UPDATE Streamers SET offline_ping=? WHERE username=?`, [offlineusers, channel]);
+                        sql.Query(`UPDATE Streamers SET offline_ping=? WHERE username=?`, [offlineusers, channel]);
 
                         return 'You are now subscribed to the event "offline"';
                     }
                     break;
                 case "title":
-                    const titleUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+                    const titleUsers = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
                     let titleusers = JSON.parse(titleUsers[0].title_ping);
 
                     if (titleusers.includes(user.username)) {
@@ -55,7 +56,7 @@ module.exports = {
                         titleusers.push(user.username);
                         titleusers = JSON.stringify(titleusers);
 
-                        tools.query(`UPDATE Streamers SET title_ping=? WHERE username=?`, [titleusers, channel]);
+                        sql.Query(`UPDATE Streamers SET title_ping=? WHERE username=?`, [titleusers, channel]);
 
                         return 'You are now subscribed to the event "title"';
                     }
@@ -66,7 +67,7 @@ module.exports = {
                     userchannel.push(`"${channel}"`);
 
 
-                    const alreadyJoined = await tools.query(`
+                    const alreadyJoined = await sql.Query(`
                         SELECT *
                         FROM MyPing
                         WHERE username=?`,
@@ -75,7 +76,7 @@ module.exports = {
                     if (alreadyJoined.length && alreadyJoined[0].game_pings !== "[]") {
                         return `You should remove all of you custom game pings first, by doing "bb myping remove all"`;
                     }
-                    const gameUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+                    const gameUsers = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
                     let gameusers = JSON.parse(gameUsers[0].game_ping);
 
                     if (gameusers.includes(user.username)) {
@@ -85,13 +86,13 @@ module.exports = {
                         gameusers.push(user.username);
                         gameusers = JSON.stringify(gameusers);
 
-                        tools.query(`UPDATE Streamers SET game_ping=? WHERE username=?`, [gameusers, channel]);
+                        sql.Query(`UPDATE Streamers SET game_ping=? WHERE username=?`, [gameusers, channel]);
 
                         return 'You are now subscribed to the event "game"';
                     }
                     break;
                 case "all": {
-                    const notifyUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+                    const notifyUsers = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
 
                     let liveusers = JSON.parse(notifyUsers[0].live_ping);
                     let offlineusers = JSON.parse(notifyUsers[0].offline_ping);
@@ -103,26 +104,26 @@ module.exports = {
                             liveusers.push(user.username);
                             liveusers = JSON.stringify(liveusers);
 
-                            tools.query(`UPDATE Streamers SET live_ping=? WHERE username=?`, [liveusers, channel]);
+                            sql.Query(`UPDATE Streamers SET live_ping=? WHERE username=?`, [liveusers, channel]);
                         }
                         if (!offlineusers.includes(user.username)) {
                             offlineusers.push(user.username);
                             offlineusers = JSON.stringify(offlineusers);
 
-                            tools.query(`UPDATE Streamers SET offline_ping=? WHERE username=?`, [offlineusers, channel]);
+                            sql.Query(`UPDATE Streamers SET offline_ping=? WHERE username=?`, [offlineusers, channel]);
                         }
                         if (!titleusers.includes(user.username)) {
                             titleusers.push(user.username);
                             titleusers = JSON.stringify(titleusers);
 
-                            tools.query(`UPDATE Streamers SET title_ping=? WHERE username=?`, [titleusers, channel]);
+                            sql.Query(`UPDATE Streamers SET title_ping=? WHERE username=?`, [titleusers, channel]);
 
                         }
                         if (!gameusers.includes(user.username)) {
                             gameusers.push(user.username);
                             gameusers = JSON.stringify(gameusers);
 
-                            tools.query(`UPDATE Streamers SET game_ping=? WHERE username=?`, [gameusers, channel]);
+                            sql.Query(`UPDATE Streamers SET game_ping=? WHERE username=?`, [gameusers, channel]);
                         }
                         return `You are now subscribed to all events`;
                     } else {

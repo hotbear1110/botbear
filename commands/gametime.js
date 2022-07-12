@@ -1,4 +1,5 @@
 const tools = require("../tools/tools.js");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "gametime",
@@ -19,7 +20,7 @@ module.exports = {
                 }
                 realchannel = input[2];
             }
-            const gameTimedata = await tools.query(`SELECT * FROM Streamers WHERE username=?`, [realchannel]);
+            const gameTimedata = await sql.Query(`SELECT * FROM Streamers WHERE username=?`, [realchannel]);
             if (!gameTimedata[0]) {
                 return "That streamer is not in my database";
             }

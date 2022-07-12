@@ -1,5 +1,6 @@
 const tools = require("../tools/tools.js");
 const got = require("got");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "title",
@@ -21,7 +22,7 @@ module.exports = {
                 realchannel = input[2];
             }
             let title = "";
-            const streamTitle = await tools.query(`SELECT * FROM Streamers WHERE username=?`, [realchannel]);
+            const streamTitle = await sql.Query(`SELECT * FROM Streamers WHERE username=?`, [realchannel]);
             if (!streamTitle[0]) {
                 let userID = await got(`https://api.ivr.fi/twitch/resolve/${input[2]}`, { timeout: 10000 }).json();
 

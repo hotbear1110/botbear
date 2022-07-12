@@ -1,6 +1,7 @@
 const cc = require("../bot.js").cc;
 const tools = require("../tools/tools.js");
-let messageHandler = require("../tools/messageHandler.js").messageHandler;
+const { messageHandler } = require("../tools/messageHandler.js");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "reconnect",
@@ -21,7 +22,7 @@ module.exports = {
                 return "Please specify a channel. FeelsDankMan"
             }
 
-            const isinDB = await tools.query(`SELECT username FROM Streamers WHERE username=?`, [input[2]]);
+            const isinDB = await sql.Query(`SELECT username FROM Streamers WHERE username=?`, [input[2]]);
             if (!isinDB[0]) {
                 return "That streamer is not in my database";
             }

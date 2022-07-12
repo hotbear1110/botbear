@@ -6,6 +6,7 @@ const got = require("got");
 const { isDnsLookupIpVersion } = require('got/dist/source/core/utils/dns-ip-version');
 let messageHandler = require("../tools/messageHandler.js").messageHandler;
 const { con } = require('../connect/connect.js');
+const sql = require("./../sql/index.js");
 
 function sleep(milliseconds) {
     var start = new Date().getTime();
@@ -19,7 +20,7 @@ function sleep(milliseconds) {
 sleep(10000);
 
 setInterval(async function () {
-    const streamers = await tools.query('SELECT * FROM Streamers');
+    const streamers = await sql.Query('SELECT * FROM Streamers');
 
     _.each(streamers, async function (streamer) {
         setTimeout(async function () {
@@ -187,8 +188,8 @@ setInterval(async function () {
 
             Emote_list = JSON.stringify(Emote_list)
             Emote_removed = JSON.stringify(Emote_removed)
-            await tools.query(`UPDATE Streamers SET emote_list=? WHERE username=?`, [Emote_list, streamer.username]);
-            await tools.query(`UPDATE Streamers SET emote_removed=? WHERE username=?`, [Emote_removed, streamer.username]);
+            await sql.Query(`UPDATE Streamers SET emote_list=? WHERE username=?`, [Emote_list, streamer.username]);
+            await sql.Query(`UPDATE Streamers SET emote_removed=? WHERE username=?`, [Emote_removed, streamer.username]);
 
             const isSubbed = await got(`https://api.7tv.app/v2/badges?user_identifier=twitch_id`, { timeout: 10000 }).json();
 
@@ -198,26 +199,26 @@ setInterval(async function () {
                     let users = badge["users"]
                     if (users.includes(streamer.uid.toString())) {
                         foundName = true;
-                        await tools.query(`UPDATE Streamers SET seventv_sub=? WHERE username=?`, [1, streamer.username]);
+                        await sql.Query(`UPDATE Streamers SET seventv_sub=? WHERE username=?`, [1, streamer.username]);
                     }
                 }
             });
 
             if (foundName === false) {
-                await tools.query(`UPDATE Streamers SET seventv_sub=? WHERE username=?`, [0, streamer.username]);
+                await sql.Query(`UPDATE Streamers SET seventv_sub=? WHERE username=?`, [0, streamer.username]);
             }
         }, 200);
     });
 }, 300000);
 
 setInterval(async function () {
-    const users = await tools.query(`SELECT * FROM Cookies`);
+    const users = await sql.Query(`SELECT * FROM Cookies`);
     let Time = new Date().getTime();
 
     _.each(await users, async function (User) {
         if (User.RemindTime !== null && User.RemindTime < Time) {
             if (User.Status === "Confirmed" || User.Status === "Confirmed2") {
-                const stream = await tools.query('SELECT * FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
+                const stream = await sql.Query('SELECT * FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
                 let disabledCommands = ""
                 try {
                     disabledCommands = JSON.parse(stream[0].disabled_commands)
@@ -226,7 +227,7 @@ setInterval(async function () {
                     console.log(stream)
                 }
 
-                await tools.query(`UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
+                await sql.Query(`UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
                 if (User.Mode === 0) {
                     if (disabledCommands.includes("cookie")) {
                         new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
@@ -267,15 +268,15 @@ setInterval(async function () {
 }, 10000);
 
 setInterval(async function () {
-    const users = await tools.query(`SELECT * FROM Cdr`);
+    const users = await sql.Query(`SELECT * FROM Cdr`);
     let Time = new Date().getTime();
 
     _.each(await users, async function (User) {
         if (User.RemindTime !== null && User.RemindTime < Time && User.Status === "Confirmed") {
-            const stream = await tools.query('SELECT * FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
+            const stream = await sql.Query('SELECT * FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
             let disabledCommands = JSON.parse(stream[0].disabled_commands)
 
-            await tools.query(`UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
+            await sql.Query(`UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?`, [null, null, null, User.User]);
 
             if (User.Mode === 0) {
                 if (disabledCommands.includes("cdr")) {

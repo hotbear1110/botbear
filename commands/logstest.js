@@ -4,6 +4,8 @@ const _ = require("underscore");
 const { fchown } = require("fs");
 const got = require("got");
 let messageHandler = require("../tools/messageHandler.js").messageHandler;
+const sql = require("./../sql/index.js");
+
 //const redisC = require("../tools/logger.js").redisC;
 
 module.exports = {
@@ -20,7 +22,7 @@ module.exports = {
             if (input[2]) {
                 channel = input[2];
             }
-            const gameTimedata = await tools.query(`SELECT * FROM Streamers WHERE username=?`, [channel]);
+            const gameTimedata = await sql.Query(`SELECT * FROM Streamers WHERE username=?`, [channel]);
             if (!gameTimedata[0]) {
                 return "That streamer is not in my database";
             }

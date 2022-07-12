@@ -1,5 +1,6 @@
 const tools = require("../tools/tools.js");
 const _ = require("underscore");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "check",
@@ -21,7 +22,7 @@ module.exports = {
                         }
                         username = input[3];
                     }
-                    const User_permission = await tools.query(`SELECT permission FROM Users WHERE username=?`, [username]);
+                    const User_permission = await sql.Query(`SELECT permission FROM Users WHERE username=?`, [username]);
 
                     return `${username}'s permission is: ${User_permission[0].permission}`;
                     break;
@@ -43,7 +44,7 @@ module.exports = {
                     let userchannel = [];
                     userchannel.push(`"${username}"`);
                     userchannel.push(`"#${channel}"`);
-                    const User_trivia = await tools.query(`SELECT points FROM MyPoints WHERE username=?`, [`[${userchannel}]`]);
+                    const User_trivia = await sql.Query(`SELECT points FROM MyPoints WHERE username=?`, [`[${userchannel}]`]);
 
                     if (!User_trivia.length) {
                         return "That user has no points yet :)"
@@ -63,7 +64,7 @@ module.exports = {
                         channel = input[3];
                     }
 
-                    const Trivia_leaderboard = await tools.query(`SELECT * FROM MyPoints ORDER BY points DESC`);
+                    const Trivia_leaderboard = await sql.Query(`SELECT * FROM MyPoints ORDER BY points DESC`);
 
                     let leaderboard = [];
 
@@ -92,7 +93,7 @@ module.exports = {
                         channel = input[3];
                     }
 
-                    const TriviaCD = await tools.query(`SELECT trivia_cooldowns FROM Streamers WHERE username=?`, [channel]);
+                    const TriviaCD = await sql.Query(`SELECT trivia_cooldowns FROM Streamers WHERE username=?`, [channel]);
 
                     if (!TriviaCD.length) {
                         return;

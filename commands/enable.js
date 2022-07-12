@@ -1,6 +1,7 @@
 require('dotenv').config();
 const tools = require("../tools/tools.js");
 const _ = require("underscore");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "enable",
@@ -24,7 +25,7 @@ module.exports = {
 
                     let command = input[3].toLowerCase();
 
-                    let disabledList = await tools.query(`
+                    let disabledList = await sql.Query(`
                     SELECT disabled_commands
                     FROM Streamers
                     WHERE username=?`,
@@ -41,7 +42,7 @@ module.exports = {
                     disabledList = JSON.stringify(disabledList);
 
 
-                    tools.query(`UPDATE Streamers SET disabled_commands=? WHERE username=?`, [disabledList, channel]);
+                    sql.Query(`UPDATE Streamers SET disabled_commands=? WHERE username=?`, [disabledList, channel]);
 
                     return `${command} is now enabled :)`;
                 }
@@ -58,7 +59,7 @@ module.exports = {
                         return `Core commands can't be disabled, so there is no enabling them`;
                     }
 
-                    let disabledList = await tools.query(`
+                    let disabledList = await sql.Query(`
                     SELECT disabled_commands
                     FROM Streamers
                     WHERE username=?`,
@@ -66,7 +67,7 @@ module.exports = {
 
                     disabledList = JSON.parse(disabledList[0].disabled_commands);
 
-                    let commandList = await tools.query(`
+                    let commandList = await sql.Query(`
                     SELECT *
                     FROM Commands`);
 
@@ -95,14 +96,14 @@ module.exports = {
                     disabledList = JSON.stringify(disabledList);
 
 
-                    tools.query(`UPDATE Streamers SET disabled_commands=? WHERE username=?`, [disabledList, channel]);
+                    sql.Query(`UPDATE Streamers SET disabled_commands=? WHERE username=?`, [disabledList, channel]);
 
                     return `All ${category} commands are now enabled :)`;
                 }
                     break;
 
                 case "all": {
-                    let disabledList = await tools.query(`
+                    let disabledList = await sql.Query(`
                     SELECT disabled_commands
                     FROM Streamers
                     WHERE username=?`,
@@ -110,7 +111,7 @@ module.exports = {
 
                     disabledList = JSON.parse(disabledList[0].disabled_commands);
 
-                    let commandList = await tools.query(`
+                    let commandList = await sql.Query(`
                     SELECT *
                     FROM Commands`);
 
@@ -133,7 +134,7 @@ module.exports = {
                     disabledList = JSON.stringify(disabledList);
 
 
-                    tools.query(`UPDATE Streamers SET disabled_commands=? WHERE username=?`, [disabledList, channel]);
+                    sql.Query(`UPDATE Streamers SET disabled_commands=? WHERE username=?`, [disabledList, channel]);
 
                     return `All commands are now enabled :)`;
                 }

@@ -6,6 +6,7 @@ const port = 8080;
 let messageHandler = require("../tools/messageHandler.js").messageHandler;
 const tools = require("../tools/tools.js");
 const _ = require("underscore");
+const sql = require("./../sql/index.js");
 
 // Notification request headers
 const TWITCH_MESSAGE_ID = 'Twitch-Eventsub-Message-Id'.toLowerCase();
@@ -46,8 +47,8 @@ app.post('/eventsub', async function (req, res) {
             res.sendStatus(204);
 
             if (notification.subscription.type === "channel.update") {
-                const streamers = await tools.query('SELECT * FROM Streamers WHERE uid=?', notification.event.broadcaster_user_id);
-                const myping = await tools.query(`SELECT * FROM MyPing`);
+                const streamers = await sql.Query('SELECT * FROM Streamers WHERE uid=?', notification.event.broadcaster_user_id);
+                const myping = await sql.Query(`SELECT * FROM MyPing`);
 
                 let disabledCommands = JSON.parse(streamers[0].disabled_commands)
 
@@ -83,7 +84,7 @@ app.post('/eventsub', async function (req, res) {
                     }
                     let titleTime = new Date().getTime();
                     console.log(streamers[0].username + " NEW TITLE: " + newTitle);
-                    await tools.query(`UPDATE Streamers SET title=?, title_time=? WHERE username=?`, [newTitle, titleTime, streamers[0].username]);
+                    await sql.Query(`UPDATE Streamers SET title=?, title_time=? WHERE username=?`, [newTitle, titleTime, streamers[0].username]);
                     if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
                         if (titleusers.length) {
                             _.each(titleuserlist, function (msg, i) {
@@ -103,7 +104,7 @@ app.post('/eventsub', async function (req, res) {
                     }
                     let gameTime = new Date().getTime();
 
-                    await tools.query(`UPDATE Streamers SET game=?, game_time=? WHERE username=?`, [newGame, gameTime, streamers[0].username]);
+                    await sql.Query(`UPDATE Streamers SET game=?, game_time=? WHERE username=?`, [newGame, gameTime, streamers[0].username]);
 
                     console.log(streamers[0].username + " NEW GAME: " + newGame);
                     if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
@@ -117,7 +118,7 @@ app.post('/eventsub', async function (req, res) {
             }
 
             if (notification.subscription.type === "stream.online") {
-                const streamers = await tools.query('SELECT * FROM Streamers WHERE uid=?', notification.event.broadcaster_user_id);
+                const streamers = await sql.Query('SELECT * FROM Streamers WHERE uid=?', notification.event.broadcaster_user_id);
 
                 let disabledCommands = JSON.parse(streamers[0].disabled_commands)
 
@@ -136,7 +137,7 @@ app.post('/eventsub', async function (req, res) {
                     userlist = tools.splitLine(users, 350);
                 }
                 console.log(streamers[0].username + " IS NOW LIVE");
-                await tools.query(`UPDATE Streamers SET islive = 1 WHERE username = "${streamers[0].username}"`);
+                await sql.Query(`UPDATE Streamers SET islive = 1 WHERE username = "${streamers[0].username}"`);
                 if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
                     if (users.length) {
                         _.each(userlist, function (msg, i) {
@@ -147,7 +148,7 @@ app.post('/eventsub', async function (req, res) {
             }
 
             if (notification.subscription.type === "stream.offline") {
-                const streamers = await tools.query('SELECT * FROM Streamers WHERE uid=?', notification.event.broadcaster_user_id);
+                const streamers = await sql.Query('SELECT * FROM Streamers WHERE uid=?', notification.event.broadcaster_user_id);
 
                 let disabledCommands = JSON.parse(streamers[0].disabled_commands)
 
@@ -166,7 +167,7 @@ app.post('/eventsub', async function (req, res) {
                     userlist = tools.splitLine(users, 350);
                 }
                 console.log(streamers[0].username + " IS NOW OFFLINE");
-                await tools.query(`UPDATE Streamers SET islive = 0 WHERE username ="${streamers[0].username}"`);
+                await sql.Query(`UPDATE Streamers SET islive = 0 WHERE username ="${streamers[0].username}"`);
                 if (!disabledCommands.includes("notify") || proxychannel === "botbear1110") {
                     if (users.length) {
                         _.each(userlist, function (msg, i) {

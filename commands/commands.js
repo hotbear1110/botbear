@@ -1,5 +1,6 @@
 const tools = require("../tools/tools.js");
 const _ = require("underscore");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "commands",
@@ -14,7 +15,7 @@ module.exports = {
             }
             if (input[2]) {
                 if (input[2] === "local") {
-                    let disabledList = await tools.query(`
+                    let disabledList = await sql.Query(`
                         SELECT disabled_commands
                         FROM Streamers
                         WHERE username=?`,
@@ -26,7 +27,7 @@ module.exports = {
                         return `This channel has all commands enabled: https://hotbear.org/`;
                     }
 
-                    let commandList = await tools.query(`
+                    let commandList = await sql.Query(`
                     SELECT *
                     FROM Commands`);
 

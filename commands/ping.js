@@ -1,4 +1,5 @@
 const tools = require("../tools/tools.js");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "ping",
@@ -13,7 +14,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            const latency = await tools.query(`SELECT Latency FROM Latency`);
+            const latency = await sql.Query(`SELECT Latency FROM Latency`);
             let delay = JSON.parse(latency[latency.length - 1].Latency);
 
             return `nymnDank pong! - Tmi delay: ${delay * 1000}ms - Internal delay:`;

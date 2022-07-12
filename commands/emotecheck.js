@@ -1,6 +1,7 @@
 const got = require("got");
 const tools = require("../tools/tools.js");
 const _ = require("underscore");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "emotecheck",
@@ -162,7 +163,7 @@ module.exports = {
             console.log(err);
         }
         try {
-            const streamer = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+            const streamer = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
             let emotes = JSON.parse(streamer[0].emote_list);
 
 

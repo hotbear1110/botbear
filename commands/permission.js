@@ -1,4 +1,5 @@
 const tools = require("../tools/tools.js");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "permission",
@@ -11,7 +12,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            await tools.query(`UPDATE Users SET permission=? WHERE username=?`, [input[3], input[2]]);
+            await sql.Query(`UPDATE Users SET permission=? WHERE username=?`, [input[3], input[2]]);
             return `${input[2]} now has permission ${input[3]}`;
 
         } catch (err) {

@@ -1,6 +1,7 @@
 const got = require("got");
 const _ = require("underscore");
 const tools = require("../tools/tools.js");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "suball",
@@ -13,7 +14,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            const streamers = await tools.query(`
+            const streamers = await sql.Query(`
             SELECT uid
             FROM Streamers`);
 

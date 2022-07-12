@@ -1,4 +1,5 @@
 const tools = require("../tools/tools.js");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "enablenewcommands",
@@ -16,10 +17,10 @@ module.exports = {
             }
             switch (input[2]) {
                 case "true": {
-                    const disableCommand = await tools.query(`SELECT command_default FROM Streamers WHERE username = ?`, [channel]);
+                    const disableCommand = await sql.Query(`SELECT command_default FROM Streamers WHERE username = ?`, [channel]);
 
                     if (disableCommand[0].command_default === 1) {
-                        tools.query(`UPDATE Streamers SET command_default=? WHERE username=?`, [0, channel]);
+                        sql.Query(`UPDATE Streamers SET command_default=? WHERE username=?`, [0, channel]);
                         return "New commands are now enabled by default";
                     } else {
                         return "New commands are already enabled by default";
@@ -28,10 +29,10 @@ module.exports = {
                     break;
 
                 case "false": {
-                    const disableCommand = await tools.query(`SELECT command_default FROM Streamers WHERE username = ?`, [channel]);
+                    const disableCommand = await sql.Query(`SELECT command_default FROM Streamers WHERE username = ?`, [channel]);
 
                     if (disableCommand[0].command_default === 0) {
-                        tools.query(`UPDATE Streamers SET command_default=? WHERE username=?`, [1, channel]);
+                        sql.Query(`UPDATE Streamers SET command_default=? WHERE username=?`, [1, channel]);
                         return "New commands are now disabled by default";
                     } else {
                         return "New commands are already disabled by default";

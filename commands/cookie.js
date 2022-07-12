@@ -1,5 +1,6 @@
 const tools = require("../tools/tools.js");
 const got = require("got");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "cookie",
@@ -14,10 +15,10 @@ module.exports = {
             }
             switch (input[2]) {
                 case "register":
-                    const register = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
+                    const register = await sql.Query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
 
                     if (!register.length) {
-                        await tools.query('INSERT INTO Cookies (User) values (?)', [user.username]);
+                        await sql.Query('INSERT INTO Cookies (User) values (?)', [user.username]);
 
                         return 'You are now registered for cookie notifications. Do "bb cookie mode" to change where the bot responds';
 
@@ -26,10 +27,10 @@ module.exports = {
                     }
                     break;
                 case "unregister":
-                    const unregister = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
+                    const unregister = await sql.Query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
 
                     if (unregister.length) {
-                        await tools.query(`DELETE FROM Cookies WHERE User=?`, [user.username]);
+                        await sql.Query(`DELETE FROM Cookies WHERE User=?`, [user.username]);
 
                         return 'You are now unregistered for cookie notifications';
                     } else {
@@ -37,7 +38,7 @@ module.exports = {
                     }
                     break;
                 case "status":
-                    const status = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
+                    const status = await sql.Query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
 
                     if (status.length) {
                         if (status[0].RemindTime !== null) {
@@ -80,12 +81,12 @@ module.exports = {
                     }
                     break;
                 case "mode":
-                    const isregistered = await tools.query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
+                    const isregistered = await sql.Query(`SELECT * FROM Cookies WHERE User=?`, [user.username]);
 
                     if (isregistered.length) {
                         switch (input[3]) {
                             case "default": {
-                                let cookiemode = await tools.query(`
+                                let cookiemode = await sql.Query(`
                                 SELECT Mode
                                 FROM Cookies
                                 WHERE User=?`,
@@ -93,7 +94,7 @@ module.exports = {
 
                                 if (cookiemode[0].Mode !== 0) {
                                     cookiemode[0].Mode = 0;
-                                    await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode[0].Mode, user.username]);
+                                    await sql.Query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode[0].Mode, user.username]);
                                     return "I will now remind you in the chat where you last ate a cookie";
                                 } else {
                                     return "You already use this mode";
@@ -101,7 +102,7 @@ module.exports = {
                             }
                                 break;
                             case "mychat": {
-                                let cookiemode = await tools.query(`
+                                let cookiemode = await sql.Query(`
                                 SELECT Mode
                                 FROM Cookies
                                 WHERE User=?`,
@@ -109,7 +110,7 @@ module.exports = {
 
                                 if (cookiemode[0].Mode !== 1) {
                                     cookiemode[0].Mode = 1;
-                                    await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode[0].Mode, user.username]);
+                                    await sql.Query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode[0].Mode, user.username]);
                                     return "I will now remind you in your own chat";
                                 } else {
                                     return "You already use this mode";
@@ -117,7 +118,7 @@ module.exports = {
                             }
                                 break;
                             case "botchat": {
-                                let cookiemode = await tools.query(`
+                                let cookiemode = await sql.Query(`
                                     SELECT Mode
                                     FROM Cookies
                                     WHERE User=?`,
@@ -125,7 +126,7 @@ module.exports = {
 
                                 if (cookiemode[0].Mode !== 2) {
                                     cookiemode[0].Mode = 2;
-                                    await tools.query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode[0].Mode, user.username]);
+                                    await sql.Query(`UPDATE Cookies SET Mode=? WHERE User=?`, [cookiemode[0].Mode, user.username]);
                                     return "I will now remind you in #botbear1110";
                                 } else {
                                     return "You already use this mode";

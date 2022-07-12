@@ -1,4 +1,5 @@
 const tools = require("../tools/tools.js");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "offlineonly",
@@ -14,7 +15,7 @@ module.exports = {
             if (!tools.isMod(user, channel) && perm < 2000) {
                 return;
             }
-            const offlinemode = await tools.query(`
+            const offlinemode = await sql.Query(`
             SELECT offlineonly
             FROM Streamers
             WHERE username=?`,
@@ -22,7 +23,7 @@ module.exports = {
 
             let mode = Math.abs(offlinemode[0].offlineonly - 1);
 
-            await tools.query(`UPDATE Streamers SET offlineonly=? WHERE username=?`, [mode, channel]);
+            await sql.Query(`UPDATE Streamers SET offlineonly=? WHERE username=?`, [mode, channel]);
 
             if (mode === 1) {
                 return "Offline only mode is now on!";

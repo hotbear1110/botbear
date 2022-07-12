@@ -6,18 +6,18 @@ const regex = require('./tools/regex.js');
 const _ = require("underscore");
 const requireDir = require("require-dir");
 const trivia = require('./commands/trivia.js');
-const { createConnection } = require('mysql2/promise');
 const { createClient } = require('redis');
+const sql = require('./sql/index.js');
 let messageHandler = require("./tools/messageHandler.js").messageHandler;
 let whisperHandler = require("./tools/whisperHandler.js").whisperHandler;
 
-const cc = new tmi.client(login.options);
+const cc = new tmi.client(login.TMISettings);
 
 cc.on('message', onMessageHandler);
 cc.on('connected', onConnectedHandler);
 cc.on("pong", async (latency) => {
     console.log(latency)
-    await tools.query('INSERT INTO Latency (Latency) values (?)', [latency]);
+    await sql.Query('INSERT INTO Latency (Latency) values (?)', [latency]);
 
 });
 
@@ -29,11 +29,7 @@ cc.on("notice", (channel, msgid, message) => {
     console.log(channel, msgid, message)
 });
 
-let prefix = "bb"
-if (process.env.TWITCH_USER === "devbear1110") {
-    prefix = "db";
-}
-
+const prefix = process.env.TWITCH_PREFIX;
 
 let uptime = new Date().getTime();
 
@@ -55,6 +51,7 @@ async function onMessageHandler(channel, user, msg, self) {
     let start = new Date().getTime();
     msg = msg.replaceAll(regex.invisChar, "");
     msg = msg.replaceAll("  ", "");
+
 
     /* if (!userList.includes(user.username) && user.username != null) {
          await tools.query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
@@ -80,7 +77,7 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
-    const offlineonly = await tools.query('SELECT * FROM Streamers WHERE username=?', [channel.substring(1)]);
+    const offlineonly = await sql.Query('SELECT * FROM Streamers WHERE username=?', [channel.substring(1)]);
 
     if (offlineonly[0].offlineonly === 1 && offlineonly[0].islive === 1 && !tools.isMod(user, channel)) {
         return;
@@ -119,17 +116,17 @@ async function onMessageHandler(channel, user, msg, self) {
 
 
 
-                const alreadyJoined = await tools.query(`
+                const alreadyJoined = await sql.Query(`
                     SELECT *
                     FROM MyPoints
                     WHERE username=?`,
                     [`[${userchannel}]`]);
 
                 if (!alreadyJoined.length) {
-                    await tools.query('INSERT INTO MyPoints (username, points) values (?, ?)', [`[${userchannel}]`, triviaScore]);
+                    await sql.Query('INSERT INTO MyPoints (username, points) values (?, ?)', [`[${userchannel}]`, triviaScore]);
                 } else {
                     triviaScore = triviaScore + alreadyJoined[0].points;
-                    await tools.query(`UPDATE MyPoints SET points=? WHERE username=?`, [triviaScore, `[${userchannel}]`])
+                    await sql.Query(`UPDATE MyPoints SET points=? WHERE username=?`, [triviaScore, `[${userchannel}]`])
                 }
 
                 delete activetrivia[channel];
@@ -170,17 +167,17 @@ async function onMessageHandler(channel, user, msg, self) {
 
 
 
-                const alreadyJoined = await tools.query(`
+                const alreadyJoined = await sql.Query(`
                 SELECT *
                 FROM MyPoints
                 WHERE username=?`,
                     [`[${userchannel}]`]);
 
                 if (!alreadyJoined.length) {
-                    await tools.query('INSERT INTO MyPoints (username, points) values (?, ?)', [`[${userchannel}]`, triviaScore]);
+                    await sql.Query('INSERT INTO MyPoints (username, points) values (?, ?)', [`[${userchannel}]`, triviaScore]);
                 } else {
                     triviaScore = triviaScore + alreadyJoined[0].points;
-                    await tools.query(`UPDATE MyPoints SET points=? WHERE username=?`, [triviaScore, `[${userchannel}]`])
+                    await sql.Query(`UPDATE MyPoints SET points=? WHERE username=?`, [triviaScore, `[${userchannel}]`])
                 }
 
                 delete activetrivia[channel];
@@ -206,12 +203,12 @@ async function onMessageHandler(channel, user, msg, self) {
     input = input.filter(e => e);
 
     if (input[0] === "[Cookies]" && user["user-id"] == 425363834 && !msg.includes("rankup") && !msg.includes("you are currently rank")) {
-        const stream = await tools.query('SELECT disabled_commands FROM Streamers WHERE username=?', [channel.substring(1)]);
+        const stream = await sql.Query('SELECT disabled_commands FROM Streamers WHERE username=?', [channel.substring(1)]);
 
         let disabledCommands = JSON.parse(stream[0].disabled_commands)
 
         const cookieStatus = await tools.cookies(user, input, channel);
-        let checkmode = await tools.query(`SELECT Mode FROM Cookies WHERE User=?`, [cookieStatus[1]]);
+        let checkmode = await sql.Query(`SELECT Mode FROM Cookies WHERE User=?`, [cookieStatus[1]]);
 
         if (!checkmode.length) {
             return;
@@ -300,12 +297,12 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     if (msg.includes("your cooldown has been reset!") && user["user-id"] == 425363834) {
-        const stream = await tools.query('SELECT disabled_commands FROM Streamers WHERE username=?', [channel.substring(1)]);
+        const stream = await sql.Query('SELECT disabled_commands FROM Streamers WHERE username=?', [channel.substring(1)]);
 
         let disabledCommands = JSON.parse(stream[0].disabled_commands)
 
         const cdrStatus = await tools.cdr(user, input, channel);
-        let checkmode = await tools.query(`SELECT Mode FROM Cookies WHERE User=?`, [cdrStatus[1]]);
+        let checkmode = await sql.Query(`SELECT Mode FROM Cookies WHERE User=?`, [cdrStatus[1]]);
 
         if (disabledCommands.includes("cdr") && cdrStatus[0] === "Confirmed" && checkmode[0].Mode === 0) {
             new messageHandler(`#${cdrStatus[1]}`, `${cdrStatus[1]} I will remind you to use your cdr in 3 hours nymnOkay - (The channel you used your cdr in has reminders disabled)`).newMessage();
@@ -339,7 +336,7 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
-    let aliasList = await tools.query(`SELECT Aliases FROM Aliases`);
+    let aliasList = await sql.Query(`SELECT Aliases FROM Aliases`);
 
     aliasList = JSON.parse(aliasList[0].Aliases);
 
@@ -352,15 +349,15 @@ async function onMessageHandler(channel, user, msg, self) {
     }
 
     /*
-    const userList = await tools.query(`SELECT * FROM Users WHERE uid=?`, [user["user-id"]]);
+    const userList = await sql.Query(`SELECT * FROM Users WHERE uid=?`, [user["user-id"]]);
 
     if (!userList.length && user.username != null) {
-        await tools.query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
+        await sql.Query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
     } else if (user.username !== userList[0].username && user.username != null) {
-        await tools.query('UPDATE Users SET username=? WHERE uid=?', [user.username, user["user-id"]]);
+        await sql.Query('UPDATE Users SET username=? WHERE uid=?', [user.username, user["user-id"]]);
     }
 */
-    let disabledCheck = await tools.query(`
+    let disabledCheck = await sql.Query(`
     SELECT disabled_commands
     FROM Streamers
     WHERE username=?`,
@@ -381,7 +378,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
     const perm = await tools.getPerm(user.username);
 
-    let commandCD = await tools.query(`SELECT Cooldown FROM Commands WHERE Name=?`, [input[1]]);
+    let commandCD = await sql.Query(`SELECT Cooldown FROM Commands WHERE Name=?`, [input[1]]);
     if (!commandCD.length) {
         commandCD = null;
     } else {
@@ -478,18 +475,18 @@ async function onMessageHandler(channel, user, msg, self) {
             new messageHandler(channel, "There is already an active trivia").newMessage();
             return;
         }
-        const isLive = await tools.query(`SELECT islive FROM Streamers WHERE username=?`, [realchannel]);
+        const isLive = await sql.Query(`SELECT islive FROM Streamers WHERE username=?`, [realchannel]);
         if (isLive[0].islive === 1) {
             return;
         }
 
         // Get cooldown from database.
-        let cd = await tools.query("SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?", [realchannel]);
+        let cd = await sql.Query("SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?", [realchannel]);
 
         // Set trivia cooldown if not set.
         if (cd[0].trivia_cooldowns === null) {
             cd[0].trivia_cooldowns === 30000;
-            tools.query("UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?", [realchannel]);
+            sql.Query("UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?", [realchannel]);
         }
 
         const triviaCD = new tools.Cooldown(realchannel, realcommand, cd[0].trivia_cooldowns);
@@ -548,18 +545,18 @@ async function onMessageHandler(channel, user, msg, self) {
             new messageHandler(channel, "There is already an active trivia").newMessage();
             return;
         }
-        const isLive = await tools.query(`SELECT islive FROM Streamers WHERE username=?`, [realchannel]);
+        const isLive = await sql.Query(`SELECT islive FROM Streamers WHERE username=?`, [realchannel]);
         if (isLive[0].islive === 1) {
             return;
         }
 
         // Get cooldown from database.
-        let cd = await tools.query("SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?", [realchannel]);
+        let cd = await sql.Query("SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?", [realchannel]);
 
         // Set trivia cooldown if not set.
         if (cd[0].trivia_cooldowns === null) {
             cd[0].trivia_cooldowns === 30000;
-            tools.query("UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?", [realchannel]);
+            sql.Query("UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?", [realchannel]);
         }
 
         const triviaCD = new tools.Cooldown(realchannel, realcommand, cd[0].trivia_cooldowns);
@@ -632,47 +629,48 @@ async function onMessageHandler(channel, user, msg, self) {
 
 async function onConnectedHandler(addr, port) {
     console.log(`* Connected to ${addr}:${port}`);
-    let users = await tools.query(`SELECT username FROM Users`,);
-    userList = users.map(a => a.username);
+    userList = (await sql.Query(`SELECT username FROM Users`)).map(x => x.username);
 
-    await tools.refreshCommands();
     if (started === false) {
         /*
-                let bannedUsers = await tools.bannedStreamer;
-        
-                if (await bannedUsers.length) {
-                    _.each(bannedUsers, async function (user) {
-                        cc.part(user).then((data) => {
-                            // data returns [channel]
-                        }).catch((err) => {
+            //TODO hotbear: This should be remade, so that it doesn't delete the streamer from db.
+            //              The connect funtion would have to me remade aswell
+                await tools.bannedStreamers()
+            .then((res) => {
+                res.map(async ([user]) => {
+                    await cc.part(user)
+                        .catch((err) => {
                             console.log(err);
                         });
-                        new messageHandler("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`).newMessage();
-                    })
-                }
+
+                    new messageHandler("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`).newMessage();
+                })
+            })
+            .catch((err) => {
+                console.log(err);
+            });
         */
 
+
         if (process.env.TWITCH_USER !== "devbear1110") {
+            await tools.nameChanges()
+                .then((res) => {
+                    res.map(async ([newName, oldName]) => {
+                        await cc.join(newName)
+                            .catch((err) => {
+                                console.log(err);
+                            });
+                        cc.part(oldName).catch((err) => {
+                            console.log(err);
+                        });
 
-            let namechange = await tools.nameChanges;
-
-            if (await namechange.length) {
-                _.each(namechange, async function (name) {
-                    cc.join(name[0]).then((data) => {
-                        // data returns [channel]
-                    }).catch((err) => {
-                        console.log(err);
-                    });
-                    cc.part(name[1]).then((data) => {
-                        // data returns [channel]
-                    }).catch((err) => {
-                        console.log(err);
-                    });
-
-                    cc.say(`#${name[0]}`, `Name change detected, ${name[1]} -> ${name[0]}`);
-                    new messageHandler("#botbear1110", `Left channel ${name[1]}. Reason: Name change detected, ${name[1]} -> ${name[0]}`).newMessage();
+                        cc.say(`#${newName}`, `Name change detected, ${oldName} -> ${newName}`);
+                        new messageHandler(process.env.TWITCH_USER, `Left channel ${oldName}. Reason: Name change detected, ${oldName} -> ${newName}`).newMessage();
+                    })
                 })
-            }
+                .catch((err) => {
+                    console.log(err);
+                });
         }
         await tools.checkLiveStatus();
         await tools.checkTitleandGame();
