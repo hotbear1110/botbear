@@ -17,7 +17,7 @@ let messageHandler = require("./messageHandler.js").messageHandler;
 // exports.query = async (query, data = []) =>
 //     new Promise((Resolve, Reject) => {
 //         assert(con !== null, "Database connection has not yet been setup!");
-        
+
 //         con.query(query, mysql.format(data))
 //         .then((res) => {
 //             const [rows, _] = res;
@@ -432,38 +432,38 @@ exports.cdr = (user, command, channel) => new Promise(async (resolve, reject) =>
 exports.nameChanges = async () => {
     return new Promise(async (Resolve, Reject) => {
         const changed = [];
-        
+
         (await sql.Query(`SELECT * FROM Streamers`))
-        .map(async (streamer) => {
-            try {
-                const userData = await got(`https://api.twitch.tv/helix/users?id=${streamer.uid}`, {
-                    headers: {
-                        'client-id': process.env.TWITCH_CLIENTID,
-                        'Authorization': process.env.TWITCH_AUTH
-                    },
-                    timeout: 10000
-                }).json();
-                if (userData.data.length) {
-                    realUser = userData.data[0]["login"];
+            .map(async (streamer) => {
+                try {
+                    const userData = await got(`https://api.twitch.tv/helix/users?id=${streamer.uid}`, {
+                        headers: {
+                            'client-id': process.env.TWITCH_CLIENTID,
+                            'Authorization': process.env.TWITCH_AUTH
+                        },
+                        timeout: 10000
+                    }).json();
+                    if (userData.data.length) {
+                        realUser = userData.data[0]["login"];
 
-                    if (realUser !== streamer.username) {
-                        sql.Query(`UPDATE Streamers SET username=? WHERE uid=?`, [realUser, streamer.uid]);
+                        if (realUser !== streamer.username) {
+                            sql.Query(`UPDATE Streamers SET username=? WHERE uid=?`, [realUser, streamer.uid]);
 
-                        changed.push([realUser, streamer.username]);
+                            changed.push([realUser, streamer.username]);
+                        }
                     }
+                } catch (err) {
+                    Reject(new Error("Error getting user namechanges", err));
+                    return;
                 }
-            } catch (err) {
-                Reject(new Error("Error getting user namechanges", err));
-                return;
-            }
-        });
+            });
 
         Resolve(changed);
     })
 }
 
 
-exports.bannedStreamer = async () => {
+exports.bannedStreamers = async () => {
     return new Promise(async (Resolve, Reject) => {
         let streamers = await sql.Query(`SELECT * FROM Streamers`);
         let bannedUsers = [];
@@ -586,7 +586,7 @@ exports.checkAllBanphrases = async function (message, channel) {
 
 exports.joinEventSub = async function (uid) {
     if (process.env.TWITCH_SECRET === undefined) return;
-    
+
     let data = JSON.stringify({
         "type": "channel.update",
         "version": "1",
@@ -637,7 +637,7 @@ exports.joinEventSub = async function (uid) {
 
 exports.deleteEventSub = async function (uid) {
     if (process.env.TWITCH_SECRET === undefined) return;
-    
+
     let allsubs = [];
     let haspagnation = true;
     let pagnation = "";
@@ -700,41 +700,41 @@ function sleep(milliseconds) {
 */
 exports.checkLiveStatus = async function () {
     await sql.Query('SELECT * FROM Streamers')
-    .then((streamers) => {
-        streamers.map(async (stream) => {
-            setTimeout(async () => {
-                await got(`https://api.twitch.tv/helix/streams?user_login=${stream.username}`, {
-                    headers: {
-                        'client-id': process.env.TWITCH_CLIENTID,
-                        'Authorization': process.env.TWITCH_AUTH
-                    },
-                }).json()
-                    .then(async ({data}) => {
-                        // TODO Why is this here
-                        let users = JSON.parse(stream.live_ping).toString().replaceAll(',', ' ');
-                        
-                        let proxychannel = stream.username;
-                        if (stream.username === "forsen") {
-                            proxychannel = "botbear1110";
-                        }
-                        if (data.length !== 0 && stream.islive == 0) {
-                            console.log(stream.username + " IS NOW LIVE");
-                            await sql.Query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`);
-    
-                        };
-                        if (data.length === 0 && stream.islive == 1) {
-                            console.log(stream.username + " IS NOW OFFLINE");
-                            await sql.Query(`UPDATE Streamers SET islive = 0 WHERE username ="${stream.username}"`);
-    
-                        };
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    })
+        .then((streamers) => {
+            streamers.map(async (stream) => {
+                setTimeout(async () => {
+                    await got(`https://api.twitch.tv/helix/streams?user_login=${stream.username}`, {
+                        headers: {
+                            'client-id': process.env.TWITCH_CLIENTID,
+                            'Authorization': process.env.TWITCH_AUTH
+                        },
+                    }).json()
+                        .then(async ({ data }) => {
+                            // TODO Why is this here
+                            let users = JSON.parse(stream.live_ping).toString().replaceAll(',', ' ');
 
-            }, 500);
-        })
-    });
+                            let proxychannel = stream.username;
+                            if (stream.username === "forsen") {
+                                proxychannel = "botbear1110";
+                            }
+                            if (data.length !== 0 && stream.islive == 0) {
+                                console.log(stream.username + " IS NOW LIVE");
+                                await sql.Query(`UPDATE Streamers SET islive = 1 WHERE username = "${stream.username}"`);
+
+                            };
+                            if (data.length === 0 && stream.islive == 1) {
+                                console.log(stream.username + " IS NOW OFFLINE");
+                                await sql.Query(`UPDATE Streamers SET islive = 0 WHERE username ="${stream.username}"`);
+
+                            };
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        })
+
+                }, 500);
+            })
+        });
 }
 
 exports.checkTitleandGame = async function () {
@@ -778,7 +778,7 @@ exports.checkTitleandGame = async function () {
             .catch(function (error) {
                 console.log(error);
             })
-        }
+    }
     )
     return;
 }
@@ -845,7 +845,7 @@ exports.transformNumbers = function (message) {
 
 }
 
-exports.joinChannel = async ({username, uid}) => {
+exports.joinChannel = async ({ username, uid }) => {
     const islive = 0;
     const liveemote = "FeelsOkayMan";
     const offlineemote = "FeelsBadMan";
@@ -854,7 +854,7 @@ exports.joinChannel = async ({username, uid}) => {
     await sql.Query(`INSERT INTO Streamers 
         (username, uid, islive, liveemote, titleemote, gameemote, offlineemote, live_ping, title_ping, game_ping, game_time, emote_list, emote_removed, disabled_commands) 
             values 
-        (?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?)`, 
+        (?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?)`,
         [username, uid, islive, liveemote, liveemote, liveemote, offlineemote, '[""]', '[""]', '[""]', gameTime, '[]', '[]', '[]']
     );
 

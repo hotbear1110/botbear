@@ -633,20 +633,24 @@ async function onConnectedHandler(addr, port) {
 
     if (started === false) {
         /*
-                // TODO MELON: This won't work, it's a promise function change it to that :D
-                let bannedUsers = await tools.bannedStreamers();
-        
-                if (await bannedUsers.length) {
-                    _.each(bannedUsers, async function (user) {
-                        cc.part(user).then((data) => {
-                            // data returns [channel]
-                        }).catch((err) => {
+            //TODO hotbear: This should be remade, so that it doesn't delete the streamer from db.
+            //              The connect funtion would have to me remade aswell
+                await tools.bannedStreamers()
+            .then((res) => {
+                res.map(async ([user]) => {
+                    await cc.part(user)
+                        .catch((err) => {
                             console.log(err);
                         });
-                        new messageHandler("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`).newMessage();
-                    })
-                }
+
+                    new messageHandler("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`).newMessage();
+                })
+            })
+            .catch((err) => {
+                console.log(err);
+            });
         */
+
 
         if (process.env.TWITCH_USER !== "devbear1110") {
             await tools.nameChanges()
