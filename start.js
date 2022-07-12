@@ -13,6 +13,7 @@ const init = async () => {
         
         await sql.New(sql_opts);
 
+        /** @type { Array<SQL.Streamers> } */
         const channels = await sql.Query("SELECT * FROM Streamers");
         
         // Check if bot channel is in the database.

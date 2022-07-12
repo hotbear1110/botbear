@@ -36,5 +36,6 @@
     "tmi": "^0.2.2",
     "tmi.js": "^1.8.5",
     "underscore": "^1.13.1"
-  }
+  },
+  "types": "./@types/index.d.ts"
 }

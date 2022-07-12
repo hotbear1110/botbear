@@ -55,9 +55,10 @@ module.exports = {
     },
     /**
      * Raw query
+     * @template T
      * @param {String} query
      * @param {Array<any>} data
-     * @returns {Promise<Array<any>>}
+     * @returns {Promise<Array<T>>}
      */
     Query: async function (query, data = []) {
         return await this.con.query(query, data)
