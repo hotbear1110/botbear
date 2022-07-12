@@ -68,7 +68,8 @@ module.exports = {
             }
         }
         const commandNames = commands.map(x => x.name);
-        const commandDiff = dbCommands.filter(x => !commandNames.includes(x.name));
+        console.log(dbCommands.map(x => x.name))
+        const commandDiff = dbCommands.filter(x => !commandNames.includes(x.Name));
 
         for (const dbCommand of commandDiff) {
             await sql.Query('DELETE FROM Commands WHERE Name=?', [dbCommand.Name]);
