@@ -1,4 +1,5 @@
 const tools = require("../tools/tools.js");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "emotecount",
@@ -11,7 +12,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            const streamer = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+            const streamer = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
             let emotes = JSON.parse(streamer[0].emote_list);
 
 

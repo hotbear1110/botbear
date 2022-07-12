@@ -2,6 +2,7 @@ const _ = require("underscore");
 const tools = require("../tools/tools.js");
 var fs = require('fs');
 const { res } = require("date-and-time");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "add",
@@ -18,7 +19,7 @@ module.exports = {
                 case "alias":
                     let command = input[3];
 
-                    const commandlist = await tools.query(`SELECT * FROM Commands WHERE Name=?`, [command]);
+                    const commandlist = await sql.Query(`SELECT * FROM Commands WHERE Name=?`, [command]);
 
                     if (!commandlist.length) {
                         return `${command} is not a command`;
@@ -29,7 +30,7 @@ module.exports = {
                     aliases.shift()
                     aliases.shift()
 
-                    let data = await tools.query(`SELECT Aliases FROM Aliases`);
+                    let data = await sql.Query(`SELECT Aliases FROM Aliases`);
 
                     data = data[0].Aliases;
 
@@ -49,7 +50,7 @@ module.exports = {
 
                     result = await new Promise(async function (resolve) {
                         await _.each(aliases, async function (alias) {
-                            const commandlist = await tools.query(`SELECT * FROM Commands WHERE Name=?`, [alias]);
+                            const commandlist = await sql.Query(`SELECT * FROM Commands WHERE Name=?`, [alias]);
                             if (commandlist.length) {
                                 iscommand.push(alias);
                             } else {
@@ -71,7 +72,7 @@ module.exports = {
                         });
                     })
 
-                    await tools.query(`UPDATE Aliases SET Aliases=?`, [`[${newdata.toString()}]`])
+                    await sql.Query(`UPDATE Aliases SET Aliases=?`, [`[${newdata.toString()}]`])
 
                     let iscommand2 = "";
 

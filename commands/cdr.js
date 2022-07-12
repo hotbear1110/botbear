@@ -1,5 +1,6 @@
 const tools = require("../tools/tools.js");
 const got = require("got");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "cdr",
@@ -14,10 +15,10 @@ module.exports = {
             }
             switch (input[2]) {
                 case "register":
-                    const register = await tools.query(`SELECT * FROM Cdr WHERE User=?`, [user.username]);
+                    const register = await sql.Query(`SELECT * FROM Cdr WHERE User=?`, [user.username]);
 
                     if (!register.length) {
-                        await tools.query('INSERT INTO Cdr (User) values (?)', [user.username]);
+                        await sql.Query('INSERT INTO Cdr (User) values (?)', [user.username]);
 
                         return 'You are now registered for cookie cdr notifications (The reminders might not work properly untill you use your next cdr)';
 
@@ -26,10 +27,10 @@ module.exports = {
                     }
                     break;
                 case "unregister":
-                    const unregister = await tools.query(`SELECT * FROM Cdr WHERE User=?`, [user.username]);
+                    const unregister = await sql.Query(`SELECT * FROM Cdr WHERE User=?`, [user.username]);
 
                     if (unregister.length) {
-                        await tools.query(`DELETE FROM Cdr WHERE User=?`, [user.username]);
+                        await sql.Query(`DELETE FROM Cdr WHERE User=?`, [user.username]);
 
                         return 'You are now unregistered for cookie cdr notifications';
                     } else {
@@ -37,7 +38,7 @@ module.exports = {
                     }
                     break;
                 case "status":
-                    const status = await tools.query(`SELECT * FROM Cdr WHERE User=?`, [user.username]);
+                    const status = await sql.Query(`SELECT * FROM Cdr WHERE User=?`, [user.username]);
 
                     if (status.length) {
                         if (status[0].RemindTime !== null) {
@@ -55,12 +56,12 @@ module.exports = {
                     }
                     break;
                 case "mode":
-                    const isregistered = await tools.query(`SELECT * FROM Cdr WHERE User=?`, [user.username]);
+                    const isregistered = await sql.Query(`SELECT * FROM Cdr WHERE User=?`, [user.username]);
 
                     if (isregistered.length) {
                         switch (input[3]) {
                             case "default": {
-                                let cdrmode = await tools.query(`
+                                let cdrmode = await sql.Query(`
                                     SELECT Mode
                                     FROM Cdr
                                     WHERE User=?`,
@@ -68,7 +69,7 @@ module.exports = {
 
                                 if (cdrmode[0].Mode !== 0) {
                                     cdrmode[0].Mode = 0;
-                                    await tools.query(`UPDATE Cdr SET Mode=? WHERE User=?`, [cdrmode[0].Mode, user.username]);
+                                    await sql.Query(`UPDATE Cdr SET Mode=? WHERE User=?`, [cdrmode[0].Mode, user.username]);
                                     return "I will now remind you in the chat where you last used your cdr";
                                 } else {
                                     return "You already use this mode";
@@ -76,7 +77,7 @@ module.exports = {
                             }
                                 break;
                             case "mychat": {
-                                let cdrmode = await tools.query(`
+                                let cdrmode = await sql.Query(`
                                     SELECT Mode
                                     FROM Cdr
                                     WHERE User=?`,
@@ -84,7 +85,7 @@ module.exports = {
 
                                 if (cdrmode[0].Mode !== 1) {
                                     cdrmode[0].Mode = 1;
-                                    await tools.query(`UPDATE Cdr SET Mode=? WHERE User=?`, [cdrmode[0].Mode, user.username]);
+                                    await sql.Query(`UPDATE Cdr SET Mode=? WHERE User=?`, [cdrmode[0].Mode, user.username]);
                                     return "I will now remind you in your own chat";
                                 } else {
                                     return "You already use this mode";
@@ -92,7 +93,7 @@ module.exports = {
                             }
                                 break;
                             case "botchat": {
-                                let cdrmode = await tools.query(`
+                                let cdrmode = await sql.Query(`
                                         SELECT Mode
                                         FROM Cdr
                                         WHERE User=?`,
@@ -100,7 +101,7 @@ module.exports = {
 
                                 if (cdrmode[0].Mode !== 2) {
                                     cdrmode[0].Mode = 2;
-                                    await tools.query(`UPDATE Cdr SET Mode=? WHERE User=?`, [cdrmode[0].Mode, user.username]);
+                                    await sql.Query(`UPDATE Cdr SET Mode=? WHERE User=?`, [cdrmode[0].Mode, user.username]);
                                     return "I will now remind you in #botbear1110";
                                 } else {
                                     return "You already use this mode";

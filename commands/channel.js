@@ -4,6 +4,7 @@ let messageHandler = require("../tools/messageHandler.js").messageHandler;
 const got = require("got");
 const cc = require("../bot.js").cc;
 const _ = require("underscore");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "channel",
@@ -30,7 +31,7 @@ module.exports = {
             Promise.all([modresponse])
             switch (input[2]) {
                 case "join": {
-                    if (channel !== "botbear1110" && channel !== "hottestbear" && perm < 2000) { return; }
+                    if (channel !== process.env.TWITCH_USER && channel !== process.env.TWITCH_OWNERNAME && perm < 2000) { return; }
                     let username = user.username;
                     let uid = user['user-id'];
 
@@ -46,7 +47,7 @@ module.exports = {
                         username = input[3];
                     }
 
-                    const alreadyJoined = await tools.query(`
+                    const alreadyJoined = await sql.Query(`
                 SELECT *
                 FROM Streamers
                 WHERE username=?`,
@@ -57,23 +58,18 @@ module.exports = {
                     }
 
                     else {
-                        let islive = 0;
-                        let liveemote = "FeelsOkayMan";
-                        let offlineemote = "FeelsBadMan";
-                        let gameTime = new Date().getTime();
+                        await tools.joinChannel({username, uid});
 
-                        await tools.query('INSERT INTO Streamers (username, uid, islive, liveemote, titleemote, gameemote, offlineemote, live_ping, title_ping, game_ping, game_time, emote_list, emote_removed, disabled_commands) values (?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?)', [username, uid, islive, liveemote, liveemote, liveemote, offlineemote, '[""]', '[""]', '[""]', gameTime, '[]', '[]', '[]']);
-
-                        await tools.joinEventSub(uid);
-
-                        cc.join(username).then((data) => {
-                            // data returns [channel]
-                        }).catch((err) => {
+                        return cc.join(username)
+                        .then(() => {
+                            new messageHandler(`#${username}`, `👋 nymnDank Hello! I am botbear1110, I was added to the channel by @${user.username}. Here is a list my commands: https://hotbear.org/`, true).newMessage();
+                            return `Joined channel: ${username}`;
+                        })
+                        .catch((err) => {
                             console.log(err);
+                            return "Error joining channel ask @hottestbear for help.";
                         });
-                        new messageHandler(`#${username}`, `👋 nymnDank Hello! I am botbear1110, I was added to the channel by @${user.username}. Here is a list my commands: https://hotbear.org/`, true).newMessage();
 
-                        return `Joined channel: ${username}`;
                     }
                 }
                     break;
@@ -93,7 +89,7 @@ module.exports = {
                         }
                     }
 
-                    const alreadyJoined = await tools.query(`
+                    const alreadyJoined = await sql.Query(`
                             SELECT *
                             FROM Streamers
                             WHERE username =? `,
@@ -104,12 +100,10 @@ module.exports = {
                     }
 
                     else {
-                        await tools.query('DELETE FROM Streamers WHERE username=?', [username]);
+                        await sql.Query('DELETE FROM Streamers WHERE username=?', [username]);
                         await tools.deleteEventSub(uid);
 
-                        cc.part(username).then((data) => {
-                            // data returns [channel]
-                        }).catch((err) => {
+                        cc.part(username).catch((err) => {
                             console.log(err);
                         });
                         new messageHandler(`#${username}`, `👋 nymnDank bye!`, true).newMessage();
@@ -130,7 +124,7 @@ module.exports = {
                     }
 
 
-                    const alreadyJoined = await tools.query(`
+                    const alreadyJoined = await sql.Query(`
                     SELECT *
                         FROM Streamers
                             WHERE username =? `,
@@ -141,7 +135,7 @@ module.exports = {
                     }
 
                     else {
-                        await tools.query(`UPDATE Streamers SET liveemote =? WHERE username =? `, [input[3], username])
+                        await sql.Query(`UPDATE Streamers SET liveemote =? WHERE username =? `, [input[3], username])
                         return `Live emote is now set to ${input[3]} `;
                     }
                 }
@@ -158,7 +152,7 @@ module.exports = {
                     }
 
 
-                    const alreadyJoined = await tools.query(`
+                    const alreadyJoined = await sql.Query(`
                     SELECT *
                         FROM Streamers
                             WHERE username =? `,
@@ -169,7 +163,7 @@ module.exports = {
                     }
 
                     else {
-                        await tools.query(`UPDATE Streamers SET gameemote =? WHERE username =? `, [input[3], username])
+                        await sql.Query(`UPDATE Streamers SET gameemote =? WHERE username =? `, [input[3], username])
                         return `Game emote is now set to ${input[3]} `;
                     }
                 }
@@ -186,7 +180,7 @@ module.exports = {
                     }
 
 
-                    const alreadyJoined = await tools.query(`
+                    const alreadyJoined = await sql.Query(`
                     SELECT *
                         FROM Streamers
                             WHERE username =? `,
@@ -197,7 +191,7 @@ module.exports = {
                     }
 
                     else {
-                        await tools.query(`UPDATE Streamers SET titleemote =? WHERE username =? `, [input[3], username])
+                        await sql.Query(`UPDATE Streamers SET titleemote =? WHERE username =? `, [input[3], username])
                         return `Title emote is now set to ${input[3]} `;
                     }
                 }
@@ -213,7 +207,7 @@ module.exports = {
                         username = channel;
                     }
 
-                    const alreadyJoined = await tools.query(`
+                    const alreadyJoined = await sql.Query(`
                     SELECT *
                         FROM Streamers
                             WHERE username =? `,
@@ -224,7 +218,7 @@ module.exports = {
                     }
 
                     else {
-                        await tools.query(`UPDATE Streamers SET offlineemote =? WHERE username =? `, [input[3], username])
+                        await sql.Query(`UPDATE Streamers SET offlineemote =? WHERE username =? `, [input[3], username])
                         return `Offline emote is now set to ${input[3]} `;
                     }
                 }
@@ -240,7 +234,7 @@ module.exports = {
 
                     const cooldown = (input[3] * 1000);
 
-                    return await tools.query("UPDATE `Streamers` SET `trivia_cooldowns` = ? WHERE `username` = ?", [cooldown, channel]).then(() => {
+                    return await sql.Query("UPDATE `Streamers` SET `trivia_cooldowns` = ? WHERE `username` = ?", [cooldown, channel]).then(() => {
                         return `BloodTrail Successfully set the cooldown of trivia in this channel to ${input[3]} s`;
                     }).catch((error) => {
                         new messageHandler("botbear1110", JSON.stringify(error)).newMessage();
@@ -259,11 +253,11 @@ module.exports = {
                     }
 
                     if (input[3] === "reset") {
-                        await tools.query(`UPDATE Streamers SET banphraseapi =? WHERE username =? `, ["https://pajlada.pajbot.com", channel])
+                        await sql.Query(`UPDATE Streamers SET banphraseapi =? WHERE username =? `, ["https://pajlada.pajbot.com", channel])
                         return `pb1 banphrase api has reset`;
                     }
 
-                    await tools.query(`UPDATE Streamers SET banphraseapi =? WHERE username =? `, [input[3], channel])
+                    await sql.Query(`UPDATE Streamers SET banphraseapi =? WHERE username =? `, [input[3], channel])
                     return `pb1 banphrase api is now set to: ${input[3]}/api/v1/banphrases/test`;
                     break;
                 }
@@ -278,11 +272,11 @@ module.exports = {
                     }
 
                     if (input[3] === "reset") {
-                        await tools.query(`UPDATE Streamers SET banphraseapi2 =? WHERE username =? `, [null, channel])
+                        await sql.Query(`UPDATE Streamers SET banphraseapi2 =? WHERE username =? `, [null, channel])
                         return `pb2 banphrase api has reset`;
                     }
 
-                    await tools.query(`UPDATE Streamers SET banphraseapi2 =? WHERE username =? `, [input[3], channel])
+                    await sql.Query(`UPDATE Streamers SET banphraseapi2 =? WHERE username =? `, [input[3], channel])
                     return `pb2 banphrase api is now set to: ${input[3]}/api/channel/${user.uid}/moderation/check_message?message=`;
                 }
                 default:

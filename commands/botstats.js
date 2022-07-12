@@ -1,5 +1,6 @@
 const shell = require("child_process")
 const tools = require("../tools/tools.js");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "botstats",
@@ -39,7 +40,7 @@ module.exports = {
 
             const commits = shell.execSync('git rev-list --all --count');
 
-            let streamerCount = await tools.query(`SELECT * FROM Streamers`);
+            let streamerCount = await sql.Query(`SELECT * FROM Streamers`);
 
 
 

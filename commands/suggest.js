@@ -1,4 +1,5 @@
 const tools = require("../tools/tools.js");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "suggest",
@@ -15,9 +16,9 @@ module.exports = {
 
             const msg = input.toString().replaceAll(',', ' ');
 
-            await tools.query('INSERT INTO Suggestions (User, Suggestion) values (?, ?)', [user.username, msg]);
+            await sql.Query('INSERT INTO Suggestions (User, Suggestion) values (?, ?)', [user.username, msg]);
 
-            const IDs = await tools.query(`SELECT MAX(ID) FROM Suggestions WHERE User=?`, [user.username]);
+            const IDs = await sql.Query(`SELECT MAX(ID) FROM Suggestions WHERE User=?`, [user.username]);
 
             return `Your suggestion was saved as 'ID ${IDs[0]['MAX(ID)']}' nymnDank 👍 `;
         } catch (err) {

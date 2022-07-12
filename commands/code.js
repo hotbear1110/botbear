@@ -1,5 +1,6 @@
 const tools = require("../tools/tools.js");
 const _ = require("underscore");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "code",
@@ -17,7 +18,7 @@ module.exports = {
                 return "No command specified - https://github.com/hotbear1110/botbear/blob/main/commands/"
             }
 
-            let commandList = await tools.query(`
+            let commandList = await sql.Query(`
                     SELECT *
                     FROM Commands`);
 

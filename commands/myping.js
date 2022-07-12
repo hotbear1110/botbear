@@ -1,6 +1,7 @@
 require('dotenv').config();
 const tools = require("../tools/tools.js");
 const got = require("got");
+const sql = require("./../sql/index.js");
 
 module.exports = {
     name: "myping",
@@ -15,7 +16,7 @@ module.exports = {
             }
             switch (input[2]) {
                 case "add": {
-                    const gameUsers = await tools.query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+                    const gameUsers = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
                     let gameusers = JSON.parse(gameUsers[0].game_ping);
 
                     if (gameusers.includes(user.username)) {
@@ -42,14 +43,14 @@ module.exports = {
 
 
 
-                    const alreadyJoined = await tools.query(`
+                    const alreadyJoined = await sql.Query(`
                 SELECT *
                 FROM MyPing
                 WHERE username=?`,
                         [`[${userchannel}]`]);
 
                     if (!alreadyJoined.length) {
-                        await tools.query('INSERT INTO MyPing (username, game_pings) values (?, ?)', [`[${userchannel}]`, `["${realgame}"]`]);
+                        await sql.Query('INSERT INTO MyPing (username, game_pings) values (?, ?)', [`[${userchannel}]`, `["${realgame}"]`]);
                         return `The game ${realgame} has been added to your ping list :)`;
                     }
 
@@ -61,7 +62,7 @@ module.exports = {
                     game_list.push(realgame);
                     game_list = JSON.stringify(game_list);
 
-                    await tools.query(`UPDATE MyPing SET game_pings=? WHERE username=?`, [game_list, `[${userchannel}]`])
+                    await sql.Query(`UPDATE MyPing SET game_pings=? WHERE username=?`, [game_list, `[${userchannel}]`])
                     return `The game ${realgame} has been added to your ping list :) You can do 'bb myping list' to see your list.`;
                 }
                     break;
@@ -73,7 +74,7 @@ module.exports = {
 
                     if (input.length == 4 && input[3] === "all") {
                         let removeall = [];
-                        await tools.query(`UPDATE MyPing SET game_pings=? WHERE username=?`, [`[]`, `[${userchannel}]`])
+                        await sql.Query(`UPDATE MyPing SET game_pings=? WHERE username=?`, [`[]`, `[${userchannel}]`])
                         return `Your ping list is now empty :)`;
 
                     }
@@ -93,7 +94,7 @@ module.exports = {
                     realgame = realgame["name"];
 
 
-                    const alreadyJoined = await tools.query(`
+                    const alreadyJoined = await sql.Query(`
                 SELECT *
                 FROM MyPing
                 WHERE username=?`,
@@ -119,7 +120,7 @@ module.exports = {
                     }
                     game_list2 = JSON.stringify(game_list2);
 
-                    await tools.query(`UPDATE MyPing SET game_pings=? WHERE username=?`, [game_list2, `[${userchannel}]`])
+                    await sql.Query(`UPDATE MyPing SET game_pings=? WHERE username=?`, [game_list2, `[${userchannel}]`])
                     return `The game ${realgame} has been removed from your ping list :)`;
                 }
                     break;
@@ -136,7 +137,7 @@ module.exports = {
                     userchannel.push(`"${username}"`);
                     userchannel.push(`"${channel}"`);
 
-                    const alreadyJoined = await tools.query(`
+                    const alreadyJoined = await sql.Query(`
                         SELECT *
                         FROM MyPing
                         WHERE username=?`,
@@ -147,7 +148,7 @@ module.exports = {
                     }
                     else {
 
-                        const gamelist = await tools.query(`SELECT * FROM MyPing WHERE username=?`, [`[${userchannel}]`]);
+                        const gamelist = await sql.Query(`SELECT * FROM MyPing WHERE username=?`, [`[${userchannel}]`]);
                         let listgames = JSON.parse(gamelist[0].game_pings);
                         listgames = listgames.toString().replaceAll(',', '\n');
                         let user = "";
