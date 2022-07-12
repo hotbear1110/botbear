@@ -2,14 +2,14 @@ const { resolve } = require("node:path");
 const fs = require("node:fs");
 const sql = require("./../sql/index.js");
 
-module.exports =  {
+module.exports = {
     Find: (path) => {
         const commands = [];
         const dir = fs.readdirSync(path, { withFileTypes: true });
         for (const file of dir) {
             if (file.isFile()) {
                 if (file.name === "index.js") continue;
-                
+
                 const name = resolve(
                     path,
                     file.name
@@ -32,12 +32,12 @@ module.exports =  {
                 for (const dbcommand of dbCommands) {
                     if (dbcommand.Name === command.name) {
                         if (
-                            dbcommand.Command !== command.description || 
-                            dbcommand.Perm !== command.permission || 
-                            dbcommand.Category !== command.category || 
+                            dbcommand.Command !== command.description ||
+                            dbcommand.Perm !== command.permission ||
+                            dbcommand.Category !== command.category ||
                             dbcommand.Cooldown !== command.cooldown
                         ) {
-                        sql.Query(`UPDATE Commands SET Command=?, Perm=?, Category=?, Cooldown=? WHERE Name=?`, [command.description, command.permission, command.category, command.cooldown, command.name]);
+                            sql.Query(`UPDATE Commands SET Command=?, Perm=?, Category=?, Cooldown=? WHERE Name=?`, [command.description, command.permission, command.category, command.cooldown, command.name]);
                         }
                     } else {
                         return false;
@@ -54,30 +54,25 @@ module.exports =  {
                         FROM Streamers
                         WHERE username=?`,
                             [user.username]);
-        
+
                         console.log(disabledList)
                         disabledList = JSON.parse(disabledList[0].disabled_commands);
                         disabledList.push(command.name);
                         disabledList = JSON.stringify(disabledList);
-        
-                        await sql.Query(`UPDATE Streamers SET disabled_commands=? WHERE username=?`, [disabledList, user.username]);
-        
-                }
-            }
-            await sql.Query('INSERT INTO Commands (Name, Command, Perm, Category, Cooldown) values (?, ?, ?, ?, ?)', [command.name, command.description, command.permission, command.category, command.cooldown]);
-            }
 
-            let okay = true;
-            for (const dbcommand of dbCommands) {
-                if (dbcommand.Name === command.name) {
-                    okay = false
-                    break;
+                        await sql.Query(`UPDATE Streamers SET disabled_commands=? WHERE username=?`, [disabledList, user.username]);
+
+                    }
                 }
-            }
-            if (okay) {
-                await sql.Query('DELETE FROM Commands WHERE Name=?', [dbcommand.Name]);
+                await sql.Query('INSERT INTO Commands (Name, Command, Perm, Category, Cooldown) values (?, ?, ?, ?, ?)', [command.name, command.description, command.permission, command.category, command.cooldown]);
             }
         }
-        
+        const commandNames = commands.map(x => x.name);
+        const commandDiff = dbCommands.filter(x => !commandNames.includes(x.name));
+
+        for (const dbCommand of commandDiff) {
+            await sql.Query('DELETE FROM Commands WHERE Name=?', [dbCommand.Name]);
+        }
+
     }
 };
