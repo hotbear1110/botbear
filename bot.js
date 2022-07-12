@@ -650,23 +650,23 @@ async function onConnectedHandler(addr, port) {
 
         if (process.env.TWITCH_USER !== "devbear1110") {
             await tools.nameChanges()
-            .then((res) => {
-                res.map(async ([newName, oldName]) => {
-                    await cc.join(newName)
-                    .catch((err) => {
-                        console.log(err);
-                    });
-                    cc.part(oldName).catch((err) => {
-                        console.log(err);
-                    });
+                .then((res) => {
+                    res.map(async ([newName, oldName]) => {
+                        await cc.join(newName)
+                            .catch((err) => {
+                                console.log(err);
+                            });
+                        cc.part(oldName).catch((err) => {
+                            console.log(err);
+                        });
 
-                    cc.say(`#${newName}`, `Name change detected, ${oldName} -> ${newName}`);
-                    new messageHandler(process.env.TWITCH_USER, `Left channel ${oldName}. Reason: Name change detected, ${oldName} -> ${newName}`).newMessage();
+                        cc.say(`#${newName}`, `Name change detected, ${oldName} -> ${newName}`);
+                        new messageHandler(process.env.TWITCH_USER, `Left channel ${oldName}. Reason: Name change detected, ${oldName} -> ${newName}`).newMessage();
+                    })
                 })
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+                .catch((err) => {
+                    console.log(err);
+                });
         }
         await tools.checkLiveStatus();
         await tools.checkTitleandGame();
