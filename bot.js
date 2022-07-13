@@ -56,24 +56,16 @@ async function onMessageHandler(channel, user, msg, self) {
          userList.push(user.username);
          console.log(user.username);
      }*/
-	//Temp exception for xqc's chat, since I want to test perfomance without the bot being able to respond there
-	if (channel === '#xqc') {
-		return;
-	}
+    //Temp exception for xqc's chat, since I want to test perfomance without the bot being able to respond there
 
 	if (channel === '#pajlada' && user['user-id'] == 82008718 && msg === 'pajaS 🚨 ALERT') {
 		cc.say(channel, '/me pajaLada 🚨 WHAT HAPPENED');
 		return;
 	}
 
-	if (channel === '#pajlada' && user['user-id'] == 137690566 && msg.startsWith('/announce')) {
-		cc.say(channel, '. /announce æ ø å? NOTDANKENOUGH');
-		return;
-	}
-
-	if (self || (!user['user-id'] == 425363834 && !activetrivia[channel] && !msg.startsWith(prefix + ' '))) {
-		return;
-	}
+    if (self || (!user['user-id'] == 425363834 && !activetrivia[channel] && !msg.startsWith(prefix + ' '))) {
+        return;
+    }
 
 	const offlineonly = await sql.Query('SELECT * FROM Streamers WHERE username=?', [channel.substring(1)]);
 
@@ -190,15 +182,16 @@ async function onMessageHandler(channel, user, msg, self) {
 
 	let input = msg.split(' ');
 
-	for (let i = 0; i < input.length; i++) {
-		if (new RegExp(/[\uDB40-\uDC00]/).test(input[i])) {
-			input[i] = input[i].replace(regex.HIDDEN_CHARACTERS, '');
-			input[i] = input[i].replace(/\s\s+/g, ' ').trim();
-			input[i] = input[i].replace('  ', '');
-			input.splice(i);
-		}
-	}
-	input = input.filter(e => e);
+
+    /*for (let i = 0; i < input.length; i++) {
+        if (new RegExp(/[\uDB40-\uDC00]/).test(input[i])) {
+            input[i] = input[i].replace(new RegExp(regex.HIDDEN_CHARACTERS, "");
+            input[i] = input[i].replace(/\s\s+/g, ' ').trim();
+            input[i] = input[i].replace("  ", "");
+            input.splice(i)
+        }
+    }*/
+    input = input.filter(e => e);
 
 	if (input[0] === '[Cookies]' && user['user-id'] == 425363834 && !msg.includes('rankup') && !msg.includes('you are currently rank')) {
 		const stream = await sql.Query('SELECT disabled_commands FROM Streamers WHERE username=?', [channel.substring(1)]);
