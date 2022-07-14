@@ -180,13 +180,14 @@ exports.splitLine = (message, chars) => {
 };
 
 let hasteoptions = {
+	raw: false,
+	contentType: 'text/plain',
 	server: 'https://haste.zneix.eu/'
 };
 
 exports.makehastebin = (message) =>
-	hastebin(message, hasteoptions).then((url) => {
-		return url;
-	});
+hastebin.createPaste(message, hasteoptions)
+	.then(function (url) {return url;});
 
 exports.humanizeDuration = (ms) => {
 	const options = {
