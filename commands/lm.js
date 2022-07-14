@@ -1,96 +1,96 @@
-const got = require("got");
-const { each } = require("underscore");
-const tools = require("../tools/tools.js");
+const got = require('got');
+const tools = require('../tools/tools.js');
 
 module.exports = {
-    name: "lm",
-    ping: true,
-    description: 'This command will give you the last logged line from a specific user in the chat (Only works if logs are available in the channel, logs used: "https://logs.ivr.fi/"). Example: "bb fl NymN"',
-    permission: 100,
-    category: "Info command",
-    execute: async (channel, user, input, perm) => {
-        try {
-            if (module.exports.permission > perm) {
-                return;
-            }
-            let uid = user["user-id"];
-            let realuser = user.username;
-            if (input[2]) {
-                if (input[2].startsWith("@")) {
-                    input[2] = input[2].substring(1);
-                }
-                uid = await got(`https://api.ivr.fi/twitch/resolve/${input[2]}`, { timeout: 10000 }).json();
-                uid = uid.id;
-                realuser = input[2]
-            }
-            let realchannel = channel;
-            if (input[3]) {
-                realchannel = input[3];
-            }
+	name: 'lm',
+	ping: true,
+	description: 'This command will give you the last logged line from a specific user in the chat (Only works if logs are available in the channel, logs used: "https://logs.ivr.fi/"). Example: "bb fl NymN"',
+	permission: 100,
+	category: 'Info command',
+	execute: async (channel, user, input, perm) => {
+		try {
+			if (module.exports.permission > perm) {
+				return;
+			}
+			let uid = user['user-id'];
+			let realuser = user.username;
+			if (input[2]) {
+				if (input[2].startsWith('@')) {
+					input[2] = input[2].substring(1);
+				}
+				uid = await got(`https://api.ivr.fi/twitch/resolve/${input[2]}`, { timeout: 10000 }).json();
+				uid = uid.id;
+				realuser = input[2];
+			}
+			let realchannel = channel;
+			if (input[3]) {
+				realchannel = input[3];
+			}
 
-            if (channel === realchannel && user["user-id"] === uid) {
-                return "nymnDank But you are right here ❓❗"
-            }
-            let logDate = await got(`https://logs.ivr.fi/list?channel=${realchannel}&userid=${uid}`, { timeout: 10000 }).json();
+			if (channel === realchannel && user['user-id'] === uid) {
+				return 'nymnDank But you are right here ❓❗';
+			}
+			let logDate = await got(`https://logs.ivr.fi/list?channel=${realchannel}&userid=${uid}`, { timeout: 10000 }).json();
 
-            logDate = logDate.availableLogs;
+			logDate = logDate.availableLogs;
 
-            let messageFound = false;
-            let i = 0;
-            let realmessages = "";
-            let lm = "";
-            while (!messageFound) {
-                let year = logDate[i].year;
-                let month = logDate[i].month;
+			let messageFound = false;
+			let i = 0;
+			let realmessages = '';
+			let lm = '';
+			while (!messageFound) {
+				let year = logDate[i].year;
+				let month = logDate[i].month;
 
-                lm = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/${year}/${month}?json`, { timeout: 10000 }).json();
-
-                function filterByID(message) {
-                    if (message.type !== 1) {
-                        return false
-                    }
-                    return true
-                }
-
-                realmessages = lm.messages.filter(filterByID);
+				lm = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/${year}/${month}?json&reverse`, { timeout: 10000 }).json();
 
 
-                i++
-                if (realmessages[0]) {
-                    messageFound = true;
-                    realmessages = realmessages[0];
-                } else if (i > logDate.length - 1) {
-                    return `FeelsDankMan @${realuser}, has never said anything in #${realchannel}`;
-                }
-            }
+				realmessages = lm.messages.filter(filterByID);
 
-            let message = tools.splitLine(realmessages.text, 350)
+				i++;
+				if (realmessages[0]) {
+					messageFound = true;
+					realmessages = realmessages[0];
+				} else if (i > logDate.length - 1) {
+					return `FeelsDankMan @${realuser}, has never said anything in #${realchannel}`;
+				}
+			}
 
-            const timeago = new Date().getTime() - Date.parse(realmessages.timestamp);
+			let message = tools.splitLine(realmessages.text, 350);
 
-            if (lm.status !== 404) {
-                if (message[1]) {
-                    return `#${realchannel} ${realmessages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
-                }
-                return `nymnDank ${realmessages.displayName}'s last message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
-            }
+			const timeago = new Date().getTime() - Date.parse(realmessages.timestamp);
 
-        } catch (err) {
-            console.log(err);
+			if (lm.status !== 404) {
+				if (message[1]) {
+					return `#${realchannel} ${realmessages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
+				}
+				return `nymnDank ${realmessages.displayName}'s last message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
+			}
 
-            if (err.toString().startsWith("HTTPError: Response code 403 (Forbidden)")) {
-                return "User or channel has opted out";
-            }
-            if (err.toString().startsWith("HTTPError: Response code 500 (Internal Server Error)")) {
-                return "Could not load logs. Most likely the user either doesn't exist or doesn't have any logs here.";
-            }
-            if (err.name) {
-                if (err.name === "HTTPError") {
-                    return "No logs available for the user/channel";
-                }
-                return `FeelsDankMan api error: ${err.name}`;
-            }
-            return `FeelsDankMan Error`;
-        }
+		} catch (err) {
+			console.log(err);
+
+			if (err.toString().startsWith('HTTPError: Response code 403 (Forbidden)')) {
+				return 'User or channel has opted out';
+			}
+			if (err.toString().startsWith('HTTPError: Response code 500 (Internal Server Error)')) {
+				return 'Could not load logs. Most likely the user either doesn\'t exist or doesn\'t have any logs here.';
+			}
+			if (err.name) {
+				if (err.name === 'HTTPError') {
+					return 'No logs available for the user/channel';
+				}
+				return `FeelsDankMan api error: ${err.name}`;
+			}
+			return 'FeelsDankMan Error';
+		}
+	}
+};
+
+
+function filterByID(message) {
+    if (message.type !== 1) {
+        return false;
     }
+    return true;
 }
