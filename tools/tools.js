@@ -281,33 +281,23 @@ exports.asciiLength = (message) => {
 };
 
 
-exports.Alias = class Alias {
-	constructor(message, aliasList) {
+exports.Alias = (message) => new Promise(async (resolve) => {		
+		/** @type { Array<SQL.Aliases> } */
+		this.aliasList = await sql.Query('SELECT Aliases FROM Aliases');
+		this.aliasList = JSON.parse(this.aliasList[0].Aliases);
+
 		this.command = message
 			.split(' ')
 			.splice(1)
 			.filter(Boolean)[0];
-		this.alias = aliasList.filter(i => i[this.command]);
-	}
-
-	convertToRegexp(input) {
-		return new RegExp(`\\b${input}\\b`, 'i');
-	}
-
-	getRegex() {
+		this.alias = this.aliasList.filter(i => i[this.command]);
 		if (this.alias.length) {
-			return this.convertToRegexp(Object.keys(this.alias[0]));
+			this.newMessage = message.replace(this.command, this.alias[0][this.command]).split(' ');
+		resolve(this.newMessage);
 		}
-		return '';
-	}
-
-	getReplacement() {
-		if (this.alias.length) {
-			return Object.values(this.alias[0])[0];
-		}
-		return '';
-	}
-};
+		this.newMessage = message.split(' ');
+		resolve(this.newMessage);
+});
 
 exports.getPerm = (user) => new Promise(async (resolve) => {
 	try {

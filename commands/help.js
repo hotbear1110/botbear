@@ -16,13 +16,9 @@ module.exports = {
 				return 'List of commands: https://hotbear.org/ - If you want help with a command, write: "bb help *command*"';
 			}
 
-			let aliasList = await sql.Query('SELECT Aliases FROM Aliases');
-
-			aliasList = JSON.parse(aliasList[0].Aliases);
-
-			const Alias = new tools.Alias(`bb ${input[2]}`, aliasList);
-			let realcommand = input[2].replace(Alias.getRegex(), Alias.getReplacement());
-			const commandlist = await sql.Query('SELECT * FROM Commands WHERE Name=?', [realcommand.toLowerCase()]);
+			let realcommand = await tools.Alias(input[2]);
+			/** @type { Array<SQL.Commands> } */
+			const commandlist = await sql.Query('SELECT * FROM Commands WHERE Name=?', [realcommand[0].toLowerCase()]);
 
 			if (!commandlist.length) {
 				return 'Command not found FeelsDankMan';

@@ -1,3 +1,4 @@
+repos:
 -   repo: https://github.com/pre-commit/mirrors-eslint
     rev: 'v8.19.0'
     hooks:

@@ -42,7 +42,7 @@ module.exports = {
 				let year = logDate[i].year;
 				let month = logDate[i].month;
 
-				lm = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/${year}/${month}?json`, { timeout: 10000 }).json();
+				lm = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/${year}/${month}?json&reverse`, { timeout: 10000 }).json();
 
 
 				realmessages = lm.messages.filter(filterByID);

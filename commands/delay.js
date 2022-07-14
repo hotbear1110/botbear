@@ -15,9 +15,8 @@ module.exports = {
 			}
 			input.splice(1, 1);
 
-			let msg = input.toString().replaceAll(',', ' ');
-			const Alias = new tools.Alias(msg);
-			input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
+			let msg = input.join(' ');
+			input = await tools.Alias(msg);
 			let realcommand = input[1];
 
 			if (realcommand === 'ping' || realcommand === 'delay') {

@@ -13,9 +13,9 @@ module.exports = {
 			input.shift();
 
 			let msg = input.toString()
-                        .msg.replaceAll(',', ' ')
-                        .msg.replaceAll(/(?:^|\W)me(?:$|\W)/g, ' you ')
-                        .msg.replaceAll(/(?:^|\W)my(?:$|\W)/g, ' your ');
+                        .replaceAll(',', ' ')
+                        .replaceAll(/(?:^|\W)me(?:$|\W)/g, ' you ')
+                        .replaceAll(/(?:^|\W)my(?:$|\W)/g, ' your ');
 
 			return `/me I came ${msg}`;
 		} catch (err) {

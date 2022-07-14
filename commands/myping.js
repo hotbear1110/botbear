@@ -156,7 +156,8 @@ module.exports = {
 					return `${user} Game list: ${hastebinlist}.txt`;
 				}
 			}
-			default: 'bb myping [add/remove]"(will add/remove a game from your ping list), "bb myping list"(will give you a list of the games you will get notified by)';
+			default: 
+				return 'bb myping [add/remove]"(will add/remove a game from your ping list), "bb myping list"(will give you a list of the games you will get notified by)';
 			}
 
 		} catch (err) {

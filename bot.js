@@ -327,13 +327,8 @@ async function onMessageHandler(channel, user, msg, self) {
 		return;
 	}
 
-	let aliasList = await sql.Query('SELECT Aliases FROM Aliases');
-
-	aliasList = JSON.parse(aliasList[0].Aliases);
-
-	const Alias = new tools.Alias(msg, aliasList);
 	let aliascommand = input[1];
-	input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
+	input = await tools.Alias(msg);
 	let realcommand = input[1].toLowerCase();
 	if (realcommand === 'say' && realcommand === 'channel' && realcommand === 'emotecheck' && realcommand === 'cum' && realcommand === 'suggest' && realcommand === 'shit' && realcommand === 'code' && realcommand === 'test2') {
 		input = input.toString().replaceAll(',', ' ');

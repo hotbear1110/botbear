@@ -26,7 +26,7 @@ module.exports = {
 				return `Could not find user: "${realchannel}"`;
 			}
 
-			let vodList = await got(`https://api.twitch.tv/helix/videos?user_id=${userID.data.id}&type=archive&first=100`, {
+			let vodList = await got(`https://api.twitch.tv/helix/videos?user_id=${userID.id}&type=archive&first=100`, {
 				headers: {
 					'client-id': process.env.TWITCH_CLIENTID,
 					'Authorization': process.env.TWITCH_AUTH
