@@ -52,12 +52,13 @@ async function getTrivia(genre) {
 }
 
 function arrayShuffle(array) {
-    for (let index = array.length - 1; index > 0; index--) {
+	const newArray = [...array];
+    for (let index = newArray.length - 1; index > 0; index--) {
         const newIndex = Math.floor(Math.random() * (index + 1));
-        [array[index], array[newIndex]] = [array[newIndex], array[index]];
+        [newArray[index], newArray[newIndex]] = [newArray[newIndex], newArray[index]];
     }
 
-    return array;
+    return newArray;
 }
 
 module.exports = {
@@ -83,35 +84,22 @@ module.exports = {
 			const trivia = await a['results'];
 
 			let question = decodeURIComponent(trivia[0].question);
-			let correct_answer = trivia[0].correct_answer;
+			let correct_answer = decodeURIComponent(trivia[0].correct_answer);
 			let incorrect_answers = trivia[0].incorrect_answers;
-			let allanswers = incorrect_answers;
+			let allanswers = [...incorrect_answers].concat([correct_answer]);
 			let category = decodeURIComponent(trivia[0].category);
 
-			allanswers.push(correct_answer);
-
 			let shuffled = arrayShuffle(allanswers);
-			let fixedanswers = [];
 
-			_.each(shuffled, (answer) => {
-				fixedanswers.push(answer);
-			});
+			shuffled = shuffled.map(x => decodeURIComponent(x))
+								.join(' | ');
 
-			let answerToString = '';
-			fixedanswers.forEach((a) => {
-				answerToString += ` ${a} |`;
-			});
-
-			answerToString = answerToString.replace(/.$/, '');
-			answerToString = decodeURIComponent(answerToString);
-
-			correct_answer = decodeURIComponent(correct_answer);
 			correct_answer = tools.removeTrailingStuff(correct_answer);
 
 			if (question.toLowerCase().includes('which of these') || question.toLowerCase().includes('which one of these') || question.toLowerCase().includes('which of the following') || question.toLowerCase().includes('all of the following') || question.toLowerCase().includes('which one of the following')) {
-				return [`(Trivia) [${category}] Question: ${question} - [${answerToString}]`, 'FeelsDankMan you already got the hint.', correct_answer];
+				return [`(Trivia) [${category}] Question: ${question} - [${shuffled}]`, 'FeelsDankMan you already got the hint.', correct_answer];
 			} else {
-				return [`(Trivia) [${category}] Question: ${question}`, answerToString, correct_answer];
+				return [`(Trivia) [${category}] Question: ${question}`, shuffled, correct_answer];
 			}
 		} catch (err) {
 			console.log(err);

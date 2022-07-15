@@ -57,7 +57,7 @@ module.exports = {
 				if (newCreatedat.split('T')[0] === voddate) {
 					vodfound = 1;
 					urls.push(vod.url);
-					return;
+					break;
 				}
 			}
 			if (vodfound === 0) {
