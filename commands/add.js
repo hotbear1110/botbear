@@ -14,61 +14,49 @@ module.exports = {
 			}
 			switch (input[2]) {
 			case 'alias': {
+				if (!input[3]) {
+					return 'FeelsDankMan you have to specify the command and new aliases';
+				}
 				let command = input[3];
-
-				const commandlist = await sql.Query('SELECT * FROM Commands WHERE Name=?', [command]);
-
-				if (!commandlist.length) {
+				/**  @type { Array<SQL.Commands> } */
+				let commandlist = await sql.Query('SELECT * FROM Commands');
+				
+				commandlist = commandlist.map(x => x.Name);
+				
+				if (!commandlist.includes(command)) {
 					return `${command} is not a command`;
 				}
-				let aliases = input;
-				aliases.shift();
-				aliases.shift();
-				aliases.shift();
-				aliases.shift();
 
-				let data = await sql.Query('SELECT Aliases FROM Aliases');
+				let aliases = input.splice(4, -1);
 
-				data = data[0].Aliases;
+				/** @type { Array<SQL.Aliases> } */
+				let aliasList = await sql.Query('SELECT Aliases FROM Aliases');
+				aliasList = JSON.parse(this.aliasList[0].Aliases);
 
-				let newdata = data.toString().replaceAll('[', '').replaceAll(']', '').split(',');
+				/* eslint-disable no-unused-vars */ 
+				aliasList = aliasList.map(({ key }) => (key));
 
-				let currentAliases = [];
 
-				_.each(newdata, function (alias) {
-					currentAliases.push(alias);
-				});
 
-				let alreadyAlias = [];
 
-				let addedAliases = [];
 
-				let iscommand = [];
 
-				const result = await new Promise(async function (resolve) {
-					await _.each(aliases, async function (alias) {
-						const commandlist = await sql.Query('SELECT * FROM Commands WHERE Name=?', [alias]);
-						if (commandlist.length) {
-							iscommand.push(alias);
-						} else {
-							_.each(newdata, function (oldalias) {
-								if (oldalias[alias]) {
-									alreadyAlias.push(alias);
-								}
-							});
-							if (!alreadyAlias.includes(alias)) {
-								newdata.push(`{
-                                "${alias}": "${command}"
-                            }`);
-								addedAliases.push(alias);
-							}
-						}
-						if (alias === aliases[aliases.length - 1]) {
-							resolve([newdata, iscommand, alreadyAlias, addedAliases]);
-						}
-					});
-				});
+				let aliasExists = aliases.filter(x => aliasList.includes(x));
 
+				aliases = aliases.filter(x => !aliasList.includes(x));
+
+				/* eslint-disable no-unused-vars */ 
+				let response = '';
+
+				if (aliasExists.length) {
+					response = `The following aliases already exists: ${aliasExists.join(' ')}`;
+				}
+				
+				// Make reponses that "trickle down" for "alias is a command" and "alias is already alias"
+				// Kinda like what already is done in the old command
+
+				// Old code for refernce
+				/*
 				await sql.Query('UPDATE Aliases SET Aliases=?', [`[${newdata.toString()}]`]);
 
 				let iscommand2 = '';
@@ -89,7 +77,8 @@ module.exports = {
 				}
 
 				return `Successfully added the aliases (${result[3].toString().replaceAll(',', ', ')}) to ${command}. ${alreadyAlias2} ${iscommand2}`;
-            }
+            */
+			}
         }
     } catch (err) {
         console.log(err);
