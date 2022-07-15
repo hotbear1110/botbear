@@ -1,4 +1,5 @@
 const tools = require('../tools/tools.js');
+const _ = require('underscore');
 const sql = require('./../sql/index.js');
 
 module.exports = {
@@ -67,12 +68,12 @@ module.exports = {
 
 				let leaderboard = [];
 
-				for (const user of Trivia_leaderboard) {
+				_.each(Trivia_leaderboard, async function (user) {
 					let realuser = JSON.parse(user.username);
 					if (realuser[1] === `#${channel}`) {
 						leaderboard.push(`${realuser[0]}: ${user.points}`);
 					}
-				}
+				});
 				if (!leaderboard.length) {
 					return 'There are no users with points in this channel';
 				}

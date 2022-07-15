@@ -3,6 +3,7 @@ const tools = require('../tools/tools.js');
 let messageHandler = require('../tools/messageHandler.js').messageHandler;
 const got = require('got');
 const cc = require('../bot.js').cc;
+const _ = require('underscore');
 const sql = require('./../sql/index.js');
 
 module.exports = {
@@ -21,11 +22,11 @@ module.exports = {
 			if (input[3] && (input[2] === 'join' || input[2] === 'leave')) {
 				let modcheck = await got(`https://api.ivr.fi/twitch/modsvips/${input[3]}`, { timeout: 10000 }).json();
 				let ismod = modcheck['mods'];
-				for (const modstatus of ismod) {
+				await _.each(ismod, async function (modstatus) {
 					if (modstatus.login == user.username) {
 						modresponse = true;
 					}
-				}
+				});
 			}
 			Promise.all([modresponse]);
 			switch (input[2]) {

@@ -18,7 +18,7 @@ sleep(10000);
 setInterval(async function () {
 	const streamers = await sql.Query('SELECT * FROM Streamers');
 
-	for (const streamer of streamers) {
+	_.each(streamers, async function (streamer) {
 		setTimeout(async function () {
 
 			let Emote_list = JSON.parse(streamer.emote_list);
@@ -43,13 +43,13 @@ setInterval(async function () {
 				let set = FFZ.room.set;
 				FFZ_list = FFZ.sets[`${set}`].emoticons;
 
-				for (const emote of FFZ_list) {
+				_.each(FFZ_list, async function (emote) {
 					let inlist = 0;
-					for (const emotecheck of Emote_list) {
+					_.each(Emote_list, async function (emotecheck) {
 						if (emotecheck.includes(emote['name']) && emotecheck.includes(emote['id'])) {
 							inlist = 1;
 						}
-					}
+					});
 					if (inlist === 0) {
 						let time = new Date().getTime();
 						let owner = emote['owner'];
@@ -57,7 +57,7 @@ setInterval(async function () {
 						Emote_list.push([emote['name'], emote['id'], time, owner['name'], `https://www.frankerfacez.com/emoticon/${emote['id']}`, 'ffz']);
 					}
 
-				}
+				});
 
 			} catch (err) {
 				noFFZ = 1;
@@ -71,15 +71,19 @@ setInterval(async function () {
 					return;
 				}
 
-				BTTV_list = BTTV['channelEmotes'].concat(BTTV['sharedEmotes']);
+				BTTV_list = BTTV['channelEmotes'];
+				_.each(BTTV['sharedEmotes'], async function (emote) {
+					BTTV_list.push(emote);
+				});
 
-				for (const emote of BTTV_list) {
+
+				_.each(BTTV_list, async function (emote) {
 					let inlist = 0;
-					for (const emotecheck of Emote_list) {
+					_.each(Emote_list, async function (emotecheck) {
 						if (emotecheck.includes(emote['code']) && emotecheck.includes(emote['id'])) {
 							inlist = 1;
 						}
-					}
+					});
 					if (inlist === 0) {
 						let time = new Date().getTime();
 						let owner = streamer.username;
@@ -91,7 +95,7 @@ setInterval(async function () {
 						Emote_list.push([emote['code'], emote['id'], time, owner, `https://betterttv.com/emotes/${emote['id']}`, 'bttv']);
 					}
 
-				}
+				});
 			} catch (err) {
 				noBTTV = 1;
 
@@ -107,15 +111,15 @@ setInterval(async function () {
 
 				STV_list = STV;
 
-				for (const emote of STV_list) {
+				_.each(STV_list, async function (emote) {
 					let inlist = 0;
 
-					for (const emotecheck of Emote_list) {
+					_.each(Emote_list, async function (emotecheck) {
 						if (emotecheck.includes(emote['name']) && emotecheck.includes(emote['id'])) {
 							inlist = 1;
 							return;
 						}
-					}
+					});
 					if (inlist === 0) {
 						let time = new Date().getTime();
 						let owner = emote['owner'];
@@ -127,50 +131,49 @@ setInterval(async function () {
 						Emote_list.push([emote['name'], emote['id'], time, owner['login'], `https://7tv.app/emotes/${emote['id']}`, zero_Width]);
 					}
 
-				}
+				});
 			} catch (err) {
 				noSTV = 1;
 
 			}
 
-			for (const emote of Emote_list) {
+			_.each(Emote_list, async function (emote) {
 				let inlist = 0;
 				if (noFFZ === 0) {
-					for (const emotecheck of FFZ_list) {
+					_.each(FFZ_list, async function (emotecheck) {
 						if (emotecheck['id'] == emote[1] && emotecheck['name'] === emote[0]) {
 							inlist = 1;
-							break;
+							return;
 						}
-					}
+					});
 				}
 
 				if (noBTTV === 0 && inlist === 0) {
-					for (const emotecheck of BTTV_list) {
+					_.each(BTTV_list, async function (emotecheck) {
 						if (emotecheck['id'] == emote[1] && emotecheck['code'] === emote[0]) {
 							inlist = 1;
-							break;
+							return;
 						}
-					}
+					});
 				}
 
 				if (noSTV === 0 && inlist === 0) {
-					for (const emotecheck of STV_list) {
+					_.each(STV_list, async function (emotecheck) {
 						if (emotecheck['id'] == emote[1] && emotecheck['name'] === emote[0]) {
 							inlist = 1;
-							break;
+							return;
 						}
-					}
+					});
 				}
 				if (inlist === 0 && noFFZ === 0 && noBTTV === 0 && noSTV === 0) {
 					let time = new Date().getTime();
 
 					Emote_removed.push([emote[0], emote[1], time, [emote[5]]]);
 
-					// hotbear1110 - TODO: Look at a way to do this without the underscore package
 					Emote_list = _.without(Emote_list, emote);
 				}
 
-			}
+			});
 
 			Emote_list = JSON.stringify(Emote_list);
 			Emote_removed = JSON.stringify(Emote_removed);
@@ -180,7 +183,7 @@ setInterval(async function () {
 			const isSubbed = await got('https://api.7tv.app/v2/badges?user_identifier=twitch_id', { timeout: 10000 }).json();
 
 			let foundName = false;
-			for (const badge of isSubbed['badges']) {
+			_.each(isSubbed['badges'], async function (badge) {
 				if (badge['name'].split(' ').includes('Subscriber')) {
 					let users = badge['users'];
 					if (users.includes(streamer.uid.toString())) {
@@ -188,13 +191,13 @@ setInterval(async function () {
 						await sql.Query('UPDATE Streamers SET seventv_sub=? WHERE username=?', [1, streamer.username]);
 					}
 				}
-			}
+			});
 
 			if (foundName === false) {
 				await sql.Query('UPDATE Streamers SET seventv_sub=? WHERE username=?', [0, streamer.username]);
 			}
 		}, 200);
-	}
+	});
 }, 300000);
 
 /** TODO Refactor */
@@ -202,7 +205,7 @@ setInterval(async function () {
 	const users = await sql.Query('SELECT * FROM Cookies');
 	let Time = new Date().getTime();
 
-	for (const User of users) {
+	_.each(await users, async function (User) {
 		if (User.RemindTime !== null && User.RemindTime < Time) {
 			if (User.Status === 'Confirmed' || User.Status === 'Confirmed2') {
 				const stream = await sql.Query('SELECT * FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
@@ -250,7 +253,7 @@ setInterval(async function () {
 				}
 			}
 		}
-	}
+	});
 
 }, 10000);
 
@@ -258,7 +261,7 @@ setInterval(async function () {
 	const users = await sql.Query('SELECT * FROM Cdr');
 	let Time = new Date().getTime();
 
-	for (const User of users) {
+	_.each(await users, async function (User) {
 		if (User.RemindTime !== null && User.RemindTime < Time && User.Status === 'Confirmed') {
 			const stream = await sql.Query('SELECT * FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
 			let disabledCommands = JSON.parse(stream[0].disabled_commands);
@@ -300,7 +303,7 @@ setInterval(async function () {
 			}
 		}
 
-	}
+	});
 
 }, 10000);
 

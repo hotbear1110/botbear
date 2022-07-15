@@ -1,4 +1,5 @@
 const got = require('got');
+const _ = require('underscore');
 const tools = require('../tools/tools.js');
 
 module.exports = {
@@ -27,13 +28,13 @@ module.exports = {
 			const isvip = vipcheck['vips'];
 			let vipresponse = '';
 
-			for (const vipstatus of isvip) {
-				if (vipstatus.login == username) {
-					let vipdate = vipstatus.grantedAt;
+			await _.each(isvip, async function (viptatus) {
+				if (viptatus.login == username) {
+					let vipdate = viptatus.grantedAt;
 					const ms = new Date().getTime() - Date.parse(vipdate);
 					vipresponse = `that user has been a vip😬 in #${realchannel} for - (${tools.humanizeDuration(ms)})`;
 				}
-			}
+			});
 
 			if (vipresponse != '') {
 				return vipresponse;

@@ -1,5 +1,6 @@
 const got = require('got');
 const tools = require('../tools/tools.js');
+const _ = require('underscore');
 const sql = require('./../sql/index.js');
 
 module.exports = {
@@ -63,12 +64,12 @@ module.exports = {
 
 					const emotecount = await got(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, { timeout: 10000 }).json();
 					let count = emotecount['twitchEmotes'];
-					for (const emote of count) {
+					_.each(count, async function (emote) {
 						if (emote['emote'] === realemote) {
 							ecount = emote['amount'];
-							break;
+							return;
 						}
-					}
+					});
 				} catch (err) {
 					console.log(err);
 				}
@@ -126,12 +127,13 @@ module.exports = {
 					const emoteCost = await got(`https://api.ivr.fi/twitch/allemotes/${emotechannel}`, { timeout: 10000 }).json();
 					let bitEmotes = emoteCost['bitEmotes'];
 					let realemoteCost = 0;
-					for (const emote of bitEmotes) {
+					_.each(bitEmotes, async function (emote) {
 						if (emote['code'] === realemote) {
 							realemoteCost = emote['bitCost'];
-							break;
+							return;
 						}
-					}
+					});
+
 
 					if (ecount !== 0) {
 						if (realemoteCost !== 0) {
@@ -158,7 +160,7 @@ module.exports = {
 			}
 
 		} catch (err) {
-			console.log(err.url);
+			console.log(err);
 		}
 		try {
 			const streamer = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
@@ -177,27 +179,26 @@ module.exports = {
 				const emotecount = await got(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, { timeout: 10000 }).json();
 				let bttv = emotecount['bttvEmotes'];
 				let ffz = emotecount['ffzEmotes'];
-
-				for (const emote of bttv) {
+				_.each(bttv, async function (emote) {
 					if (emote['emote'] === input[2]) {
 						ecount = emote['amount'];
 						foundemote = 1;
-						break;
+						return;
 					}
-				}
+				});
 				if (foundemote === 0) {
-					for (const emote of ffz) {
+					_.each(ffz, async function (emote) {
 						if (emote['emote'] === input[2]) {
 							ecount = emote['amount'];
 							foundemote = 1;
-							break;
+							return;
 						}
-					}
+					});
 				}
 			} catch (err) {
 				console.log(err);
 			}
-			for (const emote of emotes) {
+			_.each(emotes, async function (emote) {
 				if (emote[0] === input[2]) {
 
 					emote[2] = `(${tools.humanizeDuration(now - emote[2])})`;
@@ -213,14 +214,11 @@ module.exports = {
 						response = `${input[2]} is a ${emote[5]} emote, the emote was added to the channel ${emote[2]} ago. The emote was uploaded by the user "${emote[3]}" - ${emote[4]}`;
 
 					}
-					break;
+					return;
 				}
 
-			}
+			});
 
-			if (found === 1) {
-				return response;
-			}
 			if (found === 0) {
 				const ffzglobal = await got('https://api.frankerfacez.com/v1/set/global', { timeout: 10000 }).json();
 				const bttvglobal = await got('https://api.betterttv.net/3/cached/emotes/global', { timeout: 10000 }).json();
@@ -230,7 +228,7 @@ module.exports = {
 				ffzemotes = ffzemotes['3'];
 				ffzemotes = ffzemotes['emoticons'];
 
-				for (const emote of ffzemotes) {
+				_.each(ffzemotes, async function (emote) {
 					if (emote['name'] === input[2]) {
 						found = 1;
 						let url = emote['urls'];
@@ -242,16 +240,16 @@ module.exports = {
 							response = `${input[2]} is a global ffz emote by ${owner['name']}  - https:${url['1']}`;
 
 						}
-						break;
+						return;
 					}
-				}
+				});
 				if (found === 1) {
 					return response;
 				}
 
 				let bttvemotes = bttvglobal;
 
-				for (const emote of bttvemotes) {
+				_.each(bttvemotes, async function (emote) {
 					if (emote['code'] === input[2]) {
 						found = 1;
 						if (ecount !== 0) {
@@ -261,9 +259,9 @@ module.exports = {
 							response = `${input[2]} is a global bttv emote.`;
 
 						}
-						break;
+						return;
 					}
-				}
+				});
 
 				if (found === 1) {
 					return response;
@@ -271,7 +269,7 @@ module.exports = {
 
 				let svtemotes = stvglobal;
 
-				for (const emote of svtemotes) {
+				_.each(svtemotes, async function (emote) {
 					if (emote['name'] === input[2]) {
 						found = 1;
 						let url = emote['urls'];
@@ -284,9 +282,9 @@ module.exports = {
 							response = `${input[2]} is a global 7tv emote - ${url[1]}`;
 
 						}
-						break;
+						return;
 					}
-				}
+				});
 
 			}
 

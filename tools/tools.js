@@ -1,4 +1,5 @@
 require('dotenv').config();
+const _ = require('underscore');
 const got = require('got');
 const tools = require('./tools.js');
 const bannedPhrases = require('./bannedPhrases.js');
@@ -161,7 +162,7 @@ exports.splitLine = (message, chars) => {
 	let messages = [];
 	let msglength = 0;
 	let tempmsg = [];
-	for (const msg of message) {
+	_.each(message, function (msg) {
 		msglength = msglength + msg.length + 1;
 		if (msglength > chars) {
 			messages.push(tempmsg.toString().replaceAll(',', ' '));
@@ -170,7 +171,7 @@ exports.splitLine = (message, chars) => {
 		}
 		tempmsg.push(msg);
 
-	}
+	});
 	if (tempmsg.length) {
 		messages.push(tempmsg.toString().replaceAll(',', ' '));
 	}
@@ -218,12 +219,12 @@ exports.notbannedPhrases = (message) => {
 	let banPhraseList = bannedPhrases.bannedPhrases;
 	let isbanned = 'null';
 	try {
-		for (const phrase of banPhraseList) {
+		_.each(banPhraseList, async function (phrase) {
 			if (message.includes(phrase)) {
 				isbanned = '[Bad word detected] cmonBruh';
-				break;
+				return;
 			}
-		}
+		});
 		return isbanned;
 	} catch (err) {
 		console.log(err);
@@ -252,14 +253,14 @@ exports.massping = (message, channel) => new Promise(async (resolve) => {
 	userlist = userlist.concat(dbnames.filter(x => !userlist.includes(x)));
 
 	let pings = 0;
-	for (const user of userlist) {
+	_.each(userlist, async function (user) {
 		if (message.includes(user)) {
 			pings++;
 		}
 		if (pings > 7) {
-			break;
+			return;
 		}
-	}
+	});
 	if (pings > 7) {
 		resolve('[MASS PING]');
 	}
@@ -271,11 +272,11 @@ exports.asciiLength = (message) => {
 	const msgarray = message.split(' ');
 	let emojicount = 0;
 
-	for (const word of msgarray) {
+	_.each(msgarray, async function (word) {
 		if (/\p{Emoji}/u.test(word)) {
 			emojicount++;
 		}
-	}
+	});
 	return emojicount;
 
 };
@@ -437,7 +438,8 @@ exports.bannedStreamers = async () => {
 		let streamers = await sql.Query('SELECT * FROM Streamers');
 		let bannedUsers = [];
 
-		for (const streamer of streamers) {
+
+		_.each(streamers, async function (streamer) {
 			try {
 				const isBanned = await got(`https://api.ivr.fi/twitch/resolve/${streamer.username}`, { timeout: 10000 }).json();
 
@@ -449,7 +451,7 @@ exports.bannedStreamers = async () => {
 			} catch (err) {
 				Reject(err);
 			}
-		}
+		});
 
 		Resolve(bannedUsers);
 	});
@@ -692,7 +694,7 @@ exports.checkLiveStatus = async function () {
 exports.checkTitleandGame = async function () {
 	const streamers = await sql.Query('SELECT * FROM Streamers');
 
-	for (const stream of streamers) {
+	_.each(streamers, async function (stream) {
 		await got(`https://api.twitch.tv/helix/channels?broadcaster_id=${stream.uid}`, {
 			headers: {
 				'client-id': process.env.TWITCH_CLIENTID,
@@ -723,6 +725,7 @@ exports.checkTitleandGame = async function () {
 				console.log(error);
 			});
 	}
+	);
 	return;
 };
 

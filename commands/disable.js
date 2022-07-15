@@ -1,4 +1,5 @@
 require('dotenv').config();
+const _ = require('underscore');
 const sql = require('./../sql/index.js');
 
 module.exports = {
@@ -42,18 +43,18 @@ module.exports = {
 				let iscommand = false;
 				let iscore = false;
 
-				for (const commandName of commandList) {
+				_.each(commandList, function (commandName) {
 
 					if (command === commandName.Name.toLowerCase()) {
 						if (commandName.Category === 'Core command' || commandName.Category === 'Dev command') {
 							iscore = true;
-							break;
+							return;
 						}
 						iscommand = true;
-						break;
+						return;
 					}
 
-				}
+				});
 
 				if (iscore === true) {
 					return `${command} is a "Core command" and you cannot disable it. For a list of commands do: "bb commands"`;
@@ -98,7 +99,7 @@ module.exports = {
 				let iscategory = false;
 				let isdisabled = false;
 
-				for (const commandName of commandList) {
+				_.each(commandList, function (commandName) {
 
 					if (commandName.Category.toLowerCase() === `${category} command`) {
 						iscategory = true;
@@ -108,7 +109,7 @@ module.exports = {
 						}
 					}
 
-				}
+				});
 
 				if (iscategory === false) {
 					return `${category} is not a category! Do: "bb commands" to see a list of available category`;
@@ -140,7 +141,7 @@ module.exports = {
 
 				let isdisabled3 = false;
 
-				for (const commandName of commandList) {
+				_.each(commandList, function (commandName) {
 					if (commandName.Category !== 'Core command' && commandName.Category !== 'Dev command') {
 						if (!disabledList.includes(commandName.Name.toLowerCase())) {
 							isdisabled3 = true;
@@ -148,7 +149,7 @@ module.exports = {
 						}
 					}
 
-				}
+				});
 
 				if (isdisabled3 === false) {
 					return 'All commands are already disabled';
