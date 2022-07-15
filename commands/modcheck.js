@@ -1,5 +1,4 @@
 const got = require('got');
-const _ = require('underscore');
 const tools = require('../tools/tools.js');
 
 
@@ -28,13 +27,13 @@ module.exports = {
 			let modcheck = await got(`https://api.ivr.fi/twitch/modsvips/${realchannel}`, { timeout: 10000 }).json();
 			let ismod = modcheck['mods'];
 			let modresponse = '';
-			await _.each(ismod, async function (modstatus) {
+			for (const modstatus of ismod) {
 				if (modstatus.login == username) {
 					let moddate = modstatus.grantedAt;
 					const ms = new Date().getTime() - Date.parse(moddate);
 					modresponse = `that user has been a M OMEGALUL D in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} for - (${tools.humanizeDuration(ms)})`;
 				}
-			});
+			}
 			if (modresponse != '') {
 				return modresponse;
 			}

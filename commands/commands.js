@@ -1,5 +1,4 @@
 const tools = require('../tools/tools.js');
-const _ = require('underscore');
 const sql = require('./../sql/index.js');
 
 module.exports = {
@@ -33,13 +32,13 @@ module.exports = {
 
 					let commandsListNames = [];
 
-					_.each(commandList, function (command) {
+					for (const command of commandList) {
 						commandsListNames.push(command.Name.toLowerCase());
-					});
+					}
 
-					_.each(disabledList, function (commandName) {
+					for (const commandName of disabledList) {
 						commandsListNames.splice(commandsListNames.indexOf(commandName), 1);
-					});
+					}
 
 					commandsListNames = commandsListNames.toString().replaceAll(',', '\n');
 

@@ -1,5 +1,4 @@
 const got = require('got');
-const _ = require('underscore');
 const requireDir = require('require-dir');
 const date = require('date-and-time');
 
@@ -49,7 +48,7 @@ module.exports = {
 			let urls = [];
 
 
-			_.each(vodList.data, async function (vod) {
+			for (const vod of vodList.data) {
 				let newCreatedat = new Date(vod.created_at);
 				newCreatedat = date.addHours(newCreatedat, 2);
 				newCreatedat = newCreatedat.toISOString();
@@ -57,9 +56,9 @@ module.exports = {
 				if (newCreatedat.split('T')[0] === voddate) {
 					vodfound = 1;
 					urls.push(vod.url);
-					return;
+					break;
 				}
-			});
+			}
 			if (vodfound === 0) {
 				return 'No vod was found on that date [only the last 100 vods are available] (date format should be "yyyy-mm-dd")';
 			}
@@ -72,13 +71,13 @@ module.exports = {
 			let results = null;
 
 			results = await new Promise(async function (resolve) {
-				_.each(urls, async function (url) {
+				for (const url of urls) {
 					let result = await findTime['vodtime'].execute(channel, user, ['bb', 'vodtime', url, vodtime], perm);
 
 					if (!result.startsWith(vodtime)) {
 						resolve(result);
 					}
-				});
+				}
 			});
 
 			if (await results === null) {

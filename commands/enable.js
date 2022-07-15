@@ -1,5 +1,4 @@
 require('dotenv').config();
-const _ = require('underscore');
 const sql = require('./../sql/index.js');
 
 module.exports = {
@@ -71,7 +70,7 @@ module.exports = {
 				let iscategory = false;
 				let isdisabled = false;
 
-				_.each(commandList, function (commandName) {
+				for (const commandName of commandList) {
 
 					if (commandName.Category.toLowerCase() === `${category} command`) {
 						iscategory = true;
@@ -80,7 +79,7 @@ module.exports = {
 							disabledList.splice(disabledList.indexOf(commandName.Name), 1);
 						}
 					}
-				});
+				}
 
 				if (iscategory === false) {
 					return `${category} is not a category! Do: "bb commands" to see a list of available category`;
@@ -112,14 +111,15 @@ module.exports = {
 
 				let isdisabled = false;
 
-				_.each(commandList, function (commandName) {
+				for (const commandName of commandList) {
 					if (commandName.Category !== 'Core command' && commandName.Category !== 'Dev command') {
 						if (disabledList.includes(commandName.Name)) {
+							isdisabled = true;
 							disabledList.splice(disabledList.indexOf(commandName.Name), 1);
 						}
 					}
 
-				});
+				}
 
 				if (isdisabled === false) {
 					return 'All commands are already enabled';

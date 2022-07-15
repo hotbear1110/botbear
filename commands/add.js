@@ -1,4 +1,3 @@
-const _ = require('underscore');
 const sql = require('./../sql/index.js');
 
 module.exports = {
@@ -33,12 +32,6 @@ module.exports = {
 
 				let newdata = data.toString().replaceAll('[', '').replaceAll(']', '').split(',');
 
-				let currentAliases = [];
-
-				_.each(newdata, function (alias) {
-					currentAliases.push(alias);
-				});
-
 				let alreadyAlias = [];
 
 				let addedAliases = [];
@@ -46,16 +39,16 @@ module.exports = {
 				let iscommand = [];
 
 				const result = await new Promise(async function (resolve) {
-					await _.each(aliases, async function (alias) {
+					for (const alias of aliases) {
 						const commandlist = await sql.Query('SELECT * FROM Commands WHERE Name=?', [alias]);
 						if (commandlist.length) {
 							iscommand.push(alias);
 						} else {
-							_.each(newdata, function (oldalias) {
+							for (const oldalias of newdata) {
 								if (oldalias[alias]) {
 									alreadyAlias.push(alias);
 								}
-							});
+							}
 							if (!alreadyAlias.includes(alias)) {
 								newdata.push(`{
                                 "${alias}": "${command}"
@@ -66,7 +59,7 @@ module.exports = {
 						if (alias === aliases[aliases.length - 1]) {
 							resolve([newdata, iscommand, alreadyAlias, addedAliases]);
 						}
-					});
+					}
 				});
 
 				await sql.Query('UPDATE Aliases SET Aliases=?', [`[${newdata.toString()}]`]);

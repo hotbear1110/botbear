@@ -1,5 +1,4 @@
 const tools = require('../tools/tools.js');
-const _ = require('underscore');
 const sql = require('./../sql/index.js');
 
 module.exports = {
@@ -44,7 +43,7 @@ module.exports = {
 
 			const now = new Date().getTime();
 
-			_.each(emotes, async function (emote) {
+			for (const emote of emotes) {
 				emote[2] = `(${tools.humanizeDuration(now - emote[2])})`;
 
 				if (emote[3]) {
@@ -53,7 +52,7 @@ module.exports = {
 
 				emote.splice(1, 1);
 
-			});
+			}
 
 			emotes = emotes.toString().replaceAll(',', ' ');
 
