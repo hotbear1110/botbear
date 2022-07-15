@@ -1,4 +1,3 @@
-const _ = require('underscore');
 const sql = require('./../sql/index.js');
 
 module.exports = {
@@ -21,18 +20,7 @@ module.exports = {
                     SELECT *
                     FROM Commands`);
 
-			let iscommand = false;
-
-			_.each(commandList, function (commandName) {
-
-				if (input[2] === commandName.Name) {
-					iscommand = true;
-					return;
-				}
-
-			});
-
-			if (iscommand === false) {
+			if (!commandList.filter(x => x.Name === input[2]).length) {
 				return `${input[2]} is not a command! Do: "bb commands" to see a list of available commands`;
 			}
 

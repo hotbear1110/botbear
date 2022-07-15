@@ -166,6 +166,7 @@ setInterval(async function () {
 
 					Emote_removed.push([emote[0], emote[1], time, [emote[5]]]);
 
+					// hotbear1110 - TODO: Look at a way to do this without the underscore package
 					Emote_list = _.without(Emote_list, emote);
 				}
 

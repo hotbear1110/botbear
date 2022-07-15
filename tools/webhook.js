@@ -5,7 +5,6 @@ const app = express();
 const port = 8080;
 let messageHandler = require('../tools/messageHandler.js').messageHandler;
 const tools = require('../tools/tools.js');
-const _ = require('underscore');
 const sql = require('./../sql/index.js');
 
 // Notification request headers
