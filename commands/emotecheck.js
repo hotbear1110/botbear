@@ -64,12 +64,12 @@ module.exports = {
 
 					const emotecount = await got(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, { timeout: 10000 }).json();
 					let count = emotecount['twitchEmotes'];
-					_.each(count, async function (emote) {
+					for (const emote of count) {
 						if (emote['emote'] === realemote) {
 							ecount = emote['amount'];
-							return;
+							break;
 						}
-					});
+					}
 				} catch (err) {
 					console.log(err);
 				}
@@ -127,13 +127,12 @@ module.exports = {
 					const emoteCost = await got(`https://api.ivr.fi/twitch/allemotes/${emotechannel}`, { timeout: 10000 }).json();
 					let bitEmotes = emoteCost['bitEmotes'];
 					let realemoteCost = 0;
-					_.each(bitEmotes, async function (emote) {
+					for (const emote of bitEmotes) {
 						if (emote['code'] === realemote) {
 							realemoteCost = emote['bitCost'];
-							return;
+							break;
 						}
-					});
-
+					}
 
 					if (ecount !== 0) {
 						if (realemoteCost !== 0) {
@@ -160,7 +159,7 @@ module.exports = {
 			}
 
 		} catch (err) {
-			console.log(err);
+			console.log(err.url);
 		}
 		try {
 			const streamer = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
@@ -179,26 +178,27 @@ module.exports = {
 				const emotecount = await got(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, { timeout: 10000 }).json();
 				let bttv = emotecount['bttvEmotes'];
 				let ffz = emotecount['ffzEmotes'];
-				_.each(bttv, async function (emote) {
+
+				for (const emote of bttv) {
 					if (emote['emote'] === input[2]) {
 						ecount = emote['amount'];
 						foundemote = 1;
-						return;
+						break;
 					}
-				});
+				}
 				if (foundemote === 0) {
-					_.each(ffz, async function (emote) {
+					for (const emote of ffz) {
 						if (emote['emote'] === input[2]) {
 							ecount = emote['amount'];
 							foundemote = 1;
-							return;
+							break;
 						}
-					});
+					}
 				}
 			} catch (err) {
 				console.log(err);
 			}
-			_.each(emotes, async function (emote) {
+			for (const emote of emotes) {
 				if (emote[0] === input[2]) {
 
 					emote[2] = `(${tools.humanizeDuration(now - emote[2])})`;
@@ -214,11 +214,14 @@ module.exports = {
 						response = `${input[2]} is a ${emote[5]} emote, the emote was added to the channel ${emote[2]} ago. The emote was uploaded by the user "${emote[3]}" - ${emote[4]}`;
 
 					}
-					return;
+					break;
 				}
 
-			});
+			}
 
+			if (found === 1) {
+				return response;
+			}
 			if (found === 0) {
 				const ffzglobal = await got('https://api.frankerfacez.com/v1/set/global', { timeout: 10000 }).json();
 				const bttvglobal = await got('https://api.betterttv.net/3/cached/emotes/global', { timeout: 10000 }).json();
@@ -228,7 +231,7 @@ module.exports = {
 				ffzemotes = ffzemotes['3'];
 				ffzemotes = ffzemotes['emoticons'];
 
-				_.each(ffzemotes, async function (emote) {
+				for (const emote of ffzemotes) {
 					if (emote['name'] === input[2]) {
 						found = 1;
 						let url = emote['urls'];
@@ -240,16 +243,16 @@ module.exports = {
 							response = `${input[2]} is a global ffz emote by ${owner['name']}  - https:${url['1']}`;
 
 						}
-						return;
+						break;
 					}
-				});
+				}
 				if (found === 1) {
 					return response;
 				}
 
 				let bttvemotes = bttvglobal;
 
-				_.each(bttvemotes, async function (emote) {
+				for (const emote of bttvemotes) {
 					if (emote['code'] === input[2]) {
 						found = 1;
 						if (ecount !== 0) {
@@ -259,9 +262,9 @@ module.exports = {
 							response = `${input[2]} is a global bttv emote.`;
 
 						}
-						return;
+						break;
 					}
-				});
+				}
 
 				if (found === 1) {
 					return response;
@@ -269,7 +272,7 @@ module.exports = {
 
 				let svtemotes = stvglobal;
 
-				_.each(svtemotes, async function (emote) {
+				for (const emote of svtemotes) {
 					if (emote['name'] === input[2]) {
 						found = 1;
 						let url = emote['urls'];
@@ -282,9 +285,9 @@ module.exports = {
 							response = `${input[2]} is a global 7tv emote - ${url[1]}`;
 
 						}
-						return;
+						break;
 					}
-				});
+				}
 
 			}
 
