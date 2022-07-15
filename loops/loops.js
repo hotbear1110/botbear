@@ -18,7 +18,7 @@ sleep(10000);
 setInterval(async function () {
 	const streamers = await sql.Query('SELECT * FROM Streamers');
 
-	_.each(streamers, async function (streamer) {
+	for (const streamer of streamers) {
 		setTimeout(async function () {
 
 			let Emote_list = JSON.parse(streamer.emote_list);
@@ -43,13 +43,13 @@ setInterval(async function () {
 				let set = FFZ.room.set;
 				FFZ_list = FFZ.sets[`${set}`].emoticons;
 
-				_.each(FFZ_list, async function (emote) {
+				for (const emote of FFZ_list) {
 					let inlist = 0;
-					_.each(Emote_list, async function (emotecheck) {
+					for (const emotecheck of Emote_list) {
 						if (emotecheck.includes(emote['name']) && emotecheck.includes(emote['id'])) {
 							inlist = 1;
 						}
-					});
+					}
 					if (inlist === 0) {
 						let time = new Date().getTime();
 						let owner = emote['owner'];
@@ -57,7 +57,7 @@ setInterval(async function () {
 						Emote_list.push([emote['name'], emote['id'], time, owner['name'], `https://www.frankerfacez.com/emoticon/${emote['id']}`, 'ffz']);
 					}
 
-				});
+				}
 
 			} catch (err) {
 				noFFZ = 1;
@@ -71,19 +71,15 @@ setInterval(async function () {
 					return;
 				}
 
-				BTTV_list = BTTV['channelEmotes'];
-				_.each(BTTV['sharedEmotes'], async function (emote) {
-					BTTV_list.push(emote);
-				});
+				BTTV_list = BTTV['channelEmotes'].concat(BTTV['sharedEmotes']);
 
-
-				_.each(BTTV_list, async function (emote) {
+				for (const emote of BTTV_list) {
 					let inlist = 0;
-					_.each(Emote_list, async function (emotecheck) {
+					for (const emotecheck of Emote_list) {
 						if (emotecheck.includes(emote['code']) && emotecheck.includes(emote['id'])) {
 							inlist = 1;
 						}
-					});
+					}
 					if (inlist === 0) {
 						let time = new Date().getTime();
 						let owner = streamer.username;
@@ -95,7 +91,7 @@ setInterval(async function () {
 						Emote_list.push([emote['code'], emote['id'], time, owner, `https://betterttv.com/emotes/${emote['id']}`, 'bttv']);
 					}
 
-				});
+				}
 			} catch (err) {
 				noBTTV = 1;
 
@@ -111,15 +107,15 @@ setInterval(async function () {
 
 				STV_list = STV;
 
-				_.each(STV_list, async function (emote) {
+				for (const emote of STV_list) {
 					let inlist = 0;
 
-					_.each(Emote_list, async function (emotecheck) {
+					for (const emotecheck of Emote_list) {
 						if (emotecheck.includes(emote['name']) && emotecheck.includes(emote['id'])) {
 							inlist = 1;
 							return;
 						}
-					});
+					}
 					if (inlist === 0) {
 						let time = new Date().getTime();
 						let owner = emote['owner'];
@@ -131,39 +127,39 @@ setInterval(async function () {
 						Emote_list.push([emote['name'], emote['id'], time, owner['login'], `https://7tv.app/emotes/${emote['id']}`, zero_Width]);
 					}
 
-				});
+				}
 			} catch (err) {
 				noSTV = 1;
 
 			}
 
-			_.each(Emote_list, async function (emote) {
+			for (const emote of Emote_list) {
 				let inlist = 0;
 				if (noFFZ === 0) {
-					_.each(FFZ_list, async function (emotecheck) {
+					for (const emotecheck of FFZ_list) {
 						if (emotecheck['id'] == emote[1] && emotecheck['name'] === emote[0]) {
 							inlist = 1;
-							return;
+							break;
 						}
-					});
+					}
 				}
 
 				if (noBTTV === 0 && inlist === 0) {
-					_.each(BTTV_list, async function (emotecheck) {
+					for (const emotecheck of BTTV_list) {
 						if (emotecheck['id'] == emote[1] && emotecheck['code'] === emote[0]) {
 							inlist = 1;
-							return;
+							break;
 						}
-					});
+					}
 				}
 
 				if (noSTV === 0 && inlist === 0) {
-					_.each(STV_list, async function (emotecheck) {
+					for (const emotecheck of STV_list) {
 						if (emotecheck['id'] == emote[1] && emotecheck['name'] === emote[0]) {
 							inlist = 1;
-							return;
+							break;
 						}
-					});
+					}
 				}
 				if (inlist === 0 && noFFZ === 0 && noBTTV === 0 && noSTV === 0) {
 					let time = new Date().getTime();
@@ -173,7 +169,7 @@ setInterval(async function () {
 					Emote_list = _.without(Emote_list, emote);
 				}
 
-			});
+			}
 
 			Emote_list = JSON.stringify(Emote_list);
 			Emote_removed = JSON.stringify(Emote_removed);
@@ -183,7 +179,7 @@ setInterval(async function () {
 			const isSubbed = await got('https://api.7tv.app/v2/badges?user_identifier=twitch_id', { timeout: 10000 }).json();
 
 			let foundName = false;
-			_.each(isSubbed['badges'], async function (badge) {
+			for (const badge of isSubbed['badges']) {
 				if (badge['name'].split(' ').includes('Subscriber')) {
 					let users = badge['users'];
 					if (users.includes(streamer.uid.toString())) {
@@ -191,13 +187,13 @@ setInterval(async function () {
 						await sql.Query('UPDATE Streamers SET seventv_sub=? WHERE username=?', [1, streamer.username]);
 					}
 				}
-			});
+			}
 
 			if (foundName === false) {
 				await sql.Query('UPDATE Streamers SET seventv_sub=? WHERE username=?', [0, streamer.username]);
 			}
 		}, 200);
-	});
+	}
 }, 300000);
 
 /** TODO Refactor */
@@ -205,7 +201,7 @@ setInterval(async function () {
 	const users = await sql.Query('SELECT * FROM Cookies');
 	let Time = new Date().getTime();
 
-	_.each(await users, async function (User) {
+	for (const User of users) {
 		if (User.RemindTime !== null && User.RemindTime < Time) {
 			if (User.Status === 'Confirmed' || User.Status === 'Confirmed2') {
 				const stream = await sql.Query('SELECT * FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
@@ -253,7 +249,7 @@ setInterval(async function () {
 				}
 			}
 		}
-	});
+	}
 
 }, 10000);
 
@@ -261,7 +257,7 @@ setInterval(async function () {
 	const users = await sql.Query('SELECT * FROM Cdr');
 	let Time = new Date().getTime();
 
-	_.each(await users, async function (User) {
+	for (const User of users) {
 		if (User.RemindTime !== null && User.RemindTime < Time && User.Status === 'Confirmed') {
 			const stream = await sql.Query('SELECT * FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
 			let disabledCommands = JSON.parse(stream[0].disabled_commands);
@@ -303,7 +299,7 @@ setInterval(async function () {
 			}
 		}
 
-	});
+	}
 
 }, 10000);
 

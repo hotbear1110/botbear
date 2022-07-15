@@ -43,18 +43,18 @@ module.exports = {
 				let iscommand = false;
 				let iscore = false;
 
-				_.each(commandList, function (commandName) {
+				for (const commandName of commandList) {
 
 					if (command === commandName.Name.toLowerCase()) {
 						if (commandName.Category === 'Core command' || commandName.Category === 'Dev command') {
 							iscore = true;
-							return;
+							break;
 						}
 						iscommand = true;
-						return;
+						break;
 					}
 
-				});
+				}
 
 				if (iscore === true) {
 					return `${command} is a "Core command" and you cannot disable it. For a list of commands do: "bb commands"`;
@@ -99,7 +99,7 @@ module.exports = {
 				let iscategory = false;
 				let isdisabled = false;
 
-				_.each(commandList, function (commandName) {
+				for (const commandName of commandList) {
 
 					if (commandName.Category.toLowerCase() === `${category} command`) {
 						iscategory = true;
@@ -109,7 +109,7 @@ module.exports = {
 						}
 					}
 
-				});
+				}
 
 				if (iscategory === false) {
 					return `${category} is not a category! Do: "bb commands" to see a list of available category`;
@@ -141,7 +141,7 @@ module.exports = {
 
 				let isdisabled3 = false;
 
-				_.each(commandList, function (commandName) {
+				for (const commandName of commandList) {
 					if (commandName.Category !== 'Core command' && commandName.Category !== 'Dev command') {
 						if (!disabledList.includes(commandName.Name.toLowerCase())) {
 							isdisabled3 = true;
@@ -149,7 +149,7 @@ module.exports = {
 						}
 					}
 
-				});
+				}
 
 				if (isdisabled3 === false) {
 					return 'All commands are already disabled';

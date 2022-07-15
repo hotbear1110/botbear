@@ -115,6 +115,7 @@ module.exports = {
 				_.each(commandList, function (commandName) {
 					if (commandName.Category !== 'Core command' && commandName.Category !== 'Dev command') {
 						if (disabledList.includes(commandName.Name)) {
+							isdisabled = true;
 							disabledList.splice(disabledList.indexOf(commandName.Name), 1);
 						}
 					}

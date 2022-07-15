@@ -59,13 +59,13 @@ app.post('/eventsub', async function (req, res) {
 				let newGame = notification.event.category_name;
 				let gameusers = JSON.parse(streamers[0].game_ping);
 
-				_.each(myping, async function (userchanel) {
+				for (const userchanel of myping) {
 					let pingname = JSON.parse(userchanel.username);
 					let gamename = userchanel.game_pings;
 					if (pingname.includes(streamers[0].username) && gamename.includes(newGame) && newGame !== '') {
 						gameusers.push(pingname[0]);
 					}
-				});
+				}
 
 				gameusers = gameusers.toString().replaceAll(',', ' ');
 
@@ -87,7 +87,7 @@ app.post('/eventsub', async function (req, res) {
 					await sql.Query('UPDATE Streamers SET title=?, title_time=? WHERE username=?', [newTitle, titleTime, streamers[0].username]);
 					if (!disabledCommands.includes('notify') || proxychannel === 'botbear1110') {
 						if (titleusers.length) {
-							_.each(titleuserlist, function (msg, i) {
+							titleuserlist.forEach(function (msg, i) {
 								new messageHandler(`#${proxychannel}`, `/me ${streamers[0].titleemote} NEW TITLE ! ${streamers[0].titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`, true).newMessage();
 							});
 						}
@@ -109,7 +109,7 @@ app.post('/eventsub', async function (req, res) {
 					console.log(streamers[0].username + ' NEW GAME: ' + newGame);
 					if (!disabledCommands.includes('notify') || proxychannel === 'botbear1110') {
 						if (gameusers.length) {
-							_.each(gameuserlist, function (msg, i) {
+							gameuserlist.forEach(function (msg, i) {
 								new messageHandler(`#${proxychannel}`, `/me ${streamers[0].gameemote} NEW GAME ! ${streamers[0].gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`, true).newMessage();
 							});
 						}
@@ -140,7 +140,7 @@ app.post('/eventsub', async function (req, res) {
 				await sql.Query(`UPDATE Streamers SET islive = 1 WHERE username = "${streamers[0].username}"`);
 				if (!disabledCommands.includes('notify') || proxychannel === 'botbear1110') {
 					if (users.length) {
-						_.each(userlist, function (msg, i) {
+						userlist.forEach(function (msg, i) {
 							new messageHandler(`#${proxychannel}`, `/me ${streamers[0].liveemote} ${streamers[0].username[0].toUpperCase()}\u{E0000}${streamers[0].username.toUpperCase().slice(1)} IS NOW LIVE ${streamers[0].liveemote} ${userlist[i]}`, true).newMessage();
 						});
 					}
@@ -170,7 +170,7 @@ app.post('/eventsub', async function (req, res) {
 				await sql.Query(`UPDATE Streamers SET islive = 0 WHERE username ="${streamers[0].username}"`);
 				if (!disabledCommands.includes('notify') || proxychannel === 'botbear1110') {
 					if (users.length) {
-						_.each(userlist, function (msg, i) {
+						userlist.forEach(function (msg, i) {
 							new messageHandler(`#${proxychannel}`, `/me ${streamers[0].offlineemote} ${streamers[0].username[0].toUpperCase()}\u{E0000}${streamers[0].username.toUpperCase().slice(1)} IS NOW OFFLINE ${streamers[0].offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`, true).newMessage();
 						});
 					}
