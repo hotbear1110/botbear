@@ -1,5 +1,4 @@
 const got = require('got');
-const _ = require('underscore');
 const tools = require('../tools/tools.js');
 
 // https://opentdb.com/api_config.php

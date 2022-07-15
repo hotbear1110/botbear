@@ -1,5 +1,4 @@
 const got = require('got');
-const _ = require('underscore');
 const requireDir = require('require-dir');
 const date = require('date-and-time');
 

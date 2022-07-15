@@ -1,5 +1,4 @@
 require('dotenv').config();
-const _ = require('underscore');
 const sql = require('./../sql/index.js');
 
 module.exports = {
