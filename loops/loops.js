@@ -212,7 +212,7 @@ setInterval(async function () {
             if (user.Status !== 'Confirmed' || user.Status !== 'Confirmed2') return;
 
             /** @type { SQL.Streamers[] } */
-            const [stream] = await sql.Query('SELECT islive FROM Streamers WHERE username=?', [user.Channel.substring(1)]);
+            const [stream] = await sql.Query('SELECT islive, username FROM Streamers WHERE username=?', [user.Channel.substring(1)]);
             if (stream === null) return;
 
             await sql.Query('UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?', [null, null, null, user.User]);
@@ -235,53 +235,38 @@ setInterval(async function () {
 }, 10000);
 
 setInterval(async function () {
-	const users = await sql.Query('SELECT * FROM Cdr');
-	let Time = new Date().getTime();
+	const time = new Date().getTime();
 
-	for (const User of users) {
-		if (User.RemindTime !== null && User.RemindTime < Time && User.Status === 'Confirmed') {
-			const stream = await sql.Query('SELECT * FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
-			let disabledCommands = JSON.parse(stream[0].disabled_commands);
+    const sendMessage = (dst, user, suffix = '') => new messageHandler(dst, `${user} Your cookie cdr is ready ${suffix}`).newMessage();
+    
+    /** @type { SQL.Cookies[] } */
+    (await sql.Query('SELECT * FROM Cdr'))
+    .map(async(user) => {
+        if (user.RemindTime === null || user.RemindTime < time) return;
+        if (user.Status !== 'Confirmed') return;
 
-			await sql.Query('UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?', [null, null, null, User.User]);
-            
-			if (User.Mode === 0) {
-				if (disabledCommands.includes('cdr')) {
-					new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
+        /** @type { SQL.Streamers[] } */
+        const [stream] = await sql.Query('SELECT islive, username FROM Streamers WHERE username=?', [user.Channel.substring(1)]);
+        if (stream === null) return;
 
-				} else if (stream[0].islive === 1) {
-					new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
+        await sql.Query('UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?', [null, null, null, user.User]);
 
-				} else {
-					new messageHandler(User.Channel, `${User.User} Your cookie cdr is ready`).newMessage();
-				}
+        const channel = channelFromMode(user);
 
-			} else if (User.Mode === 1) {
-				if (disabledCommands.includes('cookie')) {
-					new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that has disabled cdr reminders[${User.Channel}]`).newMessage();
-
-				} else if (stream[0].islive === 1) {
-					new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
-
-				} else {
-					new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready`).newMessage();
-
-				}
-			} else if (User.Mode === 2) {
-				if (disabledCommands.includes('cdr')) {
-					new messageHandler('#botbear1110', `${User.User} Your cookie cdr is ready - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
-
-				} else if (stream[0].islive === 1) {
-					new messageHandler('#botbear1110', `${User.User} Your cookie cdr is ready - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
-
-				} else {
-					new messageHandler('#botbear1110', `${User.User} Your cookie cdr is ready`).newMessage();
-				}
-			}
-		}
-
-	}
-
+        const isDisabled = await commandDisabled('cookie', stream.username);
+        if (isDisabled) {
+            sendMessage(channel, user.User, `- This reminder is from a channel that has disabled cookie reminders[${user.Channel.replace('#', '')}]`);
+        } else if (stream.islive) {
+            sendMessage(channel, user.User, `- This reminder is from a channel that is live[${user.Channel.replace('#', '')}]`);
+        } else {
+            if (user.Mode === positive_bot.CONSTANTS.MODES.whereAte) {
+                sendMessage(user.Channel, user.User);
+            } else {
+                sendMessage(channel, user.User);
+            }
+        }
+        
+    });
 }, 10000);
 
 setInterval(async function () {
