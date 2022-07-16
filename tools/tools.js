@@ -742,8 +742,8 @@ exports.commandDisabled = async (command, channel) => {
             }
             Resolve(false);
         })
-        .catch(() => {
-            Reject();
+        .catch((e) => {
+            Reject(e);
         });
     });
 };
