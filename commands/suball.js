@@ -1,5 +1,4 @@
 const got = require('got');
-const _ = require('underscore');
 const sql = require('./../sql/index.js');
 
 module.exports = {

@@ -3,7 +3,6 @@ const tmi = require('tmi.js');
 const login = require('./connect/connect.js');
 const tools = require('./tools/tools.js');
 const regex = require('./tools/regex.js');
-const _ = require('underscore');
 const requireDir = require('require-dir');
 const sql = require('./sql/index.js');
 const positive_bot = require('./reminders/index.js');
