@@ -221,7 +221,7 @@ async function onMessageHandler(channel, user, msg, self) {
             let [checkmode] = await sql.Query('SELECT Mode FROM Cookies WHERE User=?', [status.User]);
             if (!checkmode) return;
         
-            if (await tools.commandDisabled(channel.substring(1), 'cdr')) {
+            if (await tools.commandDisabled(channel, 'cdr')) {
                 if (status.Status === 'Confirmed' && checkmode.Mode === mode.whereAte) {
                     message(channel, status.User, '- (The channel you used your cdr in has reminders disabled)');
                     return;

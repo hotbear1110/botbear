@@ -732,7 +732,7 @@ exports.joinChannel = async ({ username, uid }) => {
  */
 exports.commandDisabled = async (command, channel) => {
     return new Promise(async(Resolve, Reject) => {
-        await sql.Query('SELECT disabled_commands FROM Streamers WHERE username = ?', [channel])
+        await sql.Query('SELECT disabled_commands FROM Streamers WHERE username = ?', [channel.replace('#', '')])
         .then((data) => {
             const disabled = JSON.parse(data[0].disabled_commands);
 
