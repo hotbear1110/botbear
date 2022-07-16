@@ -189,6 +189,10 @@ exports.makehastebin = (message) =>
 hastebin.createPaste(message, hasteoptions)
 	.then(function (url) {return url;});
 
+/**
+ * @param { number } ms 
+ * @returns { String }
+ */
 exports.humanizeDuration = (ms) => {
 	const options = {
 		language: 'shortEn',
@@ -311,90 +315,6 @@ exports.getPerm = (user) => new Promise(async (resolve) => {
 		resolve(0);
 	}
 });
-
-exports.cookies = (user, command, channel) => new Promise(async (resolve) => {
-	if (command[3] === 'Leaderboard') {
-		resolve(0);
-		return;
-	}
-	let users = await sql.Query('SELECT * FROM Cookies WHERE User=?', [command[3]]);
-	let Time = new Date().getTime();
-	let RemindTime = Time + 7200000;
-	let realuser = command[3];
-	let cdr = 'no';
-
-	if (!users.length) {
-		users = await sql.Query('SELECT * FROM Cookies WHERE User=?', [command[2]]);
-		realuser = command[2];
-	}
-	if (!users.length) {
-		users = await sql.Query('SELECT * FROM Cookies WHERE User=?', [command[1].slice(0, -1)]);
-		realuser = command[1].slice(0, -1);
-	}
-	if (!users.length) {
-		resolve(0);
-		return;
-	}
-
-	let cdrusers = await sql.Query('SELECT * FROM Cdr WHERE User=?', [realuser]);
-
-	if (cdrusers.length && cdrusers[0].RemindTime === null) {
-		cdr = 'yes';
-	}
-
-	let msg = command.toString().replaceAll(',', ' ');
-
-	if (user.username !== null) {
-		let response = 'Confirmed';
-		if (msg.includes('you have already claimed a cookie')) {
-			if (users[0].RemindTime === null) {
-				let cookieCD = await got(`https://api.roaringiron.com/cooldown/${realuser}`, { timeout: 10000 }).json();
-
-				if (cookieCD['error']) {
-					resolve(0);
-					return;
-				} else {
-					let cd = cookieCD['seconds_left'] * 1000;
-					cd = tools.humanizeDuration(cd);
-
-					resolve(['CD', realuser, channel, cd]);
-					return;
-				}
-			}
-			let cd = users[0].RemindTime - new Date().getTime();
-			cd = tools.humanizeDuration(cd);
-			resolve(['CD', realuser, channel, cd]);
-			return;
-		}
-		if (users[0].Status === 'Confirmed' || users[0].Status === 'Confirmed2') {
-			response = 'Confirmed2';
-		}
-
-		await sql.Query('UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?', [response, channel, RemindTime, realuser]);
-		resolve([response, realuser, channel, cdr]);
-	}
-
-});
-
-exports.cdr = (user, command, channel) => new Promise(async (resolve) => {
-	let users = await sql.Query('SELECT * FROM Cdr WHERE User=?', [command[1].slice(0, -1)]);
-	let Time = new Date().getTime();
-	let RemindTime = Time + 10800000;
-	let realuser = command[1].slice(0, -1);
-	if (!users.length) {
-		resolve(0);
-		return;
-	}
-
-	if (user.username !== null) {
-		let response = 'Confirmed';
-
-		await sql.Query('UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?', [response, channel, RemindTime, realuser]);
-		resolve([response, realuser, channel]);
-	}
-
-});
-
 
 /**
  * @returns {Promise<[String, String][]>}
@@ -807,4 +727,26 @@ exports.joinChannel = async ({ username, uid }) => {
 	await this.joinEventSub(uid);
 
 	return Promise.resolve();
+};
+
+/**
+ * @param { String } command 
+ * @param { String } channel WITHOUT # at the start
+ */
+exports.commandDisabled = async (command, channel) => {
+    return new Promise(async(Resolve, Reject) => {
+        await sql.Query('SELECT disabled_commands FROM Streamers WHERE username = ?', [channel])
+        .then((data) => {
+            const disabled = JSON.parse(data[0].disabled_commands);
+
+            if (disabled.includes(command)) {
+                Resolve(true);
+                return;
+            }
+            Resolve(false);
+        })
+        .catch(() => {
+            Reject();
+        });
+    });
 };

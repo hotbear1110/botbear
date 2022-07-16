@@ -6,6 +6,7 @@ const regex = require('./tools/regex.js');
 const _ = require('underscore');
 const requireDir = require('require-dir');
 const sql = require('./sql/index.js');
+const positive_bot = require('./reminders/index.js');
 let messageHandler = require('./tools/messageHandler.js').messageHandler;
 
 const cc = new tmi.client(login.TMISettings);
@@ -45,6 +46,13 @@ let oldmessage = '';
 // eslint-disable-next-line no-unused-vars
 let userList = [];
 
+/**
+ * @param { String } channel - #channel 
+ * @param { import('tmi.js').ChatUserstate } user 
+ * @param { String } msg 
+ * @param { boolean } self 
+ * @returns 
+ */
 async function onMessageHandler(channel, user, msg, self) {
 	let start = new Date().getTime();
 	msg = msg.replaceAll(regex.invisChar, '');
@@ -193,127 +201,53 @@ async function onMessageHandler(channel, user, msg, self) {
     }*/
     input = input.filter(e => e);
 
-	if (input[0] === '[Cookies]' && user['user-id'] == 425363834 && !msg.includes('rankup') && !msg.includes('you are currently rank')) {
-		const stream = await sql.Query('SELECT disabled_commands FROM Streamers WHERE username=?', [channel.substring(1)]);
+    /* Positivebot cookies & cdr */
+    {
+        const mode = positive_bot.CONSTANTS.MODES;
 
-		let disabledCommands = JSON.parse(stream[0].disabled_commands);
+        if (positive_bot.cookie.validateIsPositiveBot(user, input)) {
+            const cookie = await positive_bot.cookie.allowedCookie(channel, user, input);
+            if (cookie.Status === '') return; 
 
-		const cookieStatus = await tools.cookies(user, input, channel);
-		let checkmode = await sql.Query('SELECT Mode FROM Cookies WHERE User=?', [cookieStatus[1]]);
-
-		if (!checkmode.length) {
-			return;
-		}
-		if (disabledCommands.includes('cookie') && checkmode[0].Mode === 0 && cookieStatus[0] === 'Confirmed') {
-			if (cookieStatus[3] === 'yes') {
-				new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!) - (The channel you ate your cookie in has reminders turned off)`).newMessage();
-
-			} else {
-				new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay - (The channel you ate your cookie in has reminders turned off)`).newMessage();
-
-			}
-			return;
-		}
-		if (disabledCommands.includes('cookie') && checkmode[0].Mode === 0 && cookieStatus[0] === 'Confirmed2') {
-			new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay - (The channel you ate your cookie in has reminders turned off)`).newMessage();
-
-			return;
-		}
-
-		if (disabledCommands.includes('cookie') && checkmode[0].Mode === 0 && cookieStatus[0] === 'CD') {
-			new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} Your cookie is still on cooldown, it will be available in ${cookieStatus[3]} - (The channel you tried to eat your cookie in has reminders turned off)`).newMessage();
-
-			return;
-		}
-
-		if (cookieStatus[0] === 'Confirmed' && checkmode[0].Mode === 0) {
-			if (cookieStatus[3] === 'yes') {
-				new messageHandler(cookieStatus[2], `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!)`).newMessage();
-				return;
-
-			} else {
-				new messageHandler(cookieStatus[2], `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
-
-			}
-		} else if (cookieStatus[0] === 'Confirmed' && checkmode[0].Mode === 1) {
-			if (cookieStatus[3] === 'yes') {
-				new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!)`).newMessage();
-				return;
-
-			} else {
-				new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
-				return;
-
-			}
-		} else if (cookieStatus[0] === 'Confirmed' && checkmode[0].Mode === 2) {
-			if (cookieStatus[3] === 'yes') {
-				new messageHandler('#botbear1110', `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!)`).newMessage();
-				return;
-
-			} else {
-				new messageHandler('#botbear1110', `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
-				return;
-
-			}
-		}
-
-		if (cookieStatus[0] === 'Confirmed2' && checkmode[0].Mode === 0) {
-			new messageHandler(cookieStatus[2], `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
-			return;
-
-		} else if (cookieStatus[0] === 'Confirmed2' && checkmode[0].Mode === 1) {
-			new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
-			return;
-
-		} else if (cookieStatus[0] === 'Confirmed2' && checkmode[0].Mode === 2) {
-			new messageHandler('#botbear1110', `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
-			return;
-
-		}
-
-		if (cookieStatus[0] === 'CD' && checkmode[0].Mode === 0) {
-			new messageHandler(cookieStatus[2], `${cookieStatus[1]} Your cookie is still on cooldown, it will be available in ${cookieStatus[3]}`).newMessage();
-			return;
-
-		} else if (cookieStatus[0] === 'CD' && checkmode[0].Mode === 1) {
-			new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} Your cookie is still on cooldown, it will be available in ${cookieStatus[3]}`).newMessage();
-			return;
-
-		} else if (cookieStatus[0] === 'CD' && checkmode[0].Mode === 2) {
-			new messageHandler('#botbear1110', `${cookieStatus[1]} Your cookie is still on cooldown, it will be available in ${cookieStatus[3]}`).newMessage();
-			return;
-
-		}
-
-	}
-
-	if (msg.includes('your cooldown has been reset!') && user['user-id'] == 425363834) {
-		const stream = await sql.Query('SELECT disabled_commands FROM Streamers WHERE username=?', [channel.substring(1)]);
-
-		let disabledCommands = JSON.parse(stream[0].disabled_commands);
-
-		const cdrStatus = await tools.cdr(user, input, channel);
-		let checkmode = await sql.Query('SELECT Mode FROM Cookies WHERE User=?', [cdrStatus[1]]);
-
-		if (disabledCommands.includes('cdr') && cdrStatus[0] === 'Confirmed' && checkmode[0].Mode === 0) {
-			new messageHandler(`#${cdrStatus[1]}`, `${cdrStatus[1]} I will remind you to use your cdr in 3 hours nymnOkay - (The channel you used your cdr in has reminders disabled)`).newMessage();
-			return;
-		}
-
-		if (cdrStatus[0] === 'Confirmed' && checkmode[0].Mode === 0) {
-			new messageHandler(cdrStatus[2], `${cdrStatus[1]} I will remind you to use your cdr in 3 hours nymnOkay`).newMessage();
-			return;
-
-		} else if (cdrStatus[0] === 'Confirmed' && checkmode[0].Mode === 1) {
-			new messageHandler(`#${cdrStatus[1]}`, `${cdrStatus[1]} I will remind you to use your cdr in 3 hours nymnOkay`).newMessage();
-			return;
-
-		} else if (cdrStatus[0] === 'Confirmed' && checkmode[0].Mode === 2) {
-			new messageHandler('#botbear1110', `${cdrStatus[1]} I will remind you to use your cdr in 3 hours nymnOkay`).newMessage();
-			return;
-
-		}
-	}
+            const res = await positive_bot.cookie.setCookie(cookie.Status, cookie.User, channel.replace('#', ''), cookie.time, cookie.hasCdr);
+            if (res.msg === '') return;
+            
+            new messageHandler(channel, res).newMessage();
+        }
+        else if (positive_bot.cdr.validateIsPositiveBot(user, input)) {
+            const status = await positive_bot.cdr.setCdr(input, channel);
+            const message = (dst, prefix = '', suffix = '') => new messageHandler(dst, `${prefix} I will remind you to use your cdr in 3 hours nymnOkay ${suffix}`).newMessage();
+        
+            /** @type { SQL.Cookies[] } */
+            let [checkmode] = await sql.Query('SELECT Mode FROM Cookies WHERE User=?', [status.User]);
+            if (!checkmode) return;
+        
+            if (await tools.commandDisabled(channel.substring(1), 'cdr')) {
+                if (status.Status === 'Confirmed' && checkmode.Mode === mode.whereAte) {
+                    message(channel, status.User, '- (The channel you used your cdr in has reminders disabled)');
+                    return;
+                }
+            } else if (status.Status === 'Confirmed') {
+                switch (checkmode.Mode) {
+                    case mode.whereAte: {
+                        message(channel, status.User);
+                        return;
+                    }
+                    case mode.ownChannel: {
+                        message(channel, status.User);
+                        return;
+                    }
+                    case mode.botChannel: {
+                        message('#botbear1110', status.User);
+                        return;
+                    }
+                    default: {
+                        return;
+                    }
+                }
+            }
+        }
+    }
 
 	if (input[0] === undefined) {
 		return;
