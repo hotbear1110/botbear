@@ -1,5 +1,4 @@
 const got = require('got');
-const _ = require('underscore');
 
 module.exports = {
 	name: 'deletesubs',

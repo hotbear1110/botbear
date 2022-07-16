@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 const shell = require('child_process');
 const tools = require('../tools/tools.js');
-const _ = require('underscore');
 const { fchown } = require('fs');
 const got = require('got');
 let messageHandler = require('../tools/messageHandler.js').messageHandler;

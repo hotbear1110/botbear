@@ -19,7 +19,6 @@ setInterval(async function () {
 	const streamers = await sql.Query('SELECT * FROM Streamers');
 
 	for (const streamer of streamers) {
-		setTimeout(async function () {
 
 			let Emote_list = JSON.parse(streamer.emote_list);
 			let Emote_removed = JSON.parse(streamer.emote_removed);
@@ -37,7 +36,7 @@ setInterval(async function () {
 
 				if (!FFZ.room || (typeof FFZ.error != 'undefined') || !FFZ) {
 					noFFZ = 1;
-					return;
+					continue;
 				}
 
 				let set = FFZ.room.set;
@@ -68,7 +67,7 @@ setInterval(async function () {
 
 				if ((typeof BTTV.message != 'undefined') || !BTTV) {
 					noBTTV = 1;
-					return;
+					continue;
 				}
 
 				BTTV_list = BTTV['channelEmotes'].concat(BTTV['sharedEmotes']);
@@ -102,7 +101,7 @@ setInterval(async function () {
 
 				if ((typeof STV.message != 'undefined') || !STV) {
 					noSTV = 1;
-					return;
+					continue;
 				}
 
 				STV_list = STV;
@@ -113,7 +112,7 @@ setInterval(async function () {
 					for (const emotecheck of Emote_list) {
 						if (emotecheck.includes(emote['name']) && emotecheck.includes(emote['id'])) {
 							inlist = 1;
-							return;
+							break;
 						}
 					}
 					if (inlist === 0) {
@@ -193,7 +192,6 @@ setInterval(async function () {
 			if (foundName === false) {
 				await sql.Query('UPDATE Streamers SET seventv_sub=? WHERE username=?', [0, streamer.username]);
 			}
-		}, 200);
 	}
 }, 300000);
 
