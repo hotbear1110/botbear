@@ -211,7 +211,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
             const res = await positive_bot.cookie.setCookie(cookie.Status, cookie.User, channel.replace('#', ''), cookie.time, cookie.hasCdr);
             if (res.msg === '') return;
-            
+
             new messageHandler(channel, res).newMessage();
         }
         else if (positive_bot.cdr.validateIsPositiveBot(user, input)) {
@@ -234,7 +234,7 @@ async function onMessageHandler(channel, user, msg, self) {
                         return;
                     }
                     case mode.ownChannel: {
-                        message(channel, status.User);
+                        message(status.User, status.User);
                         return;
                     }
                     case mode.botChannel: {
