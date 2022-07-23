@@ -16,14 +16,14 @@ module.exports = {
 			const userlist = await sql.Query('SELECT username FROM MyPoints');
 			for (const realuser of userlist) {
 				let userchannel = [];
-				userchannel.push(`"${realuser.username[0]}"`);
-				userchannel.push(`"${realuser.username[1].replace('#', '')}"`);
+				userchannel.push(`"${JSON.parse(realuser.username)[0]}"`);
+				userchannel.push(`"${JSON.parse(realuser.username)[1].replace('#', '')}"`);
 
 				let olduserchannel = [];
-				olduserchannel.push(`"${realuser.username[0]}"`);
-				olduserchannel.push(`"${realuser.username[1]}"`);
+				olduserchannel.push(`"${JSON.parse(realuser.username)[0]}"`);
+				olduserchannel.push(`"${JSON.parse(realuser.username)[1]}"`);
 				await sql.Query('UPDATE MyPoints SET username=? WHERE username=?', [`[${userchannel}]`, `[${olduserchannel}]`]);
-				console.log(userchannel);
+				console.log(olduserchannel);
 			}
 
 			return 'Okayge done';
