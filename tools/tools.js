@@ -8,7 +8,7 @@ const regex = require('./regex.js');
 const sql = require('../sql/index.js');
 
 exports.banphrasePass = (message, channel) => new Promise(async (resolve) => {
-	this.channel = channel.substring(1);
+	this.channel = channel;
 	this.message = message.replace(/^\/me /, '');
 	this.data = await sql.Query(`
           SELECT banphraseapi
@@ -61,7 +61,7 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve) => {
 });
 
 exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve) => {
-	this.channel = channel.replace('#', '');
+	this.channel = channel;
 	this.message = encodeURIComponent(message).replaceAll('%0A', '%20').replace(/^\/me /, '');
 	this.data = await sql.Query('SELECT * FROM Streamers WHERE username=?', [this.channel]);
 
@@ -236,7 +236,6 @@ exports.notbannedPhrases = (message) => {
 };
 
 exports.massping = (message, channel) => new Promise(async (resolve) => {
-	channel = channel.replace('#', '');
 	message = message.replace(/(^|[@#.,:;\s]+)|([?!.,:;\s]|$)/gm, ' ');
 
 	let dblist = ('filler ' + message.slice())
@@ -424,7 +423,6 @@ function editDistance(s1, s2) {
  * @returns {boolean} true | false | If is mod
  */
 exports.isMod = function (user, channel) {
-	channel = channel[0] === '#' ? channel.substr(1) : channel;
 	const isMod = user.mod || user['user-type'] === 'mod';
 	const isBroadcaster = channel === user.username;
 	const isModUp = isMod || isBroadcaster;
@@ -732,7 +730,7 @@ exports.joinChannel = async ({ username, uid }) => {
  */
 exports.commandDisabled = async (command, channel) => {
     return new Promise(async(Resolve, Reject) => {
-        await sql.Query('SELECT disabled_commands FROM Streamers WHERE username = ?', [channel.replace('#', '')])
+        await sql.Query('SELECT disabled_commands FROM Streamers WHERE username = ?', [channel])
         .then((data) => {
             const disabled = JSON.parse(data[0].disabled_commands);
 

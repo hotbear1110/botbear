@@ -209,7 +209,7 @@ setInterval(async function () {
             if (user.Status !== 'Confirmed' || user.Status !== 'Confirmed2') return;
 
             /** @type { SQL.Streamers[] } */
-            const [stream] = await sql.Query('SELECT islive, username FROM Streamers WHERE username=?', [user.Channel.substring(1)]);
+            const [stream] = await sql.Query('SELECT islive, username FROM Streamers WHERE username=?', [user.Channel]);
             if (stream === null) return;
 
             await sql.Query('UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?', [null, null, null, user.User]);
@@ -218,9 +218,9 @@ setInterval(async function () {
             
             const isDisabled = await commandDisabled('cookie', stream.username);
             if (isDisabled) {
-                sendMessage(channel, user.User, `- This reminder is from a channel that has disabled cookie reminders[${user.Channel.replace('#', '')}]`);
+                sendMessage(channel, user.User, `- This reminder is from a channel that has disabled cookie reminders[${user.Channel}]`);
             } else if (stream.islive) {
-                sendMessage(channel, user.User, `- This reminder is from a channel that is live[${user.Channel.replace('#', '')}]`);
+                sendMessage(channel, user.User, `- This reminder is from a channel that is live[${user.Channel}]`);
             } else {
                 if (user.Mode === positive_bot.CONSTANTS.MODES.whereAte) {
                     sendMessage(user.Channel, user.User);
@@ -243,18 +243,17 @@ setInterval(async function () {
         if (user.Status !== 'Confirmed') return;
 
         /** @type { SQL.Streamers[] } */
-        const [stream] = await sql.Query('SELECT islive, username FROM Streamers WHERE username=?', [user.Channel.substring(1)]);
+        const [stream] = await sql.Query('SELECT islive, username FROM Streamers WHERE username=?', [user.Channel]);
         if (stream === null) return;
 
         await sql.Query('UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?', [null, null, null, user.User]);
 
         const channel = channelFromMode(user);
-
         const isDisabled = await commandDisabled('cookie', stream.username);
         if (isDisabled) {
-            sendMessage(channel, user.User, `- This reminder is from a channel that has disabled cookie reminders[${user.Channel.replace('#', '')}]`);
+            sendMessage(channel, user.User, `- This reminder is from a channel that has disabled cookie reminders[${user.Channel}]`);
         } else if (stream.islive) {
-            sendMessage(channel, user.User, `- This reminder is from a channel that is live[${user.Channel.replace('#', '')}]`);
+            sendMessage(channel, user.User, `- This reminder is from a channel that is live[${user.Channel}]`);
         } else {
             if (user.Mode === positive_bot.CONSTANTS.MODES.whereAte) {
                 sendMessage(user.Channel, user.User);

@@ -46,13 +46,14 @@ let oldmessage = '';
 let userList = [];
 
 /**
- * @param { String } channel - #channel 
+ * @param { String } channel - channel 
  * @param { import('tmi.js').ChatUserstate } user 
  * @param { String } msg 
  * @param { boolean } self 
  * @returns 
  */
 async function onMessageHandler(channel, user, msg, self) {
+	channel = channel.replace('#', '');
 	let start = new Date().getTime();
 	msg = msg.replaceAll(regex.invisChar, '');
 	msg = msg.replaceAll('  ', '');
@@ -65,7 +66,7 @@ async function onMessageHandler(channel, user, msg, self) {
      }*/
     //Temp exception for xqc's chat, since I want to test perfomance without the bot being able to respond there
 
-	if (channel === '#pajlada' && user['user-id'] == 82008718 && msg === 'pajaS 🚨 ALERT') {
+	if (channel === 'pajlada' && user['user-id'] == 82008718 && msg === 'pajaS 🚨 ALERT') {
 		cc.say(channel, '/me pajaLada 🚨 WHAT HAPPENED');
 		return;
 	}
@@ -74,7 +75,7 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
-	const offlineonly = await sql.Query('SELECT * FROM Streamers WHERE username=?', [channel.substring(1)]);
+	const offlineonly = await sql.Query('SELECT * FROM Streamers WHERE username=?', [channel]);
 
 	if (offlineonly[0].offlineonly === 1 && offlineonly[0].islive === 1 && !tools.isMod(user, channel)) {
 		return;
@@ -208,7 +209,7 @@ async function onMessageHandler(channel, user, msg, self) {
             const cookie = await positive_bot.cookie.allowedCookie(channel, user, input);
             if (cookie.Status === '') return; 
 
-            const res = await positive_bot.cookie.setCookie(cookie.Status, cookie.User, channel.replace('#', ''), cookie.time, cookie.hasCdr);
+            const res = await positive_bot.cookie.setCookie(cookie.Status, cookie.User, channel, cookie.time, cookie.hasCdr);
             if (res.msg === '') return;
 
             new messageHandler(channel, res).newMessage();
@@ -280,7 +281,7 @@ async function onMessageHandler(channel, user, msg, self) {
     SELECT disabled_commands
     FROM Streamers
     WHERE username=?`,
-	[channel.substring(1)]);
+	[channel]);
 
 	disabledCheck = JSON.parse(disabledCheck[0].disabled_commands);
 
@@ -313,9 +314,6 @@ async function onMessageHandler(channel, user, msg, self) {
 	const userCD = new tools.Cooldown(user, realcommand, commandCD);
 
 	if ((await userCD.setCooldown()).length) { return; }
-
-	let realchannel = channel.substring(1);
-
 
 	if (realcommand === 'hint' && activetrivia[channel] && gothint[channel] === false) {
 		if (triviaHints2[channel] !== undefined && gothint2[channel] !== 1) {
@@ -394,27 +392,27 @@ async function onMessageHandler(channel, user, msg, self) {
 			new messageHandler(channel, 'There is already an active trivia').newMessage();
 			return;
 		}
-		const isLive = await sql.Query('SELECT islive FROM Streamers WHERE username=?', [realchannel]);
+		const isLive = await sql.Query('SELECT islive FROM Streamers WHERE username=?', [channel]);
 		if (isLive[0].islive === 1) {
 			return;
 		}
 
 		// Get cooldown from database.
-		let cd = await sql.Query('SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?', [realchannel]);
+		let cd = await sql.Query('SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?', [channel]);
 
 		// Set trivia cooldown if not set.
 		if (cd[0].trivia_cooldowns === null) {
 			cd[0].trivia_cooldowns === 30000;
-			sql.Query('UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?', [realchannel]);
+			sql.Query('UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?', [channel]);
 		}
 
-		const triviaCD = new tools.Cooldown(realchannel, realcommand, cd[0].trivia_cooldowns);
+		const triviaCD = new tools.Cooldown(channel, realcommand, cd[0].trivia_cooldowns);
 
 		if ((await triviaCD.setCooldown()).length && !tools.isMod(user, channel)) {
 			new messageHandler(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
 			return;
 		}
-		let result = await commands[realcommand].execute(realchannel, user, input, perm);
+		let result = await commands[realcommand].execute(channel, user, input, perm);
 
 		if (!result) {
 			return;
@@ -450,28 +448,28 @@ async function onMessageHandler(channel, user, msg, self) {
 			new messageHandler(channel, 'There is already an active trivia').newMessage();
 			return;
 		}
-		const isLive = await sql.Query('SELECT islive FROM Streamers WHERE username=?', [realchannel]);
+		const isLive = await sql.Query('SELECT islive FROM Streamers WHERE username=?', [channel]);
 		if (isLive[0].islive === 1) {
 			return;
 		}
 
 		// Get cooldown from database.
-		let cd = await sql.Query('SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?', [realchannel]);
+		let cd = await sql.Query('SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?', [channel]);
 
 		// Set trivia cooldown if not set.
 		if (cd[0].trivia_cooldowns === null) {
 			cd[0].trivia_cooldowns === 30000;
-			sql.Query('UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?', [realchannel]);
+			sql.Query('UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?', [channel]);
 		}
 
-		const triviaCD = new tools.Cooldown(realchannel, realcommand, cd[0].trivia_cooldowns);
+		const triviaCD = new tools.Cooldown(channel, realcommand, cd[0].trivia_cooldowns);
 
 		if ((await triviaCD.setCooldown()).length && !tools.isMod(user, channel)) {
 			new messageHandler(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
 			return;
 		}
 
-		let result = await commands[realcommand].execute(realchannel, user, input, perm);
+		let result = await commands[realcommand].execute(channel, user, input, perm);
 		if (result[0] === 'F') {
 			result = ['(Trivia) [ FeelsDankMan ] Question: nymnDank Something went wrong!?!', 'LULE WHO MADE THIS', 'This bot is so bad LuL', 'MegaLUL @hotbear1110'];
 		}
@@ -508,7 +506,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
 	}
 
-	let result = await commands[realcommand].execute(realchannel, user, input, perm, aliascommand);
+	let result = await commands[realcommand].execute(channel, user, input, perm, aliascommand);
 
 
 	if (!result) {

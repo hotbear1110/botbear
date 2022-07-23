@@ -87,7 +87,7 @@ app.post('/eventsub', async function (req, res) {
 					if (!disabledCommands.includes('notify') || proxychannel === 'botbear1110') {
 						if (titleusers.length) {
 							titleuserlist.forEach(function (msg, i) {
-								new messageHandler(`#${proxychannel}`, `/me ${streamers[0].titleemote} NEW TITLE ! ${streamers[0].titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`, true).newMessage();
+								new messageHandler(`${proxychannel}`, `/me ${streamers[0].titleemote} NEW TITLE ! ${streamers[0].titleemote} 👉 ${newTitle} 👉 ${titleuserlist[i]}`, true).newMessage();
 							});
 						}
 					}
@@ -109,7 +109,7 @@ app.post('/eventsub', async function (req, res) {
 					if (!disabledCommands.includes('notify') || proxychannel === 'botbear1110') {
 						if (gameusers.length) {
 							gameuserlist.forEach(function (msg, i) {
-								new messageHandler(`#${proxychannel}`, `/me ${streamers[0].gameemote} NEW GAME ! ${streamers[0].gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`, true).newMessage();
+								new messageHandler(`${proxychannel}`, `/me ${streamers[0].gameemote} NEW GAME ! ${streamers[0].gameemote} 👉 ${newGame} 👉 ${gameuserlist[i]}`, true).newMessage();
 							});
 						}
 					}
@@ -140,7 +140,7 @@ app.post('/eventsub', async function (req, res) {
 				if (!disabledCommands.includes('notify') || proxychannel === 'botbear1110') {
 					if (users.length) {
 						userlist.forEach(function (msg, i) {
-							new messageHandler(`#${proxychannel}`, `/me ${streamers[0].liveemote} ${streamers[0].username[0].toUpperCase()}\u{E0000}${streamers[0].username.toUpperCase().slice(1)} IS NOW LIVE ${streamers[0].liveemote} ${userlist[i]}`, true).newMessage();
+							new messageHandler(`${proxychannel}`, `/me ${streamers[0].liveemote} ${streamers[0].username[0].toUpperCase()}\u{E0000}${streamers[0].username.toUpperCase().slice(1)} IS NOW LIVE ${streamers[0].liveemote} ${userlist[i]}`, true).newMessage();
 						});
 					}
 				}
@@ -170,7 +170,7 @@ app.post('/eventsub', async function (req, res) {
 				if (!disabledCommands.includes('notify') || proxychannel === 'botbear1110') {
 					if (users.length) {
 						userlist.forEach(function (msg, i) {
-							new messageHandler(`#${proxychannel}`, `/me ${streamers[0].offlineemote} ${streamers[0].username[0].toUpperCase()}\u{E0000}${streamers[0].username.toUpperCase().slice(1)} IS NOW OFFLINE ${streamers[0].offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`, true).newMessage();
+							new messageHandler(`${proxychannel}`, `/me ${streamers[0].offlineemote} ${streamers[0].username[0].toUpperCase()}\u{E0000}${streamers[0].username.toUpperCase().slice(1)} IS NOW OFFLINE ${streamers[0].offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`, true).newMessage();
 						});
 					}
 				}
