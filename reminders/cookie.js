@@ -30,8 +30,8 @@ const CONSTANTS = require('./constants.js');
         return false;
     }
 
-    if (input[0] !== '[Cookies]' && 
-        ['rankup', 'you are currently rank'].includes([...input])) {
+    if (input[0] !== '[Cookies]' || 
+            input.join(' ').includes('rankup', 'you are currently rank')) {
         return false;
     }
 
@@ -44,7 +44,7 @@ const CONSTANTS = require('./constants.js');
  * @param { String[] } input 
  * @returns { Promise<{ Status: CookieStatus, User: String, hasCdr: boolean, time?: string }> }
  */
-exports.allowedCookie = async (channel, user, input) => {
+exports.allowedCookie = async (channel, input) => {
     if (input[3] === 'Leaderboard') return { Status: '', User: '', hasCdr: false };
 
     if (await commandDisabled('cookie', channel)) return { Status: '', User: '', hasCdr: false };
@@ -62,7 +62,6 @@ exports.allowedCookie = async (channel, user, input) => {
                             OR User = ?
                             OR User = ?`, 
         [input[3], input[2], input[1].replace(',', '')]);
-
     if (!users) return { Status: '', User: '', hasCdr: false };
 
     const realuser = users.User;
@@ -108,7 +107,7 @@ exports.allowedCookie = async (channel, user, input) => {
             Channel = ?,
             RemindTime = ?,
         WHERE User = ?
-    `, [response, channel, remindtime, user]);
+    `, [response, channel, remindtime, realuser]);
 
     return { Status: response, User: realuser, hasCdr: cdr };
 };
@@ -121,7 +120,6 @@ exports.allowedCookie = async (channel, user, input) => {
  * @returns { Promise<{Channel: String, msg: String}> }
  */
 exports.setCookie = async (status, user, channel, remindtime, cdr) => {
-
     /** @type { SQL.Cookies[] } */
     let [checkmode] = await sql.Query('SELECT Mode FROM Cookies WHERE User=?', [user]);
     if (checkmode === null) return { Channel: '', msg: '' };
@@ -131,8 +129,9 @@ exports.setCookie = async (status, user, channel, remindtime, cdr) => {
     const sendMessage = (user, msg) => `${user} ${msg}`;
     const cdrSendMessage = (user, msg) => `${user} ${msg} (You have a cdr ready!)`;
     const disabledSendMessage = (user, msg) => `${user} ${msg} - (The channel you ate your cookie in has reminders turned off)`;
-    
-    if (commandDisabled('cookie', channel)) {
+
+    if (await commandDisabled('cookie', channel)) {
+
         if (checkmode.Mode !== CONSTANTS.MODES.whereAte) return;
         
         switch (status) {
@@ -152,7 +151,6 @@ exports.setCookie = async (status, user, channel, remindtime, cdr) => {
             }
         }
     }
-    
     switch (status) {
         case 'Confirmed': {
             if (cdr) {

@@ -206,7 +206,7 @@ async function onMessageHandler(channel, user, msg, self) {
         const mode = positive_bot.CONSTANTS.MODES;
 
         if (positive_bot.cookie.validateIsPositiveBot(user, input)) {
-            const cookie = await positive_bot.cookie.allowedCookie(channel, user, input);
+            const cookie = await positive_bot.cookie.allowedCookie(channel, input);
             if (cookie.Status === '') return; 
 
             const res = await positive_bot.cookie.setCookie(cookie.Status, cookie.User, channel, cookie.time, cookie.hasCdr);

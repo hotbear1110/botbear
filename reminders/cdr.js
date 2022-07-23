@@ -3,7 +3,7 @@ const CONSTANTS = require('./constants');
 
 exports.validateIsPositiveBot = (input, user) => {
     if (user['user-id'] !== CONSTANTS.POSITIVE_BOT) return false;
-    if ([...input].includes('your cooldown has been reset!')) return false;
+    if (!input.join(' ').includes('your cooldown has been reset!')) return false;
     return true;
 };
 

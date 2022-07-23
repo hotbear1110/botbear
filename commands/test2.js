@@ -1,5 +1,4 @@
 require('dotenv').config();
-const got = require('got');
 const sql = require('./../sql/index.js');
 
 module.exports = {
@@ -13,19 +12,13 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			const userlist = await sql.Query('SELECT username FROM MyPoints');
-			for (const realuser of userlist) {
-				let userchannel = [];
-				userchannel.push(`"${JSON.parse(realuser.username)[0]}"`);
-				userchannel.push(`"${JSON.parse(realuser.username)[1].replace('#', '')}"`);
-
-				let olduserchannel = [];
-				olduserchannel.push(`"${JSON.parse(realuser.username)[0]}"`);
-				olduserchannel.push(`"${JSON.parse(realuser.username)[1]}"`);
-				await sql.Query('UPDATE MyPoints SET username=? WHERE username=?', [`[${userchannel}]`, `[${olduserchannel}]`]);
-				console.log(olduserchannel);
-			}
-
+			let [bigtest] = await sql.Query(`SELECT RemindTime, Status, User
+                        FROM Cdr 
+                        WHERE User = ? 
+                            OR User = ?
+                            OR User = ?`, 
+        [input[3], input[2], input[1].replace(',', '')]);
+		console.log(bigtest);
 			return 'Okayge done';
 		} catch (err) {
 			console.log(err);
