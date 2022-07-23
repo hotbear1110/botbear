@@ -1,5 +1,5 @@
 const sql = require('../sql/index.js');
-const { CONSTANTS } = require('./constants');
+const CONSTANTS = require('./constants');
 
 exports.validateIsPositiveBot = (input, user) => {
     if (user['user-id'] !== CONSTANTS.POSITIVE_BOT) return false;

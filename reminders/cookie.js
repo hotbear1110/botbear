@@ -26,7 +26,7 @@ const CONSTANTS = require('./constants.js');
  * @returns { boolean }
  */
  exports.validateIsPositiveBot = (user, input) => {
-    if (user['user-id'] !== exports.CONSTANTS.POSITIVE_BOT) {
+    if (user['user-id'] !== CONSTANTS.POSITIVE_BOT) {
         return false;
     }
 

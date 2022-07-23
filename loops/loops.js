@@ -205,13 +205,12 @@ setInterval(async function () {
     /** @type { SQL.Cookies[] } */
 	(await sql.Query('SELECT * FROM Cookies'))
         .map(async (user) => {
-            if (user.RemindTime === null || user.RemindTime < Time) return;
-            if (user.Status !== 'Confirmed' || user.Status !== 'Confirmed2') return;
+            if (user.RemindTime === null || user.RemindTime > Time) return;
+            if (user.Status !== 'Confirmed' && user.Status !== 'Confirmed2') return;
 
             /** @type { SQL.Streamers[] } */
             const [stream] = await sql.Query('SELECT islive, username FROM Streamers WHERE username=?', [user.Channel]);
-            if (stream === null) return;
-
+			if (stream === null) return;
             await sql.Query('UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?', [null, null, null, user.User]);
 
             const channel = channelFromMode(user);
@@ -239,7 +238,7 @@ setInterval(async function () {
     /** @type { SQL.Cookies[] } */
     (await sql.Query('SELECT * FROM Cdr'))
     .map(async(user) => {
-        if (user.RemindTime === null || user.RemindTime < time) return;
+        if (user.RemindTime === null || user.RemindTime > time) return;
         if (user.Status !== 'Confirmed') return;
 
         /** @type { SQL.Streamers[] } */
