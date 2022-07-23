@@ -51,8 +51,8 @@ module.exports = {
                                     .replace(URL, '$1[DOMAIN]$3$4$5');
 
 
-				if (activetrivia[`#${channel}`]) {
-					let triviaRegex = new RegExp(triviaanswer[`#${channel}`], 'gi');
+				if (activetrivia[`${channel}`]) {
+					let triviaRegex = new RegExp(triviaanswer[`${channel}`], 'gi');
 
 					if (triviaRegex.exec(output)) {
 						return 'forsenCD this reply contains the answer to the current trivia';

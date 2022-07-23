@@ -5,6 +5,7 @@ const tools = require('./tools/tools.js');
 const regex = require('./tools/regex.js');
 const requireDir = require('require-dir');
 const sql = require('./sql/index.js');
+const positive_bot = require('./reminders/index.js');
 let messageHandler = require('./tools/messageHandler.js').messageHandler;
 
 const cc = new tmi.client(login.TMISettings);
@@ -44,7 +45,15 @@ let oldmessage = '';
 // eslint-disable-next-line no-unused-vars
 let userList = [];
 
+/**
+ * @param { String } channel - channel 
+ * @param { import('tmi.js').ChatUserstate } user 
+ * @param { String } msg 
+ * @param { boolean } self 
+ * @returns 
+ */
 async function onMessageHandler(channel, user, msg, self) {
+	channel = channel.replace('#', '');
 	let start = new Date().getTime();
 	msg = msg.replaceAll(regex.invisChar, '');
 	msg = msg.replaceAll('  ', '');
@@ -57,7 +66,7 @@ async function onMessageHandler(channel, user, msg, self) {
      }*/
     //Temp exception for xqc's chat, since I want to test perfomance without the bot being able to respond there
 
-	if (channel === '#pajlada' && user['user-id'] == 82008718 && msg === 'pajaS 🚨 ALERT') {
+	if (channel === 'pajlada' && user['user-id'] == 82008718 && msg === 'pajaS 🚨 ALERT') {
 		cc.say(channel, '/me pajaLada 🚨 WHAT HAPPENED');
 		return;
 	}
@@ -66,7 +75,7 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
-	const offlineonly = await sql.Query('SELECT * FROM Streamers WHERE username=?', [channel.substring(1)]);
+	const offlineonly = await sql.Query('SELECT * FROM Streamers WHERE username=?', [channel]);
 
 	if (offlineonly[0].offlineonly === 1 && offlineonly[0].islive === 1 && !tools.isMod(user, channel)) {
 		return;
@@ -192,127 +201,53 @@ async function onMessageHandler(channel, user, msg, self) {
     }*/
     input = input.filter(e => e);
 
-	if (input[0] === '[Cookies]' && user['user-id'] == 425363834 && !msg.includes('rankup') && !msg.includes('you are currently rank')) {
-		const stream = await sql.Query('SELECT disabled_commands FROM Streamers WHERE username=?', [channel.substring(1)]);
+    /* Positivebot cookies & cdr */
+    {
+        const mode = positive_bot.CONSTANTS.MODES;
 
-		let disabledCommands = JSON.parse(stream[0].disabled_commands);
+        if (positive_bot.cookie.validateIsPositiveBot(user, input)) {
+            const cookie = await positive_bot.cookie.allowedCookie(channel, user, input);
+            if (cookie.Status === '') return; 
 
-		const cookieStatus = await tools.cookies(user, input, channel);
-		let checkmode = await sql.Query('SELECT Mode FROM Cookies WHERE User=?', [cookieStatus[1]]);
+            const res = await positive_bot.cookie.setCookie(cookie.Status, cookie.User, channel, cookie.time, cookie.hasCdr);
+            if (res.msg === '') return;
 
-		if (!checkmode.length) {
-			return;
-		}
-		if (disabledCommands.includes('cookie') && checkmode[0].Mode === 0 && cookieStatus[0] === 'Confirmed') {
-			if (cookieStatus[3] === 'yes') {
-				new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!) - (The channel you ate your cookie in has reminders turned off)`).newMessage();
-
-			} else {
-				new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay - (The channel you ate your cookie in has reminders turned off)`).newMessage();
-
-			}
-			return;
-		}
-		if (disabledCommands.includes('cookie') && checkmode[0].Mode === 0 && cookieStatus[0] === 'Confirmed2') {
-			new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay - (The channel you ate your cookie in has reminders turned off)`).newMessage();
-
-			return;
-		}
-
-		if (disabledCommands.includes('cookie') && checkmode[0].Mode === 0 && cookieStatus[0] === 'CD') {
-			new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} Your cookie is still on cooldown, it will be available in ${cookieStatus[3]} - (The channel you tried to eat your cookie in has reminders turned off)`).newMessage();
-
-			return;
-		}
-
-		if (cookieStatus[0] === 'Confirmed' && checkmode[0].Mode === 0) {
-			if (cookieStatus[3] === 'yes') {
-				new messageHandler(cookieStatus[2], `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!)`).newMessage();
-				return;
-
-			} else {
-				new messageHandler(cookieStatus[2], `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
-
-			}
-		} else if (cookieStatus[0] === 'Confirmed' && checkmode[0].Mode === 1) {
-			if (cookieStatus[3] === 'yes') {
-				new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!)`).newMessage();
-				return;
-
-			} else {
-				new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
-				return;
-
-			}
-		} else if (cookieStatus[0] === 'Confirmed' && checkmode[0].Mode === 2) {
-			if (cookieStatus[3] === 'yes') {
-				new messageHandler('#botbear1110', `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!)`).newMessage();
-				return;
-
-			} else {
-				new messageHandler('#botbear1110', `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
-				return;
-
-			}
-		}
-
-		if (cookieStatus[0] === 'Confirmed2' && checkmode[0].Mode === 0) {
-			new messageHandler(cookieStatus[2], `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
-			return;
-
-		} else if (cookieStatus[0] === 'Confirmed2' && checkmode[0].Mode === 1) {
-			new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
-			return;
-
-		} else if (cookieStatus[0] === 'Confirmed2' && checkmode[0].Mode === 2) {
-			new messageHandler('#botbear1110', `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`).newMessage();
-			return;
-
-		}
-
-		if (cookieStatus[0] === 'CD' && checkmode[0].Mode === 0) {
-			new messageHandler(cookieStatus[2], `${cookieStatus[1]} Your cookie is still on cooldown, it will be available in ${cookieStatus[3]}`).newMessage();
-			return;
-
-		} else if (cookieStatus[0] === 'CD' && checkmode[0].Mode === 1) {
-			new messageHandler(`#${cookieStatus[1]}`, `${cookieStatus[1]} Your cookie is still on cooldown, it will be available in ${cookieStatus[3]}`).newMessage();
-			return;
-
-		} else if (cookieStatus[0] === 'CD' && checkmode[0].Mode === 2) {
-			new messageHandler('#botbear1110', `${cookieStatus[1]} Your cookie is still on cooldown, it will be available in ${cookieStatus[3]}`).newMessage();
-			return;
-
-		}
-
-	}
-
-	if (msg.includes('your cooldown has been reset!') && user['user-id'] == 425363834) {
-		const stream = await sql.Query('SELECT disabled_commands FROM Streamers WHERE username=?', [channel.substring(1)]);
-
-		let disabledCommands = JSON.parse(stream[0].disabled_commands);
-
-		const cdrStatus = await tools.cdr(user, input, channel);
-		let checkmode = await sql.Query('SELECT Mode FROM Cookies WHERE User=?', [cdrStatus[1]]);
-
-		if (disabledCommands.includes('cdr') && cdrStatus[0] === 'Confirmed' && checkmode[0].Mode === 0) {
-			new messageHandler(`#${cdrStatus[1]}`, `${cdrStatus[1]} I will remind you to use your cdr in 3 hours nymnOkay - (The channel you used your cdr in has reminders disabled)`).newMessage();
-			return;
-		}
-
-		if (cdrStatus[0] === 'Confirmed' && checkmode[0].Mode === 0) {
-			new messageHandler(cdrStatus[2], `${cdrStatus[1]} I will remind you to use your cdr in 3 hours nymnOkay`).newMessage();
-			return;
-
-		} else if (cdrStatus[0] === 'Confirmed' && checkmode[0].Mode === 1) {
-			new messageHandler(`#${cdrStatus[1]}`, `${cdrStatus[1]} I will remind you to use your cdr in 3 hours nymnOkay`).newMessage();
-			return;
-
-		} else if (cdrStatus[0] === 'Confirmed' && checkmode[0].Mode === 2) {
-			new messageHandler('#botbear1110', `${cdrStatus[1]} I will remind you to use your cdr in 3 hours nymnOkay`).newMessage();
-			return;
-
-		}
-	}
+            new messageHandler(channel, res).newMessage();
+        }
+        else if (positive_bot.cdr.validateIsPositiveBot(user, input)) {
+            const status = await positive_bot.cdr.setCdr(input, channel);
+            const message = (dst, prefix = '', suffix = '') => new messageHandler(dst, `${prefix} I will remind you to use your cdr in 3 hours nymnOkay ${suffix}`).newMessage();
+        
+            /** @type { SQL.Cookies[] } */
+            let [checkmode] = await sql.Query('SELECT Mode FROM Cookies WHERE User=?', [status.User]);
+            if (!checkmode) return;
+        
+            if (await tools.commandDisabled(channel, 'cdr')) {
+                if (status.Status === 'Confirmed' && checkmode.Mode === mode.whereAte) {
+                    message(channel, status.User, '- (The channel you used your cdr in has reminders disabled)');
+                    return;
+                }
+            } else if (status.Status === 'Confirmed') {
+                switch (checkmode.Mode) {
+                    case mode.whereAte: {
+                        message(channel, status.User);
+                        return;
+                    }
+                    case mode.ownChannel: {
+                        message(status.User, status.User);
+                        return;
+                    }
+                    case mode.botChannel: {
+                        message('#botbear1110', status.User);
+                        return;
+                    }
+                    default: {
+                        return;
+                    }
+                }
+            }
+        }
+    }
 
 	if (input[0] === undefined) {
 		return;
@@ -346,7 +281,7 @@ async function onMessageHandler(channel, user, msg, self) {
     SELECT disabled_commands
     FROM Streamers
     WHERE username=?`,
-	[channel.substring(1)]);
+	[channel]);
 
 	disabledCheck = JSON.parse(disabledCheck[0].disabled_commands);
 
@@ -379,9 +314,6 @@ async function onMessageHandler(channel, user, msg, self) {
 	const userCD = new tools.Cooldown(user, realcommand, commandCD);
 
 	if ((await userCD.setCooldown()).length) { return; }
-
-	let realchannel = channel.substring(1);
-
 
 	if (realcommand === 'hint' && activetrivia[channel] && gothint[channel] === false) {
 		if (triviaHints2[channel] !== undefined && gothint2[channel] !== 1) {
@@ -460,27 +392,27 @@ async function onMessageHandler(channel, user, msg, self) {
 			new messageHandler(channel, 'There is already an active trivia').newMessage();
 			return;
 		}
-		const isLive = await sql.Query('SELECT islive FROM Streamers WHERE username=?', [realchannel]);
+		const isLive = await sql.Query('SELECT islive FROM Streamers WHERE username=?', [channel]);
 		if (isLive[0].islive === 1) {
 			return;
 		}
 
 		// Get cooldown from database.
-		let cd = await sql.Query('SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?', [realchannel]);
+		let cd = await sql.Query('SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?', [channel]);
 
 		// Set trivia cooldown if not set.
 		if (cd[0].trivia_cooldowns === null) {
 			cd[0].trivia_cooldowns === 30000;
-			sql.Query('UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?', [realchannel]);
+			sql.Query('UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?', [channel]);
 		}
 
-		const triviaCD = new tools.Cooldown(realchannel, realcommand, cd[0].trivia_cooldowns);
+		const triviaCD = new tools.Cooldown(channel, realcommand, cd[0].trivia_cooldowns);
 
 		if ((await triviaCD.setCooldown()).length && !tools.isMod(user, channel)) {
 			new messageHandler(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
 			return;
 		}
-		let result = await commands[realcommand].execute(realchannel, user, input, perm);
+		let result = await commands[realcommand].execute(channel, user, input, perm);
 
 		if (!result) {
 			return;
@@ -516,28 +448,28 @@ async function onMessageHandler(channel, user, msg, self) {
 			new messageHandler(channel, 'There is already an active trivia').newMessage();
 			return;
 		}
-		const isLive = await sql.Query('SELECT islive FROM Streamers WHERE username=?', [realchannel]);
+		const isLive = await sql.Query('SELECT islive FROM Streamers WHERE username=?', [channel]);
 		if (isLive[0].islive === 1) {
 			return;
 		}
 
 		// Get cooldown from database.
-		let cd = await sql.Query('SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?', [realchannel]);
+		let cd = await sql.Query('SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?', [channel]);
 
 		// Set trivia cooldown if not set.
 		if (cd[0].trivia_cooldowns === null) {
 			cd[0].trivia_cooldowns === 30000;
-			sql.Query('UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?', [realchannel]);
+			sql.Query('UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?', [channel]);
 		}
 
-		const triviaCD = new tools.Cooldown(realchannel, realcommand, cd[0].trivia_cooldowns);
+		const triviaCD = new tools.Cooldown(channel, realcommand, cd[0].trivia_cooldowns);
 
 		if ((await triviaCD.setCooldown()).length && !tools.isMod(user, channel)) {
 			new messageHandler(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
 			return;
 		}
 
-		let result = await commands[realcommand].execute(realchannel, user, input, perm);
+		let result = await commands[realcommand].execute(channel, user, input, perm);
 		if (result[0] === 'F') {
 			result = ['(Trivia) [ FeelsDankMan ] Question: nymnDank Something went wrong!?!', 'LULE WHO MADE THIS', 'This bot is so bad LuL', 'MegaLUL @hotbear1110'];
 		}
@@ -574,7 +506,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
 	}
 
-	let result = await commands[realcommand].execute(realchannel, user, input, perm, aliascommand);
+	let result = await commands[realcommand].execute(channel, user, input, perm, aliascommand);
 
 
 	if (!result) {

@@ -1,5 +1,6 @@
 require('dotenv').config();
 const got = require('got');
+const sql = require('./../sql/index.js');
 
 module.exports = {
 	name: 'test2',
@@ -12,30 +13,20 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			let allsubs = [];
-			let haspagnation = true;
-			let pagnation = '';
-			while (haspagnation) {
-				let subs = await got(`https://api.twitch.tv/helix/eventsub/subscriptions?after=${pagnation}`, {
-					headers: {
-						'client-id': process.env.TWITCH_CLIENTID,
-						'Authorization': process.env.TWITCH_AUTH
-					}
-				});
-				subs = JSON.parse(subs.body);
-				if (subs.pagination.cursor) {
-					pagnation = subs.pagination.cursor;
-				} else {
-					haspagnation = false;
-				}
-				subs = subs.data;
-				allsubs = allsubs.concat(subs);
+			const userlist = await sql.Query('SELECT username FROM MyPoints');
+			for (const realuser of userlist) {
+				let userchannel = [];
+				userchannel.push(`"${JSON.parse(realuser.username)[0]}"`);
+				userchannel.push(`"${JSON.parse(realuser.username)[1].replace('#', '')}"`);
+
+				let olduserchannel = [];
+				olduserchannel.push(`"${JSON.parse(realuser.username)[0]}"`);
+				olduserchannel.push(`"${JSON.parse(realuser.username)[1]}"`);
+				await sql.Query('UPDATE MyPoints SET username=? WHERE username=?', [`[${userchannel}]`, `[${olduserchannel}]`]);
+				console.log(olduserchannel);
 			}
 
-			console.log(allsubs.length);
-			let realsubs = allsubs.filter(x => x.condition.broadcaster_user_id === '135186096');
-			console.log(realsubs);
-			return;
+			return 'Okayge done';
 		} catch (err) {
 			console.log(err);
 			return `FeelsDankMan Sql error: ${err.sqlMessage}`;

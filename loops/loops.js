@@ -3,6 +3,8 @@ const _ = require('underscore');
 const got = require('got');
 let messageHandler = require('../tools/messageHandler.js').messageHandler;
 const sql = require('./../sql/index.js');
+const { commandDisabled } = require('../tools/tools.js');
+const positive_bot = require('./../reminders/index.js');
 
 function sleep(milliseconds) {
 	var start = new Date().getTime();
@@ -19,7 +21,6 @@ setInterval(async function () {
 	const streamers = await sql.Query('SELECT * FROM Streamers');
 
 	for (const streamer of streamers) {
-
 			let Emote_list = JSON.parse(streamer.emote_list);
 			let Emote_removed = JSON.parse(streamer.emote_removed);
 			let noFFZ = 0;
@@ -197,108 +198,70 @@ setInterval(async function () {
 
 /** TODO Refactor */
 setInterval(async function () {
-	const users = await sql.Query('SELECT * FROM Cookies');
-	let Time = new Date().getTime();
+    const Time = new Date().getTime();
+    
+    const sendMessage = (dst, user, suffix = '') => new messageHandler(dst, `${user} Reminder to eat your cookie nymnOkay ${suffix}`).newMessage();
+    
+    /** @type { SQL.Cookies[] } */
+	(await sql.Query('SELECT * FROM Cookies'))
+        .map(async (user) => {
+            if (user.RemindTime === null || user.RemindTime > Time) return;
+            if (user.Status !== 'Confirmed' && user.Status !== 'Confirmed2') return;
 
-	for (const User of users) {
-		if (User.RemindTime !== null && User.RemindTime < Time) {
-			if (User.Status === 'Confirmed' || User.Status === 'Confirmed2') {
-				const stream = await sql.Query('SELECT * FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
-				let disabledCommands = '';
-				try {
-					disabledCommands = JSON.parse(stream[0].disabled_commands);
-				} catch (arr) {
-					console.log(User);
-					console.log(stream);
-				}
+            /** @type { SQL.Streamers[] } */
+            const [stream] = await sql.Query('SELECT islive, username FROM Streamers WHERE username=?', [user.Channel]);
+			if (stream === null) return;
+            await sql.Query('UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?', [null, null, null, user.User]);
 
-				await sql.Query('UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?', [null, null, null, User.User]);
-				if (User.Mode === 0) {
-					if (disabledCommands.includes('cookie')) {
-						new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
-
-					} else if (stream[0].islive === 1) {
-						new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
-
-					} else {
-						new messageHandler(User.Channel, `${User.User} Reminder to eat your cookie nymnOkay`).newMessage();
-					}
-
-				} else if (User.Mode === 1) {
-					if (disabledCommands.includes('cookie')) {
-						new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
-
-					} else if (stream[0].islive === 1) {
-						new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
-
-					} else {
-						new messageHandler(`#${User.User}`, `${User.User} Reminder to eat your cookie nymnOkay`).newMessage();
-
-					}
-				} else if (User.Mode === 2) {
-					if (disabledCommands.includes('cookie')) {
-						new messageHandler('#botbear1110', `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
-
-					} else if (stream[0].islive === 1) {
-						new messageHandler('#botbear1110', `${User.User} Reminder to eat your cookie nymnOkay - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
-
-					} else {
-						new messageHandler('#botbear1110', `${User.User} Reminder to eat your cookie nymnOkay`).newMessage();
-					}
-				}
-			}
-		}
-	}
-
+            const channel = channelFromMode(user);
+            
+            const isDisabled = await commandDisabled('cookie', stream.username);
+            if (isDisabled) {
+                sendMessage(channel, user.User, `- This reminder is from a channel that has disabled cookie reminders[${user.Channel}]`);
+            } else if (stream.islive) {
+                sendMessage(channel, user.User, `- This reminder is from a channel that is live[${user.Channel}]`);
+            } else {
+                if (user.Mode === positive_bot.CONSTANTS.MODES.whereAte) {
+                    sendMessage(user.Channel, user.User);
+                } else {
+                    sendMessage(channel, user.User);
+                }
+            }
+    });
 }, 10000);
 
 setInterval(async function () {
-	const users = await sql.Query('SELECT * FROM Cdr');
-	let Time = new Date().getTime();
+	const time = new Date().getTime();
 
-	for (const User of users) {
-		if (User.RemindTime !== null && User.RemindTime < Time && User.Status === 'Confirmed') {
-			const stream = await sql.Query('SELECT * FROM Streamers WHERE username=?', [User.Channel.substring(1)]);
-			let disabledCommands = JSON.parse(stream[0].disabled_commands);
+    const sendMessage = (dst, user, suffix = '') => new messageHandler(dst, `${user} Your cookie cdr is ready ${suffix}`).newMessage();
+    
+    /** @type { SQL.Cookies[] } */
+    (await sql.Query('SELECT * FROM Cdr'))
+    .map(async(user) => {
+        if (user.RemindTime === null || user.RemindTime > time) return;
+        if (user.Status !== 'Confirmed') return;
 
-			await sql.Query('UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?', [null, null, null, User.User]);
+        /** @type { SQL.Streamers[] } */
+        const [stream] = await sql.Query('SELECT islive, username FROM Streamers WHERE username=?', [user.Channel]);
+        if (stream === null) return;
 
-			if (User.Mode === 0) {
-				if (disabledCommands.includes('cdr')) {
-					new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
+        await sql.Query('UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?', [null, null, null, user.User]);
 
-				} else if (stream[0].islive === 1) {
-					new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
-
-				} else {
-					new messageHandler(User.Channel, `${User.User} Your cookie cdr is ready`).newMessage();
-				}
-
-			} else if (User.Mode === 1) {
-				if (disabledCommands.includes('cookie')) {
-					new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that has disabled cdr reminders[${User.Channel}]`).newMessage();
-
-				} else if (stream[0].islive === 1) {
-					new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
-
-				} else {
-					new messageHandler(`#${User.User}`, `${User.User} Your cookie cdr is ready`).newMessage();
-
-				}
-			} else if (User.Mode === 2) {
-				if (disabledCommands.includes('cdr')) {
-					new messageHandler('#botbear1110', `${User.User} Your cookie cdr is ready - This reminder is from a channel that has disabled cookie reminders[${User.Channel}]`).newMessage();
-
-				} else if (stream[0].islive === 1) {
-					new messageHandler('#botbear1110', `${User.User} Your cookie cdr is ready - This reminder is from a channel that is live[${User.Channel}]`).newMessage();
-
-				} else {
-					new messageHandler('#botbear1110', `${User.User} Your cookie cdr is ready`).newMessage();
-				}
-			}
-		}
-
-	}
+        const channel = channelFromMode(user);
+        const isDisabled = await commandDisabled('cookie', stream.username);
+        if (isDisabled) {
+            sendMessage(channel, user.User, `- This reminder is from a channel that has disabled cookie reminders[${user.Channel}]`);
+        } else if (stream.islive) {
+            sendMessage(channel, user.User, `- This reminder is from a channel that is live[${user.Channel}]`);
+        } else {
+            if (user.Mode === positive_bot.CONSTANTS.MODES.whereAte) {
+                sendMessage(user.Channel, user.User);
+            } else {
+                sendMessage(channel, user.User);
+            }
+        }
+        
+    });
 
 }, 10000);
 
@@ -312,3 +275,18 @@ setInterval(async function () {
 		console.log(err);
 	}
 }, 600000);
+
+/**
+ * @param { SQL.Cookies } user 
+ */
+ const channelFromMode = (user) => {
+    switch (user.Mode) {
+        case positive_bot.CONSTANTS.MODES.whereAte:
+        case positive_bot.CONSTANTS.MODES.ownChannel: {
+            return `#${user.User}`;
+        }
+        case positive_bot.CONSTANTS.MODES.botChannel: {
+            return '#botbear1110'; // TODO change this to a configurable channel ?
+        }
+    }
+};

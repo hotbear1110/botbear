@@ -43,7 +43,7 @@ module.exports = {
 
 				let userchannel = [];
 				userchannel.push(`"${username}"`);
-				userchannel.push(`"#${channel}"`);
+				userchannel.push(`"${channel}"`);
 				const User_trivia = await sql.Query('SELECT points FROM MyPoints WHERE username=?', [`[${userchannel}]`]);
 
 				if (!User_trivia.length) {
@@ -69,7 +69,7 @@ module.exports = {
 
 				for (const user of Trivia_leaderboard) {
 					let realuser = JSON.parse(user.username);
-					if (realuser[1] === `#${channel}`) {
+					if (realuser[1] === `${channel}`) {
 						leaderboard.push(`${realuser[0]}: ${user.points}`);
 					}
 				}
