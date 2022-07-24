@@ -287,10 +287,10 @@ setInterval(async function () {
     switch (user.Mode) {
         case positive_bot.CONSTANTS.MODES.whereAte:
         case positive_bot.CONSTANTS.MODES.ownChannel: {
-            return `#${user.User}`;
+            return `${user.User}`;
         }
         case positive_bot.CONSTANTS.MODES.botChannel: {
-            return '#botbear1110'; // TODO change this to a configurable channel ?
+            return 'botbear1110'; // TODO change this to a configurable channel ?
         }
     }
 };

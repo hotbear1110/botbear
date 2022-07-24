@@ -105,7 +105,7 @@ exports.allowedCookie = async (channel, input) => {
         UPDATE Cookies
         SET Status = ?,
             Channel = ?,
-            RemindTime = ?,
+            RemindTime = ?
         WHERE User = ?
     `, [response, channel, remindtime, realuser]);
 

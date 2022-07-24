@@ -29,6 +29,7 @@ exports.messageHandler = class Cooldown {
 		require('../bot.js').start;
 
 		if (process.env.TWITCH_USER === 'devbear1110' && this.channel !== 'hottestbear') {
+			console.log(`Channel: #${this.channel} - msg: ${this.message}`);
 			return;
 		}
 		if (this.channel === '#forsen') {
