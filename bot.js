@@ -239,7 +239,7 @@ async function onMessageHandler(channel, user, msg, self) {
                         return;
                     }
                     case mode.botChannel: {
-                        message('#botbear1110', status.User);
+                        message('botbear1110', status.User);
                         return;
                     }
                     default: {
