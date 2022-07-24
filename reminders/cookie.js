@@ -2,7 +2,6 @@ const got = require('got');
 const sql = require('../sql/index.js');
 const { commandDisabled, humanizeDuration } = require('./../tools/tools.js');
 const CONSTANTS = require('./constants.js');
-const tools = require('../tools/tools.js');
 
 /**
  * @typedef { Object } CooldownRes
@@ -83,7 +82,20 @@ exports.allowedCookie = async (channel, input) => {
                 
     /* Fetch data from PositiveBot api */
     if (msg.includes(CONSTANTS.ALREADY_CLAIMED)) {
-        let time_left = users.RemindTime - Date.now();
+        let time_left = '';
+        if (users.RemindTime === null) {
+            try {
+                /** @type { CooldownRes } */
+                let res = await got(CONSTANTS.API(`cooldown/${realuser}`)).json();
+                time_left = humanizeDuration(res.seconds_left * 1000);
+
+            } catch (e) {
+                console.log(`Error fetching cooldown for ${realuser} : ${e}`);
+                return { Status: '', User: '', hasCdr: false };
+            }
+        } else {
+            time_left = humanizeDuration(users.RemindTime - Date.now());
+        }
         if (cdr) {
             return { Status: 'CD', User: realuser, hasCdr: true, time: time_left };
         } else {
@@ -120,8 +132,6 @@ exports.setCookie = async (status, user, channel, remindtime, cdr) => {
     const sendMessage = (user, msg) => `${user} ${msg}`;
     const cdrSendMessage = (user, msg) => `${user} ${msg} (You have a cdr ready!)`;
     const disabledSendMessage = (user, msg) => `${user} ${msg} - (The channel you ate your cookie in has reminders turned off)`;
-
-    remindtime = tools.humanizeDuration(remindtime);
 
     if (await commandDisabled('cookie', channel)) {
 
