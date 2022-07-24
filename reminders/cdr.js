@@ -1,7 +1,7 @@
 const sql = require('../sql/index.js');
 const CONSTANTS = require('./constants');
 
-exports.validateIsPositiveBot = (input, user) => {
+exports.validateIsPositiveBot = (user, input) => {
     if (user['user-id'] !== CONSTANTS.POSITIVE_BOT) return false;
     if (!input.join(' ').includes('your cooldown has been reset!')) return false;
     return true;

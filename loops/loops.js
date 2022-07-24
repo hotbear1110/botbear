@@ -210,15 +210,17 @@ setInterval(async function () {
 
             /** @type { SQL.Streamers[] } */
             const [stream] = await sql.Query('SELECT islive, username FROM Streamers WHERE username=?', [user.Channel]);
-			if (stream === null) return;
             await sql.Query('UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?', [null, null, null, user.User]);
 
             const channel = channelFromMode(user);
             
-            const isDisabled = await commandDisabled('cookie', stream.username);
+            let isDisabled  = false;
+            if (stream !== null) {
+                isDisabled = await commandDisabled('cookie', stream.username);
+            }
             if (isDisabled) {
                 sendMessage(channel, user.User, `- This reminder is from a channel that has disabled cookie reminders[${user.Channel}]`);
-            } else if (stream.islive) {
+            } else if (stream?.islive) {
                 sendMessage(channel, user.User, `- This reminder is from a channel that is live[${user.Channel}]`);
             } else {
                 if (user.Mode === positive_bot.CONSTANTS.MODES.whereAte) {
@@ -243,12 +245,14 @@ setInterval(async function () {
 
         /** @type { SQL.Streamers[] } */
         const [stream] = await sql.Query('SELECT islive, username FROM Streamers WHERE username=?', [user.Channel]);
-        if (stream === null) return;
 
         await sql.Query('UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?', [null, null, null, user.User]);
 
         const channel = channelFromMode(user);
-        const isDisabled = await commandDisabled('cookie', stream.username);
+        let isDisabled = false;
+        if (stream !== null) {
+            isDisabled = await commandDisabled('cookie', stream.username);
+        }
         if (isDisabled) {
             sendMessage(channel, user.User, `- This reminder is from a channel that has disabled cookie reminders[${user.Channel}]`);
         } else if (stream.islive) {
@@ -283,10 +287,10 @@ setInterval(async function () {
     switch (user.Mode) {
         case positive_bot.CONSTANTS.MODES.whereAte:
         case positive_bot.CONSTANTS.MODES.ownChannel: {
-            return `#${user.User}`;
+            return `${user.User}`;
         }
         case positive_bot.CONSTANTS.MODES.botChannel: {
-            return '#botbear1110'; // TODO change this to a configurable channel ?
+            return 'botbear1110'; // TODO change this to a configurable channel ?
         }
     }
 };

@@ -67,7 +67,7 @@ module.exports = {
 			})
 			.catch((err) => {
 				// TODO Melon: Should this throw or not.
-				console.error(`MySQL error: ${err}`);
+				console.error(new Error(`MySQL Error: ${err}`));
 				return null;
 			});
 	},
