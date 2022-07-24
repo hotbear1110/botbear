@@ -177,10 +177,10 @@ const channelFromMode = (mode, channel, user) => {
             return channel;
         }
         case CONSTANTS.MODES.ownChannel: {
-            return `#${user}`;
+            return `${user}`;
         }
         case CONSTANTS.MODES.botChannel: {
-            return '#botbear1110'; // TODO change this to a configurable channel ?
+            return 'botbear1110'; // TODO change this to a configurable channel ?
         }
     }
 };
