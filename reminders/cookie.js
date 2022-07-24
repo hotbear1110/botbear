@@ -2,6 +2,7 @@ const got = require('got');
 const sql = require('../sql/index.js');
 const { commandDisabled, humanizeDuration } = require('./../tools/tools.js');
 const CONSTANTS = require('./constants.js');
+const tools = require('../tools/tools.js');
 
 /**
  * @typedef { Object } CooldownRes
@@ -57,7 +58,7 @@ exports.allowedCookie = async (channel, input) => {
     /** @type { SQL.Cdr[] } */
     const [users] = 
         await sql.Query(`SELECT RemindTime, Status, User
-                        FROM Cdr 
+                        FROM Cookies 
                         WHERE User = ? 
                             OR User = ?
                             OR User = ?`, 
@@ -82,21 +83,11 @@ exports.allowedCookie = async (channel, input) => {
                 
     /* Fetch data from PositiveBot api */
     if (msg.includes(CONSTANTS.ALREADY_CLAIMED)) {
+        let time_left = users.RemindTime - Date.now();
         if (cdr) {
-            let seconds_left = '';
-            
-            // Ye ol' try & catch
-            try {
-                /** @type { CooldownRes } */
-                let res = await got(CONSTANTS.API(`cooldown/${realuser}`)).json();
-                seconds_left = humanizeDuration(res.seconds_left * 1000);
-
-            } catch (e) {
-                console.log(`Error fetching cooldown for ${realuser} : ${e}`);
-                return { Status: '', User: '', hasCdr: false };
-            }
-
-            return { Status: 'CD', User: realuser, hasCdr: true, time: seconds_left };
+            return { Status: 'CD', User: realuser, hasCdr: true, time: time_left };
+        } else {
+            return { Status: 'CD', User: realuser, hasCdr: false, time: time_left };
         }
     } else if (users.Status === 'Confirmed' || users.Status === 'Confirmed2')
         response = 'Confirmed2';
@@ -129,6 +120,8 @@ exports.setCookie = async (status, user, channel, remindtime, cdr) => {
     const sendMessage = (user, msg) => `${user} ${msg}`;
     const cdrSendMessage = (user, msg) => `${user} ${msg} (You have a cdr ready!)`;
     const disabledSendMessage = (user, msg) => `${user} ${msg} - (The channel you ate your cookie in has reminders turned off)`;
+
+    remindtime = tools.humanizeDuration(remindtime);
 
     if (await commandDisabled('cookie', channel)) {
 
