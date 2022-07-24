@@ -215,7 +215,7 @@ async function onMessageHandler(channel, user, msg, self) {
             new messageHandler(res.Channel, res.msg).newMessage();
 			return;
         }
-        else if (positive_bot.cdr.validateIsPositiveBot(input, user)) {
+        else if (positive_bot.cdr.validateIsPositiveBot(user, input)) {
             const status = await positive_bot.cdr.setCdr(input, channel);
             const message = (dst, prefix = '', suffix = '') => new messageHandler(dst, `${prefix} I will remind you to use your cdr in 3 hours nymnOkay ${suffix}`).newMessage();
         
