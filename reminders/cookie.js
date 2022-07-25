@@ -96,11 +96,7 @@ exports.allowedCookie = async (channel, input) => {
         } else {
             time_left = humanizeDuration(users.RemindTime - Date.now());
         }
-        if (cdr) {
-            return { Status: 'CD', User: realuser, hasCdr: true, time: time_left };
-        } else {
-            return { Status: 'CD', User: realuser, hasCdr: false, time: time_left };
-        }
+            return { Status: 'CD', User: realuser, hasCdr: cdr, time: time_left };
     } else if (users.Status === 'Confirmed' || users.Status === 'Confirmed2')
         response = 'Confirmed2';
 
@@ -160,7 +156,7 @@ exports.setCookie = async (status, user, channel, remindtime, cdr) => {
                 return { Channel: CorrectChannel, msg: cdrSendMessage(user, 'I will remind you to eat your cookie in 2 hours nymnOkay') };
     
             } else {
-                return { Channel: CorrectChannel, msg: cdrSendMessage(user, 'I will remind you to eat your cookie in 2 hours nymnOkay') };
+                return { Channel: CorrectChannel, msg: sendMessage(user, 'I will remind you to eat your cookie in 2 hours nymnOkay') };
             }
         }
 
