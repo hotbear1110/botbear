@@ -1,5 +1,6 @@
 const tools = require('../tools/tools.js');
 const sql = require('./../sql/index.js');
+const got = require('got');
 
 module.exports = {
 	name: 'cdr',
@@ -46,13 +47,38 @@ module.exports = {
 						cd = tools.humanizeDuration(cd);
 
 						return `There is no cdr for you right now, your next cdr is available in ${cd}`;
+					}
+					if (status[0].RemindTime === null) {
+						let cdrCD = await got(`https://api.roaringiron.com/cooldown/${user.username}`, { timeout: 10000 }).json();
+
+						if (cdrCD['error']) {
+							return cdrCD['error'];
+						}
+						if (cdrCD['cdr_available'] === true) {
+							return 'You have a cookie wating for you :)';
+						} else {
+							let cd = Date.now() - (new Date(cdrCD['cdr_reset_time']).getTime() + 10800000);
+							cd = tools.humanizeDuration(cd);
+
+							return `There is no cdr for you right now, your next cdr is available in ${cd}`;
+						}
 					} else {
                         return 'You have a cdr waitng for you :)';
 					}
 				} else {
-                    
-                    return 'You are not registered for cdr notifications. Do "bb cdr register" to register';
-                    
+					let cdrCD = await got(`https://api.roaringiron.com/cooldown/${user.username}`, { timeout: 10000 }).json();
+
+					if (cdrCD['error']) {
+						return cdrCD['error'];
+					}
+					if (cdrCD['cdr_available'] === true) {
+						return 'You have a cookie wating for you :)';
+					} else {
+						let cd = Date.now() - (new Date(cdrCD['cdr_reset_time']).getTime() + 10800000);
+						cd = tools.humanizeDuration(cd);
+
+						return `There is no cdr for you right now, your next cdr is available in ${cd}`;
+					}
 				}
             }
 			case 'mode': {
