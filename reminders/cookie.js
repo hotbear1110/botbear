@@ -72,6 +72,16 @@ exports.allowedCookie = async (channel, input) => {
 
     if (cdr_user && cdr_user.RemindTime === null) {
         cdr = true;
+    } else {
+        try {
+            /** @type { CooldownRes } */
+            let res = await got(CONSTANTS.API(`cooldown/${realuser}`)).json();
+            cdr = res.cdr_available;
+
+        } catch (e) {
+            console.log(`Error fetching cdr for ${realuser} : ${e}`);
+            cdr = false;
+        }
     }
 
     const msg = input
