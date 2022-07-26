@@ -543,9 +543,8 @@ async function onConnectedHandler(addr, port) {
         */
 
 
-		if (process.env.TWITCH_USER !== 'devbear1110') {
-			await tools.nameChanges()
-				.then((res) => {
+		//if (process.env.TWITCH_USER !== 'devbear1110') {
+			await tools.nameChanges.then((res) => {
 					res.map(async ([newName, oldName]) => {
 						await cc.join(newName)
 							.catch((err) => {
@@ -562,7 +561,7 @@ async function onConnectedHandler(addr, port) {
 				.catch((err) => {
 					console.log(err);
 				});
-		}
+		//}
 		await tools.checkLiveStatus();
 		await tools.checkTitleandGame();
 		started = true;
