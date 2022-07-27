@@ -269,15 +269,15 @@ async function onMessageHandler(channel, user, msg, self) {
 		input = input.toString().replaceAll(',', ' ');
 	}
 
-	/*
-    const userList = await sql.Query(`SELECT * FROM Users WHERE uid=?`, [user["user-id"]]);
+	
+    const userList = await sql.Query('SELECT * FROM Users WHERE uid=?', [user['user-id']]);
 
     if (!userList.length && user.username != null) {
-        await sql.Query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
+        await sql.Query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user['user-id'], 100]);
     } else if (user.username !== userList[0].username && user.username != null) {
-        await sql.Query('UPDATE Users SET username=? WHERE uid=?', [user.username, user["user-id"]]);
+        await sql.Query('UPDATE Users SET username=? WHERE uid=?', [user.username, user['user-id']]);
     }
-*/
+
 	let disabledCheck = await sql.Query(`
     SELECT disabled_commands
     FROM Streamers
@@ -543,8 +543,8 @@ async function onConnectedHandler(addr, port) {
         */
 
 
-		if (process.env.TWITCH_USER !== 'devbear1110') {
-			await tools.nameChanges()
+		//if (process.env.TWITCH_USER !== 'devbear1110') {
+			await tools.nameChanges
 				.then((res) => {
 					res.map(async ([newName, oldName]) => {
 						await cc.join(newName)
@@ -562,7 +562,7 @@ async function onConnectedHandler(addr, port) {
 				.catch((err) => {
 					console.log(err);
 				});
-		}
+		//}
 		await tools.checkLiveStatus();
 		await tools.checkTitleandGame();
 		started = true;
