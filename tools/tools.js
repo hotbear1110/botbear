@@ -317,8 +317,7 @@ exports.getPerm = (user) => new Promise(async (resolve) => {
 /**
  * @returns {Promise<[String, String][]>}
  */
-exports.nameChanges = async () => {
-	return new Promise(async (Resolve, Reject) => {
+exports.nameChanges = new Promise(async (Resolve, Reject) => {
 		const changed = [];
 
 		(await sql.Query('SELECT * FROM Streamers'))
@@ -348,7 +347,6 @@ exports.nameChanges = async () => {
 
 		Resolve(changed);
 	});
-};
 
 
 exports.bannedStreamers = async () => {
