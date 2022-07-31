@@ -546,7 +546,6 @@ async function onConnectedHandler(addr, port) {
 		//if (process.env.TWITCH_USER !== 'devbear1110') {
 			await tools.nameChanges
 				.then((res) => {
-					console.log(res);
 					res.map(async ([newName, oldName]) => {
 						await cc.join(newName)
 							.catch((err) => {
