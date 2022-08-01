@@ -1,8 +1,7 @@
 require('dotenv').config();
 const sql = require('./sql/index.js');
 
-const init = async () => {
-	return new Promise(async(Resolve) => {
+const init = new Promise(async(Resolve) => {
 		const sql_opts = {
 			host: process.env.DB_HOST,
 			user: process.env.DB_USER,
@@ -31,9 +30,8 @@ const init = async () => {
         
 		Resolve();
 	});
-};
 
-init().then(() => {
+init.then(() => {
 	//require("./tools/logger.js");
 	require('./bot.js');
 	require('./loops/loops.js');
