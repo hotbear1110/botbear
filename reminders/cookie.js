@@ -16,7 +16,6 @@ const CONSTANTS = require('./constants.js');
 
 /**
  * @typedef { 'Confirmed' | 'Confirmed2' | 'CD' | '' } CookieStatus
- * 
  */
 
 /**
@@ -30,8 +29,16 @@ const CONSTANTS = require('./constants.js');
         return false;
     }
 
+    const joined = input.join(' ').replace(/user.username/g, '');
+
     if (input[0] !== '[Cookies]' || 
-            input.join(' ').includes('rankup', 'you are currently rank')) {
+        joined.includes([
+                'ranked up' || // !rankup success 
+                'reset your rank' || // !prestige success
+                'rankup' || // !rankup fail
+                'ranked high enough' || // !prestige fail
+                'you are currently rank'] // !rank
+                )) {
         return false;
     }
 
