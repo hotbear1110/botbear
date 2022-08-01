@@ -18,8 +18,7 @@ const init = async () => {
 };
 
 init().then(() => {
-    require('../bot.js').cc;
-	require('../tools/webhook.js');
+    require('./app.js');
 	console.log('Ready!');
 })
 	.catch((e) => {
