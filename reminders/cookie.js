@@ -30,8 +30,13 @@ const CONSTANTS = require('./constants.js');
         return false;
     }
 
+    const joined = input.join(' ');
+
     if (input[0] !== '[Cookies]' || 
-            input.join(' ').includes('rankup', 'you are currently rank')) {
+    /* Ignore anything related to rank
+        This would be ?rank ?rankup ?prestige
+    */ 
+        joined.includes('rank')) {
         return false;
     }
 
