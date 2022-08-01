@@ -1,9 +1,10 @@
 require('dotenv').config();
 const sql = require('../sql/index.js');
 
-const channelOptions = [process.env.TWITCH_OWNERNAME];
+const channelOptions = [];
 
 exports.setupChannels = async () => {
+	channelOptions.push(process.env.TWITCH_OWNERNAME);
 	(await sql.Query('SELECT * FROM Streamers'))
 		.map(async ({ username }) => {
 			if (username !== process.env.TWITCH_OWNERNAME) {
