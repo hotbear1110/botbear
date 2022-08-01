@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commands</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <h1>List of commands:</h1>
+    <h2>Info:</h2>
+    <p>Join/leave channel commands only work in "botbear1110" and "hottestbear" chats.</p>
+    <p>The broadcaster and mods can disable any non core command if they want. Check the disable/enable commands.</p>
+    <p>The broadcaster and mods can also disable the title, game, live or cookie notifications. Check the disable/enable
+        commands.</p>
+    <p>The myping command only pings you in chat, when the streamer is playing a game in your custom ping list.</p>
+    <p></p>
+    <p> If you have pajbot in your chat, please provide the url for the bot, so I can check for banphrases. Please
+        provide both for pajbot1 and pajbot2 (if pajbot2 is enabled)
+
+        <br> Pajbot1 example: "bb channel pb1 https://pajlada.pajbot.com"
+
+        <br> Pajbot2 example: "bb channel pb2 https://paj.pajbot.com"
+        <br> (Note: These command should be used in your chat and don't end the url with a "/")
+        <br> You can reset the api by typing "bb channel pb1 reset" or "bb channel pb2 reset" in your own channel.
+    </p>
+    <div class="wrapper">
+        <table>
+            <% categories.forEach(function(category) { %>
+                <div class="commands">
+                    <tr>
+                        <th><span style="font-weight:600">
+                                <%- category %>s:
+                            </span></th>
+                        <th>Category:</th>
+                        <th>Permission:</th>
+                        <th>Cooldown:</th>
+                        <th>Description:</th>
+                    </tr>
+                    <% commands.forEach(function(command) { %>
+                        <% if (command.Category===category) { %>
+                            <% let cooldown=command.Cooldown; %>
+                                <% if (!command.Cooldown) { %>
+                                    <% cooldown=3; %>
+                                        <%} %>
+                                            <div class="commands__row">
+                                                <tr>
+                                                    <td>bb <%- command.Name %>
+                                                    </td>
+                                                    <td>
+                                                        <%- command.Category%>
+                                                    </td>
+                                                    <td>
+                                                        <%- command.Perm%>
+                                                    </td>
+                                                    <td>
+                                                        <%- cooldown%>s
+                                                    </td>
+                                                    <td>
+                                                        <%- command.Command%>
+                                                    </td>
+                                                </tr>
+
+                                            </div>
+
+                                            <% } %>
+                                                <% }) %>
+                                                    <% if (category !=="Dev command" ) { %>
+                                                        <tr class="space">
+                                                            <td class="space"></td>
+                                                            <td class="space"></td>
+                                                            <td class="space"></td>
+                                                            <td class="space"></td>
+                                                        </tr>
+                                                        <% } %>
+                </div>
+
+                <% }) %>
+        </table>
+    </div>
+
+</body>
+
+</html>
