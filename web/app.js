@@ -24,4 +24,3 @@ app.use('/suggestions', suggestionRouter);
 var httpServer = http.createServer(app);
 
 httpServer.listen(4000);
-require('../tools/webhook.js');

@@ -1,9 +1,9 @@
-const tools = require('../../public/js/tools.js');
+const sql = require('../../../sql/index.js');
 const express = require('express');
 const commandRouter = express.Router();
 
 commandRouter.get('', async (req, res) => {
-    const commandlist = await tools.query('SELECT * FROM Commands');
+    const commandlist = await sql.Query('SELECT * FROM Commands');
 
     let categorylist = [];
 
