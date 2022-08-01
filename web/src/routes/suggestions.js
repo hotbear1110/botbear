@@ -1,6 +1,5 @@
 const tools = require('../../public/js/tools.js');
 const express = require('express');
-const { forEach } = require('underscore');
 const suggestionRouter = express.Router();
 
 suggestionRouter.get('', async (req, res) => {

@@ -7,12 +7,12 @@ commandRouter.get('', async (req, res) => {
 
     let categorylist = [];
 
-    commandlist.forEach(function (command) {
-
+    for (const command of commandlist) {
         if (!categorylist.includes(command.Category)) {
             categorylist.push(command.Category);
         }
-    });
+    }
+
     categorylist = [categorylist[2], categorylist[3], categorylist[1], categorylist[0], categorylist[4]];
 
     console.log(categorylist);
