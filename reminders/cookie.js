@@ -37,7 +37,7 @@ const CONSTANTS = require('./constants.js');
                 'reset your rank' || // !prestige success
                 'rankup' || // !rankup fail
                 'ranked high enough' || // !prestige fail
-                'you are currently rank'] // rank
+                'you are currently rank'] // !rank
                 )) {
         return false;
     }
