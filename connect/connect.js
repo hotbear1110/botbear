@@ -1,9 +1,10 @@
 require('dotenv').config();
+const { reasonForValue } = require('dank-twitch-irc');
 const sql = require('../sql/index.js');
 
 const channelOptions = [process.env.TWITCH_OWNERNAME];
 
-exports.setupChannels = async () => {
+exports.setupChannels = new Promise(async(Resolve) => {
 	(await sql.Query('SELECT * FROM Streamers'))
 		.map(async ({ username }) => {
 			if (username !== process.env.TWITCH_OWNERNAME) {
@@ -11,7 +12,8 @@ exports.setupChannels = async () => {
 			}
 		});
 	console.log(`Imported channels from database: ${channelOptions}`);
-};
+	Resolve();
+});
 
 exports.TMISettings = {
 	options: {
