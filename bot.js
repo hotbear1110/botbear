@@ -250,7 +250,7 @@ async function onMessageHandler(channel, user, msg, self) {
         }
     }
 
-	if (input[0] === undefined) {
+	if (input[1] === undefined) {
 		return;
 	}
 	if (input[0].toLowerCase() !== prefix) {
