@@ -26,7 +26,7 @@ const init = new Promise(async(Resolve) => {
 		}
             
 		await require('./commands/index.js').Load();
-		await require('./connect/connect.js').setupChannels();
+		await require('./connect/connect.js').setupChannels;
         
 		Resolve();
 	});
