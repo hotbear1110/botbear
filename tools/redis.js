@@ -13,7 +13,7 @@ module.exports = class RedisSingleton extends EventEmitter {
     #client;
     /** @type { redis.RedisClientType } */
     #pubsub;
-    #prefix = 'Botbear';
+    #prefix = 'Botbear:';
     #active = false;
     
     /**

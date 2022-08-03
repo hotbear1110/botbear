@@ -66,8 +66,7 @@ module.exports = (async function() {
         }
 
         res.setHeader('Content-Type', 'text/plain');
-        res.status(204);
-        
+
         /** @type { EventSubNotification } */
         const notification = JSON.parse(req.body);
 
@@ -77,12 +76,13 @@ module.exports = (async function() {
             res.send(Buffer.from(notification.challenge));
             return;
         }
-    
+        res.status(204);
+        
         switch (req.headers[MESSAGE_TYPE]) {
             case MESSAGE_TYPE_NOTIFICATION: {
                         
                 console.debug(`Event type: ${notification.subscription.type}`);
-                console.debug(JSON.stringify(notification.event, null, 4));
+                console.debug(notification.event);
 
                 const cb = SUBSCRIPTION_TYPES[notification.subscription.type];
                 if (!cb) {
@@ -103,20 +103,20 @@ module.exports = (async function() {
                         console.error(`Error processing event: ${error}`);
                     });
 
-                return;
+                break;
             }
             case MESSAGE_TYPE_REVOCATION: {
                 console.warn(`${notification.subscription.type} notifications revoked!`);
                 console.warn(`reason: ${notification.subscription.status}`);
                 console.warn(`condition: ${JSON.stringify(notification.subscription.condition, null, 4)}`);
-                return;
+                break;
             }
             default: {
                 console.warn(`Unknown message type: ${req.headers[MESSAGE_TYPE]}`);
-                return;
-                
+                break;
             }
         }
+        return res.end();
     });
 
     /** @type { Object.<string, EventSubCallback> } */  
@@ -131,7 +131,6 @@ module.exports = (async function() {
             
             const newTitle = notification.event.title;
             const titleusers = JSON.parse(streamer.title_ping).
-                                toString().
                                 filter(Boolean).
                                 join(' ');
 
@@ -147,7 +146,6 @@ module.exports = (async function() {
             }
 
             gameusers = gameusers.
-                        toString().
                         filter(Boolean).
                         join(' ');
 
@@ -215,7 +213,6 @@ module.exports = (async function() {
             const notifyDisabled = await tools.commandDisabled('notify', streamer.username);
             
             const users = JSON.parse(streamer.live_ping).
-                            toString().
                             filter(Boolean).
                             join(' ');
 
@@ -253,7 +250,6 @@ module.exports = (async function() {
             const notifyDisabled = await tools.commandDisabled('notify', streamer.username);
 
             const users = JSON.parse(streamer.offline_ping).
-                                toString().
                                 filter(Boolean).
                                 join(' ');
 
