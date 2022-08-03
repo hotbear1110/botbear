@@ -7,6 +7,7 @@ const requireDir = require('require-dir');
 const sql = require('./sql/index.js');
 const positive_bot = require('./reminders/index.js');
 let messageHandler = require('./tools/messageHandler.js').messageHandler;
+const redis = require('./tools/redis.js');
 
 const cc = new tmi.client(login.TMISettings);
 
@@ -570,6 +571,14 @@ async function onConnectedHandler(addr, port) {
 
 }
 
+/**
+ * Updates received from EventSub which should be sent in chat are handled here.
+ * @param { import('./tools/redis.js').EventSubChatUpdate } Data
+ */
+const onChatUpdateHandler = async (Data) => {
+    Data.Message.every((msg) => cc.say(`#${Data.Channel}`, msg));
+};
+
 // Karim/Backous module
 
 cc.on('whisper', (from, userstate, message, self) => {
@@ -606,6 +615,6 @@ async function triviaTimeout(channel, triviaTimeID, answer) {
     }, 60000);
 }
 
-
+redis.Get().on('ChatUpdate', onChatUpdateHandler);
 
 module.exports = { cc, uptime, triviaanswer, activetrivia };
