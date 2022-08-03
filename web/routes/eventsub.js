@@ -154,6 +154,8 @@ module.exports = (async function() {
                 channel = 'botbear1110';
             }
 
+            const response = [];
+            
             if (newTitle !== streamer.title) {
                 let titleuserlist = '';
                 //temp edit
@@ -162,18 +164,13 @@ module.exports = (async function() {
                 } else {
                     titleuserlist = tools.splitLine(titleusers, 400);
                 }
+                console.log(titleuserlist);
                 let titleTime = new Date().getTime();
                 console.log(streamer.username + ' NEW TITLE: ' + newTitle);
                 await sql.Query('UPDATE Streamers SET title=?, title_time=? WHERE username=?', [newTitle, titleTime, streamer.username]);
                 if (!notifyDisabled || channel === 'botbear1110') {
                     if (titleusers.length) {
-                        return {
-                            Type: 'ChatUpdate',
-                            Data: { 
-                                Channel: channel,
-                                Message: channelUpdateTemplate(streamer.titleemote, 'TITLE', newTitle, titleuserlist)
-                            }
-                        };
+                        channelUpdateTemplate(streamer.titleemote, 'TITLE', newTitle, titleuserlist).map((r) => response.push(r));
                     }
                 }
             }
@@ -187,23 +184,23 @@ module.exports = (async function() {
                     gameuserlist = tools.splitLine(gameusers, 400);
                 }
                 let gameTime = new Date().getTime();
-
+                console.log(gameusers);
                 await sql.Query('UPDATE Streamers SET game=?, game_time=? WHERE username=?', [newGame, gameTime, streamer.username]);
 
                 console.log(streamer.username + ' NEW GAME: ' + newGame);
                 if (!notifyDisabled || channel === 'botbear1110') {
                     if (gameusers.length) {
-                        return {
-                            Type: 'ChatUpdate',
-                            Data: {
-                                Channel: channel,
-                                Message: channelUpdateTemplate(streamer.gameemote, 'GAME', newGame, gameuserlist)
-                            }
-                        };
+                        channelUpdateTemplate(streamer.gameemote, 'GAME', newGame, gameuserlist).map((r) => response.push(r));
                     }
                 }
             }
-            return;
+            return {
+                Type: 'ChatUpdate',
+                Data: {
+                    Channel: channel,
+                    Message: response,
+                }
+            };
         },
         'stream.online': async (notification) => {
             /** @type { SQL.Streamers[] } */

@@ -576,7 +576,9 @@ async function onConnectedHandler(addr, port) {
  * @param { import('./tools/redis.js').EventSubChatUpdate } Data
  */
 const onChatUpdateHandler = async (Data) => {
-    Data.Message.every((msg) => cc.say(`#${Data.Channel}`, msg));
+    if (Data.Message) {
+        Data.Message.every((msg) => cc.say(`#${Data.Channel}`, msg));
+    }
 };
 
 // Karim/Backous module
