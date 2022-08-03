@@ -1,7 +1,7 @@
 module.exports = (async function() {
     const crypto = require('crypto');
     const tools = require('./../../tools/tools.js');
-    const sql = require('./../sql/index.js');
+    const sql = require('./../../sql/index.js');
     const Redis = require('./../../tools/redis.js');
         
     // Notification request headers
@@ -48,22 +48,25 @@ module.exports = (async function() {
     const express = require('express');
     const router = express.Router();
 
-    // Need raw message body for signature verification
     router.use(express.raw({
         type: 'application/json'
     }));
     
     /* /eventsub */
-    router.post('/', async function (req, res) {
-        const secret = getSecret();
-        const message = getHmacMessage(req);
-        const hmac = HMAC_PREFIX + getHmac(secret, message);  // Signature to compare
-    
-        if (!verifyMessage(hmac, req.headers[TWITCH_MESSAGE_SIGNATURE])) {
-            return res.sendStatus(403).end();
+    router.post('/', async (req, res) => {
+        if (req.headers[TWITCH_MESSAGE_SIGNATURE] === undefined) {
+            res.status(400).end();
+            return;
         }
 
-        res.sendStatus(204);
+        const hmac = HMAC_PREFIX + getHmac(getSecret(), getHmacMessage(req));
+    
+        if (!verifyMessage(hmac, req.headers[TWITCH_MESSAGE_SIGNATURE])) {
+            return res.sendStatus(403);
+        }
+
+        res.setHeader('Content-Type', 'text/plain');
+        res.status(204);
         
         /** @type { EventSubNotification } */
         const notification = JSON.parse(req.body);
@@ -71,8 +74,7 @@ module.exports = (async function() {
         /// This is sent from twitch when you subscribe to an event
         /// We respond with the challenge to prove that we're the one who's subscribed
         if (notification.challenge) {
-            res.setHeader('Content-Type', 'text/plain');
-            res.send(notification.challenge);
+            res.send(Buffer.from(notification.challenge));
             return;
         }
     
@@ -178,7 +180,7 @@ module.exports = (async function() {
                 }
             }
 
-            if (newGame !== streamer[0].game) {
+            if (newGame !== streamer.game) {
                 //temp edit
                 let gameuserlist = '';
                 if (channel === 'yabbe') {
@@ -203,64 +205,83 @@ module.exports = (async function() {
                     }
                 }
             }
+            return;
         },
         'stream.online': async (notification) => {
-            const streamers = await sql.Query('SELECT * FROM Streamers WHERE uid=?', notification.event.broadcaster_user_id);
+            /** @type { SQL.Streamers[] } */
+            const [streamer] = await sql.Query('SELECT * FROM Streamers WHERE uid=?', notification.event.broadcaster_user_id);
+            if (!streamer) return;
 
-            let disabledCommands = JSON.parse(streamers[0].disabled_commands);
+            const notifyDisabled = await tools.commandDisabled('notify', streamer.username);
+            
+            const users = JSON.parse(streamer.live_ping).
+                            toString().
+                            filter(Boolean).
+                            join(' ');
 
-            let users = JSON.parse(streamers[0].live_ping);
-            users = users.toString().replaceAll(',', ' ');
-
-            let proxychannel = streamers[0].username;
-            if (streamers[0].username === 'forsen') {
-                proxychannel = 'botbear1110';
+            let channel = streamer.username;
+            if (streamer.username === 'forsen') {
+                channel = 'botbear1110';
             }
             //temp edit
             let userlist = '';
-            if (proxychannel === 'yabbe') {
+            if (channel === 'yabbe') {
                 userlist = tools.splitLine(users, 290);
             } else {
                 userlist = tools.splitLine(users, 350);
             }
-            console.log(streamers[0].username + ' IS NOW LIVE');
-            await sql.Query(`UPDATE Streamers SET islive = 1 WHERE username = "${streamers[0].username}"`);
-            if (!disabledCommands.includes('notify') || proxychannel === 'botbear1110') {
+            console.log(streamer.username + ' IS NOW LIVE');
+            await sql.Query('UPDATE Streamers SET islive = 1 WHERE username = ?' , [streamer.username]);
+            if (!notifyDisabled || channel === 'botbear1110') {
                 if (users.length) {
-                    userlist.forEach(function (msg, i) {
-                        // new messageHandler(`${proxychannel}`, `/me ${streamers[0].liveemote} ${streamers[0].username[0].toUpperCase()}\u{E0000}${streamers[0].username.toUpperCase().slice(1)} IS NOW LIVE ${streamers[0].liveemote} ${userlist[i]}`, true).newMessage();
-                    });
+                    return {
+                        Type: 'stream.online',
+                        Data: {
+                            Channel: channel,
+                            Message: streamUpdateTemplate(streamer.liveemote, streamer.username, 'LIVE', userlist)
+                        }
+                    };
                 }
             }
+            return;
         },
         'stream.offline': async (notification) => {
-            const streamers = await sql.Query('SELECT * FROM Streamers WHERE uid=?', notification.event.broadcaster_user_id);
+            /** @type { SQL.Streamers[] } */
+            const [streamer] = await sql.Query('SELECT * FROM Streamers WHERE uid=?', notification.event.broadcaster_user_id);
+            if (!streamer) return;
+            
+            const notifyDisabled = await tools.commandDisabled('notify', streamer.username);
 
-            let disabledCommands = JSON.parse(streamers[0].disabled_commands);
+            const users = JSON.parse(streamer.offline_ping).
+                                toString().
+                                filter(Boolean).
+                                join(' ');
 
-            let users = JSON.parse(streamers[0].offline_ping);
-            users = users.toString().replaceAll(',', ' ');
-
-            let proxychannel = streamers[0].username;
-            if (streamers[0].username === 'forsen') {
-                proxychannel = 'botbear1110';
+            let channel = streamer.username;
+            if (streamer.username === 'forsen') {
+                channel = 'botbear1110';
             }
             //temp edit
             let userlist = '';
-            if (proxychannel === 'yabbe') {
+            if (channel === 'yabbe') {
                 userlist = tools.splitLine(users, 290);
             } else {
                 userlist = tools.splitLine(users, 350);
             }
-            console.log(streamers[0].username + ' IS NOW OFFLINE');
-            await sql.Query(`UPDATE Streamers SET islive = 0 WHERE username ="${streamers[0].username}"`);
-            if (!disabledCommands.includes('notify') || proxychannel === 'botbear1110') {
+            console.log(streamer.username + ' IS NOW OFFLINE');
+            await sql.Query('UPDATE Streamers SET islive = 0 WHERE username = ? ', [streamer.username]);
+            if (!notifyDisabled || channel === 'botbear1110') {
                 if (users.length) {
-                    userlist.forEach(function (msg, i) {
-                        // new messageHandler(`${proxychannel}`, `/me ${streamers[0].offlineemote} ${streamers[0].username[0].toUpperCase()}\u{E0000}${streamers[0].username.toUpperCase().slice(1)} IS NOW OFFLINE ${streamers[0].offlineemote} ${userlist[i].toString().replaceAll(',', ' ')}`, true).newMessage();
-                    });
+                    return {
+                        Type: 'stream.offline',
+                        Data: {
+                            Channel: channel,
+                            Message: streamUpdateTemplate(streamer.offlineemote, streamer.username, 'OFFLINE', userlist)
+                        }
+                    };
                 }
             }
+            return;
         },
     };
 
@@ -274,27 +295,30 @@ module.exports = (async function() {
         return users.map((split) => `/me ${emote} NEW ${type} ! ${emote} 👉 ${event} 👉 ${split}`);
     };
 
-    function getSecret() {
-        return process.env.TWITCH_SECRET;
-    }
+    /**
+     * @param { string } emote 
+     * @param { string } streamer
+     * @param { 'LIVE' | 'OFFLINE' } type 
+     * @param { string[] } users 
+     */
+    const streamUpdateTemplate = (emote, streamer, type, users) => {
+        return users.map((split) => `/me ${emote} ${tools.unpingUser(streamer.toUpperCase())} IS NOW ${type} ${emote} ${split}`);
+    };
 
-    // Build the message used to get the HMAC.
-    function getHmacMessage(request) {
-        return (request.headers[TWITCH_MESSAGE_ID] +
-            request.headers[TWITCH_MESSAGE_TIMESTAMP] +
-            request.body);
-    }
+    const getSecret = () => process.env.TWITCH_SECRET;
 
-    // Get the HMAC.
-    function getHmac(secret, message) {
-        return crypto.createHmac('sha256', secret)
-            .update(message)
-            .digest('hex');
-    }
+    /** Build the message used to get the HMAC. */
+    const getHmacMessage = (request) => (request.headers[TWITCH_MESSAGE_ID] +
+                                        request.headers[TWITCH_MESSAGE_TIMESTAMP] +
+                                        request.body);
 
-    // Verify whether our hash matches the hash that Twitch passed in the header.
-    function verifyMessage(hmac, verifySignature) {
-        return crypto.timingSafeEqual(Buffer.from(hmac), Buffer.from(verifySignature));
-    }
+    /** Get the HMAC. */
+    const getHmac = (secret, message) => crypto.createHmac('sha256', secret)
+                                                .update(message)
+                                                .digest('hex');
+
+    /** Verify whether our hash matches the hash that Twitch passed in the header. */
+    const verifyMessage = (hmac, verifySignature) => crypto.timingSafeEqual(Buffer.from(hmac), Buffer.from(verifySignature));
+
     return router;
 })();

@@ -1,7 +1,7 @@
 (async function() {
     require('dotenv').config();
-    const sql = require('../sql/index.js');
-    const Redis = require('./tools/redis.js');
+    const sql = require('./../sql/index.js');
+    const Redis = require('./../tools/redis.js');
 
     await Redis.Get().Connect();
     
@@ -20,7 +20,7 @@
     const routes = [
         { router: 'commands', path: '/' },
         { router: 'suggestions', path: '/suggestions'},
-        // { router: 'eventsub', path: '/eventsub' }
+        { router: 'eventsub', path: '/eventsub' }
     ];
     
     const express = require('express');
@@ -38,7 +38,7 @@
     app.set('view engine', 'ejs');
     
     for (const route of routes) {
-        app.use(route.path, require(`./routes/${route.router}`));
+        app.use(route.path, await require(`./routes/${route.router}`));
     }
 
     app.get('*', (req, res) => res.sendStatus(404).end());

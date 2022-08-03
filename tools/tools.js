@@ -741,3 +741,10 @@ exports.commandDisabled = async (command, channel) => {
         return false;
     });
 };
+
+/**
+ * Adds a hidden character to the username, to prevent it from pinging the user.
+ * @param { string } user 
+ * @returns { string }
+ */
+exports.unpingUser = (user) =>`${user[0]}\u{E0000}${user.slice(1)}`;
