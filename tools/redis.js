@@ -2,10 +2,16 @@ const EventEmitter = require('events');
 const redis = require('redis');
 
 /**
+ * @typedef {Object} EventSubChatUpdate
+ * @property { string } Channel - THe channel to send the message to.
+ * @property { string[] } Message - The message to send. Split into an array of strings.
+ */
+
+/**
  * @typedef { Object } PubSubResponse
  * @template { Object } T
- * @property { String } Type
- * @property { T } Data
+ * @property { String } Type - The type of response.
+ * @property { T } Data - Data specific to the Type
  */
 
 module.exports = class RedisSingleton extends EventEmitter {
@@ -37,10 +43,11 @@ module.exports = class RedisSingleton extends EventEmitter {
         this.#client = redis.createClient(opts);
     }
 
-    async #onSubMessage ({ Message, Channel }) {
+    async #onSubMessage (Message) {
         try {
+            /** @type { PubSubResponse } */
             const response = JSON.parse(Message);
-            this.emit(Channel, response);
+            this.emit(response.Type, response.Data);
         } catch (error) {
             console.error(`Error parsing Pub/Sub message: ${error}`);
         }
@@ -67,8 +74,8 @@ module.exports = class RedisSingleton extends EventEmitter {
         return await this.#pubsub
             .PSUBSCRIBE(
                 `${this.#prefix}${channel}`,
-                (Message, Channel) => 
-                    this.#onSubMessage({ Message, Channel }),
+                (Message) => 
+                    this.#onSubMessage(Message),
             )
             .then(() => `${this.#prefix}${channel}`)
             .catch(() => undefined);

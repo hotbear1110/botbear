@@ -168,7 +168,7 @@ module.exports = (async function() {
                 if (!notifyDisabled || channel === 'botbear1110') {
                     if (titleusers.length) {
                         return {
-                            Type: 'channel.update',
+                            Type: 'ChatUpdate',
                             Data: { 
                                 Channel: channel,
                                 Message: channelUpdateTemplate(streamer.titleemote, 'TITLE', newTitle, titleuserlist)
@@ -194,7 +194,7 @@ module.exports = (async function() {
                 if (!notifyDisabled || channel === 'botbear1110') {
                     if (gameusers.length) {
                         return {
-                            Type: 'channel.update',
+                            Type: 'ChatUpdate',
                             Data: {
                                 Channel: channel,
                                 Message: channelUpdateTemplate(streamer.gameemote, 'GAME', newGame, gameuserlist)
@@ -232,7 +232,7 @@ module.exports = (async function() {
             if (!notifyDisabled || channel === 'botbear1110') {
                 if (users.length) {
                     return {
-                        Type: 'stream.online',
+                        Type: 'ChatUpdate',
                         Data: {
                             Channel: channel,
                             Message: streamUpdateTemplate(streamer.liveemote, streamer.username, 'LIVE', userlist)
@@ -269,7 +269,7 @@ module.exports = (async function() {
             if (!notifyDisabled || channel === 'botbear1110') {
                 if (users.length) {
                     return {
-                        Type: 'stream.offline',
+                        Type: 'ChatUpdate',
                         Data: {
                             Channel: channel,
                             Message: streamUpdateTemplate(streamer.offlineemote, streamer.username, 'OFFLINE', userlist)
