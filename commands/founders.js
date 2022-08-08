@@ -4,7 +4,7 @@ const tools = require('../tools/tools.js');
 module.exports = {
 	name: 'founders',
 	ping: true,
-	description: 'Gets a random founder from a given channel',
+	description: 'Gives you a list of founders from a given channel',
 	permission: 100,
 	cooldown: 3, //in seconds
 	category: 'Info Command',
