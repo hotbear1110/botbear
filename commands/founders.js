@@ -16,7 +16,7 @@ module.exports = {
 			}
 			let realchannel = channel;
 			if (input[2]) {
-				realchannel = input[2];
+				realchannel = input[2].toLowerCase();
 			}
 			let founders = await got(`https://api.ivr.fi/v2/twitch/founders/${realchannel}`, { timeout: 10000 }).json();
 			founders = founders['founders'];
