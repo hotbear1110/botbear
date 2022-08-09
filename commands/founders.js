@@ -4,7 +4,7 @@ const tools = require('../tools/tools.js');
 module.exports = {
 	name: 'founders',
 	ping: true,
-	description: 'Gives you a list of founders from a given channel',
+	description: 'Gives you a list of founders from a given channel. * means that the user is currently subbed',
 	permission: 100,
 	cooldown: 3, //in seconds
 	category: 'Info Command',
@@ -24,12 +24,11 @@ module.exports = {
             if (!founders.length) {
                 return 'There are no users with points in this channel';
             }
-            founders = founders.map(x => `Username: ${x.login} - Is currently subbed: ${x.isSubscribed}`);
-            founders = founders.toString().replaceAll(',', '\n');
+            founders = founders.map(x => `${tools.unpingUser(x.login)}${(x.isSubscribed) ? '*' : ''}`)
+								.toString()
+								.replaceAll(',', ', ');
 
-            let hastebinlist = await tools.makehastebin(`Founders in #${realchannel}:\n\n${founders}`);
-
-            return `Founders in #${realchannel}: ${hastebinlist}.txt`;
+            return `Founders in #${realchannel}: ${founders}`;
         } catch (err) {
 			console.log(err);
             if (err.response.statusCode === 404) {

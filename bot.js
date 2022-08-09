@@ -70,7 +70,6 @@ async function onMessageHandler(channel, user, msg, self) {
 		return;
 	}
 
-	console.log((user['user-id'] !== 425363834) + ' ' + (!activetrivia[channel]) + ' ' + (!msg.startsWith(prefix + ' ')));
     if (self || (user['user-id'] !== 425363834 && !activetrivia[channel] && !msg.startsWith(prefix + ' '))) {
         return;
     }
