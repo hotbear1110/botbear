@@ -1,7 +1,7 @@
 const got = require('got');
 
 module.exports = {
-	name: 'randomfounders',
+	name: 'randomfounder',
 	ping: true,
 	description: 'Gets a random founder from a given channel',
 	permission: 100,
