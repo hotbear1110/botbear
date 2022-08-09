@@ -56,9 +56,7 @@ let userList = [];
 async function onMessageHandler(channel, user, msg, self) {
 	channel = channel.replace('#', '');
 	let start = new Date().getTime();
-	msg = msg.replaceAll(regex.invisChar, '');
-	msg = msg.replaceAll('  ', '');
-
+	msg = msg.replaceAll(regex.invisChar, '').replaceAll('  ', '');
 
 	/* if (!userList.includes(user.username) && user.username != null) {
          await tools.query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
@@ -72,7 +70,8 @@ async function onMessageHandler(channel, user, msg, self) {
 		return;
 	}
 
-    if (self || (!user['user-id'] == 425363834 && !activetrivia[channel] && !msg.startsWith(prefix + ' '))) {
+	console.log((user['user-id'] !== 425363834) + ' ' + (!activetrivia[channel]) + ' ' + (!msg.startsWith(prefix + ' ')));
+    if (self || (user['user-id'] !== 425363834 && !activetrivia[channel] && !msg.startsWith(prefix + ' '))) {
         return;
     }
 
@@ -200,8 +199,6 @@ async function onMessageHandler(channel, user, msg, self) {
             input.splice(i)
         }
     }*/
-    input = input.filter(e => e);
-
     /* Positivebot cookies & cdr */
     {
         const mode = positive_bot.CONSTANTS.MODES;
@@ -254,9 +251,6 @@ async function onMessageHandler(channel, user, msg, self) {
 	if (input[1] === undefined) {
 		return;
 	}
-	if (input[0].toLowerCase() !== prefix) {
-		return;
-	}
 
 	if (user.username === 'supibot') {
 		new messageHandler(channel, ':tf: no').newMessage();
@@ -302,15 +296,9 @@ async function onMessageHandler(channel, user, msg, self) {
 
 	let commandCD = await sql.Query('SELECT Cooldown FROM Commands WHERE Name=?', [input[1]]);
 	if (!commandCD.length) {
-		commandCD = null;
-	} else {
-		commandCD = commandCD[0].Cooldown;
-	}
-
-	if (commandCD === null) {
 		commandCD = 3000;
 	} else {
-		commandCD = commandCD * 1000;
+		commandCD = commandCD[0].Cooldown * 1000;
 	}
 
 	const userCD = new tools.Cooldown(user, realcommand, commandCD);
