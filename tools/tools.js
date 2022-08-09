@@ -727,19 +727,24 @@ exports.joinChannel = async ({ username, uid }) => {
  * @param { String } channel WITHOUT # at the start
  */
 exports.commandDisabled = async (command, channel) => {
-    return new Promise(async(Resolve, Reject) => {
-        await sql.Query('SELECT disabled_commands FROM Streamers WHERE username = ?', [channel])
-        .then((data) => {
-            const disabled = JSON.parse(data[0].disabled_commands);
+    return await sql.Query('SELECT disabled_commands FROM Streamers WHERE username = ?', [channel])
+    .then((data) => {
+        const disabled = JSON.parse(data[0].disabled_commands);
 
-            if (disabled.includes(command)) {
-                Resolve(true);
-                return;
-            }
-            Resolve(false);
-        })
-        .catch((e) => {
-            Reject(e);
-        });
+        if (disabled.includes(command)) {
+            return true;
+        }
+        return false;
+    })
+    .catch((e) => {
+        console.log(`Error in commandDisabled: ${e}`);
+        return false;
     });
 };
+
+/**
+ * Adds a hidden character to the username, to prevent it from pinging the user.
+ * @param { string } user 
+ * @returns { string }
+ */
+exports.unpingUser = (user) =>`${user[0]}\u{E0000}${user.slice(1)}`;

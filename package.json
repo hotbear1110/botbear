@@ -5,6 +5,7 @@
   "main": "bot.js",
   "scripts": {
     "start": "node ./start.js",
+    "web": "node ./web/app.js",
     "lint": "eslint . --ext .js"
   },
   "repository": {
@@ -24,14 +25,16 @@
     "date-and-time": "^2.0.0",
     "dotenv": "^10.0.0",
     "edit-json-file": "^1.7.0",
+    "ejs": "^3.1.8",
     "express": "^4.17.3",
+    "express-favicon": "^2.0.1",
     "got": "^11.8.2",
     "hastebin": "^0.2.1",
     "humanize-duration": "^3.27.0",
     "mysql2": "^2.3.0",
     "openai": "^2.0.1",
     "pastebin-js": "^1.0.6",
-    "redis": "^4.0.1",
+    "redis": "^4.2.0",
     "require-dir": "^1.2.0",
     "require-reload": "^0.2.2",
     "tmi": "^0.2.2",
@@ -40,6 +43,7 @@
   },
   "types": "./@types/index.d.ts",
   "devDependencies": {
+    "@types/express": "^4.17.13",
     "@types/tmi.js": "^1.8.1",
     "eslint": "^8.19.0"
   }

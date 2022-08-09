@@ -27,6 +27,9 @@ const init = new Promise(async(Resolve) => {
             
 		await require('./commands/index.js').Load();
 		await require('./connect/connect.js').setupChannels;
+    const redis = require('./tools/redis.js').Get();
+    await redis.Connect();
+    await redis.Subscribe('EventSub');
         
 		Resolve();
 	});
@@ -35,7 +38,6 @@ init.then(() => {
 	//require("./tools/logger.js");
 	require('./bot.js');
 	require('./loops/loops.js');
-	require('./tools/webhook.js');
 	console.log('Ready!');
 })
 	.catch((e) => {
