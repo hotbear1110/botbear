@@ -70,7 +70,7 @@ async function onMessageHandler(channel, user, msg, self) {
 		return;
 	}
 
-    if (self || (user['user-id'] !== 425363834 && !activetrivia[channel] && !msg.startsWith(prefix + ' '))) {
+    if (self || (user['user-id'] !== '425363834' && !activetrivia[channel] && !msg.startsWith(prefix + ' '))) {
         return;
     }
 
@@ -247,7 +247,7 @@ async function onMessageHandler(channel, user, msg, self) {
         }
     }
 
-	if (input[1] === undefined) {
+	if (!msg.startsWith(prefix + ' ') || input[1] === undefined) {
 		return;
 	}
 
