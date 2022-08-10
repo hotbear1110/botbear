@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suggestions</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <%- include("partials/header") %>
+
+    <div class="wrapper">
+        <table>
+            <div class="commands">
+                <tr>
+                    <th>
+                        User:
+                    </th>
+                    <th>Suggesion:</th>
+                    <th>Status:</th>
+                    <th>Description:</th>
+                </tr>
+                <% suggesions.forEach(function(suggesion) { %>
+                    <div class="commands__row">
+                        <tr>
+                            <td>
+                                <%- suggesion.User %>
+                            </td>
+                            <td>
+                                <%- suggesion.Suggestion%>
+                            </td>
+                            <td>
+                                <%- suggesion.Status%>
+                            </td>
+                            <td>
+                                <%- suggesion.Description%>
+                            </td>
+                        </tr>
+
+                    </div>
+
+                    <% }) %>
+            </div>
+        </table>
+    </div>
+
+</body>
+
+</html>

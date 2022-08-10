@@ -1,523 +1,609 @@
 require('dotenv').config();
-const tmi = require("tmi.js");
+const tmi = require('tmi.js');
 const login = require('./connect/connect.js');
-const tools = require("./tools/tools.js");
+const tools = require('./tools/tools.js');
 const regex = require('./tools/regex.js');
-const _ = require("underscore");
-const requireDir = require("require-dir");
-const trivia = require('./commands/trivia.js');
+const requireDir = require('require-dir');
+const sql = require('./sql/index.js');
+const positive_bot = require('./reminders/index.js');
+let messageHandler = require('./tools/messageHandler.js').messageHandler;
+const redis = require('./tools/redis.js');
 
-const cc = new tmi.client(login.options);
+const cc = new tmi.client(login.TMISettings);
 
 cc.on('message', onMessageHandler);
 cc.on('connected', onConnectedHandler);
-cc.on("pong", async (latency) => {
-    console.log(latency)
-    await tools.query('INSERT INTO Latency (Latency) values (?)', [latency]);
+cc.on('pong', async (latency) => {
+	console.log(latency);
+	await sql.Query('INSERT INTO Latency (Latency) values (?)', [latency]);
 
 });
 
 cc.connect();
+
+
+cc.on('notice', (channel, msgid, message) => {
+	// Do your stuff.
+	console.log(channel, msgid, message);
+});
+
+const prefix = process.env.TWITCH_PREFIX;
 
 let uptime = new Date().getTime();
 
 let activetrivia = {};
 let triviaanswer = {};
 let triviaHints = {};
+let triviaHints2 = {};
 let gothint = {};
+let gothint2 = {};
 let triviaTime = {};
 
 let started = false;
 
-const talkedRecently = new Set();
-let oldmessage = "";
+let oldmessage = '';
 
+// eslint-disable-next-line no-unused-vars
+let userList = [];
+
+/**
+ * @param { String } channel - channel 
+ * @param { import('tmi.js').ChatUserstate } user 
+ * @param { String } msg 
+ * @param { boolean } self 
+ * @returns 
+ */
 async function onMessageHandler(channel, user, msg, self) {
-    let start = new Date().getTime();
-    msg = msg.replace(regex.invisChar, "");
-    if (channel == "#botbear1110") {
-        console.log(`${user.username}: ${msg}`);
-    }
-    /*
-    const userList = await tools.query(`SELECT * FROM Users WHERE username=?`, [user.username]);
+	channel = channel.replace('#', '');
+	let start = new Date().getTime();
+	msg = msg.replaceAll(regex.invisChar, '').replaceAll('  ', '');
 
-    if (!userList.length && user.username != null) {
-        await tools.query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
-    }
-    */
+	/* if (!userList.includes(user.username) && user.username != null) {
+         await tools.query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
+         userList.push(user.username);
+         console.log(user.username);
+     }*/
+    //Temp exception for xqc's chat, since I want to test perfomance without the bot being able to respond there
 
-    if (self) {
+	if (channel === 'pajlada' && user['user-id'] == 82008718 && msg === 'pajaS 🚨 ALERT') {
+		cc.say(channel, '/me pajaLada 🚨 WHAT HAPPENED');
+		return;
+	}
+
+    if (self || (user['user-id'] !== '425363834' && !activetrivia[channel] && !msg.startsWith(prefix + ' '))) {
         return;
     }
 
-    const offlineonly = await tools.query('SELECT * FROM Streamers WHERE username=?', [channel.substring(1)]);
+	const offlineonly = await sql.Query('SELECT * FROM Streamers WHERE username=?', [channel]);
 
-    if (offlineonly[0].offlineonly === 1 && offlineonly[0].islive === 1 && !tools.isMod(user, channel)) {
-        return;
-    }
+	if (offlineonly[0].offlineonly === 1 && offlineonly[0].islive === 1 && !tools.isMod(user, channel)) {
+		return;
+	}
 
-    if (activetrivia[channel]) {
-        let similarity = await tools.similarity(msg.toLowerCase(), triviaanswer[channel].toLowerCase())
-        if (await similarity >= 0.8) {
-            if (channel === "#forsen") {
-                channel = "#botbear1110";
-            }
+	if (activetrivia[channel]) {
+		if (triviaHints2[channel] !== undefined) {
+			let filteranswer = tools.transformNumbers(triviaanswer[channel].toLowerCase());
+			let filtermsg = tools.transformNumbers(msg.toLowerCase());
+			let similarity = await tools.similarity(filtermsg.toLowerCase(), filteranswer.toLowerCase());
+			if (await similarity >= 0.8) {
 
-            similarity = similarity * 100
-            similarity = similarity.toString().substring(0, 5);
+				similarity = similarity * 100;
+				similarity = similarity.toString().substring(0, 5);
 
-            const ms = new Date().getTime() - triviaTime[channel];
-            let time = parseInt(tools.humanizeDuration(ms));
-            time = 60 - time;
-            time = 1 + (time / 100);
-            time = time.toString().substring(0, 4);
-            time = parseFloat(time);
+				const ms = new Date().getTime() - triviaTime[channel];
+				let time = parseInt(tools.humanizeDuration(ms));
+				time = 60 - time;
+				time = 1 + (time / 100);
+				time = time.toString().substring(0, 4);
+				time = parseFloat(time);
 
-            let triviaScore = 1000;
-            triviaScore = triviaScore * (Math.floor(similarity) / 100);
-            triviaScore = triviaScore * time;
-            if (gothint[channel] === false && triviaHints[channel] !== "FeelsDankMan you already got the hint.") {
-                triviaScore = triviaScore * 2;
-            }
+				let triviaScore = 1000;
+				triviaScore = triviaScore * (Math.floor(similarity) / 100);
+				triviaScore = triviaScore * time;
+				if (gothint[channel] === false) {
+					triviaScore = triviaScore * 2;
+				}
 
-            triviaScore = Math.round(triviaScore);
+				triviaScore = Math.round(triviaScore);
 
-            cc.say(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) OMGScoots You get +${triviaScore} points`);
-
-            let userchannel = [];
-            userchannel.push(`"${user.username}"`);
-            userchannel.push(`"${channel}"`);
-
+				new messageHandler(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) BroBalt You get +${triviaScore} points`).newMessage();
+				let userchannel = [];
+				userchannel.push(`"${user.username}"`);
+				userchannel.push(`"${channel}"`);
 
 
-            const alreadyJoined = await tools.query(`
+
+				const alreadyJoined = await sql.Query(`
+                    SELECT *
+                    FROM MyPoints
+                    WHERE username=?`,
+				[`[${userchannel}]`]);
+
+				if (!alreadyJoined.length) {
+					await sql.Query('INSERT INTO MyPoints (username, points) values (?, ?)', [`[${userchannel}]`, triviaScore]);
+				} else {
+					triviaScore = triviaScore + alreadyJoined[0].points;
+					await sql.Query('UPDATE MyPoints SET points=? WHERE username=?', [triviaScore, `[${userchannel}]`]);
+				}
+
+				delete activetrivia[channel];
+				delete triviaanswer[channel];
+				delete triviaHints2[channel];
+				delete gothint[channel];
+				delete triviaTime[channel];
+				return;
+			}
+
+		} else {
+			let similarity = await tools.similarity(msg.toLowerCase(), triviaanswer[channel].toLowerCase());
+			if (await similarity >= 0.8) {
+
+				similarity = similarity * 100;
+				similarity = similarity.toString().substring(0, 5);
+
+				const ms = new Date().getTime() - triviaTime[channel];
+				let time = parseInt(tools.humanizeDuration(ms));
+				time = 60 - time;
+				time = 1 + (time / 100);
+				time = time.toString().substring(0, 4);
+				time = parseFloat(time);
+
+				let triviaScore = 1000;
+				triviaScore = triviaScore * (Math.floor(similarity) / 100);
+				triviaScore = triviaScore * time;
+				if (gothint[channel] === false && triviaHints[channel] !== 'FeelsDankMan you already got the hint.') {
+					triviaScore = triviaScore * 2;
+				}
+
+				triviaScore = Math.round(triviaScore);
+
+				new messageHandler(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) BroBalt You get +${triviaScore} points`).newMessage();
+				let userchannel = [];
+				userchannel.push(`"${user.username}"`);
+				userchannel.push(`"${channel}"`);
+
+
+
+				const alreadyJoined = await sql.Query(`
                 SELECT *
                 FROM MyPoints
                 WHERE username=?`,
-                [`[${userchannel}]`]);
+				[`[${userchannel}]`]);
 
-            if (!alreadyJoined.length) {
-                await tools.query('INSERT INTO MyPoints (username, points) values (?, ?)', [`[${userchannel}]`, triviaScore]);
-            } else {
-                triviaScore = triviaScore + alreadyJoined[0].points;
-                await tools.query(`UPDATE MyPoints SET points=? WHERE username=?`, [triviaScore, `[${userchannel}]`])
-            }
+				if (!alreadyJoined.length) {
+					await sql.Query('INSERT INTO MyPoints (username, points) values (?, ?)', [`[${userchannel}]`, triviaScore]);
+				} else {
+					triviaScore = triviaScore + alreadyJoined[0].points;
+					await sql.Query('UPDATE MyPoints SET points=? WHERE username=?', [triviaScore, `[${userchannel}]`]);
+				}
 
-            delete activetrivia[channel];
-            delete triviaanswer[channel];
-            delete triviaHints[channel];
-            delete gothint[channel];
-            delete triviaTime[channel];
-            return;
-        }
+				delete activetrivia[channel];
+				delete triviaanswer[channel];
+				delete triviaHints[channel];
+				delete gothint[channel];
+				delete triviaTime[channel];
+				return;
+			}
+		}
+	}
 
-    }
+	let input = msg.split(' ');
 
-    let input = msg.split(" ");
 
-    for (let i = 0; i < input.length; i++) {
+    /*for (let i = 0; i < input.length; i++) {
         if (new RegExp(/[\uDB40-\uDC00]/).test(input[i])) {
-            input[i] = input[i].replace(new RegExp(/[\uDB40-\uDC00]/g), "");
+            input[i] = input[i].replace(new RegExp(regex.HIDDEN_CHARACTERS, "");
             input[i] = input[i].replace(/\s\s+/g, ' ').trim();
+            input[i] = input[i].replace("  ", "");
             input.splice(i)
         }
-    }
-    input = input.filter(e => e);
+    }*/
+    /* Positivebot cookies & cdr */
+    {
+        const mode = positive_bot.CONSTANTS.MODES;
 
-    const Alias = new tools.Alias(msg);
-    input = msg.replace(Alias.getRegex(), Alias.getReplacement()).split(' ');
-    let realcommand = input[1];
+        if (positive_bot.cookie.validateIsPositiveBot(user, input)) {
+            const cookie = await positive_bot.cookie.allowedCookie(channel, input);
+            if (cookie.Status === '') return; 
 
-    if (realcommand === "say" && realcommand === "channel" && realcommand === "emotecheck" && realcommand === "cum" && realcommand === "suggest" && realcommand === "shit" && realcommand === "code") {
-        input = input.toString().replaceAll(",", " ");
-    }
+            const res = await positive_bot.cookie.setCookie(cookie.Status, cookie.User, channel, cookie.time, cookie.hasCdr);
+            if (res.msg === '') return;
 
-    if (input[0].toLowerCase() === "[cookies]" && user["user-id"] == 425363834) {
-        const stream = await tools.query('SELECT disabled_commands FROM Streamers WHERE username=?', [channel.substring(1)]);
-
-        let disabledCommands = JSON.parse(stream[0].disabled_commands)
-        if (disabledCommands.includes("cookie")) {
-            return;
+            new messageHandler(res.Channel, res.msg).newMessage();
+			return;
         }
-        const cookieStatus = await tools.cookies(user, input, channel);
-
-        if (cookieStatus[0] === "Confirmed") {
-            if (cookieStatus[3] === "yes") {
-                cc.say(cookieStatus[2], `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!)`)
-            } else {
-                cc.say(cookieStatus[2], `${cookieStatus[1]} I will remind you to eat your cookie in 2 hours nymnOkay`)
+        else if (positive_bot.cdr.validateIsPositiveBot(user, input)) {
+            const status = await positive_bot.cdr.setCdr(input, channel);
+            const message = (dst, prefix = '', suffix = '') => new messageHandler(dst, `${prefix} I will remind you to use your cdr in 3 hours nymnOkay ${suffix}`).newMessage();
+        
+            /** @type { SQL.Cookies[] } */
+            let [checkmode] = await sql.Query('SELECT Mode FROM Cookies WHERE User=?', [status.User]);
+            if (!checkmode) return;
+        
+            if (await tools.commandDisabled('cdr', channel)) {
+                if (status.Status === 'Confirmed' && checkmode.Mode === mode.whereAte) {
+                    message(channel, status.User, '- (The channel you used your cdr in has reminders disabled)');
+                    return;
+                }
+            } else if (status.Status === 'Confirmed') {
+                switch (checkmode.Mode) {
+                    case mode.whereAte: {
+                        message(channel, status.User);
+                        return;
+                    }
+                    case mode.ownChannel: {
+                        message(status.User, status.User);
+                        return;
+                    }
+                    case mode.botChannel: {
+                        message('botbear1110', status.User);
+                        return;
+                    }
+                    default: {
+                        return;
+                    }
+                }
             }
         }
-        if (cookieStatus[0] === "Confirmed2") {
-            cc.say(cookieStatus[2], `${cookieStatus[1]} I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay`)
-        }
-        if (cookieStatus[0] === "CD") {
-            cc.say(cookieStatus[2], `${cookieStatus[1]} Your cookie is still on cooldown, it will be available in ${cookieStatus[3]}`)
-        }
-
-    }
-    if (msg.includes("your cooldown has been reset!") && user["user-id"] == 425363834) {
-        const stream = await tools.query('SELECT disabled_commands FROM Streamers WHERE username=?', [channel.substring(1)]);
-
-        let disabledCommands = JSON.parse(stream[0].disabled_commands)
-        if (disabledCommands.includes("cdr")) {
-            return;
-        }
-        const cdrStatus = await tools.cdr(user, input, channel);
-
-        if (cdrStatus[0] === "Confirmed") {
-            cc.say(cdrStatus[2], `${cdrStatus[1]} I will remind you to use your cdr in 3 hours nymnOkay`)
-        }
     }
 
-    if (input[0] !== "bb" && input[0].toLowerCase() !== "forsenbb") {
-        return;
-    }
+	if (!msg.startsWith(prefix + ' ') || input[1] === undefined) {
+		return;
+	}
 
-    if (user.username === "supibot") {
-        cc.say(channel, ":tf: no");
-        return;
-    }
+	if (user.username === 'supibot') {
+		new messageHandler(channel, ':tf: no').newMessage();
+		return;
+	}
 
-    const userList = await tools.query(`SELECT * FROM Users WHERE uid=?`, [user["user-id"]]);
+	let aliascommand = input[1];
+	input = await tools.Alias(msg);
+	let realcommand = input[1].toLowerCase();
+	if (realcommand === 'say' && realcommand === 'channel' && realcommand === 'emotecheck' && realcommand === 'cum' && realcommand === 'suggest' && realcommand === 'shit' && realcommand === 'code' && realcommand === 'test2') {
+		input = input.toString().replaceAll(',', ' ');
+	}
+
+	
+    const userList = await sql.Query('SELECT * FROM Users WHERE uid=?', [user['user-id']]);
 
     if (!userList.length && user.username != null) {
-        await tools.query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user["user-id"], 100]);
+        await sql.Query('INSERT INTO Users (username, uid, permission) values (?, ?, ?)', [user.username, user['user-id'], 100]);
     } else if (user.username !== userList[0].username && user.username != null) {
-        await tools.query('UPDATE Users SET username=? WHERE uid=?', [user.username, user["user-id"]]);
+        await sql.Query('UPDATE Users SET username=? WHERE uid=?', [user.username, user['user-id']]);
     }
 
-
-    if (channel === "#forsen") {
-        return;
-    }
-
-    if (channel === "#botbear1110") {
-        channel = "#forsen";
-    }
-
-    let disabledCheck = await tools.query(`
+	let disabledCheck = await sql.Query(`
     SELECT disabled_commands
     FROM Streamers
     WHERE username=?`,
-        [channel.substring(1)]);
+	[channel]);
+
+	disabledCheck = JSON.parse(disabledCheck[0].disabled_commands);
+
+	if (disabledCheck.includes(realcommand)) {
+		return;
+	}
+
+	const commands = requireDir('./commands');
+
+	if (typeof commands[realcommand] === 'undefined') {
+		console.log(channel, ': undefined - \'', input, '\'');
+		return;
+	}
+
+	const perm = await tools.getPerm(user.username);
+
+	let commandCD = await sql.Query('SELECT Cooldown FROM Commands WHERE Name=?', [input[1]]);
+	if (!commandCD.length) {
+		commandCD = 3000;
+	} else {
+		commandCD = commandCD[0].Cooldown * 1000;
+	}
+
+	const userCD = new tools.Cooldown(user, realcommand, commandCD);
+
+	if ((await userCD.setCooldown()).length) { return; }
+
+	if (realcommand === 'hint' && activetrivia[channel] && gothint[channel] === false) {
+		if (triviaHints2[channel] !== undefined && gothint2[channel] !== 1) {
+			const ms = new Date().getTime() - triviaTime[channel];
+			let timePassed = tools.humanizeDuration(ms);
+			if (parseInt(timePassed) < 10) {
+				new messageHandler(channel, 'You need to wait 10 seconds to get a hint.').newMessage();
+				return;
+			}
+			let hintcount = 0;
+
+			if (triviaHints2[channel][0] !== undefined && triviaHints2[channel][0]) {
+				hintcount = 1;
+			}
+			if (triviaHints2[channel][1] !== undefined && triviaHints2[channel][1]) {
+				if (hintcount === 0) {
+					hintcount = 2;
+				} else if (hintcount === 1) {
+					hintcount = 3;
+				}
+			}
+
+			if (gothint2[channel] === 0 && (hintcount !== 0 || hintcount !== 1)) {
+				gothint2[channel] = 1;
+			} else {
+				gothint2[channel] = 0;
+			}
+
+			let hint = triviaHints2[channel][gothint2[channel]];
+			if (hint === undefined || !hint) {
+				if (gothint2[channel] === 0 && hintcount !== 2) {
+					hint = 'There are no hints';
+				} else if (hintcount === 1) {
+					hint = 'No more hints';
+				}
+			}
+			if (gothint2[channel] === 0 && hintcount === 3) {
+				hint = hint + ' - (There is one more hint)';
+			}
+
+			if (hintcount === 2 && gothint2[channel] === 0) {
+				hint = triviaHints2[channel][1];
+				gothint2[channel] = 1;
+			}
+
+			if (hint === oldmessage) {
+				hint = hint + ' 󠀀 ';
+			}
+
+			new messageHandler(channel, `(Trivia) ${user.username}, Hint: ${hint}`).newMessage();
+			oldmessage = `(Trivia) ${user.username}, Hint: ${hint}`;
+			return;
+		} else if (!gothint2[channel]) {
+			const ms = new Date().getTime() - triviaTime[channel];
+			let timePassed = tools.humanizeDuration(ms);
+			if (parseInt(timePassed) < 10) {
+				new messageHandler(channel, 'You need to wait 10 seconds to get a hint.').newMessage();
+				return;
+			}
+			gothint[channel] = true;
+
+			let hint = triviaHints[channel];
+
+			if (hint === oldmessage) {
+				hint = hint + ' 󠀀 ';
+			}
+
+			new messageHandler(channel, `(Trivia) ${user.username}, Hint: ${hint}`).newMessage();
+			oldmessage = `(Trivia) ${user.username}, Hint: ${hint}`;
+			return;
+		}
+	}
+
+	if (realcommand === 'trivia') {
+		if (activetrivia[channel]) {
+			new messageHandler(channel, 'There is already an active trivia').newMessage();
+			return;
+		}
+		const isLive = await sql.Query('SELECT islive FROM Streamers WHERE username=?', [channel]);
+		if (isLive[0].islive === 1) {
+			return;
+		}
 
-    disabledCheck = JSON.parse(disabledCheck[0].disabled_commands);
+		// Get cooldown from database.
+		let cd = await sql.Query('SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?', [channel]);
 
-    if (disabledCheck.includes(realcommand)) {
-        return;
-    }
+		// Set trivia cooldown if not set.
+		if (cd[0].trivia_cooldowns === null) {
+			cd[0].trivia_cooldowns === 30000;
+			sql.Query('UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?', [channel]);
+		}
 
-    const commands = requireDir("./commands");
-
-    if (typeof commands[realcommand] === "undefined") {
-        console.log("undefined");
-        return;
-    }
+		const triviaCD = new tools.Cooldown(channel, realcommand, cd[0].trivia_cooldowns);
 
-    const perm = await tools.getPerm(user.username);
+		if ((await triviaCD.setCooldown()).length && !tools.isMod(user, channel)) {
+			new messageHandler(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
+			return;
+		}
+		let result = await commands[realcommand].execute(channel, user, input, perm);
 
-    const userCD = new tools.Cooldown(user, realcommand, 3000);
-
-    if ((await userCD.setCooldown()).length) { return; }
+		if (!result) {
+			return;
+		}
 
+		triviaanswer[channel] = result[2];
 
-    if (user['user-id'] !== process.env.TWITCH_OWNERUID) {
 
-        let timeout = 1250;
+		activetrivia[channel] = channel;
 
-        setTimeout(() => {
-            talkedRecently.delete(channel);
-        }, timeout);
-    }
+		triviaHints[channel] = result[1];
 
-    const badUsername = user.username.match(regex.racism);
-    if (badUsername != null) {
-        cc.say(channel, `[Bad username detected] cmonBruh`);
-        return;
-    }
+		let triviaTimeID = new Date().getTime();
 
-    let realchannel = channel.substring(1);
+		triviaTime[channel] = triviaTimeID;
 
-    if (realcommand === "hint" && activetrivia[channel] && gothint[channel] === false) {
-        const ms = new Date().getTime() - triviaTime[channel];
-        let timePassed = tools.humanizeDuration(ms);
-        if (parseInt(timePassed) < 10) {
-            cc.say(channel, "You need to wait 10 seconds to get a hint.");
-            return;
-        }
-        gothint[channel] = true;
+		gothint[channel] = false;
+		triviaTimeout(channel, triviaTimeID, result[2]);
 
-        let hint = triviaHints[channel];
+		let response = result[0];
 
-        const banPhrase = await tools.banphrasePass(hint, channel);
+		if (response === oldmessage) {
+			response = response + ' 󠀀 ';
+		}
 
-        if (banPhrase.banned) {
-            cc.say(channel, `[Banphrased] cmonBruh`);
-            return;
-        }
+		new messageHandler(channel, response).newMessage();
+		return;
 
-        const banPhraseV2 = await tools.banphrasePassV2(hint, channel);
+	}
 
-        if (banPhraseV2 == true) {
-            cc.say(channel, `[Banphrased] cmonBruh`);
-            return;
-        }
+	if (realcommand === 'trivia2') {
+		if (activetrivia[channel]) {
+			new messageHandler(channel, 'There is already an active trivia').newMessage();
+			return;
+		}
+		const isLive = await sql.Query('SELECT islive FROM Streamers WHERE username=?', [channel]);
+		if (isLive[0].islive === 1) {
+			return;
+		}
 
-        if (banPhrase === 0) {
-            cc.say(channel, "FeelsDankMan banphrase error!!");
-            return;
-        }
+		// Get cooldown from database.
+		let cd = await sql.Query('SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?', [channel]);
 
-        const notabanPhrase = await tools.notbannedPhrases(hint.toLowerCase());
+		// Set trivia cooldown if not set.
+		if (cd[0].trivia_cooldowns === null) {
+			cd[0].trivia_cooldowns === 30000;
+			sql.Query('UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?', [channel]);
+		}
 
-        if (notabanPhrase != `null`) {
-            cc.say(channel, notabanPhrase);
-            return;
-        }
+		const triviaCD = new tools.Cooldown(channel, realcommand, cd[0].trivia_cooldowns);
 
-        const badWord = hint.match(regex.racism);
-        if (badWord != null) {
-            cc.say(channel, `[Bad word detected] cmonBruh`);
-            return;
-        }
+		if ((await triviaCD.setCooldown()).length && !tools.isMod(user, channel)) {
+			new messageHandler(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
+			return;
+		}
 
-        const reallength = await tools.asciiLength(hint);
-        if (reallength > 30) {
-            cc.say(channel, "[Too many emojis]");
-            return;
-        }
+		let result = await commands[realcommand].execute(channel, user, input, perm);
+		if (result[0] === 'F') {
+			result = ['(Trivia) [ FeelsDankMan ] Question: nymnDank Something went wrong!?!', 'LULE WHO MADE THIS', 'This bot is so bad LuL', 'MegaLUL @hotbear1110'];
+		}
 
-        if (hint === oldmessage) {
-            hint = hint + " 󠀀 ";
-        }
 
-        cc.say(channel, `(Trivia) ${user.username}, Hint: ${hint}`)
-        oldmessage = `(Trivia) ${user.username}, Hint: ${hint}`;
-        return;
-    }
 
-    if (realcommand === "trivia") {
-        if (channel === "#forsen") {
-            channel = "#botbear1110";
-        }
-        if (activetrivia[channel]) {
-            cc.say(channel, "There is already an active trivia");
-            return;
-        }
-        const isLive = await tools.query(`SELECT islive FROM Streamers WHERE username=?`, [realchannel]);
-        if (isLive[0].islive === 1) {
-            return;
-        }
+		if (!result) {
+			return;
+		}
 
-        // Get cooldown from database.
-        let cd = await tools.query("SELECT `trivia_cooldowns` FROM `Streamers` WHERE `username` = ?", [realchannel]);
+		triviaanswer[channel] = result[1];
 
-        // Set trivia cooldown if not set.
-        if (cd[0].trivia_cooldowns === null) {
-            cd[0].trivia_cooldowns === 30000;
-            tools.query("UPDATE `Streamers` SET `trivia_cooldowns` = 30000 WHERE `username` = ?", [realchannel]);
-        }
+		activetrivia[channel] = channel;
 
-        const triviaCD = new tools.Cooldown(realchannel, realcommand, cd[0].trivia_cooldowns);
+		triviaHints2[channel] = [result[2], result[3]];
 
-        if ((await triviaCD.setCooldown()).length && !user.mod) {
-            cc.say(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`)
+		let triviaTimeID = new Date().getTime();
 
-            return;
-        }
+		triviaTime[channel] = triviaTimeID;
 
-        let result = await commands[realcommand].execute(realchannel, user, input, perm);
+		gothint[channel] = false;
+		gothint2[channel] = false;
+		triviaTimeout(channel, triviaTimeID, result[1]);
 
-        if (!result) {
-            return;
-        }
 
-        triviaanswer[channel] = result[2];
+		let response = result[0];
 
+		if (response === oldmessage) {
+			response = response + ' 󠀀 ';
+		}
 
-        activetrivia[channel] = channel;
+		new messageHandler(channel, response).newMessage();
+		return;
 
-        triviaHints[channel] = result[1];
+	}
 
-        let triviaTimeID = new Date().getTime()
+	let result = await commands[realcommand].execute(channel, user, input, perm, aliascommand);
 
-        triviaTime[channel] = triviaTimeID;
 
-        gothint[channel] = false;
-        triviaTimeout(channel, triviaTimeID);
-        async function triviaTimeout(channel, triviaTimeID) {
-            setTimeout(() => {
-                if (activetrivia[channel]) {
-                    if (triviaTime[channel] === triviaTimeID) {
-                        delete activetrivia[channel];
-                        delete triviaanswer[channel];
-                        delete triviaHints[channel];
+	if (!result) {
+		return;
+	}
 
-                        cc.say(channel, `The trivia timed out after 60 seconds. The answer was: "${result[2]}"`)
-                    }
-                }
-            }, 60000);
-        }
-
-
-        let response = result[0];
-
-        const banPhrase = await tools.banphrasePass(response, channel);
-
-        if (banPhrase.banned) {
-            cc.say(channel, `[Banphrased] cmonBruh`);
-            return;
-        }
-
-        const banPhraseV2 = await tools.banphrasePassV2(response, channel);
-
-        if (banPhraseV2 == true) {
-            cc.say(channel, `[Banphrased] cmonBruh`);
-            return;
-        }
-
-        if (banPhrase === 0) {
-            cc.say(channel, "FeelsDankMan error!!");
-            return;
-        }
-
-        const notabanPhrase = await tools.notbannedPhrases(response.toLowerCase());
-
-        if (notabanPhrase != `null`) {
-            cc.say(channel, notabanPhrase);
-            return;
-        }
-
-        const badWord = response.match(regex.racism);
-        if (badWord != null) {
-            cc.say(channel, `[Bad word detected] cmonBruh`);
-            return;
-        }
-
-        const reallength = await tools.asciiLength(response);
-        if (reallength > 30) {
-            cc.say(channel, "[Too many emojis]");
-            return;
-        }
-
-        if (response === oldmessage) {
-            response = response + " 󠀀 ";
-        }
-
-        cc.say(channel, response);
-        return;
-
-    }
-
-    let result = await commands[realcommand].execute(realchannel, user, input, perm);
-
-
-    if (!result) {
-        return;
-    }
-
-    if (commands[realcommand].ping == true) {
-        result = `${user['display-name']}, ${result}`;
-    }
-
-    if (channel === "#forsen") {
-        channel = "#botbear1110";
-    }
-
-    const banPhrase = await tools.banphrasePass(result, channel);
-
-    if (banPhrase.banned) {
-        cc.say(channel, `[Banphrased] cmonBruh`);
-        return;
-    }
-
-    const banPhraseV2 = await tools.banphrasePassV2(result, channel);
-
-    if (banPhraseV2 == true) {
-        cc.say(channel, `[Banphrased] cmonBruh`);
-        return;
-    }
-
-    if (banPhrase === 0) {
-        cc.say(channel, "FeelsDankMan error!!");
-        return;
-    }
-
-    const notabanPhrase = await tools.notbannedPhrases(result.toLowerCase());
-
-    if (notabanPhrase != `null`) {
-        cc.say(channel, notabanPhrase);
-        return;
-    }
-
-    const badWord = result.match(regex.racism);
-    if (badWord != null) {
-        cc.say(channel, `[Bad word detected] cmonBruh`);
-        return;
-    }
-
-    const reallength = await tools.asciiLength(result);
-    if (reallength > 30) {
-        cc.say(channel, "[Too many emojis]");
-        return;
-    }
-
-    if (result === oldmessage) {
-        result = result + " 󠀀 ";
-    }
-    let end = new Date().getTime();
-
-    if (commands[realcommand].showDelay == true) {
-        result = `${result} ${end - start}ms`;
-    }
-
-    cc.say(channel, result);
-    oldmessage = result;
-    return;
+	new messageHandler(channel, result, commands[realcommand].noBanphrase, commands[realcommand].showDelay, start, commands[realcommand].ping, user).newMessage();
+	return;
 }
 
 async function onConnectedHandler(addr, port) {
-    console.log(`* Connected to ${addr}:${port}`);
+	console.log(`* Connected to ${addr}:${port}`);
+	userList = (await sql.Query('SELECT username FROM Users')).map(x => x.username);
 
-    await tools.refreshCommands();
-    if (started === false) {
+	if (started === false) {
+		/*
+            //TODO hotbear: This should be remade, so that it doesn't delete the streamer from db.
+            //              The connect funtion would have to me remade aswell
+                await tools.bannedStreamers()
+            .then((res) => {
+                res.map(async ([user]) => {
+                    await cc.part(user)
+                        .catch((err) => {
+                            console.log(err);
+                        });
 
-        let bannedUsers = await tools.bannedStreamer;
-
-        if (await bannedUsers.length) {
-            _.each(bannedUsers, async function (user) {
-                cc.part(user).then((data) => {
-                    // data returns [channel]
-                }).catch((err) => {
-                    console.log(err);
-                });
-                cc.say("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`)
+                    new messageHandler("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`).newMessage();
+                })
             })
-        }
+            .catch((err) => {
+                console.log(err);
+            });
+        */
 
-        let namechange = await tools.nameChanges;
 
-        if (await namechange.length) {
-            _.each(namechange, async function (name) {
-                cc.join(name[0]).then((data) => {
-                    // data returns [channel]
-                }).catch((err) => {
-                    console.log(err);
-                });
+		//if (process.env.TWITCH_USER !== 'devbear1110') {
+			await tools.nameChanges
+				.then((res) => {
+					res.map(async ([newName, oldName]) => {
+						await cc.join(newName)
+							.catch((err) => {
+								console.log(err);
+							});
+						cc.part(oldName).catch((err) => {
+							console.log(err);
+						});
 
-                cc.part(name[1]).then((data) => {
-                    // data returns [channel]
-                }).catch((err) => {
-                    console.log(err);
-                });
-
-                cc.say(`#${name[0]}`, `Name change detected, ${name[1]} -> ${name[0]}`)
-                cc.say("#botbear1110", `Left channel ${name[1]}. Reason: Name change detected, ${name[1]} -> ${name[0]}`)
-            })
-        }
-        started = true;
-    }
+						cc.say(`#${newName}`, `Name change detected, ${oldName} -> ${newName}`);
+						new messageHandler(process.env.TWITCH_USER, `Left channel ${oldName}. Reason: Name change detected, ${oldName} -> ${newName}`).newMessage();
+					});
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		//}
+		await tools.checkLiveStatus();
+		await tools.checkTitleandGame();
+		started = true;
+	}
 
 }
-module.exports = { cc, uptime };
+
+/**
+ * Updates received from EventSub which should be sent in chat are handled here.
+ * @param { import('./tools/redis.js').EventSubChatUpdate } Data
+ */
+const onChatUpdateHandler = async (Data) => {
+    if (Data.Message) {
+        Data.Message.every((msg) => cc.say(`#${Data.Channel}`, msg));
+    }
+};
+
+// Karim/Backous module
+
+cc.on('whisper', (from, userstate, message, self) => {
+	// Don't listen to my own messages..
+	if (self) return;
+
+	console.log(from);
+	if (from === `#${process.env.someguy1}` && message.startsWith(prefix + ' say ')) {
+		new messageHandler('#nymn', `/me @Retard: ${message.substring(7)}`).newMessage();
+	}
+	if (from === `#${process.env.someguy2}` && message.startsWith(prefix + ' say ')) {
+		new messageHandler('#nymn', `/me @Backous: ${message.substring(7)}`).newMessage();
+	}
+	return;
+});
+
+cc.on('ban', (channel, username, reason, userstate) => {
+	if (channel === 'nymn' || channel === '#nymn') {
+		console.log('BANNED USER ' + channel, username, reason, userstate);
+	}
+});
+
+async function triviaTimeout(channel, triviaTimeID, answer) {
+    setTimeout(() => {
+        if (activetrivia[channel]) {
+            if (triviaTime[channel] === triviaTimeID) {
+                delete activetrivia[channel];
+                delete triviaanswer[channel];
+                delete triviaHints[channel];
+
+                new messageHandler(channel, `The trivia timed out after 60 seconds. The answer was: "${answer}"`).newMessage();
+            }
+        }
+    }, 60000);
+}
+
+redis.Get().on('ChatUpdate', onChatUpdateHandler);
+
+module.exports = { cc, uptime, triviaanswer, activetrivia };

@@ -1,51 +1,50 @@
-const got = require("got");
-const tools = require("../tools/tools.js");
+const got = require('got');
+const tools = require('../tools/tools.js');
 
 
 module.exports = {
-    name: "rl",
-    ping: false,
-    description: 'This command will give you a random logged line from a specific user in the chat (Only works if logs are available in the channel, logs used: "https://logs.ivr.fi/"). Example: "bb rl NymN"',
-    permission: 100,
-    category: "Info command",
-    execute: async (channel, user, input, perm) => {
-        try {
-            if (module.exports.permission > perm) {
-                return;
-            }
-            let username = user.username;
-            if (input[2]) {
-                if (input[2].startsWith("@")) {
-                    input[2] = input[2].substring(1);
-                }
-                username = input[2];
-            }
-            let realchannel = channel;
-            if (input[3]) {
-                realchannel = input[3];
-            }
+	name: 'rl',
+	ping: false,
+	description: 'This command will give you a random logged line from either a random user in the chat (Only works if logs are available in the channel, logs used: "https://logs.ivr.fi/"). Example: "bb rl NymN"',
+	permission: 100,
+	category: 'Info command',
+	execute: async (channel, user, input, perm) => {
+		try {
+			if (module.exports.permission > perm) {
+				return;
+			}
+			if (input[2]) {
+				channel = input[2];
+			}
 
-            const rl = await got(`https://api.ivr.fi/logs/rq/${realchannel}/${username}`, { timeout: 10000 }).json();
-            const masspinged = await tools.massping(rl.message.toLowerCase(), channel);
+			const rl = await got(`https://logs.ivr.fi/channel/${channel}/random/?json`, { timeout: 10000 }).json();
 
-            if (masspinged != "null") {
-                return "[MASS PING]";
-            }
+			let message = tools.splitLine(rl.messages[0].text, 350);
 
-            let message = tools.splitLine(rl.message, 350)
-            if (rl.status !== 404) {
-                if (message[1]) {
-                    return `#${realchannel} ${rl.user}: ${message}... - (${rl.time} ago)`;
-                }
-                return `#${realchannel} ${rl.user}: ${message} - (${rl.time} ago)`;
-            }
+			const timeago = new Date().getTime() - Date.parse(rl.messages[0].timestamp);
 
-        } catch (err) {
-            console.log(err);
-            if (err.name) {
-                return `FeelsDankMan Banphrase api error: ${err.name}`;
-            }
-            return `FeelsDankMan Error`;
-        }
-    }
-}
+			if (rl.status !== 404) {
+				if (message[1]) {
+					return `#${channel} ${rl.messages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
+				}
+				return `#${channel[0]}\u{E0000}${channel.slice(1)} ${rl.messages[0].displayName}: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
+			}
+
+		} catch (err) {
+			console.log(err);
+			if (err.toString().startsWith('HTTPError: Response code 403 (Forbidden)')) {
+				return 'User or channel has opted out';
+			}
+			if (err.toString().startsWith('HTTPError: Response code 500 (Internal Server Error)')) {
+				return 'Could not load logs. Most likely the user either doesn\'t exist or doesn\'t have any logs here.';
+			}
+			if (err.name) {
+				if (err.name === 'HTTPError') {
+					return 'No logs available for the user/channel';
+				}
+				return `FeelsDankMan api error: ${err.name}`;
+			}
+			return 'FeelsDankMan Error';
+		}
+	}
+};
