@@ -287,6 +287,12 @@ exports.asciiLength = (message) => {
 exports.Alias = (message) => new Promise(async (resolve) => {		
 		/** @type { Array<SQL.Aliases> } */
 		this.aliasList = await sql.Query('SELECT Aliases FROM Aliases');
+
+		if (!this.aliasList.length) {
+			await sql.Query('INSERT INTO Aliases VALUES ("[]")');
+			this.aliasList = '[]';
+		}
+
 		this.aliasList = JSON.parse(this.aliasList[0].Aliases);
 
 		this.command = message

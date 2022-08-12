@@ -269,16 +269,18 @@ setInterval(async function () {
 
 }, 10000);
 
-setInterval(async function () {
-	try {
-		await got('https://supinic.com/api/bot-program/bot/active', {
-			headers: { Authorization: `Basic ${process.env.SUPI_USERID}:${process.env.SUPI_AUTH}` },
-			method: 'PUT'
-		}).json();
-	} catch (err) {
-		console.log(err);
-	}
-}, 600000);
+if (process.env.SUPI_AUTH) {
+	setInterval(async function () {
+		try {
+			await got('https://supinic.com/api/bot-program/bot/active', {
+				headers: { Authorization: `Basic ${process.env.SUPI_USERID}:${process.env.SUPI_AUTH}` },
+				method: 'PUT'
+			}).json();
+		} catch (err) {
+			console.log(err);
+		}
+	}, 600000);
+}
 
 /**
  * @param { SQL.Cookies } user 

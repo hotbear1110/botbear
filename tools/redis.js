@@ -39,8 +39,13 @@ module.exports = class RedisSingleton extends EventEmitter {
         const opts = {
             url: process.env.REDIS_ADDRESS
         };
-        
-        this.#client = redis.createClient(opts);
+
+        if (!process.env.REDIS_ADDRESS) {
+            console.log("Redis not connected")
+        }
+        else {
+            this.#client = redis.createClient(opts);
+        }
     }
 
     async #onSubMessage (Message) {
@@ -55,20 +60,24 @@ module.exports = class RedisSingleton extends EventEmitter {
     
     async Connect() {
         if (this.#active) {
-            throw new Error('Redis already connected');
+            console.log('Redis already connected');
+            return;
         }
+
+        if (process.env.REDIS_ADDRESS) {
+            await this.#client.connect();
         
-        await this.#client.connect();
-        
-        this.#pubsub = this.#client.duplicate();
-        await this.#pubsub.connect();
-        
-        this.#active = true;
+            this.#pubsub = this.#client.duplicate();
+            await this.#pubsub.connect();
+            
+            this.#active = true;
+        }
     }
 
 	async Subscribe(channel) {
         if (!this.#active) {
-            throw new Error('Redis not connected');
+            console.log('Redis not connected');
+            return;
         }
         
         return await this.#pubsub
@@ -83,7 +92,8 @@ module.exports = class RedisSingleton extends EventEmitter {
 
     async Publish(channel, message) {
         if (!this.#active) {
-            throw new Error('Redis not connected');
+            console.log('Redis not connected');
+            return;
         }
         
         if (typeof message !== 'string') {
@@ -94,7 +104,8 @@ module.exports = class RedisSingleton extends EventEmitter {
 
 	async Exist(key) {
         if (!this.#active) {
-            throw new Error('Redis not connected');
+            console.log('Redis not connected');
+            return;
         }
         
 		return await this.#client
@@ -105,7 +116,8 @@ module.exports = class RedisSingleton extends EventEmitter {
 
 	async Get(key) {
         if (!this.#active) {
-            throw new Error('Redis not connected');
+            console.log('Redis not connected');
+            return;
         }
         
 		return await this.#client.GET(`${this.#prefix}${key}`);
@@ -113,7 +125,8 @@ module.exports = class RedisSingleton extends EventEmitter {
 
 	async Set(key, value) {
         if (!this.#active) {
-            throw new Error('Redis not connected');
+            console.log('Redis not connected');
+            return;
         }
         
 		return await this.#client.SET(`${this.#prefix}${key}`, value);
@@ -121,7 +134,8 @@ module.exports = class RedisSingleton extends EventEmitter {
 
 	async PING() {
         if (!this.#active) {
-            throw new Error('Redis not connected');
+            console.log('Redis not connected');
+            return
         }
         
 		return await this.#client.PING();

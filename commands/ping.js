@@ -14,9 +14,16 @@ module.exports = {
 				return;
 			}
 			const latency = await sql.Query('SELECT Latency FROM Latency');
-			let delay = JSON.parse(latency[latency.length - 1].Latency);
+			let delay;
 
-			return `nymnDank pong! - Tmi delay: ${delay * 1000}ms - Internal delay:`;
+			if (!latency.length) {
+				delay = '*no data yet*';
+			}
+			else {
+				delay = JSON.parse(latency[latency.length - 1].Latency) * 1000 + 'ms';
+			}
+
+			return `nymnDank pong! - Tmi delay: ${delay} - Internal delay:`;
 		} catch (err) {
 			console.log(err);
 			return `FeelsDankMan Sql error: ${err.sqlMessage}`;
