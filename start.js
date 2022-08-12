@@ -19,9 +19,10 @@ const init = new Promise(async(Resolve) => {
 	const checkOwner = channels.find(i => i.uid === process.env.TWITCH_OWNERUID);
 	if (!checkOwner) {
 		await sql.Query(`
-			INSERT INTO streamers (username, uid, live_ping, offline_ping, title_ping, game_ping, emote_list, emote_removed, disabled_commands)
+			INSERT INTO Streamers (username, uid, live_ping, offline_ping, title_ping, game_ping, emote_list, emote_removed, disabled_commands)
 			 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-			[process.env.TWITCH_OWNERNAME, process.env.TWITCH_OWNERUID, "['']", "['']", "['']", "['']", "[]", "[]", "[]"]);
+			// eslint-disable-next-line
+			[process.env.TWITCH_OWNERNAME, process.env.TWITCH_OWNERUID, "['']", "['']", "['']", "['']", '[]', '[]', '[]']);
 	}
 
 	// Check if bot channel is in the database.
