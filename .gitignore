@@ -104,3 +104,6 @@ dist
 .tern-port
 .env.save
 .env.save.1
+
+# Jetbrains IDE
+*.idea
