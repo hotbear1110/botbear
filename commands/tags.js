@@ -1,5 +1,6 @@
 require('dotenv').config();
 const got = require('got');
+const tools = require('../tools/tools.js');
 
 module.exports = {
 	name: 'tags',
@@ -43,6 +44,8 @@ module.exports = {
 				}),
 				timeout: 10000
 			}).json();
+
+			realchannel = tools.unpingUser(realchannel);
 
 			if (!ThreeLetterApiCall.data.user) {
 				return `FeelsDankMan ${realchannel} is not a real username`;
