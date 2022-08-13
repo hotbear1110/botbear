@@ -2,19 +2,20 @@ require('dotenv').config();
 const got = require('got');
 
 module.exports = {
-	name: 'test',
+	name: 'tags',
 	ping: true,
-	description: 'test',
-	permission: 2000,
-	category: 'Dev command',
+	description: 'This command will give you a list of tags in a given channel',
+	permission: 100,
+	category: 'Info command',
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			if (!process.env.THREELETTERAPI_CLIENTID) {
+            if (!process.env.THREELETTERAPI_CLIENTID) {
 				return 'FeelsDankMan Error: THREELETTERAPI_CLIENTID isn`t set';
 			}
+            
 			let realchannel = channel;
 
 			if (input[2]) {
