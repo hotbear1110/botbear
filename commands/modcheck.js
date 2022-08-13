@@ -24,7 +24,7 @@ module.exports = {
 			if (input[3]) {
 				realchannel = input[3];
 			}
-			let modcheck = await got(`https://api.ivr.fi/twitch/modsvips/${realchannel}`, { timeout: 10000 }).json();
+			let modcheck = await got(`https://api.ivr.fi/v2/twitch/modvip/${realchannel}`, { timeout: 10000 }).json();
 			let ismod = modcheck['mods'];
 			let modresponse = '';
 			for (const modstatus of ismod) {
