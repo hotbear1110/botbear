@@ -41,7 +41,7 @@ module.exports = class RedisSingleton extends EventEmitter {
         };
 
         if (!process.env.REDIS_ADDRESS) {
-            console.log("Redis not connected")
+            console.log('Redis not connected');
         }
         else {
             this.#client = redis.createClient(opts);
@@ -135,7 +135,7 @@ module.exports = class RedisSingleton extends EventEmitter {
 	async PING() {
         if (!this.#active) {
             console.log('Redis not connected');
-            return
+            return;
         }
         
 		return await this.#client.PING();

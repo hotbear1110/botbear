@@ -157,24 +157,13 @@ exports.Cooldown = class Cooldown {
 };
 
 exports.splitLine = (message, chars) => {
-	message = message.split(' ');
 	let messages = [];
-	let msglength = 0;
-	let tempmsg = [];
-	for (const msg of message) {
-		msglength = msglength + msg.length + 1;
-		if (msglength > chars) {
-			messages.push(tempmsg.toString().replaceAll(',', ' '));
-			tempmsg = [];
-			msglength = 0;
-		}
-		tempmsg.push(msg);
-
+	while  (message.length > chars) {
+		let newmessage = message.slice(0, chars);
+		messages.push(newmessage);
+		message = message.slice(chars, -1);
 	}
-	if (tempmsg.length) {
-		messages.push(tempmsg.toString().replaceAll(',', ' '));
-	}
-
+	console.log(messages);
 	return messages;
 };
 

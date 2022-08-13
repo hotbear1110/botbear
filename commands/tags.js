@@ -44,7 +44,6 @@ module.exports = {
 				}),
 				timeout: 10000
 			}).json();
-
 			realchannel = tools.unpingUser(realchannel);
 
 			if (!ThreeLetterApiCall.data.user) {
@@ -54,7 +53,7 @@ module.exports = {
 			}
 
 			let tags = ThreeLetterApiCall.data.user.freeformTags.map(x => x.name).join(', ');
-			
+			console.log(`${realchannel}'s tags: ${tags}`);
 			return  `${realchannel}'s tags: ${tags}`;
 		} catch (err) {
 			console.log(err);
