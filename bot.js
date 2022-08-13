@@ -504,7 +504,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
 	result = tools.splitLine(result, 450);
 
-	result.map(x => new messageHandler(channel, x, commands[realcommand].noBanphrase, commands[realcommand].showDelay, start, commands[realcommand].ping, user).newMessage());
+	new messageHandler(channel, result[0], commands[realcommand].noBanphrase, commands[realcommand].showDelay, start, commands[realcommand].ping, user).newMessage();
 	return;
 }
 
