@@ -163,7 +163,7 @@ exports.splitLine = (message, chars) => {
 		messages.push(newmessage);
 		message = message.slice(chars, -1);
 	}
-	console.log(messages);
+	messages.push(message);
 	return messages;
 };
 
