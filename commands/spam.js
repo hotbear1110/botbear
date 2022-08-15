@@ -17,12 +17,8 @@ module.exports = {
 			message.shift();
 
 			message = message.toString().replaceAll(',', ' ');
-
-			var i = 0;
-			while (i < input[2]) {
-				cc.say(channel, message);
-				i++;
-			}
+			
+			Array.from({length: input[2]}).fill(message).map(x => cc.say(channel, x));
 
 			return;
 		} catch (err) {
