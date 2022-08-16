@@ -12,7 +12,7 @@ https://pastebin.com/GAF21Fmr
 ```bash
 $ git clone https://github.com/hotbear1110/botbear
 $ cd botbear
-$ ./dotenvsetup.sh # optional script to setup needed credentials
+$ ./configsetup.sh # optional script to setup needed credentials
 ```
 
 Pre-commit setup
