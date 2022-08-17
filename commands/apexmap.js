@@ -12,16 +12,16 @@ module.exports = {
       if (module.exports.permission > perm) {
         return;
       }
-      const map = await got(
+      let map = await got(
         `https://api.mozambiquehe.re/maprotation?version=2&auth=${process.env.APEX_API}`,
         { 
             timeout: 10000 
         }
       );
+        map = JSON.stringify(map.body);
+      let { map: currentMap, remainingTimer } = map.battle_royale.current;
 
-      let { map: currentMap, remainingTimer } = JSON.stringify(map.body).battle_royale.current;
-
-      let { map: nextMap, DurationInMinutes } = JSON.stringify(map.body).battle_royale.next;
+      let { map: nextMap, DurationInMinutes } = map.battle_royale.next;
 
       return `Current map is ${currentMap} which lasts for ${remainingTimer} .Next map is ${nextMap} which lasts for ${DurationInMinutes} minutes.`;
     } catch (err) {
