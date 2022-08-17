@@ -17,11 +17,11 @@ module.exports = {
         { 
             timeout: 10000 
         }
-      ).json();
+      );
 
-      let { map: currentMap, remainingTimer } = map.battle_royale.current;
+      let { map: currentMap, remainingTimer } = JSON.parse(map.battle_royale.current);
 
-      let { map: nextMap, DurationInMinutes } = map.battle_royale.next;
+      let { map: nextMap, DurationInMinutes } = JSON.parse(map.battle_royale.next);
 
       return `Current map is ${currentMap} which lasts for ${remainingTimer} .Next map is ${nextMap} which lasts for ${DurationInMinutes} minutes.`;
     } catch (err) {
