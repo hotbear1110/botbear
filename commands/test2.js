@@ -16,13 +16,17 @@ module.exports = {
 			let allsubs = [];
 			let haspagnation = true;
 			let pagnation = '';
+			console.log('yes');
 			while (haspagnation) {
+				console.log('no');
 				let subs = await got(`https://api.twitch.tv/helix/eventsub/subscriptions?after=${pagnation}`, {
 					headers: {
 						'client-id': process.env.TWITCH_CLIENTID,
 						'Authorization': process.env.TWITCH_AUTH
 					}
 				});
+				console.log(subs);
+
 				subs = JSON.parse(subs.body);
 				if (subs.pagination.cursor) {
 					pagnation = subs.pagination.cursor;
@@ -36,7 +40,7 @@ module.exports = {
 			const streamers = await sql.Query(`
             SELECT uid
             FROM Streamers`);
-
+			console.log(allsubs);
 			for (let i = 0; i < streamers.length; i++) {
 				if (!allsubs.includes(streamers[i].uid))
 				setTimeout(async function () {
