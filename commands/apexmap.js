@@ -19,7 +19,6 @@ module.exports = {
         }
       );
         map = JSON.parse(map.body);
-        console.log(map);
       let { map: currentMap, remainingTimer } = map.battle_royale.current;
 
       let { map: nextMap, DurationInMinutes } = map.battle_royale.next;
