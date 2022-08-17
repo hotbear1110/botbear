@@ -18,7 +18,7 @@ module.exports = {
             timeout: 10000 
         }
       );
-        map = JSON.stringify(map.body);
+        map = JSON.parse(map.body);
         console.log(map);
       let { map: currentMap, remainingTimer } = map.battle_royale.current;
 
