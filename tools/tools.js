@@ -698,7 +698,11 @@ exports.transformNumbers = function (message) {
 
 
 };
-
+/**
+ * Creates a new user and subscribes them to eventsub.
+ * @param {{ username: string, uid: string }} user 
+ * @returns { Promise<void> }
+ */
 exports.joinChannel = async ({ username, uid }) => {
 	const islive = 0;
 	const liveemote = 'FeelsOkayMan';
@@ -714,7 +718,7 @@ exports.joinChannel = async ({ username, uid }) => {
 
 	await this.joinEventSub(uid);
 
-	return Promise.resolve();
+	return;
 };
 
 /**
