@@ -1,5 +1,7 @@
 const got = require('got');
 require('dotenv').config();
+const tools = require("../tools/tools.js");
+
 //Made by: @sougataghar477
 module.exports = {
   name: 'apexmap',
@@ -19,11 +21,13 @@ module.exports = {
         }
       );
         map = JSON.parse(map.body);
-      let { map: currentMap, remainingTimer } = map.battle_royale.current;
+      let { map: currentMap, end } = map.battle_royale.current;
 
       let { map: nextMap, DurationInMinutes } = map.battle_royale.next;
+      
+      let remainingTime = Date.now() - end;
 
-      return `Current map is ${currentMap} which lasts for ${remainingTimer} .Next map is ${nextMap} which lasts for ${DurationInMinutes} minutes.`;
+      return `Current map is ${currentMap} which lasts for ${tools.humanizeDuration(remainingTime)} .Next map is ${nextMap} which lasts for ${DurationInMinutes} minutes.`;
     } catch (err) {
       console.log(err);
       if (err.name) {
