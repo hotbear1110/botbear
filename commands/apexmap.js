@@ -1,6 +1,6 @@
 const got = require('got');
 require('dotenv').config();
-const tools = require("../tools/tools.js");
+const tools = require('../tools/tools.js');
 
 //Made by: @sougataghar477
 module.exports = {
@@ -25,7 +25,7 @@ module.exports = {
 
       let { map: nextMap, DurationInMinutes } = map.battle_royale.next;
       
-      let remainingTime = Date.now() - end;
+      let remainingTime = end - Date.now();
 
       return `Current map is ${currentMap} which lasts for ${tools.humanizeDuration(remainingTime)} .Next map is ${nextMap} which lasts for ${DurationInMinutes} minutes.`;
     } catch (err) {
