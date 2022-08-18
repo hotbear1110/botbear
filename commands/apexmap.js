@@ -25,7 +25,7 @@ module.exports = {
 
       let { map: nextMap, DurationInMinutes } = map.battle_royale.next;
       console.log(`${ Date.now()} and ${end}`);
-      let remainingTime = end - Date.now();
+      let remainingTime = end - (Date.now() * 1000);
 
       return `Current map is ${currentMap} which lasts for ${tools.humanizeDuration(remainingTime)} .Next map is ${nextMap} which lasts for ${DurationInMinutes} minutes.`;
     } catch (err) {
