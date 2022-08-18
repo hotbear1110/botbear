@@ -16,7 +16,7 @@ const init = new Promise(async(Resolve) => {
 	/** @type { Array<SQL.Streamers> } */
 	const channels = await sql.Query('SELECT * FROM Streamers');
 
-	const checkOwner = channels.find(i => i.uid === process.env.TWITCH_OWNERUID);
+	const checkOwner = channels.filter(x => x.uid == process.env.TWITCH_OWNERUID);
 	if (!checkOwner.length) {
 		await sql.Query(`
 			INSERT INTO Streamers (username, uid, live_ping, offline_ping, title_ping, game_ping, emote_list, emote_removed, disabled_commands)
