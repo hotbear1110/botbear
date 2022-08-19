@@ -61,7 +61,7 @@ module.exports = {
 
 				return output;
 			} catch (err) {
-				console.log(err.response);
+				console.log(err);
 				if (err.response.statusCode === 429) {
 					return 'Nime you have used all of this months bb ask';
 				}
