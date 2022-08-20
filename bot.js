@@ -269,7 +269,7 @@ async function onMessageHandler(channel, user, msg, self) {
 	input = await tools.Alias(msg);
 	let realcommand = input[1].toLowerCase();
 	if (realcommand === 'say' && realcommand === 'channel' && realcommand === 'emotecheck' && realcommand === 'cum' && realcommand === 'suggest' && realcommand === 'shit' && realcommand === 'code' && realcommand === 'test2') {
-		input = input.toString().replaceAll(',', ' ');
+		input = input.join(' ');
 	}
 
 	
