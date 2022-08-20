@@ -16,7 +16,7 @@ exports.setupChannels = new Promise(async(Resolve) => {
 
 exports.TMISettings = {
 	options: {
-		joinInterval: 0,
+		joinInterval: process.env.TWITCH_OWNERNAME ? 300 : 2000,
 	},
 	connection: {
 		secure: true,
