@@ -29,9 +29,10 @@ cc.on('notice', (channel, msgid, message) => {
 
 cc.on('automod', (channel, userstate, message) => {
 	console.log({ channel, userstate, message });
-	if (userstate === 'msg_rejected_mandatory') {{
+	if (userstate === 'msg_rejected_mandatory') {
 		new messageHandler(channel, message).newMessage();
-	}}
+		return;
+	}
 });
 
 const prefix = process.env.TWITCH_PREFIX;
