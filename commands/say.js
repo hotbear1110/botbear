@@ -14,7 +14,7 @@ module.exports = {
 				return;
 			}
 			input = input.splice(2);
-			let msg = input.toString().replaceAll(',', ' ');
+			let msg = input.join(' ');
 
 			msg.replace(regex.invisChar, '');
 
