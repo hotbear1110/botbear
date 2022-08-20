@@ -17,7 +17,7 @@ module.exports = {
 			if (input[2]) {
 				realchannel = input[2];
 			}
-			let vipcheck = await got(`https://api.ivr.fi/twitch/modsvips/${realchannel}`, { timeout: 10000 }).json();
+			let vipcheck = await got(`https://api.ivr.fi/v2/twitch/modvip/${realchannel}`, { timeout: 10000 }).json();
 			let vips = vipcheck['vips'];
 
 			let ms = new Date().getTime() - Date.parse(vips[0].grantedAt);
