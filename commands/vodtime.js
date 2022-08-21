@@ -33,7 +33,7 @@ module.exports = {
 			giventime = new Date(giventime);
 
 			starttime = new Date(starttime);
-			starttime = date.addHours(starttime, 1);
+			//starttime = date.addHours(starttime, 1);
 
 
 			let duration = response.data[0].duration;
