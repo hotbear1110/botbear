@@ -37,11 +37,11 @@ module.exports = {
 			}
 
 			if (perm < 2000 && msg.match(/(\.|\/)color/g)) {
-      yodaText = '. ' + yodaText
+        yodaText = '. ' + yodaText;
 			}
 
 			if (msg.toLowerCase().startsWith(`/ban ${process.env.TWITCH_OWNERNAME}`) || msg.toLowerCase().startsWith(`/timeout ${process.env.TWITCH_OWNERNAME}`) || msg.toLowerCase().startsWith(`/unmod ${process.env.TWITCH_USER}`)) {
-      yodaText = '. ' + yodaText
+        yodaText = '. ' + yodaText;
 			}
 
       return yodaText;
