@@ -6,7 +6,7 @@ const regex = require('../tools/regex.js');
 //Made by: @sougataghar477
 module.exports = {
   name: 'yoda',
-  ping: true,
+  ping: false,
   description: 'This command will translate the input to Yoda speach',
   permission: 100,
   category: 'Random command',
