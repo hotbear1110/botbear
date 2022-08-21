@@ -33,6 +33,7 @@ module.exports = {
 			giventime = new Date(giventime);
 
 			starttime = new Date(starttime);
+			//Adding 2 hours = CEST - Adding 1 hour = CET
 			starttime = date.addHours(starttime, 2);
 
 
