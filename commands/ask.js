@@ -15,8 +15,8 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			if (channel !== 'nymn' && channel !== 'hottestbear' && channel !== 'elina' && channel !== 'pajlada') {
-				return 'This command is currently disabled due to edgy responses :)';
+			if (channel !== 'nymn' && channel !== 'hottestbear' && channel !== 'elina' && channel !== 'pajlada' && !(perm >= 2000)) {
+				return 'This command is currently disabled :)';
 			}
 
 			let bannedPhrases = /(\W|^)(racists|racist|racism|race)(\W|$)/gi;
@@ -61,7 +61,7 @@ module.exports = {
 
 				return output;
 			} catch (err) {
-				console.log(err.response);
+				console.log(err);
 				if (err.response.statusCode === 429) {
 					return 'Nime you have used all of this months bb ask';
 				}

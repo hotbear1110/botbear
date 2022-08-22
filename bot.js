@@ -27,6 +27,15 @@ cc.on('notice', (channel, msgid, message) => {
 	console.log(channel, msgid, message);
 });
 
+cc.on('automod', (channel, userstate, message) => {
+	console.log({ channel, userstate, message });
+	if (userstate === 'msg_rejected_mandatory') {
+		// eslint-disable-next-line
+		new messageHandler(channel.replace('#', ''), `Could not reply due to the channel's moderation settings`).newMessage();
+		return;
+	}
+});
+
 const prefix = process.env.TWITCH_PREFIX;
 
 let uptime = new Date().getTime();
@@ -260,7 +269,7 @@ async function onMessageHandler(channel, user, msg, self) {
 	input = await tools.Alias(msg);
 	let realcommand = input[1].toLowerCase();
 	if (realcommand === 'say' && realcommand === 'channel' && realcommand === 'emotecheck' && realcommand === 'cum' && realcommand === 'suggest' && realcommand === 'shit' && realcommand === 'code' && realcommand === 'test2') {
-		input = input.toString().replaceAll(',', ' ');
+		input = input.join(' ');
 	}
 
 	
@@ -281,6 +290,7 @@ async function onMessageHandler(channel, user, msg, self) {
 	disabledCheck = JSON.parse(disabledCheck[0].disabled_commands);
 
 	if (disabledCheck.includes(realcommand)) {
+		new messageHandler(channel, `${realcommand} is disabled in this chat :)`).newMessage();
 		return;
 	}
 

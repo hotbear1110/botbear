@@ -11,8 +11,8 @@ exports.messageHandler = class Cooldown {
 		this.noBanphrase = noBanphrase || false;
 		this.showDelay = showDelay || false;
 		this.ping = ping || false;
-		this.start = start;
-		this.user = user;
+		this.start = start || 0;
+		this.user = user || null;
 		this.noCD = 0;
 	}
 	async Cooldown() {
