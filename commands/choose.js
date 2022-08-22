@@ -14,7 +14,11 @@ module.exports = {
             if (!input.toString().includes('?')) {
                 return 'FeelsDankMan Please include a "?" Example: bb choose What food is best? pizza, burger, fries';
             }
-            let choices = input.toString().replaceAll(/[,|.|;|:]/g, ' ').split('?')[1].split(' ').filter(x => x);
+            let choices = input.toString()
+                                .replaceAll(/[.|;|:]/g, ',')
+                                .split('?')[1]
+                                .split(',')
+                                .filter(x => x.replaceAll(',', ''));
 
             let choice = choices[~~(Math.random() * choices.length)];
 
