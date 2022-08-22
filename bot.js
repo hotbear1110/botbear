@@ -36,6 +36,8 @@ cc.on('automod', (channel, userstate, message) => {
 	}
 });
 
+onStart();
+
 const prefix = process.env.TWITCH_PREFIX;
 
 let uptime = new Date().getTime();
@@ -47,8 +49,6 @@ let triviaHints2 = {};
 let gothint = {};
 let gothint2 = {};
 let triviaTime = {};
-
-let started = false;
 
 let oldmessage = '';
 
@@ -520,54 +520,6 @@ async function onMessageHandler(channel, user, msg, self) {
 
 async function onConnectedHandler(addr, port) {
 	console.log(`* Connected to ${addr}:${port}`);
-	userList = (await sql.Query('SELECT username FROM Users')).map(x => x.username);
-
-	if (started === false) {
-		/*
-            //TODO hotbear: This should be remade, so that it doesn't delete the streamer from db.
-            //              The connect funtion would have to me remade aswell
-                await tools.bannedStreamers()
-            .then((res) => {
-                res.map(async ([user]) => {
-                    await cc.part(user)
-                        .catch((err) => {
-                            console.log(err);
-                        });
-
-                    new messageHandler("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`).newMessage();
-                })
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-        */
-
-
-		//if (process.env.TWITCH_USER !== 'devbear1110') {
-			await tools.nameChanges
-				.then((res) => {
-					res.map(async ([newName, oldName]) => {
-						await cc.join(newName)
-							.catch((err) => {
-								console.log(err);
-							});
-						cc.part(oldName).catch((err) => {
-							console.log(err);
-						});
-
-						cc.say(`#${newName}`, `Name change detected, ${oldName} -> ${newName}`);
-						new messageHandler(process.env.TWITCH_USER, `Left channel ${oldName}. Reason: Name change detected, ${oldName} -> ${newName}`).newMessage();
-					});
-				})
-				.catch((err) => {
-					console.log(err);
-				});
-		//}
-		await tools.checkLiveStatus();
-		await tools.checkTitleandGame();
-		started = true;
-	}
-
 }
 
 /**
@@ -617,5 +569,52 @@ async function triviaTimeout(channel, triviaTimeID, answer) {
 }
 
 redis.Get().on('ChatUpdate', onChatUpdateHandler);
+
+async function onStart() {
+	userList = (await sql.Query('SELECT username FROM Users')).map(x => x.username);
+
+		/*
+            //TODO hotbear: This should be remade, so that it doesn't delete the streamer from db.
+            //              The connect funtion would have to me remade aswell
+                await tools.bannedStreamers()
+            .then((res) => {
+                res.map(async ([user]) => {
+                    await cc.part(user)
+                        .catch((err) => {
+                            console.log(err);
+                        });
+
+                    new messageHandler("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`).newMessage();
+                })
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        */
+
+
+		if (process.env.TWITCH_USER !== 'devbear1110') {
+			await tools.nameChanges
+				.then((res) => {
+					res.map(async ([newName, oldName]) => {
+						await cc.join(newName)
+							.catch((err) => {
+								console.log(err);
+							});
+						cc.part(oldName).catch((err) => {
+							console.log(err);
+						});
+
+						cc.say(`#${newName}`, `Name change detected, ${oldName} -> ${newName}`);
+						new messageHandler(process.env.TWITCH_USER, `Left channel ${oldName}. Reason: Name change detected, ${oldName} -> ${newName}`).newMessage();
+					});
+				})
+				.catch((err) => {
+					console.log(err);
+				});
+		}
+		await tools.checkLiveStatus();
+		await tools.checkTitleandGame();
+}
 
 module.exports = { cc, uptime, triviaanswer, activetrivia };
