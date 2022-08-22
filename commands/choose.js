@@ -11,10 +11,10 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-            let choices = input.toString().replaceAll(',', ' ').split('?')[1].split(' ').filter(x => x);
+            let choices = input.toString().replaceAll(/[,|.|;|:]/g, ' ').split('?')[1].split(' ').filter(x => x);
 
             let choice = choices[~~(Math.random() * choices.length)];
-            
+
 			return `I pick ${choice}`;
 		} catch (err) {
 			console.log(err);
