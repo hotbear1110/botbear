@@ -3,20 +3,16 @@ const sql = require('../sql/index.js');
 
 const channelOptions = [process.env.TWITCH_OWNERNAME];
 
-exports.setupChannels = new Promise(async(Resolve) => {
-	(await sql.Query('SELECT * FROM Streamers'))
-		.map(async ({ username }) => {
-			if (username !== process.env.TWITCH_OWNERNAME) {
-				channelOptions.push(username);
-			}
-		});
+exports.setupChannels = async() => {
+	(await sql.Query('SELECT username FROM Streamers'))
+		.map(({ username }) => (username === process.env.TWITCH_OWNERNAME) ? true : channelOptions.push(username));
+
 	console.log(`Imported channels from database: ${channelOptions}`);
-	Resolve();
-});
+};
 
 exports.TMISettings = {
 	options: {
-		joinInterval: process.env.TWITCH_OWNERNAME ? 300 : 2000,
+		joinInterval: process.env.BOT_VERIFIED ? 300 : 2000,
 	},
 	connection: {
 		secure: true,
