@@ -1,14 +1,16 @@
 require('dotenv').config();
+const { resolveObjMapThunk } = require('graphql');
 const sql = require('../sql/index.js');
 
 const channelOptions = [process.env.TWITCH_OWNERNAME];
 
-exports.setupChannels = async() => {
+exports.setupChannels = new Promise(async(Resolve) => {
 	(await sql.Query('SELECT username FROM Streamers'))
 		.map(({ username }) => (username === process.env.TWITCH_OWNERNAME) ? true : channelOptions.push(username));
 
 	console.log(`Imported channels from database: ${channelOptions}`);
-};
+	Resolve();
+});
 
 exports.TMISettings = {
 	options: {

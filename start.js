@@ -39,7 +39,7 @@
     }
 
     await require('./commands/index.js').Load();
-    await require('./connect/connect.js').setupChannels();
+    await require('./connect/connect.js').setupChannels;
     
     const redis = require('./tools/redis.js').Get();
     await redis.Connect();
