@@ -212,8 +212,11 @@ setInterval(async function () {
             const [stream] = await sql.Query('SELECT islive, username FROM Streamers WHERE username=?', [user.Channel]);
             await sql.Query('UPDATE Cookies SET Status=?, Channel=?, RemindTime=? WHERE User=?', [null, null, null, user.User]);
 
+			//If the bot has been down for 5 or more min, then reminders that went off meanwhile wont trigger. This is to prevent spam.
+			if (user.RemindTime + 300000 < Time) { return; }
+			
             const channel = channelFromMode(user);
-            
+
             let isDisabled  = false;
             if (stream !== null) {
                 isDisabled = await commandDisabled('cookie', stream.username);
@@ -233,20 +236,23 @@ setInterval(async function () {
 }, 10000);
 
 setInterval(async function () {
-	const time = new Date().getTime();
+	const Time = new Date().getTime();
 
     const sendMessage = (dst, user, suffix = '') => new messageHandler(dst, `${user} Your cookie cdr is ready ${suffix}`).newMessage();
     
     /** @type { SQL.Cookies[] } */
     (await sql.Query('SELECT * FROM Cdr'))
     .map(async(user) => {
-        if (user.RemindTime === null || user.RemindTime > time) return;
+        if (user.RemindTime === null || user.RemindTime > Time) return;
         if (user.Status !== 'Confirmed') return;
 
         /** @type { SQL.Streamers[] } */
         const [stream] = await sql.Query('SELECT islive, username FROM Streamers WHERE username=?', [user.Channel]);
 
         await sql.Query('UPDATE Cdr SET Status=?, Channel=?, RemindTime=? WHERE User=?', [null, null, null, user.User]);
+
+		//If the bot has been down for 5 or more min, then reminders that went off meanwhile wont trigger. This is to prevent spam.
+		if (user.RemindTime + 300000 < Time) { return; }
 
         const channel = channelFromMode(user);
         let isDisabled = false;
