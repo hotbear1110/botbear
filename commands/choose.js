@@ -15,13 +15,13 @@ module.exports = {
                 return 'FeelsDankMan Please include a "?" Example: bb choose What food is best? pizza, burger, fries';
             }
             let choices = input.join(' ')
-                                .replaceAll(/[.|;|:]/g, ',')
-                                .split('?')[1]
-                                .split(',');
-                                
+								.slice(input.join(' ')
+								.indexOf('?')+1)
+								.replace(/(^[;,])|\?/g, '')
+								.split(/[,;]/);
+   
             let choice = choices[~~(Math.random() * choices.length)];
-
-			return `I pick ${choice}`;
+			return choice;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
