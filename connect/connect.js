@@ -1,18 +1,18 @@
 require('dotenv').config();
 const sql = require('../sql/index.js');
 
-const channelOptions = [];
+const channelOptions = [process.env.TWITCH_OWNERNAME];
 
 exports.setupChannels = async() => {
 	(await sql.Query('SELECT username FROM Streamers'))
-		.map(({ username }) => channelOptions.push(username));
+		.map(({ username }) => (username === process.env.TWITCH_OWNERNAME) ? true : channelOptions.push(username));
 
 	console.log(`Imported channels from database: ${channelOptions}`);
 };
 
 exports.TMISettings = {
 	options: {
-		joinInterval: process.env.TWITCH_OWNERNAME ? 300 : 2000,
+		joinInterval: process.env.BOT_VERIFIED ? 300 : 2000,
 	},
 	connection: {
 		secure: true,
