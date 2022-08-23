@@ -1,5 +1,4 @@
 require('dotenv').config();
-const { resolveObjMapThunk } = require('graphql');
 const sql = require('../sql/index.js');
 
 const channelOptions = [process.env.TWITCH_OWNERNAME];
