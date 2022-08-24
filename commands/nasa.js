@@ -1,6 +1,5 @@
 const got = require('got');
 require('dotenv').config();
-const tools = require('../tools/tools.js');
 
 //Made by: @sougataghar477
 module.exports = {
@@ -15,7 +14,7 @@ module.exports = {
         return;
       }
       let nasa = await got(
-        `https://api.nasa.gov/planetary/apod?api_key=vs9YmT1dIOOcOoyQbYuaMSCL2gm9nmnjdnZVmNJU`,
+        `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}`,
         { 
             timeout: 10000 
         }
