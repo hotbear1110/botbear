@@ -13,13 +13,20 @@ module.exports = {
       if (module.exports.permission > perm) {
         return;
       }
-      let nasa = await got(
-        `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}`,
-        { 
-            timeout: 10000 
+      let url = `https://api.nasa.gov/planetary/apod?api_key=${process.env.NASA_API}`;
+      switch (input[2]) {
+        case 'random': {
+          let nasa = await got(`${url}&count=1`, { timeout: 10000 }).json();
+      
+          return `Random Astronomy Picture Of The Day (${nasa[0].date}): ${nasa[0].title} - ${nasa[0].hdurl}`;
         }
-      ).json();
-      return 'Astronomy Picture Of The Day: '+nasa.hdurl;
+        default: {
+          let nasa = await got(url, { timeout: 10000 }).json();
+          
+          return `Astronomy Picture Of The Day: ${nasa.title} - ${nasa.hdurl}`;
+        }
+      }
+      
  } catch (err) {
       console.log(err);
       if (err.name) {
