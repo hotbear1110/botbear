@@ -20,7 +20,7 @@ module.exports = {
 								.replace(/(^[;,])|\?/g, '')
 								.split(/[,;]/);
    
-            let choice = choices[~~(Math.random() * choices.length)];
+            let choice =choices.length<2 ?'Please enter more than 1 choice' : choices[~~(Math.random() * choices.length)];
 			return choice;
 		} catch (err) {
 			console.log(err);
