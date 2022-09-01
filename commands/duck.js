@@ -1,7 +1,7 @@
 const got = require('got');
 
 module.exports = {
-	name: 'dog',
+	name: 'duck',
 	ping: true,
 	description: 'This command will give you a link to a picture of a random duck',
 	permission: 100,
@@ -13,7 +13,7 @@ module.exports = {
 			}
 			const image = await got('https://random-d.uk/api/v2/random', { timeout: 10000 }).json();
 
-			return `DuckerZ quack ${image.message}`;
+			return `DuckerZ quack ${image.url}`;
 
 		} catch (err) {
 			console.log(err);
