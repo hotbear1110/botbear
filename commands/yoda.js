@@ -7,7 +7,7 @@ const regex = require('../tools/regex.js');
 module.exports = {
   name: 'yoda',
   ping: false,
-  description: 'This command will translate the input to Yoda speach',
+  description: 'This command will translate the input to Yoda speech',
   permission: 100,
   category: 'Random command',
   execute: async (channel, user, input, perm) => {
