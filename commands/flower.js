@@ -1,6 +1,6 @@
 module.exports = {
 	name: 'flower',
-	ping: true,
+	ping: false,
 	description: 'This command will let a user give flower to someone.',
 	permission: 100,
 	category: 'Random command',
