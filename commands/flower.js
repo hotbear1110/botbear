@@ -10,7 +10,7 @@ module.exports = {
 				return;
 			}
 			const flowers=['💐','🌸','💮','🏵️','🌹','🌺','🌻','🌼','🌷'];
-			return `${user.username} gave a flower to ${input[2] ?? 'no one (no friends) Sadge'} ${flowers[~~(Math.random() * flowers.length)]}.`;
+			return `${user.username} gave a flower to ${input[2] ?? 'no one (no friends) Sadge'} ${flowers[~~(Math.random() * flowers.length)]}`;
 			//example --> bb flower yourmom
 
 		} catch (err) {
