@@ -9,7 +9,7 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			const flowers=['💐','🌸','💮','🏵️','🌹','🌺','🌻','🌼','🌷'];
+			const flowers=['💐','🌸','💮','🏵️','🌹','🌺','🌻','🌼','🌷','nymnFlower'];
 			return `${user.username} gave a flower to ${input[2] ?? 'no one (no friends) Sadge'} ${flowers[~~(Math.random() * flowers.length)]}`;
 			//example --> bb flower yourmom
 
