@@ -58,7 +58,7 @@ module.exports = {
 						return 'forsenCD this reply contains the answer to the current trivia';
 					}
 				}
-
+				console.log(output);
 				return output;
 			} catch (err) {
 				console.log(err);
