@@ -17,13 +17,14 @@ module.exports = {
 			message.shift();
             
             message = message.join(' ');
-			let peak = input[2]/2;
-            let peakLength = message.repeat(peak);
+			let width = input[2];
+			let length = input[2]*2;
+            let peakLength = message.repeat(length);
             if (peakLength.length > 500) {
                 return 'nymnDank message is too long';
             }
-            for (let i = 1; i < input[2]; i++) {
-                let msgLength = (i < peak) ? i : input[2] - i;
+            for (let i = 0; i < length; i++) {
+                let msgLength = (i < width) ? i+1 : length - (i+1);
                 let tempMsg = Array.from({length: msgLength}).fill(message).join(' ');
                 console.log(tempMsg);
                 cc.say(channel, tempMsg);
