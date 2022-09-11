@@ -39,7 +39,6 @@ module.exports = {
                                    '\u{ad}',
                                     '\u{ffa0}']
                                     .join('|'), 'gmu');
-			msg = msg.replace(regex.invisChar, '').replace(invisChar2, '');
 
             const vm = new VM({
                 timeout: 10000,
@@ -57,7 +56,9 @@ module.exports = {
 
             if(!/\breturn\b/.test(msg[msg.length - 1])) { msg[msg.length - 1] = `return ${msg[msg.length - 1].trim()}`; }
 
-            msg = await vm.run(`(() => { ${msg.join(';')} })()`);
+            msg = await vm.run(`(() => { ${msg.join(';')} })()`).toString();
+
+			msg = msg.replace(regex.invisChar, '').replace(invisChar2, '');
 
             if (tools.isMod(user, channel) === false && perm < 2000 && msg.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
 				msg = msg.charAt(0) + '\u{E0000}' + msg.substring(1);
