@@ -40,7 +40,8 @@
     "require-reload": "^0.2.2",
     "tmi": "^0.2.2",
     "tmi.js": "^1.8.5",
-    "underscore": "^1.13.1"
+    "underscore": "^1.13.1",
+    "vm2": "^3.9.11"
   },
   "types": "./@types/index.d.ts",
   "devDependencies": {
