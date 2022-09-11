@@ -16,8 +16,8 @@ module.exports = {
 			}
 			input = input.splice(2);
 			let msg = input.join(' ');
-
-			msg.replace(regex.invisChar, '');
+            let invisChar2 = ['[\u{13fe}-\u{13ff}]', '[\u{17b4}-\u{17b5}]', '[\u{180b}-\u{180f}]', '[\u{1bca0}-\u{1bca3}]', '[\u{1d173}-\u{1d17a}]', '[\u{2000}-\u{200f}]', '[\u{2028}-\u{202f}]', '[\u{2060}-\u{206f}]', '[\u{61c}-\u{61d}]', '[\u{80}-\u{9f}]', '[\u{e0000}-\u{e0fff}]', '[\u{e47}-\u{e4d}]', '[\u{fe00}-\u{feff}]', '[\u{fff0}-\u{ffff}]', '\u{115f}', '\u{1160}', '\u{2800}', '\u{3164}', '\u{34f}', '\u{ad}', '\u{ffa0}'].join('|');
+			msg.replace(regex.invisChar, '').replace(invisChar2, '');
 
             const vm = new VM({
                 timeout: 10000,
@@ -27,11 +27,15 @@ module.exports = {
                 console: 'off',
                 sandbox: {}
             });
+            const semicolonTerminated = msg.endsWith(';');
 
             msg = msg.toString().split(';');
+            if (semicolonTerminated) msg = msg.slice(0, -1);
+
+
             if(!/\breturn\b/.test(msg[msg.length - 1])) { msg[msg.length - 1] = `return ${msg[msg.length - 1].trim()}`; }
 
-            msg = await vm.run(`(() => { ${msg.join(';')} })()`).toString();
+            msg = await vm.run(`(() => { ${msg.join(';')} })()`);
 
             if (tools.isMod(user, channel) === false && perm < 2000 && msg.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
 				msg = msg.charAt(0) + '\u{E0000}' + msg.substring(1);
