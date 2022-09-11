@@ -17,7 +17,13 @@ module.exports = {
 
 			msg.replace(regex.invisChar, '');
 
-            msg = await new VM().run(msg).toString();
+            const vm = new VM({
+                timeout: 5000,
+                allowAsync: false,
+                sandbox: {}
+            });
+
+            msg = await vm.run(msg).toString();
 
 			if (perm < 2000 && msg.match(/[&|$|/|.|?|-|!]|\bkb\b|^\bmelon\b/g)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
 				msg = msg.charAt(0) + '\u{E0000}' + msg.substring(1);
