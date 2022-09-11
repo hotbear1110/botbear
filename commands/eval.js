@@ -39,7 +39,7 @@ module.exports = {
                                    '\u{ad}',
                                     '\u{ffa0}']
                                     .join('|'), 'gmu');
-			msg.replace(regex.invisChar, '').replace(invisChar2, '');
+			msg = msg.replace(regex.invisChar, '').replace(invisChar2, '');
 
             const vm = new VM({
                 timeout: 10000,
