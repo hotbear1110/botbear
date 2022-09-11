@@ -7,7 +7,7 @@ module.exports = {
 	name: 'eval',
 	ping: false,
 	description: 'This command will let you execute js code in the bot and make it return the result. (The message gets checked for massping, banphrases etc.). Example: "bb eval "lole ".repeat(10);"',
-	permission: 1500,
+	permission: 100,
 	category: 'Random command',
 	execute: async (channel, user, input, perm) => {
 		try {
