@@ -1,3 +1,5 @@
+require('dotenv').config();
+const tools = require('../tools/tools.js');
 const regex = require('../tools/regex.js');
 const {VM} = require('vm2');
 
@@ -18,16 +20,34 @@ module.exports = {
 			msg.replace(regex.invisChar, '');
 
             const vm = new VM({
-                timeout: 5000,
+                timeout: 10000,
                 allowAsync: false,
+                wasm: false,
+                eval: false,
+                console: 'off',
                 sandbox: {}
             });
 
-            msg = await vm.run(msg).toString();
+            msg = msg.toString().split(';');
+            if(!/\breturn\b/.test(msg[msg.length - 1])) { msg[msg.length - 1] = `return ${msg[msg.length - 1].trim()}`; }
 
-			if (perm < 2000 && msg.match(/[&|$|/|.|?|-|!]|\bkb\b|^\bmelon\b/g)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
+            msg = await vm.run(`(() => { ${msg.join(';')} })()`).toString();
+
+            if (tools.isMod(user, channel) === false && perm < 2000 && msg.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
 				msg = msg.charAt(0) + '\u{E0000}' + msg.substring(1);
 			}
+			if (msg.match(/!/g)) {
+				msg = '❗ ' + msg.substring(1);
+			}
+
+			if (perm < 2000 && msg.match(/(\.|\/)color/g)) {
+				return 'cmonBruh don\'t change my color';
+			}
+
+			if (msg.toLowerCase().startsWith(`/ban ${process.env.TWITCH_OWNERNAME}`) || msg.toLowerCase().startsWith(`/timeout ${process.env.TWITCH_OWNERNAME}`) || msg.toLowerCase().startsWith(`/unmod ${process.env.TWITCH_USER}`)) {
+				return `nymnWeird too far @${user.username}`;
+			}
+
 			return msg;
 		} catch (err) {
 			console.log(err);
