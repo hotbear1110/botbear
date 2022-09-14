@@ -1,4 +1,5 @@
 const sql = require('./../sql/index.js');
+const tools = require('../tools/tools.js');
 
 module.exports = {
 	name: 'code',
@@ -16,15 +17,19 @@ module.exports = {
 				return 'No command specified - https://github.com/hotbear1110/botbear/blob/main/commands/';
 			}
 
+			
 			let commandList = await sql.Query(`
                     SELECT *
                     FROM Commands`);
 
-			if (!commandList.filter(x => x.Name === input[2]).length) {
-				return `${input[2]} is not a command! Do: "bb commands" to see a list of available commands`;
+			input.splice(1,1);
+			input = await tools.Alias(input.join(' '));
+
+			if (!commandList.filter(x => x.Name === input[1]).length) {
+				return `${input[1]} is not a command! Do: "bb commands" to see a list of available commands`;
 			}
 
-			return `https://github.com/hotbear1110/botbear/blob/main/commands/${input[2]}.js`;
+			return `https://github.com/hotbear1110/botbear/blob/main/commands/${input[1]}.js`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
