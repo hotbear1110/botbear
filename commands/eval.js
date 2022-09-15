@@ -50,7 +50,7 @@ module.exports = {
                 wasm: false,
                 eval: false,
                 console: 'off',
-                sandbox: {}
+                sandbox: {btoa, atob}
             });
             const semicolonTerminated = msg.endsWith(';');
 
