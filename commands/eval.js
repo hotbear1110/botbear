@@ -41,7 +41,7 @@ module.exports = {
             ].join('|'), 'gmu');
 
             
-            if ((msg.match(/Array\((\d+)\)/)) ?  msg.match(/Array\((\d+)\)/)[1] : null > 1000000) {
+            if ((msg.match(/Array\((\d+)\)/) ?  msg.match(/Array\((\d+)\)/)[1] : null) > 1000000) {
                 return 'monkaS 👉 JavaScript heap out of memory';
             }
             const vm = new VM({
