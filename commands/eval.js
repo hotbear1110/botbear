@@ -41,7 +41,7 @@ module.exports = {
             ].join('|'), 'gmu');
 
             const vm = new VM({
-                timeout: 10000,
+                timeout: 3000,
                 allowAsync: false,
                 wasm: false,
                 eval: false,
@@ -56,7 +56,8 @@ module.exports = {
 
             if(!/\breturn\b/.test(msg[msg.length - 1])) { msg[msg.length - 1] = `return ${msg[msg.length - 1].trim()}`; }
 
-            msg = await vm.run(`(() => { ${msg.join(';')} })()`).toString();
+            msg = await vm.run(`(() => { ${msg.join(';')} })()`)?.toString() ?? 'undefined';
+
 
 			msg = msg.replace(regex.invisChar, '').replace(invisChar2, '');
 
