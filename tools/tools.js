@@ -157,14 +157,22 @@ exports.Cooldown = class Cooldown {
 };
 
 exports.splitLine = (message, chars) => {
-	let messages = [];
-	while  (message.length > chars) {
-		let newmessage = message.slice(0, chars);
-		messages.push(newmessage);
-		message = message.slice(chars, -1);
+	let fixedMessage = [];
+	let messageArray = message.split(' ');
+
+	for (const [, word] of messageArray.entries()) {
+		fixedMessage.push(word);
+		if (fixedMessage.join(' ').length > chars) {
+			fixedMessage.pop();
+			break;
+		}
 	}
-	messages.push(message);
-	return messages;
+
+	fixedMessage = fixedMessage.join(' ');
+	if(fixedMessage.length === 0) {
+		return ['Message is too long :('];
+	}
+	return [fixedMessage];
 };
 
 let hasteoptions = {
