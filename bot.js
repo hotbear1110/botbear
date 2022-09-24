@@ -512,7 +512,7 @@ async function onMessageHandler(channel, user, msg, self) {
 		return;
 	}
 
-	result = tools.splitLine(result, 450);
+	result = tools.splitLine(result, 399);
 
 	new messageHandler(channel, result[0], commands[realcommand].noBanphrase, commands[realcommand].showDelay, start, commands[realcommand].ping, user).newMessage();
 	return;
