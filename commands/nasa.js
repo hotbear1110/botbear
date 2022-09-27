@@ -18,12 +18,12 @@ module.exports = {
         case 'random': {
           let nasa = await got(`${url}&count=1`, { timeout: 10000 }).json();
       
-          return `Random Astronomy Picture Of The Day (${nasa[0].date}): ${nasa[0].title} - ${nasa[0].hdurl}`;
+          return `Random Astronomy Picture Of The Day (${nasa[0].date}): ${nasa[0].title} - ${nasa[0].hdurl ?? nasa[0].url}`;
         }
         default: {
           let nasa = await got(url, { timeout: 10000 }).json();
           
-          return `Astronomy Picture Of The Day: ${nasa.title} - ${nasa.hdurl}`;
+          return `Astronomy Picture Of The Day: ${nasa.title} - ${nasa.hdurl ?? nasa.url}`;
         }
       }
       
