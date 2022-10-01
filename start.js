@@ -15,6 +15,7 @@
 
     /** @type { Array<SQL.Streamers> } */
     const channels = await sql.Query('SELECT username, uid FROM Streamers');
+    const { joinChannel } = require('./tools/tools.js');
 
     /// TODO: uid are defined as ints in the database, we don't want that, they are defined as strings by twitch themselfes.
     /// As such if in the future there would be changes to uid's such as adding a letter or something, we would have a big problem.
@@ -22,11 +23,12 @@
     /// And remove that String casting.
     const checkOwner = channels.find(({uid}) => String(uid) === process.env.TWITCH_OWNERUID);
     if (!checkOwner) {
-        await sql.Query(`
-            INSERT INTO Streamers (username, uid, live_ping, offline_ping, title_ping, game_ping, emote_list, emote_removed, disabled_commands)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            // eslint-disable-next-line
-            [process.env.TWITCH_OWNERNAME, process.env.TWITCH_OWNERUID, "['']", "['']", "['']", "['']", '[]', '[]', '[]']);
+        const user = {
+            username: process.env.TWITCH_OWNER,
+            uid: process.env.TWITCH_OWNERUID,
+        };
+        
+        await joinChannel(user, false);
     }
 
     // Check if bot channel is in the database.
@@ -35,7 +37,7 @@
             username: process.env.TWITCH_USER,
             uid: process.env.TWITCH_UID
         };
-        await require('./tools/tools.js').joinChannel(opts);
+        await joinChannel(opts);
     }
 
     await require('./commands/index.js').Load();
