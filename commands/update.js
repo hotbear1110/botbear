@@ -1,6 +1,6 @@
 let messageHandler = require('../tools/messageHandler.js').messageHandler;
 const { promisify } = require('node:util');
-const { exec } = require('node:child_proceess');
+const { exec } = require('node:child_process');
 
 module.exports = {
 	name: 'update',
