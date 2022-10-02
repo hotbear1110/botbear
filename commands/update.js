@@ -1,5 +1,6 @@
 let messageHandler = require('../tools/messageHandler.js').messageHandler;
-const shell = require('child_process');
+const { promisify } = require('node:util');
+const { exec } = require('node:child_proceess');
 
 module.exports = {
 	name: 'update',
@@ -14,48 +15,28 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
+            const shell = promisify(exec);
+
 			await new messageHandler(channel, 'ppCircle git pull...', true).newMessage();
 
-			let response = new Promise(async (Resolve, Reject) => {
-                shell.exec('sudo git pull', async (err, stdout) => {
-                    if (err) {
-                      console.error(err);
-                      Reject();
-                    }
-                    console.log(stdout);
+			const response = await shell('sudo git pull');
 
-                    if (stdout === 'Already up to date.\n') {
-                        Resolve('FeelsDankMan Already up to date.');
-                        return;
-                    } else {
-                        Resolve(false);
-                        return;
-                    }
-                  });
-            });
             await response;
 
-            if (!await response) {
+            if (response.stdout === 'Already up to date.\n') {
+                return 'FeelsDankMan Already up to date.';
+            }
+              else {
                 await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage();
-                await sleep(1000);
-                shell.exec('sudo systemctl restart botbear2');
-                return;
-                } else {
-                    return await response;
-                }
+              
+                await shell('sudo systemctl restart botbear2');
+                
+              return;
+              }
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
 		}
 	}
 };
-
-async function sleep(milliseconds) {
-	var start = new Date().getTime();
-	for (var i = 0; i < 1e7; i++) {
-		if ((new Date().getTime() - start) > milliseconds) {
-			return true;
-		}
-	}
-}
 
