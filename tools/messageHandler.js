@@ -67,7 +67,6 @@ exports.messageHandler = class Cooldown {
 				this.message = (this.message.endsWith(' 󠀀 '))  ? this.message.substring(this.message.length-4, 0) : this.message + ' 󠀀 ';
 			}
 			await cc.say(this.channel, this.message);
-			
 			this.noCD = 1;
 			let tempList = [];
 			tempList.push(this.message);
