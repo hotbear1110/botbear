@@ -27,7 +27,7 @@ module.exports = {
                 return 'FeelsDankMan Already up to date.';
             }
               else {
-                Promise.all([await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage()]);
+                await Promise.all([await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage()]);
               
                 execSync('sudo systemctl restart botbear2');
                 
