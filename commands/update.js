@@ -29,6 +29,8 @@ module.exports = {
               else {
                 await Promise.all([await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage()]);
               
+				await Sleep();
+
                 execSync('sudo systemctl restart botbear2');
                 
               return;
@@ -40,3 +42,10 @@ module.exports = {
 	}
 };
 
+const Sleep = async (seconds = 1) => {
+    return new Promise((Resolve) => {
+        setTimeout(() => {
+            Resolve();
+        }, seconds*1000);
+    });
+};
