@@ -37,7 +37,7 @@ module.exports = {
 
             if (!await response) {
                 await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage();
-                sleep(1000);
+                await sleep(1000);
                 shell.exec('sudo systemctl restart botbear2');
                 return;
                 } else {
@@ -50,11 +50,11 @@ module.exports = {
 	}
 };
 
-function sleep(milliseconds) {
+async function sleep(milliseconds) {
 	var start = new Date().getTime();
 	for (var i = 0; i < 1e7; i++) {
 		if ((new Date().getTime() - start) > milliseconds) {
-			break;
+			return true;
 		}
 	}
 }
