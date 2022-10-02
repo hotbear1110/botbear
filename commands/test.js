@@ -4,7 +4,7 @@ const got = require('got');
 module.exports = {
 	name: 'test',
 	ping: true,
-	description: '34125643',
+	description: 'test',
 	permission: 2000,
 	category: 'Dev command',
 	execute: async (channel, user, input, perm) => {
