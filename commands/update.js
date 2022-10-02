@@ -26,15 +26,14 @@ module.exports = {
                     if (stdout === 'Already up to date.\n') {
                         Resolve('FeelsDankMan Already up to date.');
                     }
-                    await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage();
 
-                    Resolve();
+                    Resolve(await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage());
                   });
             });
             await Promise.all([response]);
 
             shell.exec('sudo systemctl restart botbear2');
-            
+
 			return await response;
 		} catch (err) {
 			console.log(err);
