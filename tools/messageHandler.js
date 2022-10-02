@@ -71,6 +71,7 @@ exports.messageHandler = class Cooldown {
 			let tempList = [];
 			tempList.push(this.message);
 			talkedRecently[this.channel] = tempList;
+			return;
 		}
 
 		setTimeout(async () => {
