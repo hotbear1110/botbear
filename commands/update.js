@@ -33,14 +33,14 @@ module.exports = {
                     }
                   });
             });
-            await Promise.all([response]);
+            await response;
 
             if (!await response) {
                 let awaitRestart = new Promise(async (Resolve) => {
                     await Promise.all([await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage()]);
                     Resolve();
                 });
-                await Promise.all([awaitRestart]);
+                await awaitRestart;
                 shell.exec('sudo systemctl restart botbear2');
                 return;
                 } else {
