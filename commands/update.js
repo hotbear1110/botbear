@@ -23,10 +23,12 @@ module.exports = {
                       Reject();
                     }
                     console.log(stdout);
+
                     if (stdout === 'Already up to date.\n') {
                         Resolve('FeelsDankMan Already up to date.');
+                        return;
                     }
-                    Promise.all([await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage()]).then(shell.exec('sudo systemctl restart botbear2'));
+                    await Promise.all([await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage()]).then(shell.exec('sudo systemctl restart botbear2'));
                     Resolve();
                   });
             });
