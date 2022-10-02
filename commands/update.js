@@ -14,7 +14,7 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			Promise.all([await new messageHandler(channel, 'ppCircle git pull...', true).newMessage()]);
+			await new messageHandler(channel, 'ppCircle git pull...', true).newMessage();
 
 			let response = new Promise(async (Resolve, Reject) => {
                 shell.exec('sudo git pull', async (err, stdout) => {
@@ -37,7 +37,7 @@ module.exports = {
 
             if (!await response) {
                 await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage();
-
+                sleep(1000);
                 shell.exec('sudo systemctl restart botbear2');
                 return;
                 } else {
@@ -49,3 +49,13 @@ module.exports = {
 		}
 	}
 };
+
+function sleep(milliseconds) {
+	var start = new Date().getTime();
+	for (var i = 0; i < 1e7; i++) {
+		if ((new Date().getTime() - start) > milliseconds) {
+			break;
+		}
+	}
+}
+
