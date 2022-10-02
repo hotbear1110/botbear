@@ -36,11 +36,8 @@ module.exports = {
             await response;
 
             if (!await response) {
-                let awaitRestart = new Promise(async (Resolve) => {
-                    await Promise.all([await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage()]);
-                    Resolve();
-                });
-                await awaitRestart;
+                await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage();
+
                 shell.exec('sudo systemctl restart botbear2');
                 return;
                 } else {
