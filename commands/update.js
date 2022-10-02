@@ -28,7 +28,6 @@ module.exports = {
                         Resolve('FeelsDankMan Already up to date.');
                         return;
                     } else {
-                        await Promise.all([await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage()]);
                         Resolve(false);
                         return;
                     }
@@ -37,6 +36,11 @@ module.exports = {
             await Promise.all([response]);
 
             if (!await response) {
+                let awaitRestart = new Promise(async (Resolve) => {
+                    await Promise.all([await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage()]);
+                    Resolve();
+                });
+                await Promise.all([awaitRestart]);
                 shell.exec('sudo systemctl restart botbear2');
                 return;
                 } else {
