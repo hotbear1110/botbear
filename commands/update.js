@@ -29,9 +29,9 @@ module.exports = {
               else {
                 await Promise.all([await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage()]);
               
-				await Sleep();
-
-                execSync('sudo systemctl restart botbear2');
+				setTimeout(() => {
+					execSync('sudo systemctl restart botbear2');
+				}, 2000);
                 
               return;
               }
@@ -40,12 +40,4 @@ module.exports = {
 			return 'FeelsDankMan Error';
 		}
 	}
-};
-
-const Sleep = async (seconds = 2) => {
-    return new Promise((Resolve) => {
-        setTimeout(() => {
-            Resolve();
-        }, seconds*1000);
-    });
 };
