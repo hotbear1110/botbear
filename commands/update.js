@@ -27,14 +27,21 @@ module.exports = {
                     if (stdout === 'Already up to date.\n') {
                         Resolve('FeelsDankMan Already up to date.');
                         return;
+                    } else {
+                        await Promise.all([await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage()]);
+                        Resolve(false);
+                        return;
                     }
-                    await Promise.all([await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage()]).then(shell.exec('sudo systemctl restart botbear2'));
-                    Resolve();
                   });
             });
             await Promise.all([response]);
 
-			return await response;
+            if (!await response) {
+                shell.exec('sudo systemctl restart botbear2');
+                return;
+                } else {
+                    return await response;
+                }
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
