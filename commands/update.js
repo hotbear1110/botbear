@@ -42,7 +42,7 @@ module.exports = {
 	}
 };
 
-const Sleep = async (seconds = 1) => {
+const Sleep = async (seconds = 2) => {
     return new Promise((Resolve) => {
         setTimeout(() => {
             Resolve();
