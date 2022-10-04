@@ -1,13 +1,13 @@
 const got = require('got');
 const tools = require('../tools/tools.js');
 
-
 module.exports = {
 	name: 'randomvip',
 	ping: true,
 	description: 'This command will give you the name if a random vip in a given channel',
 	permission: 100,
 	category: 'Info command',
+	opt_outable: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {
@@ -19,6 +19,8 @@ module.exports = {
 			}
 			let vipcheck = await got(`https://api.ivr.fi/v2/twitch/modvip/${realchannel}`, { timeout: 10000 }).json();
 			let vips = vipcheck['vips'];
+			vips = tools.optOutList(vips, module.exports.name);
+
 			let number = Math.floor(Math.random() * (vips.length - 0) + 0);
 
 			let ms = new Date().getTime() - Date.parse(vips[number].grantedAt);

@@ -1,4 +1,5 @@
 const got = require('got');
+const tools = require('../tools/tools.js');
 
 module.exports = {
 	name: 'yourmom',
@@ -6,6 +7,7 @@ module.exports = {
 	description: 'Pings a random chatter with YOURM0M',
 	permission: 100,
 	category: 'Random command',
+	opt_outable: true,
 	execute: async (channel, user, input, perm, aliascommand) => {
 		try {
 			if (module.exports.permission > perm) {
@@ -23,6 +25,7 @@ module.exports = {
 			chatterlist = chatterlist.concat(chatters['global_mods']);
 			chatterlist = chatterlist.concat(chatters['viewers']);
 
+			chatterlist = tools.optOutList(chatterlist, module.exports.name);
 			let number = Math.floor(Math.random() * chatterlist.length);
 
 			return `${aliascommand} ${chatterlist[number]}`;

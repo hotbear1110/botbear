@@ -1,6 +1,6 @@
 let messageHandler = require('../tools/messageHandler.js').messageHandler;
 const { promisify } = require('node:util');
-const { exec, execSync } = require('node:child_process');
+const { exec } = require('node:child_process');
 
 module.exports = {
 	name: 'update',
@@ -30,7 +30,7 @@ module.exports = {
                 await Promise.all([await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage()]);
               
 				setTimeout(() => {
-					execSync('sudo systemctl restart botbear2');
+					shell('sudo systemctl restart botbear2');
 				}, 2000);
                 
               return;
