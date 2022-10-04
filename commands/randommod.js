@@ -19,7 +19,7 @@ module.exports = {
 			}
 			let modcheck = await got(`https://api.ivr.fi/v2/twitch/modvip/${realchannel}`, { timeout: 10000 }).json();
 			let mods = modcheck['mods'];
-			mods = tools.optOutList(mods, module.exports.name);
+			mods = await tools.optOutList(mods, module.exports.name);
 
 			let number = Math.floor(Math.random() * (mods.length - 0) + 0);
 

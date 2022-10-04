@@ -25,7 +25,7 @@ module.exports = {
 			chatterlist = chatterlist.concat(chatters['global_mods']);
 			chatterlist = chatterlist.concat(chatters['viewers']);
 
-			chatterlist = tools.optOutList(chatterlist, module.exports.name);
+			chatterlist = await tools.optOutList(chatterlist, module.exports.name);
 			let number = Math.floor(Math.random() * chatterlist.length);
 
 			return `${aliascommand} ${chatterlist[number]}`;
