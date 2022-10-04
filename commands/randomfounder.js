@@ -21,7 +21,7 @@ module.exports = {
 			}
 			let founders = await got(`https://api.ivr.fi/v2/twitch/founders/${realchannel}`, { timeout: 10000 }).json();
 			founders = founders['founders'];
-			founders = await tools.optOutList(founders, module.exports.name);
+			founders = await tools.optOutList(founders, module.exports.name, true);
 
 			let number = Math.floor(Math.random() * (founders.length - 0) + 0);
 			

@@ -19,7 +19,7 @@ module.exports = {
 			}
 			let vipcheck = await got(`https://api.ivr.fi/v2/twitch/modvip/${realchannel}`, { timeout: 10000 }).json();
 			let vips = vipcheck['vips'];
-			vips = await tools.optOutList(vips, module.exports.name);
+			vips = await tools.optOutList(vips, module.exports.name, true);
 
 			let number = Math.floor(Math.random() * (vips.length - 0) + 0);
 

@@ -756,11 +756,12 @@ exports.commandDisabled = async (command, channel) => {
  */
 exports.unpingUser = (user) =>`${user[0]}\u{E0000}${user.slice(1)}`;
 
-exports.optOutList = async (list, command) => {
+exports.optOutList = async (list, command, isIvr) => {
 	return await sql.Query('SELECT opt_out FROM Commands WHERE Name = ?', [command])
 	.then((data) => {
 		const opted_out = JSON.parse(data[0].opt_out);
-		list = list.filter(x => !opted_out.includes(x));
+		
+		list = (isIvr) ? list.filter(x => !opted_out.includes(x.login)) : list.filter(x => !opted_out.includes(x));
 		return list;
 	});
 };
