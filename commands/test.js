@@ -18,7 +18,9 @@ module.exports = {
 			}
 			let list = input[2];
 			list = await tools.optOutList(JSON.parse(list), 'randomping');
-
+			if (!list.length) {
+				return 'loooll';
+			}
 			console.log(list);
 
 			
