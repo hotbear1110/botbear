@@ -22,7 +22,9 @@ module.exports = {
 			let founders = await got(`https://api.ivr.fi/v2/twitch/founders/${realchannel}`, { timeout: 10000 }).json();
 			founders = founders['founders'];
 			founders = await tools.optOutList(founders, module.exports.name, true);
-
+			if (!founders.lenght) {
+				return 'This channel has no founders';
+			}
 			let number = Math.floor(Math.random() * (founders.length - 0) + 0);
 			
 			let isSubbed = (founders[number].isSubscribed) ? '' : 'not';

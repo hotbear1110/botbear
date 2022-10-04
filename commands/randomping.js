@@ -26,7 +26,9 @@ module.exports = {
 			chatterlist = chatterlist.concat(chatters['viewers']);
 
 			chatterlist = await tools.optOutList(chatterlist, module.exports.name);
-
+			if (!chatterlist.lenght) {
+				return 'This channel has no chatters';
+			}
 			let number = Math.floor(Math.random() * chatterlist.length);
 
 			return `:tf: 🔔 ${chatterlist[number]}`;
