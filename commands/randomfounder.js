@@ -1,4 +1,5 @@
 const { got } = require('./../got');
+const tools = require('../tools/tools.js');
 
 module.exports = {
 	name: 'randomfounder',
@@ -7,6 +8,7 @@ module.exports = {
 	permission: 100,
 	cooldown: 3, //in seconds
 	category: 'Info Command',
+	opt_outable: true,
 	// eslint-disable-next-line no-unused-vars
 	execute: async (channel, user, input, perm, aliascommand) => {
 		try {
@@ -19,6 +21,10 @@ module.exports = {
 			}
 			let founders = await got(`https://api.ivr.fi/v2/twitch/founders/${realchannel}`).json();
 			founders = founders['founders'];
+			founders = await tools.optOutList(founders, module.exports.name, true);
+			if (!founders.length) {
+				return 'This channel has no founders';
+			}
 			let number = Math.floor(Math.random() * (founders.length - 0) + 0);
 			
 			let isSubbed = (founders[number].isSubscribed) ? '' : 'not';

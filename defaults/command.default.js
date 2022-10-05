@@ -5,6 +5,7 @@ module.exports = {
 	permission: 100,
 	cooldown: 3, //in seconds
 	category: 'CATEGORY [ ./command.category.default.js ]',
+	opt_outable: false, 
 	// eslint-disable-next-line no-unused-vars
 	execute: async (channel, user, input, perm, aliascommand) => {
 		try {

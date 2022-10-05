@@ -51,9 +51,9 @@ module.exports = {
 				}
 
 				if (username === user.username.toLowerCase()) {
-					return `has ${User_trivia[0].points} trivia points in #${channel}`;
+					return `has ${User_trivia[0].points.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} trivia points in #${channel}`;
 				}
-				return `${username} has ${User_trivia[0].points} trivia points in #${channel}`;
+				return `${username} has ${User_trivia[0].points.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} trivia points in #${channel}`;
             }
 			case 'leaderboard': {
                 if (input[3]) {
