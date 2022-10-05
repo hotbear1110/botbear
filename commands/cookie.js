@@ -1,5 +1,5 @@
 const tools = require('../tools/tools.js');
-const got = require('got');
+const { got } = require('./../got');
 const sql = require('./../sql/index.js');
 
 module.exports = {
@@ -48,7 +48,7 @@ module.exports = {
 						return `There is no cookie for you right now, your next cookie is available in ${cd}`;
 					}
 					if (status[0].RemindTime === null) {
-						let cookieCD = await got(`https://api.roaringiron.com/cooldown/${user.username}`, { timeout: 10000 }).json();
+						let cookieCD = await got(`https://api.roaringiron.com/cooldown/${user.username}`).json();
 
 						if (cookieCD['error']) {
 							return cookieCD['error'];
@@ -65,7 +65,7 @@ module.exports = {
 						return 'You have a cookie wating for you :)';
 					}
 				} else {
-					let cookieCD = await got(`https://api.roaringiron.com/cooldown/${user.username}`, { timeout: 10000 }).json();
+					let cookieCD = await got(`https://api.roaringiron.com/cooldown/${user.username}`).json();
 
 					if (cookieCD['error']) {
 						return cookieCD['error'];

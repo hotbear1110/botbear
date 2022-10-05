@@ -1,5 +1,5 @@
 require('dotenv').config();
-const got = require('got');
+const { got } = require('./../got');
 
 module.exports = {
 	name: 'test',
@@ -39,8 +39,7 @@ module.exports = {
 				},
 				body: JSON.stringify({
 					query: query
-				}),
-				timeout: 10000
+				})
 			}).json();
 
 			if (!ThreeLetterApiCall.data.user) {

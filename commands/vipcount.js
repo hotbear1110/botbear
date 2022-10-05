@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 
 module.exports = {
 	name: 'vipcount',
@@ -18,7 +18,7 @@ module.exports = {
 				}
 				username = input[2];
 			}
-			let vipcount = await got(`https://api.twitchdatabase.com/roles/${username}`, { timeout: 10000 }).json();
+			let vipcount = await got(`https://api.twitchdatabase.com/roles/${username}`).json();
 			const isvip = vipcount.vipIn['total'];
 			if (isvip === 0) {
 				return 'That user is not a vip in any channel :)';

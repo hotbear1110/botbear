@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 const tools = require('../tools/tools.js');
 
 
@@ -30,7 +30,7 @@ module.exports = {
 				}
 			}
 
-			const followcheck = await got(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`, { timeout: 10000 }).json();
+			const followcheck = await got(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`).json();
 
 			if (followcheck['followedAt']) {
 				const ms = new Date().getTime() - Date.parse(followcheck['followedAt']);

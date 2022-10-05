@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 
 module.exports = {
 	name: 'harrypotter',
@@ -14,7 +14,7 @@ module.exports = {
 			switch (input[2]) {
 			case 'random': {
 
-				const characters = await got('http://hp-api.herokuapp.com/api/characters', { timeout: 10000 }).json();
+				const characters = await got('http://hp-api.herokuapp.com/api/characters').json();
 				let number = Math.floor(Math.random() * (characters.length - 0) + 0);
 
 				characters[number].wand = `[ ${Object.entries(characters[number].wand).filter(filterByEmpty).join(' | ').replaceAll(',', ': ')} ]`;

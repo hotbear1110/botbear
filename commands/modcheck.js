@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 const tools = require('../tools/tools.js');
 
 
@@ -24,21 +24,21 @@ module.exports = {
 			if (input[3]) {
 				realchannel = input[3];
 			}
-			let modcheck = await got(`https://api.ivr.fi/v2/twitch/modvip/${realchannel}`, { timeout: 10000 }).json();
+			let modcheck = await got(`https://api.ivr.fi/v2/twitch/modvip/${realchannel}`).json();
 			let ismod = modcheck['mods'];
 			let modresponse = '';
 			for (const modstatus of ismod) {
 				if (modstatus.login == username) {
 					let moddate = modstatus.grantedAt;
 					const ms = new Date().getTime() - Date.parse(moddate);
-					modresponse = `that user has been a M OMEGALUL D in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} for - (${tools.humanizeDuration(ms)})`;
+					modresponse = `that user has been a M OMEGALUL D in #${tools.unpingUser(realchannel)} for - (${tools.humanizeDuration(ms)})`;
 				}
 			}
 			if (modresponse != '') {
 				return modresponse;
 			}
 			else {
-				return `That user is not a mod in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} :)`;
+				return `That user is not a mod in #${tools.unpingUser(realchannel)} :)`;
 			}
 
 		} catch (err) {

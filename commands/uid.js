@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 require('dotenv').config();
 
 module.exports = {
@@ -26,13 +26,12 @@ module.exports = {
 						headers: {
 							'client-id': process.env.TWITCH_CLIENTID,
 							'Authorization': process.env.TWITCH_AUTH
-						},
-						timeout: 10000
+						}
 					}).json();
 					if (userData.data) {
 						uiduser = userData.data[0];
 						uiduser = uiduser['login'];
-						const uidBanned = await got(`https://api.ivr.fi/v2/twitch/user/${uiduser}`, { timeout: 10000 }).json();
+						const uidBanned = await got(`https://api.ivr.fi/v2/twitch/user/${uiduser}`).json();
 						if (uidBanned.banned === true) {
 							response = `Username found: ${uiduser} - cmonBruh [BANNED USER] | Type: ${uidBanned.banReason}`;
 						} else {
@@ -43,10 +42,10 @@ module.exports = {
 					uiduser = input[2];
 				}
 
-				userID = await got(`https://api.ivr.fi/v2/twitch/user/${input[2]}`, { timeout: 10000 }).json();
+				userID = await got(`https://api.ivr.fi/v2/twitch/user/${input[2]}`).json();
 
 			} else {
-				userID = await got(`https://api.ivr.fi/v2/twitch/user/${uiduser}`, { timeout: 10000 }).json();
+				userID = await got(`https://api.ivr.fi/v2/twitch/user/${uiduser}`).json();
 			}
 
 			if (response.length) {

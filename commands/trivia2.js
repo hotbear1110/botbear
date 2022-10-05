@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 const tools = require('../tools/tools.js');
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
 			}
 			let excludeCategories = encodeURIComponent('[Anime,Hentai,Weeb,D DansGame TA]');
 
-			let questions = await got(`https://api.gazatu.xyz/trivia/questions?count=1&exclude=${excludeCategories}`, { timeout: 10000 }).json();
+			let questions = await got(`https://api.gazatu.xyz/trivia/questions?count=1&exclude=${excludeCategories}`).json();
 
 			let question = decodeURIComponent(questions[0].question);
 			let correct_answer = decodeURIComponent(questions[0].answer);

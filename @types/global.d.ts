@@ -1,6 +1,3 @@
-export {};
-
-
 declare global {
     export namespace SQL {
         export enum SuggestionStatus {
@@ -96,3 +93,5 @@ declare global {
         }
     }
 }
+
+export {};

@@ -1,6 +1,6 @@
 require('dotenv').config();
 const tools = require('../tools/tools.js');
-const got = require('got');
+const { got } = require('./../got');
 const sql = require('./../sql/index.js');
 
 module.exports = {
@@ -28,8 +28,7 @@ module.exports = {
 					headers: {
 						'client-id': process.env.TWITCH_CLIENTID,
 						'Authorization': process.env.TWITCH_AUTH
-					},
-					timeout: 10000
+					}
 				}).json();
 				if (!realgame.data[0]) {
 					return `"${emote}", is either not a twitch category, or it's not specific enough!`;
@@ -81,8 +80,7 @@ module.exports = {
 					headers: {
 						'client-id': process.env.TWITCH_CLIENTID,
 						'Authorization': process.env.TWITCH_AUTH
-					},
-					timeout: 10000
+					}
 				}).json();
 				if (!realgame.data[0]) {
 					return `"${input}", is either not a twitch category, or it's not specific enough!`;

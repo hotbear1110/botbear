@@ -13,6 +13,9 @@
     await sql.New(sql_opts);
     await sql.Migrate();
 
+    const got = require('./got');
+    await got.Setup();
+
     /** @type { Array<SQL.Streamers> } */
     const channels = await sql.Query('SELECT username, uid FROM Streamers');
 

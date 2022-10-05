@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 const tools = require('../tools/tools.js');
 
 
@@ -17,7 +17,7 @@ module.exports = {
 				channel = input[2];
 			}
 
-			const rl = await got(`https://logs.ivr.fi/channel/${channel}/random/?json`, { timeout: 10000 }).json();
+			const rl = await got(`https://logs.ivr.fi/channel/${channel}/random/?json`).json();
 
 			let message = tools.splitLine(rl.messages[0].text, 350);
 

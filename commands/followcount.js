@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 
 module.exports = {
 	name: 'followcount',
@@ -19,7 +19,7 @@ module.exports = {
 				realchannel = input[2];
 			}
 
-			const followcount = await got(`https://decapi.me/twitch/followcount/${realchannel}`, { timeout: 10000 }).json();
+			const followcount = await got(`https://decapi.me/twitch/followcount/${realchannel}`).json();
 
 			if (followcount === 0) {
 				return `Could not find the channel ${realchannel}`;

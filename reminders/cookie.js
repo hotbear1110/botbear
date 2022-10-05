@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 const sql = require('../sql/index.js');
 const { commandDisabled, humanizeDuration } = require('./../tools/tools.js');
 const CONSTANTS = require('./constants.js');

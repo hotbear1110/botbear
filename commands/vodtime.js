@@ -1,5 +1,5 @@
 require('dotenv').config();
-const got = require('got');
+const { got } = require('./../got');
 const tools = require('../tools/tools.js');
 const date = require('date-and-time');
 
@@ -22,8 +22,7 @@ module.exports = {
 				headers: {
 					'client-id': process.env.TWITCH_CLIENTID,
 					'Authorization': process.env.TWITCH_AUTH
-				},
-				timeout: 10000
+				}
 			}).json();
 
 			let starttime = response.data[0].created_at;

@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 
 module.exports = {
 	name: 'latestvod',
@@ -32,18 +32,22 @@ module.exports = {
 				}
 			}
 
-			const userID = await got(`https://api.ivr.fi/twitch/resolve/${realchannel}`, { timeout: 10000 }).json();
+			const userID = await got(`https://api.ivr.fi/twitch/resolve/${realchannel}`).json();
 
 			if (userID.status === 404) {
 				return `Could not find user: "${realchannel}"`;
 			}
 
-			let vodList = await got(`https://api.twitch.tv/helix/videos?user_id=${userID.id}&type=archive&first=100`, {
+			let vodList = await got('https://api.twitch.tv/helix/videos', {
 				headers: {
 					'client-id': process.env.TWITCH_CLIENTID,
 					'Authorization': process.env.TWITCH_AUTH
 				},
-				timeout: 10000
+                searchParams: {
+                    'user_id': userID.id,
+                    'type': 'archive',
+                    'first': 100
+                }
 			}).json();
 
 			if (!vodList.data.length) {

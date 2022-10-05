@@ -7,8 +7,13 @@
       "allowJs": true,
       "alwaysStrict": true,
       "checkJs": false,
-      "emitDeclarationOnly": true
+      "typeRoots": [
+        "./@types"
+      ]
     },
+    "include": [
+        "./@types/**/*.d.ts",
+    ],
     "exclude": [
       "node_modules",
     ]

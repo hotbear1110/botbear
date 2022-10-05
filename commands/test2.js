@@ -1,6 +1,6 @@
 require('dotenv').config();
 const sql = require('./../sql/index.js');
-const got = require('got');
+const { got } = require('./../got');
 
 module.exports = {
 	name: 'test2',

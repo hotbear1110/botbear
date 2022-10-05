@@ -1,4 +1,4 @@
-const got = require('got');
+const { getChatters } = require('./../tools/tools.js');
 
 module.exports = {
 	name: 'yourmom',
@@ -11,17 +11,8 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			let chatters = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 }).json();
 
-			let chatterlist = [];
-			chatters = chatters['chatters'];
-			chatterlist = chatterlist.concat(chatters['broadcaster']);
-			chatterlist = chatterlist.concat(chatters['vips']);
-			chatterlist = chatterlist.concat(chatters['moderators']);
-			chatterlist = chatterlist.concat(chatters['staff']);
-			chatterlist = chatterlist.concat(chatters['admins']);
-			chatterlist = chatterlist.concat(chatters['global_mods']);
-			chatterlist = chatterlist.concat(chatters['viewers']);
+            const chatterlist = await getChatters(channel);
 
 			let number = Math.floor(Math.random() * chatterlist.length);
 

@@ -1,4 +1,7 @@
-const got = require('got');
+const { got } = require('./../got');
+const redis = require('./../tools/redis.js');
+
+const CACHE_TIME = 1000 * 60 * 2;
 
 module.exports = {
 	name: 'chatters',
@@ -11,7 +14,14 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			let { chatter_count } = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 }).json();
+            const cache = await redis.Get().Get(`${channel}:chatters_count`);
+            if (cache) {
+                return `There are ${cache} users in the chat`;
+            }
+
+			const { chatter_count } = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`).json();
+            const b = await redis.Get().Set(`${channel}:chatters_count`, chatter_count);
+            b(CACHE_TIME);
 
 			return `There are ${chatter_count} users in chat rn :O`;
 		} catch (err) {
