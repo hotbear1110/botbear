@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 const tools = require('../tools/tools.js');
 const sql = require('./../sql/index.js');
 
@@ -37,7 +37,7 @@ module.exports = {
 				emoteId = `${emoteId}?id=true`;
 			}
 
-			const emotecheck = await got(`https://api.ivr.fi/v2/twitch/emotes/${emoteId}`, { timeout: 10000 }).json();
+			const emotecheck = await got(`https://api.ivr.fi/v2/twitch/emotes/${emoteId}`).json();
 
 			if (!emotecheck['error']) {
 				let emotechannel = emotecheck['channelName'];
@@ -60,8 +60,16 @@ module.exports = {
 				let ecount = 0;
 
 				try {
+					const { body, statusCode } = await got(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, {
+                        throwHttpErrors: false
+                    });
 
-					const emotecount = await got(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, { timeout: 10000 }).json();
+                    if (statusCode !== 200) {
+                        throw body;
+                    }
+
+                    const emotecount = JSON.parse(body);
+                    
 					let count = emotecount['twitchEmotes'];
 					for (const emote of count) {
 						if (emote['emote'] === realemote) {
@@ -123,7 +131,7 @@ module.exports = {
 				if (emoteType === 'BITS_BADGE_TIERS') {
 
 
-					const emoteCost = await got(`https://api.ivr.fi/twitch/allemotes/${emotechannel}`, { timeout: 10000 }).json();
+					const emoteCost = await got(`https://api.ivr.fi/twitch/allemotes/${emotechannel}`).json();
 					let bitEmotes = emoteCost['bitEmotes'];
 					let realemoteCost = 0;
 					for (const emote of bitEmotes) {
@@ -173,8 +181,19 @@ module.exports = {
 			let ecount = 0;
 			let foundemote = 0;
 
+            // TODO Uhh some cleanup in aisle 3
+            
 			try {
-				const emotecount = await got(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, { timeout: 10000 }).json();
+				const { body, statusCode } = await got(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, {
+                    throwHttpErrors: false
+                });
+
+                if (statusCode !== 200) {
+                    throw body;
+                }
+                
+                const emotecount = JSON.parse(body);
+                
 				let bttv = emotecount['bttvEmotes'];
 				let ffz = emotecount['ffzEmotes'];
 
@@ -222,9 +241,9 @@ module.exports = {
 				return response;
 			}
 			if (found === 0) {
-				const ffzglobal = await got('https://api.frankerfacez.com/v1/set/global', { timeout: 10000 }).json();
-				const bttvglobal = await got('https://api.betterttv.net/3/cached/emotes/global', { timeout: 10000 }).json();
-				const stvglobal = await got('https://api.7tv.app/v2/emotes/global', { timeout: 10000 }).json();
+				const ffzglobal = await got('https://api.frankerfacez.com/v1/set/global').json();
+				const bttvglobal = await got('https://api.betterttv.net/3/cached/emotes/global').json();
+				const stvglobal = await got('https://api.7tv.app/v2/emotes/global').json();
 
 				let ffzemotes = ffzglobal['sets'];
 				ffzemotes = ffzemotes['3'];

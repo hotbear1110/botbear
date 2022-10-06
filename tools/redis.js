@@ -123,13 +123,20 @@ module.exports = class RedisSingleton extends EventEmitter {
 		return await this.#client.GET(`${this.#prefix}${key}`);
 	}
 
+    /**
+     * @param { string } key 
+     * @param { any } value 
+     * @returns A function that takes in a number of seconds to expire the key.
+     */
 	async Set(key, value) {
         if (!this.#active) {
             console.log('Redis not connected');
             return;
         }
         
-		return await this.#client.SET(`${this.#prefix}${key}`, value);
+		await this.#client.SET(`${this.#prefix}${key}`, value);
+
+        return async (expire) => { this.#client.EXPIRE(`${this.#prefix}${key}`, expire); };
 	}
 
 	async PING() {

@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 
 module.exports = {
 	name: 'color',
@@ -27,7 +27,7 @@ module.exports = {
 			}
 			let color = '';
 			if (iscolor === false) {
-				let userColor = await got(`https://api.ivr.fi/twitch/resolve/${username}`, { timeout: 10000 }).json();
+				let userColor = await got(`https://api.ivr.fi/twitch/resolve/${username}`).json();
 
 				color = userColor.chatColor;
 			} else {
@@ -38,7 +38,7 @@ module.exports = {
 				color = user['color'];
 			}
 
-			const colorName = await got(`https://www.thecolorapi.com/id?hex=${color.replace('#', '')}`, { timeout: 10000 }).json();
+			const colorName = await got(`https://www.thecolorapi.com/id?hex=${color.replace('#', '')}`).json();
 
 			if (iscolor === true) {
 				return `That hex is the color: ${colorName.name.value} ${color}`;

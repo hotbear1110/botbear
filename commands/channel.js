@@ -1,7 +1,7 @@
 require('dotenv').config();
 const tools = require('../tools/tools.js');
 let messageHandler = require('../tools/messageHandler.js').messageHandler;
-const got = require('got');
+const { got } = require('./../got');
 const cc = require('../bot.js').cc;
 const sql = require('./../sql/index.js');
 
@@ -19,7 +19,7 @@ module.exports = {
 			let modresponse = false;
 
 			if (input[3] && (input[2] === 'join' || input[2] === 'leave')) {
-				let modcheck = await got(`https://api.ivr.fi/twitch/modsvips/${input[3]}`, { timeout: 10000 }).json();
+				let modcheck = await got(`https://api.ivr.fi/twitch/modsvips/${input[3]}`).json();
 				let ismod = modcheck['mods'];
 				for (const modstatus of ismod) {
 					if (modstatus.login == user.username) {
@@ -41,7 +41,7 @@ module.exports = {
 				}
 
 				if (input[3]) {
-					let streamer = await got(`https://api.ivr.fi/twitch/resolve/${input[3]}`, { timeout: 10000 }).json();
+					let streamer = await got(`https://api.ivr.fi/twitch/resolve/${input[3]}`).json();
 					uid = streamer.id;
 					username = input[3];
 				}
@@ -76,7 +76,7 @@ module.exports = {
 				let uid = user['user-id'];
 				if (channel != 'botbear1110' && channel != 'hottestbear' && channel != user.username && perm < 2000) { return; }
 				if (input[3]) {
-					let streamer = await got(`https://api.ivr.fi/twitch/resolve/${input[3]}`, { timeout: 10000 }).json();
+					let streamer = await got(`https://api.ivr.fi/twitch/resolve/${input[3]}`).json();
 					uid = streamer.id;
 					username = input[3];
 				}

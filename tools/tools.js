@@ -1,5 +1,5 @@
 require('dotenv').config();
-const got = require('got');
+const { got } = require('./../got');
 const tools = require('./tools.js');
 const bannedPhrases = require('./bannedPhrases.js');
 const hastebin = require('hastebin');
@@ -35,8 +35,7 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve) => {
 			body: 'message=' + this.message,
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded'
-			},
-			timeout: 10000
+			}
 		}).json();
 		resolve(this.checkBanphrase);
 	} catch (err) {
@@ -48,8 +47,7 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve) => {
 				body: 'message=' + this.message,
 				headers: {
 					'Content-Type': 'application/x-www-form-urlencoded'
-				},
-				timeout: 10000
+				}
 			}).json();
 			resolve(this.checkBanphrase);
 		} catch (err) {
@@ -73,7 +71,7 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve) => {
 	}
 	if (this.banphraseapi2 !== null) {
 		try {
-			this.checkBanphrase = await got(`${this.banphraseapi2}/api/channel/${this.userid}/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
+			this.checkBanphrase = await got(`${this.banphraseapi2}/api/channel/${this.userid}/moderation/check_message?message=botbear1110%20${this.message}`).json();
 			if (this.checkBanphrase['banned'] == true) {
 				resolve(true);
 			}
@@ -81,7 +79,7 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve) => {
 		} catch (err) {
 			console.log(err);
 			try {
-				this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
+				this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%20${this.message}`).json();
 				if (this.checkBanphrase['banned'] == true) {
 					resolve(true);
 				}
@@ -93,7 +91,7 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve) => {
 		}
 	} else {
 		try {
-			this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%20${this.message}`, { timeout: 10000 }).json();
+			this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%20${this.message}`).json();
 			if (this.checkBanphrase['banned'] == true) {
 				resolve(true);
 			}
@@ -242,10 +240,10 @@ exports.massping = (message, channel) => new Promise(async (resolve) => {
 	const dbpings = await sql.Query('SELECT username FROM Users WHERE ' + Array(dblist.length).fill('username = ?').join(' OR '), dblist);
 
 	let dbnames = dbpings.map(a => a.username);
-	let users = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 }).json();
+    const users = await module.exports.getChatters(channel);
 
 	let userlist = [];
-	for (const [_, values] of Object.entries(users.chatters)) {
+	for (const [_, values] of Object.entries(users)) {
 		userlist = userlist.concat(values);
 	}
 
@@ -264,7 +262,6 @@ exports.massping = (message, channel) => new Promise(async (resolve) => {
 		resolve('[MASS PING]');
 	}
 	resolve('null');
-
 });
 
 exports.asciiLength = (message) => {
@@ -365,7 +362,7 @@ exports.bannedStreamers = async () => {
 
 		for (const streamer of streamers) {
 			try {
-				const isBanned = await got(`https://api.ivr.fi/twitch/resolve/${streamer.username}`, { timeout: 10000 }).json();
+				const isBanned = await got(`https://api.ivr.fi/twitch/resolve/${streamer.username}`).json();
 
 				if (isBanned.banned === true) {
 					await sql.Query('DELETE FROM Streamers WHERE uid=?', [streamer.uid]);
@@ -762,6 +759,24 @@ exports.commandDisabled = async (command, channel) => {
  * @returns { string }
  */
 exports.unpingUser = (user) =>`${user[0]}\u{E0000}${user.slice(1)}`;
+
+/**
+ * Fetch a list of chatters in a given chat.
+ * !! Soon to be deprecated !!
+ * @param { string } channel 
+ * @returns { Promise<string[]> }
+ */
+exports.getChatters = async (channel) => {
+    const list = [];
+    const response = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`).json();
+    const chatters = response.chatters;
+
+    for (const chatter of Object.values(chatters)) {
+        list.push(...chatter);
+    }
+
+    return list;
+};
 
 exports.optOutList = async (list, command, isIvr) => {
 	return await sql.Query('SELECT opt_out FROM Commands WHERE Name = ?', [command])

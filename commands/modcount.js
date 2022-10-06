@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 
 module.exports = {
 	name: 'modcount',
@@ -18,7 +18,7 @@ module.exports = {
 				}
 				username = input[2];
 			}
-			let modcount = await got(`https://modlookup.3v.fi/api/user-totals/${username}`, { timeout: 10000 }).json();
+			let modcount = await got(`https://modlookup.3v.fi/api/user-totals/${username}`).json();
 			const ismod = modcount['total'];
 			if (ismod === 0) {
 				return 'That user is not a mod in any channel :)';

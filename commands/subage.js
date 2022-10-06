@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 const tools = require('../tools/tools.js');
 
 module.exports = {
@@ -29,7 +29,7 @@ module.exports = {
 				naniresponse = ' Copege This channel is real';
 			}
 
-			let subcheck = await got(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`, { timeout: 10000 }).json();
+			let subcheck = await got(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`).json();
 			if (subcheck['hidden']) {
 				return 'That user/channel has their sub status hidden';
 			}

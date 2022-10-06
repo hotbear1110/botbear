@@ -1,5 +1,5 @@
 const tools = require('../tools/tools.js');
-const got = require('got');
+const { got } = require('./../got');
 const sql = require('./../sql/index.js');
 
 module.exports = {
@@ -24,7 +24,7 @@ module.exports = {
 			let title = '';
 			const streamTitle = await sql.Query('SELECT * FROM Streamers WHERE username=?', [realchannel]);
 			if (!streamTitle[0]) {
-				let userID = await got(`https://api.ivr.fi/twitch/resolve/${input[2]}`, { timeout: 10000 }).json();
+				let userID = await got(`https://api.ivr.fi/twitch/resolve/${input[2]}`).json();
 
 				userID = userID.id;
 
@@ -32,8 +32,7 @@ module.exports = {
 					headers: {
 						'client-id': process.env.TWITCH_CLIENTID,
 						'Authorization': process.env.TWITCH_AUTH
-					},
-					timeout: 10000
+					}
 				}).json();
 				title = title.data[0].title;
 			} else {

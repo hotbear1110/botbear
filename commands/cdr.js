@@ -1,6 +1,6 @@
 const tools = require('../tools/tools.js');
 const sql = require('./../sql/index.js');
-const got = require('got');
+const { got } = require('./../got');
 
 module.exports = {
 	name: 'cdr',
@@ -49,7 +49,7 @@ module.exports = {
 						return `There is no cdr for you right now, your next cdr is available in ${cd}`;
 					}
 					if (status[0].RemindTime === null) {
-						let cdrCD = await got(`https://api.roaringiron.com/cooldown/${user.username}`, { timeout: 10000 }).json();
+						let cdrCD = await got(`https://api.roaringiron.com/cooldown/${user.username}`).json();
 
 						if (cdrCD['error']) {
 							return cdrCD['error'];
@@ -66,7 +66,7 @@ module.exports = {
                         return 'You have a cdr waitng for you :)';
 					}
 				} else {
-					let cdrCD = await got(`https://api.roaringiron.com/cooldown/${user.username}`, { timeout: 10000 }).json();
+					let cdrCD = await got(`https://api.roaringiron.com/cooldown/${user.username}`).json();
 
 					if (cdrCD['error']) {
 						return cdrCD['error'];

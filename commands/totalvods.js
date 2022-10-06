@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 
 module.exports = {
 	name: 'totalvods',
@@ -20,7 +20,7 @@ module.exports = {
 				realchannel = input[2];
 			}
 
-			const userID = await got(`https://api.ivr.fi/twitch/resolve/${realchannel}`, { timeout: 10000 }).json();
+			const userID = await got(`https://api.ivr.fi/twitch/resolve/${realchannel}`).json();
 
 			if (userID.status === 404) {
 				return `Could not find user: "${realchannel}"`;
@@ -30,8 +30,7 @@ module.exports = {
 				headers: {
 					'client-id': process.env.TWITCH_CLIENTID,
 					'Authorization': process.env.TWITCH_AUTH
-				},
-				timeout: 10000
+				}
 			}).json();
 
 			if (!vodList.data.length) {

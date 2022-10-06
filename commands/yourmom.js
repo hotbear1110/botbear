@@ -1,4 +1,4 @@
-const got = require('got');
+const { getChatters } = require('./../tools/tools.js');
 const tools = require('../tools/tools.js');
 
 module.exports = {
@@ -13,19 +13,9 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			let chatters = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`, { timeout: 10000 }).json();
 
-			let chatterlist = [];
-			chatters = chatters['chatters'];
-			chatterlist = chatterlist.concat(chatters['broadcaster']);
-			chatterlist = chatterlist.concat(chatters['vips']);
-			chatterlist = chatterlist.concat(chatters['moderators']);
-			chatterlist = chatterlist.concat(chatters['staff']);
-			chatterlist = chatterlist.concat(chatters['admins']);
-			chatterlist = chatterlist.concat(chatters['global_mods']);
-			chatterlist = chatterlist.concat(chatters['viewers']);
+            const chatterlist = await tools.optOutList(await getChatters(channel, module.exports.name));
 
-			chatterlist = await tools.optOutList(chatterlist, module.exports.name);
 			if (!chatterlist.length) {
 				return 'This channel has no chatters to ping FeelsBadMan';
 			}

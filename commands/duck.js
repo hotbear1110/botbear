@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 
 module.exports = {
 	name: 'duck',
@@ -11,7 +11,7 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			const image = await got('https://random-d.uk/api/v2/random', { timeout: 10000 }).json();
+			const image = await got('https://random-d.uk/api/v2/random').json();
 
 			return `DuckerZ quack ${image.url}`;
 

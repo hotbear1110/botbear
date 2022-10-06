@@ -1,5 +1,4 @@
-require('dotenv').config();
-const got = require('got');
+const { got } = require('./../got');
 const tools = require('../tools/tools.js');
 
 module.exports = {
@@ -13,9 +12,7 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			if (!process.env.THREELETTERAPI_CLIENTID) {
-				return 'FeelsDankMan Error: THREELETTERAPI_CLIENTID isn`t set';
-			}
+
 			let list = input[2];
 			list = await tools.optOutList(JSON.parse(list), 'randomping');
 			if (!list.length) {

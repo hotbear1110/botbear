@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 const requireDir = require('require-dir');
 const date = require('date-and-time');
 
@@ -26,18 +26,22 @@ module.exports = {
 				}
 			}
 
-			const userID = await got(`https://api.ivr.fi/twitch/resolve/${realchannel}`, { timeout: 10000 }).json();
+			const userID = await got(`https://api.ivr.fi/twitch/resolve/${realchannel}`).json();
 
 			if (userID.status === 404) {
 				return `Could not find user: "${realchannel}"`;
 			}
 
-			let vodList = await got(`https://api.twitch.tv/helix/videos?user_id=${userID.id}&type=archive&first=100`, {
+			let vodList = await got('https://api.twitch.tv/helix/videos', {
 				headers: {
 					'client-id': process.env.TWITCH_CLIENTID,
 					'Authorization': process.env.TWITCH_AUTH
 				},
-				timeout: 10000
+                searchParams: {
+                    'user_id': userID.id,
+                    'type': 'archive',
+                    'first': 100
+                }
 			}).json();
 
 			if (!vodList.data.length) {
@@ -68,28 +72,16 @@ module.exports = {
 			}
 
 			const findTime = requireDir('../commands');
-			let results = null;
 
-			results = await new Promise(async function (resolve) {
-				for (const url of urls) {
-					let result = await findTime['vodtime'].execute(channel, user, ['bb', 'vodtime', url, vodtime], perm);
+            for (const url of urls) {
+                let result = await findTime['vodtime'].execute(channel, user, ['bb', 'vodtime', url, vodtime], perm);
 
-					if (!result.startsWith(vodtime)) {
-						resolve(result);
-					}
-				}
-			});
+                if (!result.startsWith(vodtime)) {
+                    return result;
+                }
+            }
 
-			if (await results === null) {
-				return `No vod were found at that time, but here are the vod('s) from that date: ${urls.toString().replaceAll(',', ' - ')}`;
-			}
-
-			return await results;
-
-
-
-
-
+            return `No vod were found at that time, but here are the vod('s) from that date: ${urls.toString().replaceAll(',', ' - ')}`;
 		} catch (err) {
 			console.log(err);
 			if (err.name) {

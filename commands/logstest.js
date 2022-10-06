@@ -2,7 +2,7 @@
 const shell = require('child_process');
 const tools = require('../tools/tools.js');
 const { fchown } = require('fs');
-const got = require('got');
+const { got } = require('./../got');
 let messageHandler = require('../tools/messageHandler.js').messageHandler;
 const sql = require('./../sql/index.js');
 

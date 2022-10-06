@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 
 module.exports = {
 	name: 'follows',
@@ -16,7 +16,7 @@ module.exports = {
 
 			if (input[2]) {
 				try {
-					const getuid = await got(`https://api.ivr.fi/v2/twitch/user/${input[2]}`, { timeout: 10000 }).json();
+					const getuid = await got(`https://api.ivr.fi/v2/twitch/user/${input[2]}`).json();
 					realuid = getuid.id;
 					realuser = input[2];
 				}
@@ -28,7 +28,7 @@ module.exports = {
 				headers: {
 					'client-id': process.env.TWITCH_CLIENTID,
 					'Authorization': process.env.TWITCH_AUTH
-				}, timeout: 10000
+				}
 			}).json();
 
 			let followscount = follows.total;

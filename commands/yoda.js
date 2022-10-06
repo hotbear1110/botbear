@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 require('dotenv').config();
 const tools = require('../tools/tools.js');
 const regex = require('../tools/regex.js');
@@ -20,12 +20,7 @@ module.exports = {
       
       msg.replace(regex.invisChar, '');
       
-      let yoda = await got(
-        `https://api.funtranslations.com/translate/yoda.json?text=${msg}`,
-        { 
-            timeout: 10000 
-        }
-      ).json();
+      let yoda = await got(`https://api.funtranslations.com/translate/yoda.json?text=${msg}`).json();
       
       let yodaText = yoda.contents.translated;
       

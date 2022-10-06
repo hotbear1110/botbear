@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 const tools = require('../tools/tools.js');
 
 // https://opentdb.com/api_config.php
@@ -44,9 +44,9 @@ function genre(category) {
 
 async function getTrivia(genre) {
 	if (genre === undefined) {
-		return await got('https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986', { timeout: 10000 }).json();
+		return await got('https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986').json();
 	} else {
-		return await got(`https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&category=${genre}`, { timeout: 10000 }).json();
+		return await got(`https://opentdb.com/api.php?amount=1&type=multiple&encode=url3986&category=${genre}`).json();
 	}
 }
 

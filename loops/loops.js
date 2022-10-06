@@ -1,6 +1,6 @@
 require('dotenv').config();
 const _ = require('underscore');
-const got = require('got');
+const { got } = require('./../got');
 let messageHandler = require('../tools/messageHandler.js').messageHandler;
 const sql = require('./../sql/index.js');
 const { commandDisabled } = require('../tools/tools.js');
@@ -33,7 +33,7 @@ setInterval(async function () {
 
 
 			try {
-				const FFZ = await got(`https://api.frankerfacez.com/v1/room/id/${streamer.uid}`, { timeout: 10000 }).json();
+				const FFZ = await got(`https://api.frankerfacez.com/v1/room/id/${streamer.uid}`).json();
 
 				if (!FFZ.room || (typeof FFZ.error != 'undefined') || !FFZ) {
 					noFFZ = 1;
@@ -64,7 +64,7 @@ setInterval(async function () {
 
 			}
 			try {
-				const BTTV = await got(`https://api.betterttv.net/3/cached/users/twitch/${streamer.uid}`, { timeout: 10000 }).json();
+				const BTTV = await got(`https://api.betterttv.net/3/cached/users/twitch/${streamer.uid}`).json();
 
 				if ((typeof BTTV.message != 'undefined') || !BTTV) {
 					noBTTV = 1;
@@ -97,7 +97,7 @@ setInterval(async function () {
 
 			}
 			try {
-				const STV = await got(`https://api.7tv.app/v2/users/${streamer.uid}/emotes`, { timeout: 10000 }).json();
+				const STV = await got(`https://api.7tv.app/v2/users/${streamer.uid}/emotes`).json();
 
 
 				if ((typeof STV.message != 'undefined') || !STV) {
@@ -177,7 +177,7 @@ setInterval(async function () {
 			await sql.Query('UPDATE Streamers SET emote_list=? WHERE username=?', [Emote_list, streamer.username]);
 			await sql.Query('UPDATE Streamers SET emote_removed=? WHERE username=?', [Emote_removed, streamer.username]);
 
-			const isSubbed = await got('https://api.7tv.app/v2/badges?user_identifier=twitch_id', { timeout: 10000 }).json();
+			const isSubbed = await got('https://api.7tv.app/v2/badges?user_identifier=twitch_id').json();
 
 			let foundName = false;
 			for (const badge of isSubbed['badges']) {

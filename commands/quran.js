@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 
 module.exports = {
 	name: 'quran',
@@ -11,16 +11,17 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			let number = Math.floor(Math.random() * (6237 - 0 + 6237)) + 0;
+            let number = Math.floor(Math.random() * 6236) + 1;
 
 			const url = `https://api.alquran.cloud/ayah/${number}/en.asad`;
 
 			const response = await got(url).json();
+
 			console.log(response);
 			return `[${response.data.surah.englishName}(${response.data.surah.englishNameTranslation}) ${response.data.surah.number}:${response.data.numberInSurah}]: ${response.data.text} Prayge`;
 
 		} catch (err) {
-			console.log(err);
+			console.log(err.body);
 			return 'FeelsDankMan lost my quran';
 		}
 	}

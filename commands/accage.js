@@ -1,6 +1,5 @@
-require('dotenv').config();
 const tools = require('../tools/tools.js');
-const got = require('got');
+const { got } = require('../got');
 
 module.exports = {
 	name: 'accage',
@@ -21,8 +20,7 @@ module.exports = {
 				}
 				let username = input[2];
 
-				uid = await got(`https://api.ivr.fi/twitch/resolve/${username}`, { timeout: 10000 }).json();
-				uid = uid.id;
+				uid = await got(`https://api.ivr.fi/twitch/resolve/${username}`).json().id;
 			}
 
 			let twitchdata = await got(`https://api.twitch.tv/helix/users?id=${uid}`, {
@@ -30,7 +28,6 @@ module.exports = {
 					'client-id': process.env.TWITCH_CLIENTID,
 					'Authorization': process.env.TWITCH_AUTH
 				},
-				timeout: 10000
 			}).json();
 
 			const ms = new Date().getTime() - Date.parse(twitchdata.data[0].created_at);

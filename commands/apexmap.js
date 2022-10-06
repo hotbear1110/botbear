@@ -1,5 +1,4 @@
-const got = require('got');
-require('dotenv').config();
+const { got } = require('./../got');
 const tools = require('../tools/tools.js');
 
 //Made by: @sougataghar477
@@ -14,13 +13,15 @@ module.exports = {
       if (module.exports.permission > perm) {
         return;
       }
+      const authKey = process.env.APEX_API;
+      if (!authKey) {
+        return 'This command is not available at the moment';
+      }
+      
       let map = await got(
         `https://api.mozambiquehe.re/maprotation?version=2&auth=${process.env.APEX_API}`,
-        { 
-            timeout: 10000 
-        }
-      );
-        map = JSON.parse(map.body);
+      ).json();
+
       let { map: currentMap, end } = map.battle_royale.current;
 
       let { map: nextMap, DurationInMinutes } = map.battle_royale.next;

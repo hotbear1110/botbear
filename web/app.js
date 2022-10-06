@@ -2,8 +2,10 @@
     require('dotenv').config();
     const sql = require('./../sql/index.js');
     const Redis = require('./../tools/redis.js');
+    const got = require('./../got');
 
     await Redis.Get().Connect();
+    await got.Setup();
     
     const sql_opts = {
         host: process.env.DB_HOST,

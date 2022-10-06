@@ -1,4 +1,4 @@
-const got = require('got');
+const { got } = require('./../got');
 const tools = require('../tools/tools.js');
 
 module.exports = {
@@ -18,7 +18,7 @@ module.exports = {
 				if (input[2].startsWith('@')) {
 					input[2] = input[2].substring(1);
 				}
-				uid = await got(`https://api.ivr.fi/twitch/resolve/${input[2]}`, { timeout: 10000 }).json();
+				uid = await got(`https://api.ivr.fi/twitch/resolve/${input[2]}`).json();
 				uid = uid.id;
 				realuser = input[2];
 			}
@@ -30,7 +30,7 @@ module.exports = {
 			if (channel === realchannel && user['user-id'] === uid) {
 				return 'nymnDank But you are right here ❓❗';
 			}
-			let logDate = await got(`https://logs.ivr.fi/list?channel=${realchannel}&userid=${uid}`, { timeout: 10000 }).json();
+			let logDate = await got(`https://logs.ivr.fi/list?channel=${realchannel}&userid=${uid}`).json();
 
 			logDate = logDate.availableLogs;
 
@@ -42,7 +42,7 @@ module.exports = {
 				let year = logDate[i].year;
 				let month = logDate[i].month;
 
-				lm = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/${year}/${month}?json&reverse`, { timeout: 10000 }).json();
+				lm = await got(`https://logs.ivr.fi/channel/${realchannel}/userid/${uid}/${year}/${month}?json&reverse`).json();
 
 
 				realmessages = lm.messages.filter(filterByID);
