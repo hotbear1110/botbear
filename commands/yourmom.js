@@ -14,7 +14,7 @@ module.exports = {
 				return;
 			}
 
-            const chatterlist = await tools.optOutList(await getChatters(channel, module.exports.name));
+            const chatterlist = await tools.optOutList(await getChatters(channel), module.exports.name);
 
 			if (!chatterlist.length) {
 				return 'This channel has no chatters to ping FeelsBadMan';
