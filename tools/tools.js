@@ -317,36 +317,43 @@ exports.getPerm = (user) => new Promise(async (resolve) => {
 /**
  * @returns {Promise<[String, String][]>}
  */
-exports.nameChanges = new Promise(async (Resolve, Reject) => {
-		const changed = [];
+exports.nameChanges = async () => {
+    const changed = [];
+    const promises = [];
 
-		(await sql.Query('SELECT * FROM Streamers'))
-			.map(async (streamer) => {
-				try {
-					const userData = await got(`https://api.twitch.tv/helix/users?id=${streamer.uid}`, {
-						headers: {
-							'client-id': process.env.TWITCH_CLIENTID,
-							'Authorization': process.env.TWITCH_AUTH
-						}
-					}).json();
-					if (userData.data.length) {
-						const realUser = userData.data[0]['login'];
+    const channels = await sql.Query('SELECT * FROM Streamers');
 
-						if (realUser !== streamer.username) {
-							sql.Query('UPDATE Streamers SET username=? WHERE uid=?', [realUser, streamer.uid]);
+    promises.push(channels.map(async(streamer) => {
+        const { statusCode, body } = await got(`https://api.twitch.tv/helix/users?id=${streamer.uid}`, {
+            headers: {
+                'client-id': process.env.TWITCH_CLIENTID,
+                'Authorization': process.env.TWITCH_AUTH
+            },
+            timeout: 10000,
+            throwOnHttpError: false,
+        });
+    
+        if (statusCode >= 400) {
+            console.error('Error while fetching name changes', { u: streamer.uid, s: statusCode, b: body });
+        } else {
+            const userData = JSON.parse(body);
+            
+            if (userData.data.length) {
+                const realUser = userData.data[0]['login'];
+                
+                if (realUser !== streamer.username) {
+                    sql.Query('UPDATE Streamers SET username=? WHERE uid=?', [realUser, streamer.uid]);
+                
+                    changed.push([realUser, streamer.username]);
+                }
+            }
+        }   
+    }));
 
-							changed.push([realUser, streamer.username]);
-						}
-					}
-				} catch (err) {
-					Reject(new Error('Error getting user namechanges', err));
-					return;
-				}
-			});
+    await Promise.all(promises);
 
-		Resolve(changed);
-	});
-
+    return changed;
+};
 
 exports.bannedStreamers = async () => {
 	return new Promise(async (Resolve, Reject) => {
@@ -705,9 +712,10 @@ exports.transformNumbers = function (message) {
 /**
  * Creates a new user and subscribes them to eventsub.
  * @param {{ username: string, uid: string }} user 
+ * @param { boolean } joinEventSub
  * @returns { Promise<void> }
  */
-exports.joinChannel = async ({ username, uid }) => {
+exports.joinChannel = async ({ username, uid }, joinEventsub = true) => {
 	const islive = 0;
 	const liveemote = 'FeelsOkayMan';
 	const offlineemote = 'FeelsBadMan';
@@ -720,9 +728,9 @@ exports.joinChannel = async ({ username, uid }) => {
 	[username, uid, islive, liveemote, liveemote, liveemote, offlineemote, '[""]', '[""]', '[""]', gameTime, '[]', '[]', '[]']
 	);
 
-	await this.joinEventSub(uid);
-
-	return;
+    if (joinEventsub) {
+        await this.joinEventSub(uid);
+    }
 };
 
 /**
@@ -768,4 +776,14 @@ exports.getChatters = async (channel) => {
     }
 
     return list;
+};
+
+exports.optOutList = async (list, command, isIvr) => {
+	return await sql.Query('SELECT opt_out FROM Commands WHERE Name = ?', [command])
+	.then((data) => {
+		const opted_out = JSON.parse(data[0].opt_out);
+		
+		list = (isIvr) ? list.filter(x => !opted_out.includes(x.login)) : list.filter(x => !opted_out.includes(x));
+		return list;
+	});
 };

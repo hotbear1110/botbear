@@ -16,9 +16,12 @@ module.exports = {
 				return 'List of commands: https://hotbear.org/ - If you want help with a command, write: "bb help *command*"';
 			}
 
-			let realcommand = await tools.Alias(input[2]);
+			input.splice(1,1);
+            input = await tools.Alias(input.join(' '));
+
+            const realcommand = input[1];
 			/** @type { Array<SQL.Commands> } */
-			const commandlist = await sql.Query('SELECT * FROM Commands WHERE Name=?', [realcommand[0].toLowerCase()]);
+			const commandlist = await sql.Query('SELECT * FROM Commands WHERE Name=?', [realcommand]);
 
 			if (!commandlist.length) {
 				return 'Command not found FeelsDankMan';

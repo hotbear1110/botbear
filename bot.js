@@ -596,7 +596,7 @@ async function onStart() {
 
 
 		if (process.env.TWITCH_USER !== 'devbear1110') {
-			await tools.nameChanges
+			await tools.nameChanges()
 				.then((res) => {
 					res.map(async ([newName, oldName]) => {
 						await cc.join(newName)

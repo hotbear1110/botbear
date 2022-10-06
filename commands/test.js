@@ -1,10 +1,10 @@
-require('dotenv').config();
 const { got } = require('./../got');
+const tools = require('../tools/tools.js');
 
 module.exports = {
 	name: 'test',
 	ping: true,
-	description: 'test',
+	description: '123',
 	permission: 2000,
 	category: 'Dev command',
 	execute: async (channel, user, input, perm) => {
@@ -12,45 +12,16 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			if (!process.env.THREELETTERAPI_CLIENTID) {
-				return 'FeelsDankMan Error: THREELETTERAPI_CLIENTID isn`t set';
+
+			let list = input[2];
+			list = await tools.optOutList(JSON.parse(list), 'randomping');
+			if (!list.length) {
+				return 'loooll';
 			}
-			let realchannel = channel;
+			console.log(list);
 
-			if (input[2]) {
-				if (input[2].startsWith('@')) {
-					input[2] = input[2].substring(1);
-				}
-				realchannel = input[2];
-			}
-			let query = `
-			query {
-				user(login: "${realchannel}") {
-						freeformTags {
-							name
-						}
-				  }
-			}`;
-
-			let ThreeLetterApiCall = await got.post('https://gql.twitch.tv/gql', {
-				headers: {
-					'Client-ID': process.env.THREELETTERAPI_CLIENTID,
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					query: query
-				})
-			}).json();
-
-			if (!ThreeLetterApiCall.data.user) {
-				return `FeelsDankMan ${realchannel} is not a real username`;
-			} else if (!ThreeLetterApiCall.data.user.freeformTags.length) {
-				return `${realchannel} does not have any tags`;
-			}
-
-			let tags = ThreeLetterApiCall.data.user.freeformTags.map(x => x.name).join(', ');
 			
-			return  `${realchannel}'s tags: ${tags}`;
+			return JSON.stringify(list);
 		} catch (err) {
 			console.log(err);
 			return `FeelsDankMan Sql error: ${err.sqlMessage}`;
