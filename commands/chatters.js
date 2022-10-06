@@ -1,7 +1,7 @@
 const { got } = require('./../got');
 const redis = require('./../tools/redis.js');
 
-const CACHE_TIME = 1000 * 60 * 2;
+const CACHE_TIME = 5 * 60;
 
 module.exports = {
 	name: 'chatters',

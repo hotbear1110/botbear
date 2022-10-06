@@ -2,11 +2,10 @@ const { got } = require('./../got');
 const sql = require('./../sql/index.js');
 const redis = require('./../tools/redis.js');
 
-// 1 hour
-const CACHE_TIME = 1000 * 60 * 60;
+const CACHE_TIME = 60 * 60;
 
 const getGlobals = async () => {
-    const cache = redis.Get().Get('helix:globals');
+    const cache = await redis.Get().Get('helix:globals');
     if (cache) {
         return JSON.parse(cache);
     }
