@@ -329,8 +329,7 @@ exports.nameChanges = async () => {
                 'client-id': process.env.TWITCH_CLIENTID,
                 'Authorization': process.env.TWITCH_AUTH
             },
-            timeout: 10000,
-            throwOnHttpError: false,
+            throwHttpErrors: false,
         });
     
         if (statusCode >= 400) {

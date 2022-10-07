@@ -1,5 +1,6 @@
 const tools = require('../tools/tools.js');
 const { got } = require('../got');
+const helix = require('./../thirdparty/helix');
 
 module.exports = {
 	name: 'accage',
@@ -19,18 +20,19 @@ module.exports = {
 					input[2] = input[2].substring(1);
 				}
 				let username = input[2];
-
-				uid = await got(`https://api.ivr.fi/twitch/resolve/${username}`).json().id;
+                
+				uid = (await got(`https://api.ivr.fi/twitch/resolve/${username}`).json()).id;
 			}
 
-			let twitchdata = await got(`https://api.twitch.tv/helix/users?id=${uid}`, {
-				headers: {
-					'client-id': process.env.TWITCH_CLIENTID,
-					'Authorization': process.env.TWITCH_AUTH
-				},
-			}).json();
+            const twitchdata = await helix.GetUsers({ids: [uid]});
 
-			const ms = new Date().getTime() - Date.parse(twitchdata.data[0].created_at);
+            if (twitchdata.statusCode !== 200) {
+                throw twitchdata.error;
+            }
+            
+            const twitchUser = twitchdata.data[0];
+
+			const ms = new Date().getTime() - Date.parse(twitchUser.created_at);
 
 			return `Account is ${tools.humanizeDuration(ms)} old`;
 
