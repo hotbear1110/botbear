@@ -1,12 +1,13 @@
 const cc = require('../bot.js').cc;
 const { messageHandler } = require('../tools/messageHandler.js');
 const sql = require('./../sql/index.js');
+const tools = require('../tools/tools.js');
 
 module.exports = {
 	name: 'reconnect',
 	ping: true,
 	description: 'Reconnects the bot to a given channel.',
-	permission: 2000,
+	permission: 100,
 	category: 'Dev command',
 	execute: async (channel, user, input, perm) => {
 		try {
@@ -19,6 +20,11 @@ module.exports = {
 				}
 			} else {
 				return 'Please specify a channel. FeelsDankMan';
+			}
+			let modresponse = await tools.isMod(user, input[2]);
+
+			if (!modresponse && perm < 2000) {
+				return 'You can only reconnect to your own chat or a chat you moderate';
 			}
 
 			const isinDB = await sql.Query('SELECT username FROM Streamers WHERE username=?', [input[2]]);

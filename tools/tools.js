@@ -426,10 +426,19 @@ function editDistance(s1, s2) {
  * @param {string} channel Channel to check for moderator status
  * @returns {boolean} true | false | If is mod
  */
-exports.isMod = function (user, channel) {
+exports.isMod = async function (user, channel) {
 	const isMod = user.mod || user['user-type'] === 'mod';
 	const isBroadcaster = channel === user.username;
-	const isModUp = isMod || isBroadcaster;
+	let modCheck = false;
+	try {
+		modCheck = await got(`https://api.ivr.fi/twitch/modsvips/${channel}`).json()
+							.mods
+							.map(x => x = (x.login === user.username) ? true : false)
+							.includes(true);
+	} catch (err) {
+		console.log(err);
+	}
+	const isModUp = isMod || isBroadcaster  || modCheck;
 	return isModUp;
 };
 

@@ -16,17 +16,8 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			let modresponse = false;
+			let modresponse = tools.isMod(user, input[3]);
 
-			if (input[3] && (input[2] === 'join' || input[2] === 'leave')) {
-				let modcheck = await got(`https://api.ivr.fi/twitch/modsvips/${input[3]}`).json();
-				let ismod = modcheck['mods'];
-				for (const modstatus of ismod) {
-					if (modstatus.login == user.username) {
-						modresponse = true;
-					}
-				}
-			}
 			Promise.all([modresponse]);
 			switch (input[2]) {
 			case 'join': {
@@ -53,7 +44,7 @@ module.exports = {
 				[username]);
 
 				if (alreadyJoined.length) {
-					return 'I am already in your channel :)';
+					return 'I am already in your channel :) - If the bot isn\'t responding, try the command bb reconnect [channel]';
 				}
 
 				else {
