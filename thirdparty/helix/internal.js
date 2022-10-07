@@ -16,18 +16,18 @@ const VALIDATE_URL = 'https://id.twitch.tv/oauth2/validate';
  */
 exports.getToken = async () => {
     const token = await redis.Get(REDIS_KEY);
-    if (token) {
-        return JSON.parse(token).access_token;
+    if (!token) {
+        const refresh = await refreshToken();
+        if (!refresh) {
+            return '';
+        }
+        return refresh.access_token;
     }
-    
-    const refresh = await refreshToken();
-    if (!refresh) {
-        return '';
-    }
+    const { access_token } = JSON.parse(token);
 
-    const ok = await validateToken(refresh.access_token);
+    const ok = await validateToken(access_token);
     if (!ok) {
-        return '';
+        return access_token;
     }
 
     return ok;
