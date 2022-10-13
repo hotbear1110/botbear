@@ -37,11 +37,7 @@ exports.messageHandler = class Cooldown {
 		if (this.channel === '#forsen') {
 			let newmessage = tools.splitLine(this.message, 150);
 			if (newmessage[1]) {
-				if (!newmessage[0].length) {
-					this.message = 'ForsenLookingAtYou Message is too long';
-				} else {
-					this.message = newmessage[0] + ' ...';
-				}
+				this.message = newmessage[0] + ' ...';
 			}
 		}
 

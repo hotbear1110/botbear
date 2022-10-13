@@ -71,7 +71,7 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve) => {
 	}
 	if (this.banphraseapi2 !== null) {
 		try {
-			this.checkBanphrase = await got(`${this.banphraseapi2}/api/channel/${this.userid}/moderation/check_message?message=botbear1110%3A%20${this.message}`).json();
+			this.checkBanphragse = await got(`${this.banphraseapi2}/api/channel/${this.userid}/moderation/check_message?message=botbear1110%3A%20${this.message}`).json();
 			if (this.checkBanphrase['banned'] == true) {
 				resolve(true);
 			}
@@ -155,22 +155,23 @@ exports.Cooldown = class Cooldown {
 };
 
 exports.splitLine = (message, chars) => {
-	let fixedMessage = [];
+	let fixedMessage = [[]];
 	let messageArray = message.split(' ');
-
+	let index = 0;
 	for (const [, word] of messageArray.entries()) {
-		fixedMessage.push(word);
-		if (fixedMessage.join(' ').length > chars) {
-			fixedMessage.pop();
-			break;
+		fixedMessage[index].push(word);
+		if (fixedMessage[index].join(' ').length > chars) {
+			fixedMessage[index].pop();
+			index++;
+			fixedMessage.push([]);
+			fixedMessage[index].push(word);
 		}
 	}
 
-	fixedMessage = fixedMessage.join(' ');
-	if(fixedMessage.length === 0) {
+	if(fixedMessage[0].join(' ').length === 0) {
 		return ['Message is too long :('];
 	}
-	return [fixedMessage];
+	return fixedMessage.map(x => x.join(' '));
 };
 
 let hasteoptions = {
