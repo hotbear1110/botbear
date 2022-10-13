@@ -71,7 +71,7 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve) => {
 	}
 	if (this.banphraseapi2 !== null) {
 		try {
-			this.checkBanphrase = await got(`${this.banphraseapi2}/api/channel/${this.userid}/moderation/check_message?message=botbear1110%20${this.message}`).json();
+			this.checkBanphrase = await got(`${this.banphraseapi2}/api/channel/${this.userid}/moderation/check_message?message=botbear1110%3A%20${this.message}`).json();
 			if (this.checkBanphrase['banned'] == true) {
 				resolve(true);
 			}
@@ -79,7 +79,7 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve) => {
 		} catch (err) {
 			console.log(err);
 			try {
-				this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%20${this.message}`).json();
+				this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%3A%20${this.message}`).json();
 				if (this.checkBanphrase['banned'] == true) {
 					resolve(true);
 				}
@@ -91,7 +91,7 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve) => {
 		}
 	} else {
 		try {
-			this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%20${this.message}`).json();
+			this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%3A%20${this.message}`).json();
 			if (this.checkBanphrase['banned'] == true) {
 				resolve(true);
 			}
