@@ -530,7 +530,10 @@ async function onConnectedHandler(addr, port) {
  */
 const onChatUpdateHandler = async (Data) => {
     if (Data.Message) {
-        Data.Message.every((msg) => new messageHandler(`#${Data.Channel}`, msg, true).newMessage());
+        Data.Message.every((msg, i) => 
+		setTimeout(() => {
+			new messageHandler(`${Data.Channel}`, msg, true).newMessage();
+			}, 10*i));
     }
 };
 

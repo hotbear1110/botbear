@@ -28,7 +28,8 @@ module.exports = {
             }
               else {
                 await Promise.all([await new messageHandler(channel, 'Updated.... restarting bot ppCircle', true).newMessage()]);
-              
+				shell('sudo systemctl restart botbear-site');
+
 				setTimeout(() => {
 					shell('sudo systemctl restart botbear2');
 				}, 2000);

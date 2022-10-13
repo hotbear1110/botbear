@@ -1,6 +1,7 @@
 const { got } = require('./../got');
 const tools = require('../tools/tools.js');
 const sql = require('./../sql/index.js');
+let messageHandler = require('../tools/messageHandler.js').messageHandler;
 
 module.exports = {
 	name: 'test',
@@ -14,15 +15,10 @@ module.exports = {
 				return;
 			}
 
-			const [streamer] = await sql.Query('SELECT * FROM Streamers WHERE uid=?', 70811818);
-            
-            const titleusers = JSON.parse(streamer.title_ping).
-                                filter(Boolean).
-                                join(' ');
+			let test = ['test test tetst etstst es sdf sd', ' 453 543 543 5435 43 543 54334 5sdegdg ss sfsdfsf s  ', 'snfkjdsgbjhkfdjgndjkn sjlk gnsdjgs j'];
+			test.every((msg) => new messageHandler(channel, msg, true).newMessage());
 
-			let titleuserlist = tools.splitLine(titleusers, 290 - 'No stream Thursday :)'.length);
-
-			console.log(titleuserlist);
+			console.log(test);
 			return;
 		} catch (err) {
 			console.log(err);
