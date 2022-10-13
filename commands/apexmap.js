@@ -18,9 +18,9 @@ module.exports = {
         return 'This command is not available at the moment';
       }
       
-      let map = JSON.parse(await got(
+      let map = await got(
         `https://api.mozambiquehe.re/maprotation?version=2&auth=${process.env.APEX_API}`,
-      ));
+      );
 
       let { map: currentMap, end } = map.battle_royale.current;
 
