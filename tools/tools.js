@@ -432,8 +432,8 @@ exports.isMod = async function (user, channel) {
 	const isBroadcaster = channel === user.username;
 	let modCheck = false;
 	try {
-		modCheck = await got(`https://api.ivr.fi/v2/twitch/modvip/${channel}`).json()
-							.mods
+		modCheck = await got(`https://api.ivr.fi/v2/twitch/modvip/${channel}`).json();
+		modCheck = modCheck.mods
 							.map(x => x = (x.login === user.username) ? true : false)
 							.includes(true);
 	} catch (err) {
