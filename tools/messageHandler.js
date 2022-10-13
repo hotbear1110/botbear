@@ -15,7 +15,7 @@ exports.messageHandler = class Cooldown {
 		this.user = user || null;
 		this.noCD = 0;
 	}
-	async Cooldown() {
+	Cooldown() {
 		let cooldown = 1250;
 		if (talkedRecently[this.channel]) {
 			cooldown = 1250 * (talkedRecently[this.channel].length);
@@ -85,7 +85,7 @@ exports.messageHandler = class Cooldown {
 				this.noCD = 0;
 			}
 
-		}, await this.Cooldown());
+		}, this.Cooldown());
 		return;
 	}
 
