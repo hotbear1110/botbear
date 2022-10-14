@@ -18,7 +18,6 @@ module.exports = {
 
 			msg.replace(regex.invisChar, '');
 
-			console.log(await tools.isMod(user, channel));
 			if (await tools.isMod(user, channel) === false && perm < 2000 && msg.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
 				msg = '. ' + msg.charAt(0) + '\u{E0000}' + msg.substring(1);
 			}
@@ -29,8 +28,8 @@ module.exports = {
 			if (perm < 2000 && msg.match(/(\.|\/)color/g)) {
 				return 'cmonBruh don\'t change my color';
 			}
-
-			if (msg.toLowerCase().startsWith(`/ban ${process.env.TWITCH_OWNERNAME}`) || msg.toLowerCase().startsWith(`/timeout ${process.env.TWITCH_OWNERNAME}`) || msg.toLowerCase().startsWith(`/unmod ${process.env.TWITCH_USER}`)) {
+			const banRegex = new RegExp(`[./](ban|timeout|unmod) ${process.env.TWITCH_OWNERNAME}`,'gi');
+			if (msg.match(banRegex)) {
 				return `nymnWeird too far @${user.username}`;
 			}
 
