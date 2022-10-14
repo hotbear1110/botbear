@@ -65,7 +65,7 @@ module.exports = {
 
 			msg = msg.replace(regex.invisChar, '').replace(invisChar2, '');
 
-            if (tools.isMod(user, channel) === false && perm < 2000 && msg.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
+            if (await tools.isMod(user, channel) === false && perm < 2000 && msg.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
 				msg = '.' + msg.charAt(0) + '\u{E0000}' + msg.substring(1);
 			}
 			if (msg.match(/^!/g)) {
