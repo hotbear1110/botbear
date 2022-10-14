@@ -430,16 +430,12 @@ function editDistance(s1, s2) {
 exports.isMod = async function (user, channel) {
 	const isMod = user.mod || user['user-type'] === 'mod';
 	const isBroadcaster = channel === user.username;
-	let modCheck = false;
-	try {
-		modCheck = (await got(`https://api.ivr.fi/v2/twitch/modvip/${channel}`).json()).mods
+	let modCheck = ((await got(`https://api.ivr.fi/v2/twitch/modvip/${channel}`).json()).mods
 							.map(x => x = (x.login === user.username) ? true : false)
-							.includes(true);
-	} catch (err) {
-		console.log(err);
-	}
-	const isModUp = isMod || isBroadcaster  || modCheck;
-	return isModUp;
+							.includes(true)) ?? false;
+
+	const isModUp = isMod || isBroadcaster  || await modCheck;
+	return await isModUp;
 };
 
 exports.checkAllBanphrases = async function (message, channel) {

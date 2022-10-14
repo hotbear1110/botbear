@@ -18,8 +18,8 @@ module.exports = {
 
 			msg.replace(regex.invisChar, '');
 
-
-			if (tools.isMod(user, channel) === false && perm < 2000 && msg.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
+			console.log(await tools.isMod(user, channel));
+			if (await tools.isMod(user, channel) === false && perm < 2000 && msg.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
 				msg = '.' + msg.charAt(0) + '\u{E0000}' + msg.substring(1);
 			}
 			if (msg.match(/^!/g)) {
