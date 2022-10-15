@@ -1,4 +1,3 @@
-const { got } = require('./../got');
 const tools = require('../tools/tools.js');
 
 module.exports = {
@@ -23,8 +22,7 @@ module.exports = {
 			if (input[3]) {
 				realchannel = input[3];
 			}
-			let vipcheck = await got(`https://api.ivr.fi/v2/twitch/modvip/${realchannel}`).json();
-			const isvip = vipcheck['vips'];
+			const isvip = await tools.getVips(channel);
 			let vipresponse = '';
 
 			for (const vipstatus of isvip) {

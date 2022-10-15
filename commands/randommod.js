@@ -1,4 +1,3 @@
-const { got } = require('./../got');
 const tools = require('../tools/tools.js');
 
 module.exports = {
@@ -17,8 +16,7 @@ module.exports = {
 			if (input[2]) {
 				realchannel = input[2];
 			}
-			let modcheck = await got(`https://api.ivr.fi/v2/twitch/modvip/${realchannel}`).json();
-			let mods = modcheck['mods'];
+			let mods = await tools.getMods(channel);
 			mods = await tools.optOutList(mods, module.exports.name, true);
 			if (!mods.length) {
 				return 'This channel has no mods';

@@ -1,6 +1,4 @@
-const { got } = require('./../got');
 const tools = require('../tools/tools.js');
-
 
 module.exports = {
 	name: 'oldestvip',
@@ -17,8 +15,7 @@ module.exports = {
 			if (input[2]) {
 				realchannel = input[2];
 			}
-			let vipcheck = await got(`https://api.ivr.fi/v2/twitch/modvip/${realchannel}`).json();
-			let vips = vipcheck['vips'];
+			let vips = await tools.getVips(channel);
 
 			let ms = new Date().getTime() - Date.parse(vips[0].grantedAt);
 			return `The oldest vip😬 in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} is ${vips[0].displayName}, they were added ${tools.humanizeDuration(ms)} ago.`;

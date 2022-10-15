@@ -1,6 +1,4 @@
-const { got } = require('./../got');
 const tools = require('../tools/tools.js');
-
 
 module.exports = {
 	name: 'modcheck',
@@ -24,8 +22,7 @@ module.exports = {
 			if (input[3]) {
 				realchannel = input[3];
 			}
-			let modcheck = await got(`https://api.ivr.fi/v2/twitch/modvip/${realchannel}`).json();
-			let ismod = modcheck['mods'];
+			let ismod = await tools.getMods(channel);
 			let modresponse = '';
 			for (const modstatus of ismod) {
 				if (modstatus.login == username) {

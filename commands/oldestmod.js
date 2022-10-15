@@ -1,6 +1,4 @@
-const { got } = require('./../got');
 const tools = require('../tools/tools.js');
-
 
 module.exports = {
 	name: 'oldestmod',
@@ -17,8 +15,7 @@ module.exports = {
 			if (input[2]) {
 				realchannel = input[2];
 			}
-			let modcheck = await got(`https://api.ivr.fi/v2/twitch/modvip/${realchannel}`).json();
-			let mods = modcheck['mods'];
+			let mods = await tools.getMods(channel);
 
 			let ms = new Date().getTime() - Date.parse(mods[0].grantedAt);
 			return `The oldest M OMEGALUL D in #${tools.unpingUser(realchannel)} is ${mods[0].displayName}, they were added ${tools.humanizeDuration(ms)} ago.`;

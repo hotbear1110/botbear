@@ -792,3 +792,105 @@ exports.optOutList = async (list, command, isIvr) => {
 		return list;
 	});
 };
+
+exports.getMods = async (channel) => {
+	let hasNextPage = true;
+	let mods = [];
+	let cursor = '';
+	while (hasNextPage) {
+		let query = `
+		query {
+			user(login: "${channel}") {
+				mods(first:100,  after:"${cursor}") {
+					  edges {
+						grantedAt
+						cursor
+						node {
+							login,
+							id,
+							displayName
+						}
+					}
+					pageInfo {
+						hasNextPage
+					}
+				  }
+			}
+		}`;
+	
+		let ThreeLetterApiCall = (await got.post('https://gql.twitch.tv/gql', {
+			headers: {
+				'Client-ID': process.env.THREELETTERAPI_CLIENTID,
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				query: query
+			}),
+		}).json()).data.user.mods;
+
+		mods.concat(ThreeLetterApiCall.edges.map(mod =>
+			JSON.parse(
+				`{
+					'grantedAt' : ${mod.grantedAt},
+					'login' : ${mod.node.login},
+					'id' : ${mod.node.id},
+					'displayName' : ${mod.node.displayName}
+				}`)));
+
+		hasNextPage = ThreeLetterApiCall.pageInfo.hasNextPage;
+		cursor = ThreeLetterApiCall.edges[ThreeLetterApiCall.edges.length - 1].cursor;
+	}
+	
+	return await mods;
+};
+
+exports.getVips = async (channel) => {
+	let hasNextPage = true;
+	let vips = [];
+	let cursor = '';
+	while (hasNextPage) {
+		let query = `
+		query {
+			user(login: "${channel}") {
+				vips(first:100,  after:"${cursor}") {
+					  edges {
+						grantedAt
+						cursor
+						node {
+							login,
+							id,
+							displayName
+						}
+					}
+					pageInfo {
+						hasNextPage
+					}
+				  }
+			}
+		}`;
+	
+		let ThreeLetterApiCall = (await got.post('https://gql.twitch.tv/gql', {
+			headers: {
+				'Client-ID': process.env.THREELETTERAPI_CLIENTID,
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				query: query
+			}),
+		}).json()).data.user.vips;
+
+		vips.concat(ThreeLetterApiCall.edges.map(vip =>
+			JSON.parse(
+				`{
+					'grantedAt' : ${vip.grantedAt},
+					'login' : ${vip.node.login},
+					'id' : ${vip.node.id},
+					'displayName' : ${vip.node.displayName}
+				}`)));
+
+		hasNextPage = ThreeLetterApiCall.pageInfo.hasNextPage;
+		cursor = ThreeLetterApiCall.edges[ThreeLetterApiCall.edges.length - 1].cursor;
+	}
+	
+	return await vips;
+};

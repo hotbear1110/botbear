@@ -1,6 +1,4 @@
-const { got } = require('./../got');
 const tools = require('../tools/tools.js');
-
 
 module.exports = {
 	name: 'latestmod',
@@ -17,8 +15,7 @@ module.exports = {
 			if (input[2]) {
 				realchannel = input[2];
 			}
-			let modcheck = await got(`https://api.ivr.fi/v2/twitch/modvip/${realchannel}`).json();
-			let mods = modcheck['mods'];
+			let mods = await tools.getMods(channel);
 
 			let ms = new Date().getTime() - Date.parse(mods[mods.length - 1].grantedAt);
 			return `The newest M OMEGALUL D in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} is ${mods[mods.length - 1].displayName}, they were added ${tools.humanizeDuration(ms)} ago.`;
