@@ -836,11 +836,11 @@ exports.getMods = async (channel) => {
 					"id" : "${mod.node.id}",
 					"displayName" : "${mod.node.displayName}"
 				}`)));
-
+		console.log('yes');
 		hasNextPage = ThreeLetterApiCall.pageInfo.hasNextPage;
 		cursor = ThreeLetterApiCall.edges[ThreeLetterApiCall.edges.length - 1].cursor;
 	}
-	
+	console.log('done: ' + await mods);
 	return await mods;
 };
 
