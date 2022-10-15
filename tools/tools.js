@@ -831,10 +831,10 @@ exports.getMods = async (channel) => {
 		mods.concat(ThreeLetterApiCall.edges.map(mod =>
 			JSON.parse(
 				`{
-					'grantedAt' : ${mod.grantedAt},
-					'login' : ${mod.node.login},
-					'id' : ${mod.node.id},
-					'displayName' : ${mod.node.displayName}
+					"grantedAt" : ${mod.grantedAt},
+					"login" : ${mod.node.login},
+					"id" : ${mod.node.id},
+					"displayName" : ${mod.node.displayName}
 				}`)));
 
 		hasNextPage = ThreeLetterApiCall.pageInfo.hasNextPage;
@@ -882,10 +882,10 @@ exports.getVips = async (channel) => {
 		vips.concat(ThreeLetterApiCall.edges.map(vip =>
 			JSON.parse(
 				`{
-					'grantedAt' : ${vip.grantedAt},
-					'login' : ${vip.node.login},
-					'id' : ${vip.node.id},
-					'displayName' : ${vip.node.displayName}
+					"grantedAt" : ${vip.grantedAt},
+					"login" : ${vip.node.login},
+					"id" : ${vip.node.id},
+					"displayName" : ${vip.node.displayName}
 				}`)));
 
 		hasNextPage = ThreeLetterApiCall.pageInfo.hasNextPage;
