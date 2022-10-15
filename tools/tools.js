@@ -836,11 +836,10 @@ exports.getMods = async (channel) => {
 					"id" : "${mod.node.id}",
 					"displayName" : "${mod.node.displayName}"
 				}`)));
-		console.log(mods);
 		hasNextPage = ThreeLetterApiCall.pageInfo.hasNextPage;
 		cursor = ThreeLetterApiCall.edges[ThreeLetterApiCall.edges.length - 1].cursor;
 	}
-	console.log('done: ' + await mods);
+
 	return await mods;
 };
 
@@ -885,7 +884,7 @@ exports.getVips = async (channel) => {
 					"grantedAt" : "${vip.grantedAt}",
 					"login" : "${vip.node.login}",
 					"id" : "${vip.node.id}",
-					"displayName" : ""${vip.node.displayName}"
+					"displayName" : "${vip.node.displayName}"
 				}`)));
 
 		hasNextPage = ThreeLetterApiCall.pageInfo.hasNextPage;

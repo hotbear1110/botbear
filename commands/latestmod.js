@@ -16,7 +16,6 @@ module.exports = {
 				realchannel = input[2];
 			}
 			let mods = await tools.getMods(channel);
-			console.log(await mods);
 			let ms = new Date().getTime() - Date.parse(mods[mods.length - 1].grantedAt);
 			return `The newest M OMEGALUL D in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} is ${mods[mods.length - 1].displayName}, they were added ${tools.humanizeDuration(ms)} ago.`;
 
