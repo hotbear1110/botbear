@@ -836,7 +836,7 @@ exports.getMods = async (channel) => {
 					"id" : "${mod.node.id}",
 					"displayName" : "${mod.node.displayName}"
 				}`)));
-		console.log('yes');
+		console.log(ThreeLetterApiCall);
 		hasNextPage = ThreeLetterApiCall.pageInfo.hasNextPage;
 		cursor = ThreeLetterApiCall.edges[ThreeLetterApiCall.edges.length - 1].cursor;
 	}
