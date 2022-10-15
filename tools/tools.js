@@ -828,7 +828,7 @@ exports.getMods = async (channel) => {
 			}),
 		}).json()).data.user.mods;
 
-		mods.concat(ThreeLetterApiCall.edges.map(mod =>
+		mods = mods.concat(ThreeLetterApiCall.edges.map(mod =>
 			JSON.parse(
 				`{
 					"grantedAt" : "${mod.grantedAt}",
@@ -836,14 +836,7 @@ exports.getMods = async (channel) => {
 					"id" : "${mod.node.id}",
 					"displayName" : "${mod.node.displayName}"
 				}`)));
-		console.log(ThreeLetterApiCall.edges.map(mod =>
-			JSON.parse(
-				`{
-					"grantedAt" : "${mod.grantedAt}",
-					"login" : "${mod.node.login}",
-					"id" : "${mod.node.id}",
-					"displayName" : "${mod.node.displayName}"
-				}`)));
+		console.log(mods);
 		hasNextPage = ThreeLetterApiCall.pageInfo.hasNextPage;
 		cursor = ThreeLetterApiCall.edges[ThreeLetterApiCall.edges.length - 1].cursor;
 	}
@@ -886,7 +879,7 @@ exports.getVips = async (channel) => {
 			}),
 		}).json()).data.user.vips;
 
-		vips.concat(ThreeLetterApiCall.edges.map(vip =>
+		vips = vips.concat(ThreeLetterApiCall.edges.map(vip =>
 			JSON.parse(
 				`{
 					"grantedAt" : "${vip.grantedAt}",
