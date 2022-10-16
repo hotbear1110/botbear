@@ -18,7 +18,7 @@ module.exports = {
             input = input.splice(2);
 			let msg = input.join(' ');
             console.log(msg);
-            let result = new Promise(async (resolve) => {  await redisC.get(`Markov:${channel}`, async function (err, reply) {
+            let result = await new Promise(async (resolve) => {  await redisC.get(`Markov:${channel}`, async function (err, reply) {
                 try {
                 let data = JSON.parse(reply);
                     console.log(data.length);
@@ -33,23 +33,25 @@ module.exports = {
                     filter: (result) => {return result.score > 5 && result.refs.filter(x => x.string.toLowerCase().includes(msg.toLowerCase())).length > 0 && result.string.split(' ').length >= 10;}
                   };
 
-                result = markov.generate(options);
+                this.result = markov.generate(options);
 
-                resolve(await result);
+                resolve(await this.result);
 
             } catch(err) {
-                resolve('Failed to generate markov string');
+                console.log(err);
+                resolve({ string: 'Failed to generate markov string' });
             }
             }); 
         });
-        if (result.string?.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g) && !msg.match(/^[./]me /)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
+        console.log(await result);
+
+        if (await result.string.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g) && !msg.match(/^[./]me /)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
             result.string = '. ' + result.string.charAt(0) + '\u{E0000}' + result.string.substring(1);
         }
-        if (result.string?.match(/^!/g)) {
+        if (await result.string?.match(/^!/g)) {
             result.string = '❗ ' + result.string.substring(1);
         }
-            console.log(await result);
-            return await result.string ?? result;
+            return await result.string;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
