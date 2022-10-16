@@ -14,7 +14,10 @@ redisC.connect();
 cc.on('message', onMessageHandler);
 
 // Called every time a message comes in
-function onMessageHandler(target, context, msg) {
+function onMessageHandler(target, context, msg, self) {
+	if (self) {
+		return;
+	}
 	redisC.get(`Markov:${target.substring(1)}`, function (err, reply) {
 
 		if (reply && reply !== undefined) {
