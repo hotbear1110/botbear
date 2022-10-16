@@ -3,7 +3,7 @@ const redisC = require('../tools/markovLogger.js').redisC;
 
 module.exports = {
 	name: 'markov',
-	ping: true,
+	ping: false,
 	description: 'Markov',
 	permission: 100,
 	cooldown: 3, //in seconds
