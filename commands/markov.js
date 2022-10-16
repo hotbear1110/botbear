@@ -42,6 +42,12 @@ module.exports = {
             }
             }); 
         });
+        if (result.string?.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g) && !msg.match(/^[./]me /)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
+            result.string = '. ' + result.string.charAt(0) + '\u{E0000}' + result.string.substring(1);
+        }
+        if (result.string?.match(/^!/g)) {
+            result.string = '❗ ' + result.string.substring(1);
+        }
             console.log(await result);
             return await result.string ?? result;
 		} catch (err) {
