@@ -15,11 +15,7 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-            if (input[2]) {
-                channel = input[2];
-            }
-
-            input = input.splice(3);
+            input = input.splice(2);
 			let msg = input.join(' ');
             console.log(msg);
             let result = new Promise(async (resolve) => {  await redisC.get(`Markov:${channel}`, async function (err, reply) {
