@@ -16,7 +16,7 @@ module.exports = {
 			if (input[2]) {
 				realchannel = input[2];
 			}
-			let mods = await tools.getMods(channel);
+			let mods = await tools.getMods(realchannel);
 			mods = await tools.optOutList(mods, module.exports.name, true);
 			if (!mods.length) {
 				return 'This channel has no mods';

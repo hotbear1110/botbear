@@ -16,7 +16,7 @@ module.exports = {
 			if (input[2]) {
 				realchannel = input[2];
 			}
-			let vips = await tools.getVips(channel);
+			let vips = await tools.getVips(realchannel);
 			vips = await tools.optOutList(vips, module.exports.name, true);
 			if (!vips.length) {
 				return 'This channel has no vips';

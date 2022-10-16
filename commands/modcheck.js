@@ -22,7 +22,7 @@ module.exports = {
 			if (input[3]) {
 				realchannel = input[3];
 			}
-			let ismod = await tools.getMods(channel);
+			let ismod = await tools.getMods(realchannel);
 			let modresponse = '';
 			for (const modstatus of ismod) {
 				if (modstatus.login == username) {

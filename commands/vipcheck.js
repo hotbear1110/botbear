@@ -22,7 +22,7 @@ module.exports = {
 			if (input[3]) {
 				realchannel = input[3];
 			}
-			const isvip = await tools.getVips(channel);
+			const isvip = await tools.getVips(realchannel);
 			let vipresponse = '';
 
 			for (const vipstatus of isvip) {

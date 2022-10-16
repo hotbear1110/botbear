@@ -15,7 +15,7 @@ module.exports = {
 			if (input[2]) {
 				realchannel = input[2];
 			}
-			let mods = await tools.getMods(channel);
+			let mods = await tools.getMods(realchannel);
 
 			let ms = new Date().getTime() - Date.parse(mods[0].grantedAt);
 			return `The oldest M OMEGALUL D in #${tools.unpingUser(realchannel)} is ${mods[0].displayName}, they were added ${tools.humanizeDuration(ms)} ago.`;
