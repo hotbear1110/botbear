@@ -15,8 +15,12 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
+
             input = input.splice(2);
-			let msg = input.join(' ');
+            channel = input.filter(x => x.startsWith('channel:'))[0]?.split(':')[1] ?? channel;
+            input = input.filter(x  => x !== `channel:${channel}`);
+            let msg = input.join(' ');
+
             console.log(msg);
             let result = await new Promise(async (resolve) => {  await redisC.get(`Markov:${channel}`, async function (err, reply) {
                 try {
