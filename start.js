@@ -50,7 +50,7 @@
     await redis.Connect();
     await redis.Subscribe('EventSub');
 
-    //require("./tools/logger.js");
+    require('./tools/markovLogger.js');
     require('./bot.js');
     require('./loops/loops.js');
     
