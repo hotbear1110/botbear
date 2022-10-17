@@ -895,7 +895,7 @@ exports.getVips = async (channel) => {
 };
 
 exports.masspingString = (message, channel) => new Promise(async (resolve) => {
-	message = message.replace(/(^|[@#.,:;\s]+)|([?!.,:;\s]|$)/gm, ' ');
+	message = message.replace(/[@#.,:;?!.,:;\s]/gm, ' ');
 
 	let dblist = ('filler ' + message.slice())
 		.split(' ')
