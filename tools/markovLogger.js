@@ -15,7 +15,7 @@ cc.on('message', onMessageHandler);
 
 // Called every time a message comes in
 function onMessageHandler(target, context, msg, self) {
-	if (self) {
+	if (self || context.username.match(/(supibot|thepositivebot|ksyncbot|dontaddthisbot|streamelements|botnextdoor)/gi)) {
 		return;
 	}
 	redisC.get(`Markov:${target.substring(1)}`, function (err, reply) {

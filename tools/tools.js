@@ -893,3 +893,31 @@ exports.getVips = async (channel) => {
 	
 	return await vips;
 };
+
+exports.masspingString = (message, channel) => new Promise(async (resolve) => {
+	message = message.replace(/(^|[@#.,:;\s]+)|([?!.,:;\s]|$)/gm, ' ');
+
+	let dblist = ('filler ' + message.slice())
+		.split(' ')
+		.filter(String);
+
+	const dbpings = await sql.Query('SELECT username FROM Users WHERE ' + Array(dblist.length).fill('username = ?').join(' OR '), dblist);
+
+	let dbnames = dbpings.map(a => a.username);
+    const users = await module.exports.getChatters(channel);
+
+	let userlist = [];
+	for (const [_, values] of Object.entries(users)) {
+		userlist = userlist.concat(values);
+	}
+
+	userlist = userlist.concat(dbnames.filter(x => !userlist.includes(x)));
+
+	let pings = [];
+	for (const user of userlist) {
+		if (message.includes(user)) {
+			pings.push(user);
+		}
+	}
+	resolve(pings);
+});

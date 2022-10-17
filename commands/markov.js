@@ -1,5 +1,6 @@
 const Markov = require('markov-strings').default;
 const redisC = require('../tools/markovLogger.js').redisC;
+const tools = require('../tools/tools.js');
 
 module.exports = {
 	name: 'markov',
@@ -17,12 +18,12 @@ module.exports = {
 			}
 
             input = input.splice(2);
-            channel = input.filter(x => x.startsWith('channel:'))[0]?.split(':')[1] ?? channel;
-            input = input.filter(x  => x !== `channel:${channel}`);
+            this.channel = input.filter(x => x.startsWith('channel:'))[0]?.split(':')[1] ?? channel;
+            input = input.filter(x  => x !== `channel:${this.channel}`);
             let msg = input.join(' ');
 
             console.log(msg);
-            let result = await new Promise(async (resolve) => {  await redisC.get(`Markov:${channel}`, async function (err, reply) {
+            let result = await new Promise(async (resolve) => {  await redisC.get(`Markov:${this.channel}`, async function (err, reply) {
                 try {
                 let data = JSON.parse(reply);
                     console.log(data.length);
@@ -49,6 +50,10 @@ module.exports = {
         });
         console.log(await result);
 
+        this.pings = await tools.masspingString(result.string, channel);
+        await this.pings.map(x => result.string = result.string.replace(x, tools.unpingUser(x)));
+
+        console.log(result.string);
         if (await result.string.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g) && !msg.match(/^[./]me /)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
             result.string = '. ' + result.string.charAt(0) + '\u{E0000}' + result.string.substring(1);
         }
