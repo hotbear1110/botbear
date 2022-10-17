@@ -51,7 +51,7 @@ module.exports = {
         console.log(await result);
 
         this.pings = await tools.masspingString(result.string, channel);
-        await this.pings.map(x => result.string = result.string.replace(x, tools.unpingUser(x)));
+        await this.pings.map(x => result.string = result.string.replaceAll(/test/gi, tools.unpingUser(x)));
 
         console.log(result.string);
         if (await result.string.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g) && !msg.match(/^[./]me /)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
