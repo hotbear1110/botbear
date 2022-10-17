@@ -15,7 +15,7 @@ module.exports = {
 			this.channel = input.filter(x => x.startsWith('channel:'))[0]?.split(':')[1] ?? channel;
             input = input.filter(x  => x !== `channel:${this.channel}`);
 
-			const streamer = await sql.Query(`SELECT * FROM Streamers WHERE username="${this.channel}"`);
+			const streamer = await sql.Query(`SELECT * FROM Streamers WHERE username="${this.channel}"`) ?? '';
 			let emotes = JSON.parse(streamer[0].emote_list);
 
 			if (!streamer.length) {
