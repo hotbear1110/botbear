@@ -12,9 +12,15 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			const streamer = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+			this.channel = input.filter(x => x.startsWith('channel:'))[0]?.split(':')[1] ?? channel;
+            input = input.filter(x  => x !== `channel:${this.channel}`);
+
+			const streamer = await sql.Query(`SELECT * FROM Streamers WHERE username="${this.channel}"`);
 			let emotes = JSON.parse(streamer[0].emote_list);
 
+			if (!streamer.length) {
+				return 'I don\'t have an emote list for that channnel.';
+		}
 			if (!emotes.length) {
 				return 'there are no 3rd party emotes in this channel.';
 			}
@@ -54,9 +60,9 @@ module.exports = {
 			emotes = emotes.toString().replaceAll(',', ' ');
 
 			if (input[2]) {
-				return `Added emotes page[${input[2]}]: ${emotes}`;
+				return `Added emotes ${(this.channel === channel) ? '' : `in #${this.channel}`} page[${input[2]}]: ${emotes}`;
 			}
-			return `the latest added emotes are: ${emotes}`;
+			return `the latest added emotes ${(this.channel === channel) ? '' : `in #${this.channel}`} are: ${emotes}`;
 
 		} catch (err) {
 			console.log(err);
