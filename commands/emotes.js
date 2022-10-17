@@ -14,13 +14,20 @@ module.exports = {
 			}
 			this.channel = input.filter(x => x.startsWith('channel:'))[0]?.split(':')[1] ?? channel;
             input = input.filter(x  => x !== `channel:${this.channel}`);
+			
+			try {
+				this.streamer = await sql.Query(`SELECT * FROM Streamers WHERE username="${this.channel}"`) ?? '';
+			} catch(err) {
+				console.log(err);
+				this.streamer =  '';
+			}
 
-			const streamer = await sql.Query(`SELECT * FROM Streamers WHERE username="${this.channel}"`) ?? '';
-			let emotes = JSON.parse(streamer[0].emote_list);
-
-			if (!streamer.length) {
+			if (!this.streamer.length) {
 				return 'I don\'t have an emote list for that channnel.';
 		}
+			let emotes = JSON.parse(this.streamer[0].emote_list);
+
+			
 			if (!emotes.length) {
 				return 'there are no 3rd party emotes in this channel.';
 			}
