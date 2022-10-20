@@ -7,7 +7,7 @@ module.exports = {
 	ping: false,
 	description: 'Markov',
 	permission: 100,
-	cooldown: 3, //in seconds
+	cooldown: 120, //in seconds
 	category: 'Random command',
 	opt_outable: false, 
 	// eslint-disable-next-line no-unused-vars
