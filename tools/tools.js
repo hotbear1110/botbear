@@ -898,7 +898,7 @@ exports.unpingString = (message, channel) => new Promise(async (resolve) => {
 	const users = await module.exports.getChatters(channel);
 
     message = await message.split(' ')
-							.filter(x => (users.includes(x.replace(/[@#.,:;?!.,:;\s]/gm, '').toLowerCase())) ? tools.unpingUser(x.replace(/[@#.,:;?!.,:;\s]/gm, '')) : x)
+							.map(x => (users.includes(x.replace(/[@#.,:;?!.,:;\s]/gm, '').toLowerCase())) ? tools.unpingUser(x.replace(/[@#.,:;?!.,:;\s]/gm, '')) : x)
 							.join(' ');
 
 	resolve(await message);
