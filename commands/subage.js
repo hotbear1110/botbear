@@ -38,7 +38,7 @@ module.exports = {
 				const subend = new Date().getTime() - Date.parse(oldsub['end']);
 
 
-				if (oldsub['months'] === 0) {
+				if (oldsub['months'] === 0 || !oldsub['months']) {
 					return `${username} is not subbed to #${realchannel} and never has been.`;
 				}
 				else {
