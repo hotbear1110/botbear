@@ -894,21 +894,12 @@ exports.getVips = async (channel) => {
 	return await vips;
 };
 
-exports.masspingString = (message, channel) => new Promise(async (resolve) => {
-	message = message.replace(/[@#.,:;?!.,:;\s]/gm, ' ');
+exports.unpingString = (message, channel) => new Promise(async (resolve) => {
+	const users = await module.exports.getChatters(channel);
 
-    const users = await module.exports.getChatters(channel);
+    message = await message.split(' ')
+							.filter(x => (users.includes(x.replace(/[@#.,:;?!.,:;\s]/gm, '').toLowerCase())) ? tools.unpingUser(x.replace(/[@#.,:;?!.,:;\s]/gm, '')) : x)
+							.join(' ');
 
-	let userlist = [];
-	for (const [_, values] of Object.entries(users)) {
-		userlist = userlist.concat(values);
-	}
-
-	let pings = [];
-	for (const user of userlist) {
-		if (message.includes(user)) {
-			pings.push(user);
-		}
-	}
-	resolve(pings);
+	resolve(await message);
 });
