@@ -19,7 +19,7 @@ module.exports = {
 
             input = input.splice(2);
             this.channel = input.filter(x => x.startsWith('channel:'))[0]?.split(':')[1] ?? channel;
-            input = input.filter(x  => x !== `channel:${this.channel}`);
+            input = input.filter(x  => x !== `channel:${this.channel.toLowerCase()}`);
             let msg = input.join(' ');
 
             console.log(msg);
