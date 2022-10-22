@@ -59,7 +59,7 @@ module.exports = {
         if (await result.string?.match(/^!/g)) {
             result.string = '❗ ' + result.string.substring(1);
         }
-            return await result.string;
+            return '🔖 '  + await result.string;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
