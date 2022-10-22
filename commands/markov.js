@@ -19,11 +19,11 @@ module.exports = {
 
             input = input.splice(2);
             this.channel = input.filter(x => x.startsWith('channel:'))[0]?.split(':')[1] ?? channel;
-            input = input.filter(x  => x !== `channel:${this.channel.toLowerCase()}`);
+            input = input.filter(x  => x !== `channel:${this.channel}`);
             let msg = input.join(' ');
 
             console.log(msg);
-            let result = await new Promise(async (resolve) => {  await redisC.get(`Markov:${this.channel}`, async function (err, reply) {
+            let result = await new Promise(async (resolve) => {  await redisC.get(`Markov:${this.channel.toLowerCase()}`, async function (err, reply) {
                 try {
                 let data = JSON.parse(reply);
                     console.log(data.length);
