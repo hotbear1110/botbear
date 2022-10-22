@@ -53,13 +53,8 @@ module.exports = {
         result.string = await tools.unpingString(result.string, channel);
 
         console.log(result.string);
-        if (await result.string.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g) && !msg.match(/^[./]me /)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
-            result.string = '. ' + result.string.charAt(0) + '\u{E0000}' + result.string.substring(1);
-        }
-        if (await result.string?.match(/^!/g)) {
-            result.string = '❗ ' + result.string.substring(1);
-        }
-            return '🔖 '  + await result.string;
+
+        return '🔖 '  + await result.string;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
