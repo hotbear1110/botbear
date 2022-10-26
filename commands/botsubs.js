@@ -61,7 +61,7 @@ module.exports = {
                                     map(x => x.node.user.subscriptionProducts[0].emotes[~~(Math.random() * x.node.user.subscriptionProducts[0].emotes.length)].token);
 
 			console.log(emotes);
-			return  emotes;
+			return  emotes.join(' ');
 		} catch (err) {
 			console.log(err);
 			return `FeelsDankMan Sql error: ${err.sqlMessage}`;
