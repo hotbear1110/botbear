@@ -52,10 +52,11 @@ module.exports = {
 				return 'FeelsDankMan Something went wrong!';
 			}
 
+            console.log(ThreeLetterApiCall);
             let emotes = ThreeLetterApiCall.
                                     data.
                                     user.
-                                    subscriptionProducts.
+                                    subscriptionBenefits.
                                     edges.
                                     map(x => x.node.user.subscriptionProducts[0].emotes[~~(Math.random() * x.node.user.subscriptionProducts[0].emotes.length)].token);
 
