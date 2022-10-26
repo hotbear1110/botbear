@@ -55,7 +55,7 @@ module.exports = {
             let emotes = ThreeLetterApiCall.
                                     data.
                                     user.
-                                    subscriptionBenefits.
+                                    subscriptionProducts.
                                     edges.
                                     map(x => x.node.user.subscriptionProducts[0].emotes[~~(Math.random() * x.node.user.subscriptionProducts[0].emotes.length)].token);
 
