@@ -25,7 +25,7 @@ module.exports = {
             let msg = input.join(' ');
             
             console.log(msg);
-            const markovAPI = await got(`https://staging.melon095.live/api/markov?channel=${this.channel}&seed=${encodeURIComponent(msg)}`, { throwHttpErrors: false }).json();
+            const markovAPI = await got(`https://magnolia.melon095.live/api/markov?channel=${this.channel}&seed=${encodeURIComponent(msg)}`, { throwHttpErrors: false }).json();
             
             let result =  markovAPI.data;
             if (!markovAPI.success) {
