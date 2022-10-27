@@ -312,7 +312,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
 	const userCD = new tools.Cooldown(user, realcommand, commandCD);
 
-	if ((await userCD.setCooldown()).length) { return; }
+	if ((await userCD.setCooldown(perm)).length) { return; }
 
 	if (realcommand === 'hint' && activetrivia[channel] && gothint[channel] === false) {
 		if (triviaHints2[channel] !== undefined && gothint2[channel] !== 1) {
@@ -407,7 +407,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
 		const triviaCD = new tools.Cooldown(channel, realcommand, cd[0].trivia_cooldowns);
 
-		if ((await triviaCD.setCooldown()).length && !await tools.isMod(user, channel)) {
+		if ((await triviaCD.setCooldown(perm)).length && !await tools.isMod(user, channel)) {
 			new messageHandler(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
 			return;
 		}
@@ -465,7 +465,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
 		const triviaCD = new tools.Cooldown(channel, realcommand, cd[0].trivia_cooldowns);
 
-		if ((await triviaCD.setCooldown()).length && !await tools.isMod(user, channel)) {
+		if ((await triviaCD.setCooldown(perm)).length && !await tools.isMod(user, channel)) {
 			new messageHandler(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
 			return;
 		}

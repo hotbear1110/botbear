@@ -128,8 +128,8 @@ exports.Cooldown = class Cooldown {
 	}
 
 	// command cooldown
-	async setCooldown() {
-		if (this.userId === process.env.TWITCH_OWNERUID) { return []; } // Your user ID
+	async setCooldown(perm) {
+		if (perm >= 1500) { return []; }
 
 		if (hasCooldown.has(this.key)) { return [this.key]; }
 
