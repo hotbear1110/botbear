@@ -27,7 +27,7 @@ module.exports = {
             console.log(msg);
             const markovAPI = await got(`https://magnolia.melon095.live/api/markov?channel=${this.channel}&seed=${encodeURIComponent(msg)}`, { throwHttpErrors: false }).json();
             
-            let result =  markovAPI.data;
+            let result =  markovAPI.data?.markov;
             if (!markovAPI.success) {
                 result = await new Promise(async (resolve) => {  await redisC.get(`Markov:${this.channel.toLowerCase()}`, async function (err, reply) {
                     try {
