@@ -85,7 +85,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
 	const offlineonly = await sql.Query('SELECT * FROM Streamers WHERE username=?', [channel]);
 
-	if (offlineonly[0].offlineonly === 1 && offlineonly[0].islive === 1 && !tools.isMod(user, channel)) {
+	if (offlineonly[0].offlineonly === 1 && offlineonly[0].islive === 1 && !await tools.isMod(user, channel)) {
 		return;
 	}
 
@@ -407,7 +407,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
 		const triviaCD = new tools.Cooldown(channel, realcommand, cd[0].trivia_cooldowns);
 
-		if ((await triviaCD.setCooldown()).length && !tools.isMod(user, channel)) {
+		if ((await triviaCD.setCooldown()).length && !await tools.isMod(user, channel)) {
 			new messageHandler(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
 			return;
 		}
@@ -465,7 +465,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
 		const triviaCD = new tools.Cooldown(channel, realcommand, cd[0].trivia_cooldowns);
 
-		if ((await triviaCD.setCooldown()).length && !tools.isMod(user, channel)) {
+		if ((await triviaCD.setCooldown()).length && !await tools.isMod(user, channel)) {
 			new messageHandler(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
 			return;
 		}

@@ -16,7 +16,7 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			let modresponse = tools.isMod(user, input[3]);
+			let modresponse = await tools.isMod(user, input[3]);
 
 			Promise.all([modresponse]);
 			switch (input[2]) {
@@ -102,12 +102,12 @@ module.exports = {
 			}
 			case 'liveemote': {
 				let username = user.username;
-				if (channel != 'botbear1110' && channel != 'hottestbear' && perm < 2000 && !tools.isMod(user, channel)) { return; }
+				if (channel != 'botbear1110' && channel != 'hottestbear' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
 				if (!input[3]) {
 					return;
 				}
 
-				if (tools.isMod(user, channel) || perm >= 2000) {
+				if (await tools.isMod(user, channel) || perm >= 2000) {
 					username = channel;
 				}
 
@@ -129,12 +129,12 @@ module.exports = {
 			}
 			case 'gameemote': {
 				let username = user.username;
-				if (channel != 'botbear1110' && channel != 'hottestbear' && perm < 2000 && !tools.isMod(user, channel)) { return; }
+				if (channel != 'botbear1110' && channel != 'hottestbear' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
 				if (!input[3]) {
 					return;
 				}
 
-				if (tools.isMod(user, channel) || perm >= 2000) {
+				if (await tools.isMod(user, channel) || perm >= 2000) {
 					username = channel;
 				}
 
@@ -156,12 +156,12 @@ module.exports = {
 			}
 			case 'titleemote': {
 				let username = user.username;
-				if (channel != 'botbear1110' && channel != 'hottestbear' && perm < 2000 && !tools.isMod(user, channel)) { return; }
+				if (channel != 'botbear1110' && channel != 'hottestbear' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
 				if (!input[3]) {
 					return;
 				}
 
-				if (tools.isMod(user, channel) || perm >= 2000) {
+				if (await tools.isMod(user, channel) || perm >= 2000) {
 					username = channel;
 				}
 
@@ -183,7 +183,7 @@ module.exports = {
 			}
 			case 'offlineemote': {
 				let username = user.username;
-				if (channel != 'botbear1110' && channel != 'hottestbear' && perm < 2000 && !tools.isMod(user, channel)) { return; }
+				if (channel != 'botbear1110' && channel != 'hottestbear' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
 				if (!input[3]) {
 					return;
 				}
@@ -208,7 +208,7 @@ module.exports = {
 				}
 			}
 			case 'trivia': {
-				if (!tools.isMod(user, channel) && perm >= 2000) {
+				if (!await tools.isMod(user, channel) && perm >= 2000) {
 					return;
 				}
 
@@ -227,7 +227,7 @@ module.exports = {
 			}
 
 			case 'pb1': {
-				if (!tools.isMod(user, channel) && perm >= 2000) {
+				if (!await tools.isMod(user, channel) && perm >= 2000) {
 					return;
 				}
 
@@ -245,7 +245,7 @@ module.exports = {
 			}
 
 			case 'pb2': {
-				if (!tools.isMod(user, channel) && perm >= 2000) {
+				if (!await tools.isMod(user, channel) && perm >= 2000) {
 					return;
 				}
 

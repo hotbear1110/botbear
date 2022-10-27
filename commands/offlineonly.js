@@ -12,7 +12,7 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			if (!tools.isMod(user, channel) && perm < 2000) {
+			if (!await tools.isMod(user, channel) && perm < 2000) {
 				return;
 			}
 			const offlinemode = await sql.Query(`

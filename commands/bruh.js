@@ -15,7 +15,7 @@ module.exports = {
 
 			if (input[2]) {
 				username = input[2];
-				if (tools.isMod(user, channel) === false && perm < 2000 && username.match(/[&|$|/|.|?|!|-]|\bkb\b|^\bmelon\b/g)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
+				if (await tools.isMod(user, channel) === false && perm < 2000 && username.match(/[&|$|/|.|?|!|-]|\bkb\b|^\bmelon\b/g)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
 					username = username.charAt(0) + '\u{E0000}' + username.substring(1);
 				}
 			}

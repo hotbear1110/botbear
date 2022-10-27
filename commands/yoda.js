@@ -24,7 +24,7 @@ module.exports = {
       
       let yodaText = yoda.contents.translated;
       
-      if (tools.isMod(user, channel) === false && perm < 2000 && msg.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
+      if (await tools.isMod(user, channel) === false && perm < 2000 && msg.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
 				yodaText = yodaText.charAt(0) + '\u{E0000}' + yodaText.substring(1);
 			}
 			if (yodaText.match(/!/g)) {
