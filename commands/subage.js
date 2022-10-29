@@ -29,11 +29,11 @@ module.exports = {
 				naniresponse = ' Copege This channel is real';
 			}
 
-			let subcheck = await got(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`).json();
-			if (subcheck['hidden']) {
+			let subcheck = await got(`https://api.ivr.fi/v2/twitch/subage/${username}/${realchannel}`).json();
+			if (subcheck['statusHidden']) {
 				return 'That user/channel has their sub status hidden';
 			}
-			if (subcheck['subscribed'] == false) {
+			if (subcheck['meta'] == null) {
 				let oldsub = subcheck['cumulative'];
 				const subend = new Date().getTime() - Date.parse(oldsub['end']);
 
@@ -50,6 +50,7 @@ module.exports = {
 				let sublength = subcheck['cumulative'];
 				let substreak = subcheck['streak'];
 
+				const anniversaryMS = new Date().getTime() - Date.parse(sublength);
 				const ms = new Date().getTime() - Date.parse(subdata['endsAt']);
 
 				if (subdata['tier'] === 'Custom') {
@@ -60,14 +61,14 @@ module.exports = {
 					return `${username} is currently subbed to #${realchannel} with a tier ${subdata['tier']} sub and has been subbed for a total of ${sublength['months']} months! They are currently on a ${substreak['months']} months streak. This is a permanent sub.` + naniresponse;
 				}
 				if (subdata['type'] === 'prime') {
-					return `${username} is currently subbed to #${realchannel} with a tier 1 prime sub and has been subbed for a total of ${sublength['months']} months! They are currently on a ${substreak['months']} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}` + naniresponse;
+					return `${username} is currently subbed to #${realchannel} with a tier 1 prime sub and has been subbed for a total of ${sublength['months']} months! They are currently on a ${substreak['months']} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}. Next sub anniversary is in ${tools.humanizeDuration(anniversaryMS)}` + naniresponse;
 				}
 				if (subdata['type'] === 'paid') {
-					return `${username} is currently subbed to #${realchannel} with a tier ${subdata['tier']} sub and has been subbed for a total of ${sublength['months']} months! They are currently on a ${substreak['months']} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}` + naniresponse;
+					return `${username} is currently subbed to #${realchannel} with a tier ${subdata['tier']} sub and has been subbed for a total of ${sublength['months']} months! They are currently on a ${substreak['months']} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}. Next sub anniversary is in ${tools.humanizeDuration(anniversaryMS)}` + naniresponse;
 				}
 				if (subdata['type'] === 'gift') {
-					let gifta = subdata['gift']['name'];
-					return `${username} is currently subbed to #${realchannel} with a tier ${subdata['tier']} sub, gifted by ${gifta} and has been subbed for a total of ${sublength['months']} months! They are currently on a ${substreak['months']} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}` + naniresponse;
+					let gifta = subdata['giftMeta']['gifter']['login'];
+					return `${username} is currently subbed to #${realchannel} with a tier ${subdata['tier']} sub, gifted by ${gifta} and has been subbed for a total of ${sublength['months']} months! They are currently on a ${substreak['months']} months streak. The sub ends/renews in ${tools.humanizeDuration(ms)}. Next sub anniversary is in ${tools.humanizeDuration(anniversaryMS)}` + naniresponse;
 				}
 			}
 		} catch (err) {
