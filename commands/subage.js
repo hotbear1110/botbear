@@ -50,7 +50,7 @@ module.exports = {
 				let sublength = subcheck['cumulative'];
 				let substreak = subcheck['streak'];
 
-				const anniversaryMS = new Date().getTime() - Date.parse(sublength);
+				const anniversaryMS = new Date().getTime() - Date.parse(sublength['end']);
 				const ms = new Date().getTime() - Date.parse(subdata['endsAt']);
 
 				if (subdata['tier'] === 'Custom') {
