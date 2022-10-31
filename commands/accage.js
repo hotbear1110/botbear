@@ -12,7 +12,7 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			let username = user;
+			let username = user.username;
 
 			if (input[2]) {
 				if (input[2].startsWith('@')) {
@@ -23,7 +23,7 @@ module.exports = {
 
 			let twitchdata = await got(`https://api.ivr.fi/v2/twitch/user?login=${username}`).json();
 
-			const ms = new Date().getTime() - Date.parse(twitchdata[0].created_at);
+			const ms = new Date().getTime() - Date.parse(twitchdata[0].createdAt);
 
 			return `Account is ${tools.humanizeDuration(ms)} old`;
 
