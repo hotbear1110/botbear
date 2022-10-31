@@ -16,16 +16,13 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			let modresponse = await tools.isMod(user, input[3]);
-
-			Promise.all([modresponse]);
 			switch (input[2]) {
 			case 'join': {
 				if (channel !== process.env.TWITCH_USER && channel !== process.env.TWITCH_OWNERNAME && perm < 2000) { return; }
 				let username = user.username;
 				let uid = user['user-id'];
 
-				if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !modresponse) {
+				if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !await tools.isMod(user, input[3])) {
 					if (input[3].toLowerCase() !== username) {
 						return 'You can only make me join your own channel, or a channel you are mod in.';
 					}
@@ -72,7 +69,7 @@ module.exports = {
 					username = input[3];
 				}
 
-				if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !modresponse) {
+				if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !await tools.isMod(user, input[3])) {
 					if (input[3].toLowerCase() !== user.username) {
 						return 'You can only make me leave your own channel, or a channel you are mod in.';
 					}
