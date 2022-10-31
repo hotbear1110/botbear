@@ -12,25 +12,18 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			let uid = user['user-id'];
+			let username = user;
 
 			if (input[2]) {
 				if (input[2].startsWith('@')) {
 					input[2] = input[2].substring(1);
 				}
-				let username = input[2];
-
-				uid = await got(`https://api.ivr.fi/v2/twitch/user?login=${username}`).json()[0].id;
+				username = input[2];
 			}
 
-			let twitchdata = await got(`https://api.twitch.tv/helix/users?id=${await uid}`, {
-				headers: {
-					'client-id': process.env.TWITCH_CLIENTID,
-					'Authorization': process.env.TWITCH_AUTH
-				},
-			}).json();
+			let twitchdata = await got(`https://api.ivr.fi/v2/twitch/user?login=${username}`).json();
 
-			const ms = new Date().getTime() - Date.parse(twitchdata.data[0].created_at);
+			const ms = new Date().getTime() - Date.parse(twitchdata[0].created_at);
 
 			return `Account is ${tools.humanizeDuration(ms)} old`;
 
