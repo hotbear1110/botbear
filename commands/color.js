@@ -27,7 +27,7 @@ module.exports = {
 			}
 			let color = '';
 			if (iscolor === false) {
-				let userColor = await got(`https://api.ivr.fi/twitch/resolve/${username}`).json();
+				let userColor = await got(`https://api.ivr.fi/v2/twitch/user?login=${username}`).json()[0];
 
 				color = userColor.chatColor;
 			} else {

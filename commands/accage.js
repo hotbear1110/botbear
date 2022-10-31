@@ -20,10 +20,10 @@ module.exports = {
 				}
 				let username = input[2];
 
-				uid = await got(`https://api.ivr.fi/twitch/resolve/${username}`).json().id;
+				uid = await got(`https://api.ivr.fi/v2/twitch/user?login=${username}`).json()[0].id;
 			}
 
-			let twitchdata = await got(`https://api.twitch.tv/helix/users?id=${uid}`, {
+			let twitchdata = await got(`https://api.twitch.tv/helix/users?id=${await uid}`, {
 				headers: {
 					'client-id': process.env.TWITCH_CLIENTID,
 					'Authorization': process.env.TWITCH_AUTH
