@@ -37,7 +37,7 @@ module.exports = {
 				let oldsub = subcheck['cumulative'];
 
 
-				if (!oldsub['months'] || oldsub['months'] === 0) {
+				if (oldsub == null || !oldsub['months'] || oldsub['months'] === 0) {
 					return `${username} has never been subbed to @${realchannel}.`;
 				}
 				else {
