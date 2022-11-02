@@ -68,7 +68,7 @@ module.exports = {
 					return `User: ${username} | Channel: ${realchannel} | Type: Paid | Tier: ${subdata['tier']} | Months: ${sublength['months']} | Streak: ${substreak['months']} | Ends/Renews: ${tools.humanizeDuration(ms)} | Anniversary: ${tools.humanizeDuration(anniversaryMS)} ${naniresponse}`;
 				}
 				if (subdata['type'] === 'gift') {
-					let gifta = subdata['giftMeta']['gifter']['login'];
+					let gifta = (subdata['giftMeta']['gifter'] === null) ? 'Anonymous' : subdata['giftMeta']['gifter']['login'];
 					return `User: ${username} | Channel: ${realchannel} | Type: Gift | Gifter: ${gifta} | Tier: ${subdata['tier']} | Months: ${sublength['months']} | Streak: ${substreak['months']} | Ends/Renews: ${tools.humanizeDuration(ms)} | Anniversary: ${tools.humanizeDuration(anniversaryMS)} ${naniresponse}`;
 				}
 			}
