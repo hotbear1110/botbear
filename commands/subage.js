@@ -35,13 +35,13 @@ module.exports = {
 			}
 			if (subcheck['meta'] == null) {
 				let oldsub = subcheck['cumulative'];
-				const subend = new Date().getTime() - Date.parse(oldsub['end']);
 
 
 				if (oldsub['months'] === 0 || !oldsub['months']) {
 					return `${username} has never been subbed to @${realchannel}.`;
 				}
 				else {
+					const subend = new Date().getTime() - Date.parse(oldsub['end']);
 					return `${username} has previously been subbed to @${realchannel} for a total of ${oldsub['months']} months! Sub ended ${tools.humanizeDuration(subend)} ago`;
 				}
 			}
