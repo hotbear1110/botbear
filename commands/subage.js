@@ -73,10 +73,10 @@ module.exports = {
 				}
 			}
 		} catch (err) {
+			console.log(err);
 			if (err.response.data.error) {
 				return `${err.response.data.error} (${err.response.data.username})`;
 			}
-			console.log(err);
 			if (err.name === 'TimeoutError') {
 				return `FeelsDankMan api error: ${err.name}`;
 			}
