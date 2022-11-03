@@ -6,6 +6,7 @@ module.exports = {
 	description: 'This command will show you how many people you follow',
 	permission: 100,
 	category: 'Info command',
+	noBanphrase: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {

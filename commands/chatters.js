@@ -9,6 +9,7 @@ module.exports = {
 	description: 'This command will give you the number of users, that are currently in the chat',
 	permission: 100,
 	category: 'Info command',
+	noBanphrase: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {

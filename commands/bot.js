@@ -4,6 +4,7 @@ module.exports = {
 	description: 'This command will give a short explanation of the bot',
 	permission: 100,
 	category: 'Core command',
+	noBanphrase: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {

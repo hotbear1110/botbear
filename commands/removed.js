@@ -7,6 +7,7 @@ module.exports = {
 	description: 'This command will give you a list of the last 6 removed 3rd part emotes.',
 	permission: 100,
 	category: 'Info command',
+	noBanphrase: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {

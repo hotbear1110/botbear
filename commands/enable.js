@@ -7,6 +7,7 @@ module.exports = {
 	description: 'This command will let you enable different commands in your own chat or a chat you are mod in',
 	permission: 100,
 	category: 'Core command',
+	noBanphrase: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {

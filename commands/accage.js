@@ -7,6 +7,7 @@ module.exports = {
 	description: 'This command will tell you the specified users account age. Example: "bb accage NymN"',
 	permission: 100,
 	category: 'Info command',
+	noBanphrase: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {

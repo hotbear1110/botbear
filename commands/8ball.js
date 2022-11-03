@@ -4,6 +4,7 @@ module.exports = {
 	description: 'This command will answer whatever yes/no question you have. Example: "bb 8ball Is NymN soy"',
 	permission: 100,
 	category: 'Random command',
+	noBanphrase: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {

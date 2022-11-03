@@ -8,6 +8,7 @@ module.exports = {
   description: 'This command will give you the current map in apex pubs',
   permission: 100,
   category: 'Random command',
+  noBanphrase: true,
   execute: async (channel, user, input, perm) => {
     try {
       if (module.exports.permission > perm) {

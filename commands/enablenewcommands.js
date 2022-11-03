@@ -6,6 +6,7 @@ module.exports = {
 	description: 'Decide if you want new commands to be enabled or disabled as default',
 	permission: 100,
 	category: 'Core command',
+	noBanphrase: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {

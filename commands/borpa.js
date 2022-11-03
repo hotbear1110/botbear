@@ -4,6 +4,7 @@ module.exports = {
 	description: 'This command will respond with "borpaSpin"',
 	permission: 100,
 	category: 'Random command',
+	noBanphrase: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {

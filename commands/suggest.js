@@ -6,6 +6,7 @@ module.exports = {
 	description: 'This command will add a suggestion to my database, so I can read them and maybe add them. Example: "bb suggest Please add this command :) "',
 	permission: 100,
 	category: 'Core command',
+	noBanphrase: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {

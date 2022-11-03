@@ -1,5 +1,4 @@
 require('dotenv').config();
-const tools = require('../tools/tools.js');
 const regex = require('../tools/regex.js');
 
 module.exports = {

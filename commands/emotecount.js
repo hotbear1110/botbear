@@ -6,6 +6,7 @@ module.exports = {
 	description: 'This command will give you the number of 3rd party emotes, that are currently activated in the chat.',
 	permission: 100,
 	category: 'Info command',
+	noBanphrase: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {

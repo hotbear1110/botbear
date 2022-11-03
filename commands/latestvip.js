@@ -6,6 +6,7 @@ module.exports = {
 	description: 'This command will give you the name if the newest vip in a given channel',
 	permission: 100,
 	category: 'Info command',
+	noBanphrase: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {

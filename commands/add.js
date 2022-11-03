@@ -6,6 +6,7 @@ module.exports = {
 	description: 'Can add "features" to the bot. This to add: "bb add alias [command] [alias(es)]"',
 	permission: 2000,
 	category: 'Dev command',
+	noBanphrase: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {

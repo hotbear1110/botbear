@@ -4,6 +4,7 @@ module.exports = {
 	description: 'This command will calculate your bmi. Format: "bb bmi weight(kg) height(cm)". Example: "bb bmi 65 180"',
 	permission: 100,
 	category: 'Random command',
+	noBanphrase: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {

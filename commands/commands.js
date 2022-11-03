@@ -7,6 +7,7 @@ module.exports = {
 	description: 'This command will give you a link to the bot´s commands. You can add "local" to the end of the command, to see the commands enabled in the chat.',
 	permission: 100,
 	category: 'Core command',
+	noBanphrase: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {

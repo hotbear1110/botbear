@@ -6,6 +6,7 @@ module.exports = {
 	description: 'This command is for deleting all eventsubs',
 	permission: 2000,
 	category: 'Dev command',
+	noBanphrase: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {

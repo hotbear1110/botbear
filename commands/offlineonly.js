@@ -7,6 +7,7 @@ module.exports = {
 	description: 'This command will let you change the bot to/from offline only mode (toggle), live/game/title notify will still work! (This is a mod command)',
 	permission: 100,
 	category: 'Core command',
+	noBanphrase: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {

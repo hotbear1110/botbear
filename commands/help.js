@@ -7,6 +7,7 @@ module.exports = {
 	description: 'This command will give you information about any onther command. Example: "bb help followage"',
 	permission: 100,
 	category: 'Core command',
+	noBanphrase: true,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {
