@@ -36,7 +36,7 @@ module.exports = {
             }
             
             let result =  await markovAPI?.data?.markov;
-            if (await markovAPI !== null || !await markovAPI.success) {
+            if (await markovAPI === null || !await markovAPI?.success) {
                 result = await new Promise(async (resolve) => {  await redisC.get(`Markov:${this.channel.toLowerCase()}`, async function (err, reply) {
                     try {
                     let data = JSON.parse(reply);
