@@ -23,18 +23,20 @@ module.exports = {
             this.channel = input.filter(x => x.startsWith('channel:'))[0]?.split(':')[1] ?? channel;
             input = input.filter(x  => x !== `channel:${this.channel}`);
             let msg = input.join(' ');
-            let markovAPI
+            let markovAPI;
             
             console.log(msg);
             try {
-                markovAPI = await got(`https://magnolia.melon095.live/api/markov?channel=${this.channel}&seed=${encodeURIComponent(msg)}`, { throwHttpErrors: false }).json();
+                markovAPI = await got(`https://magnolia.melon095.live/api/markov?channel=${this.channel}&seed=${encodeURIComponent(msg)}`, { throwHttpErrors: false, timeout: {
+                    request: 3000
+                } }).json();
             } catch (err) {
                 console.log(err);
                 markovAPI = null;
             }
             
             let result =  await markovAPI?.data?.markov;
-            if (!await markovAPI.success) {
+            if (await markovAPI !== null || !await markovAPI.success) {
                 result = await new Promise(async (resolve) => {  await redisC.get(`Markov:${this.channel.toLowerCase()}`, async function (err, reply) {
                     try {
                     let data = JSON.parse(reply);
