@@ -11,7 +11,7 @@ module.exports = (() => {
                         'User-Agent': 'Botbear'
                     },
                     timeout: {
-                        request: 3500
+                        request: 5000
                     }
                 });
         }
