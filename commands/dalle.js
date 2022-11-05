@@ -1,6 +1,5 @@
 require('dotenv').config();
 const { got } = require('./../got');
-const {FormData, Blob} = require('formdata-node');
 
 module.exports = {
 	name: 'dalle',
@@ -11,6 +10,8 @@ module.exports = {
 	category: 'Random command',
 	execute: async (channel, user, input, perm) => {
 		try {
+			const {FormData, Blob} = (await import('formdata-node'));
+
 			if (module.exports.permission > perm) {
 				return;
 			}
