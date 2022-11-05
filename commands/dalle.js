@@ -62,7 +62,7 @@ module.exports = {
 				});
 
 				console.log(imageURL);
-				return `"${msg}": ` + await response.data[0].url;
+				return `"${msg}": ${imageURL.body}.png`;
 			} catch (err) {
 				console.log(err);
 				if (err.response.statusCode === 429) {
