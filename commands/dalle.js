@@ -29,9 +29,8 @@ module.exports = {
 				'size': '1024x1024'
 			};
 			const headers = {
-				'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-                'Content-Type' : 'application/json'
-			};
+				'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+				};
 
 			try {
 				const response = await got.post(url, { json: params, headers: headers }).json();
