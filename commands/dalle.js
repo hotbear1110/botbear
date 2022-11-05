@@ -26,21 +26,37 @@ module.exports = {
 			const params = {
 				'prompt': msg,
 				'n': 1,
-				'size': '1024x1024'
+				'size': '1024x1024',
+				'response_format': 'b64_json'
 			};
 			const headers = {
 				'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
                 'Content-Type' : 'application/json'
 			};
 
+			
+
+
 			try {
+				
 				const response = await got.post(url, { json: params, headers: headers }).json();
 
-                const dalleImageToBlob = async (url) => new Blob([await got(url).buffer()], { type: 'image/png' });
+				const b64toBlob = (dataURI) => {
+    
+					var byteString = atob(dataURI);
+					var ab = new ArrayBuffer(byteString.length);
+					var ia = new Uint8Array(ab);
+					
+					for (var i = 0; i < byteString.length; i++) {
+						ia[i] = byteString.charCodeAt(i);
+					}
+					return new Blob([ab], { type: 'image/png' });
+				};
 
-				const image = await dalleImageToBlob(response.data[0].url);
+				const image = await b64toBlob(response.data[0].b64_json);
 				const formData = await new FormData();
 				formData.append('file', await image);
+
 
                 const imageURL =  await got.post('https://i.hotbear.org/upload', {
 					headers: {
@@ -50,7 +66,6 @@ module.exports = {
 				});
 
 				console.log(imageURL);
-				console.log(response);
 				return `"${msg}": ` + await response.data[0].url;
 			} catch (err) {
 				console.log(err);
