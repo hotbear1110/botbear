@@ -37,7 +37,7 @@ module.exports = {
 
                 const image =  await got(response.data[0].url);
 
-				const formData = new FormData(image.body);
+				const formData = new FormData('file', image.body);
 
                 const imageURL =  await got.post('https://i.hotbear.org/upload', {
 					headers: {
