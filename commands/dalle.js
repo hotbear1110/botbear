@@ -34,8 +34,10 @@ module.exports = {
 			try {
 				const response = await got.post(url, { json: params, headers: headers }).json();
 
-
-				console.log(response.data[0].url);
+                const image =  await got(response.data[0].url);
+                console.log(image);
+                
+				console.log(response);
 				return `"${msg}": ` + await response.data[0].url;
 			} catch (err) {
 				console.log(err);
