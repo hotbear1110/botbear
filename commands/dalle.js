@@ -35,8 +35,18 @@ module.exports = {
 				const response = await got.post(url, { json: params, headers: headers }).json();
 
                 const image =  await got(response.data[0].url);
-                console.log(image);
-                
+
+                const imageURL =  await got.post('https://i.hotbear.org/upload', {
+					headers: {
+						'Authorization': process.env.hotbearIMG,
+						'Content-Type': 'multipart/form-data'
+					},
+					body: {
+						'file': image.body
+					}
+				});
+
+				console.log(imageURL);
 				console.log(response);
 				return `"${msg}": ` + await response.data[0].url;
 			} catch (err) {
