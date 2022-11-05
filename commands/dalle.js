@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { got } = require('./../got');
+const FormData = require('form-data');
 
 module.exports = {
 	name: 'dalle',
@@ -10,7 +11,7 @@ module.exports = {
 	category: 'Random command',
 	execute: async (channel, user, input, perm) => {
 		try {
-			const {FormData, Blob} = (await import('formdata-node'));
+			const {Blob} = (await import('formdata-node'));
 
 			if (module.exports.permission > perm) {
 				return;
@@ -50,11 +51,11 @@ module.exports = {
 					for (var i = 0; i < byteString.length; i++) {
 						ia[i] = byteString.charCodeAt(i);
 					}
-					return new Blob([ab], { type: 'image/png' });
+					return new Blob([ab], { type: 'image/jpeg' });
 				};
-
+				
 				const image = await b64toBlob(response.data[0].b64_json);
-				const formData = await new FormData();
+				const formData = new FormData();
 				formData.append('file', await image);
 
 
@@ -62,7 +63,7 @@ module.exports = {
 					headers: {
 						'Authorization': process.env.hotbearIMG,
 					},
-					body: await formData
+					body: formData
 				});
 
 				console.log(imageURL);
