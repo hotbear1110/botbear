@@ -16,8 +16,12 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			if (channel !== 'nymn' && channel !== 'hotbear1110' && channel !== 'pajlada' && !(perm >= 1500)) {
+			if (channel !== 'nymn' && channel !== 'hotbear1110' && channel !== 'pajlada' && channel !== 'brian6932' && !(perm >= 1500)) {
 				return 'This command is currently disabled :)';
+			}
+
+			if (!input[2]) {
+				return 'FeelsDankMan No input text';
 			}
 
             input = input.splice(2);
@@ -68,10 +72,10 @@ module.exports = {
 			} catch (err) {
 				console.log(err);
 				if (err.response.statusCode === 429) {
-					return 'Nime I\'m currently rate limited. Try again in 5 min';
+					return 'nymNime I\'m currently rate limited. Try again in 5 min';
 				}
 				if (err.response.statusCode === 400) {
-					return 'Nime Bad request.....';
+					return 'nymNime Bad request.....';
 				}
 			}
 		} catch (err) {
