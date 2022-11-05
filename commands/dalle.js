@@ -84,7 +84,7 @@ module.exports = {
 					return 'nymnIme I\'m currently rate limited. Try again in 5 min';
 				}
 				if (err.response.statusCode === 400) {
-					return 'nymnIme Bad request.....';
+					return 'nymnIme Bad request..... Maybe read up on the rules: https://labs.openai.com/policies/content-policy';
 				}
 			}
 		} catch (err) {
