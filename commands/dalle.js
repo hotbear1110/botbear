@@ -41,9 +41,7 @@ module.exports = {
 						'Authorization': process.env.hotbearIMG,
 						'Content-Type': 'multipart/form-data'
 					},
-					body: {
-						'file': image.body
-					}
+					body: image.body
 				});
 
 				console.log(imageURL);
