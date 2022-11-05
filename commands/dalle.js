@@ -72,10 +72,10 @@ module.exports = {
 			} catch (err) {
 				console.log(err);
 				if (err.response.statusCode === 429) {
-					return 'nymNime I\'m currently rate limited. Try again in 5 min';
+					return 'nymnIme I\'m currently rate limited. Try again in 5 min';
 				}
 				if (err.response.statusCode === 400) {
-					return 'nymNime Bad request.....';
+					return 'nymnIme Bad request.....';
 				}
 			}
 		} catch (err) {
