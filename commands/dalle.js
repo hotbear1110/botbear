@@ -71,10 +71,10 @@ module.exports = {
 				console.log(imageURL);
 
 				await sql.Query(`INSERT INTO Dalle 
-        			(User, Prompt, Image) 
+        			(User, Channel,  Prompt, Image) 
             			values 
-        			(?, ?, ?)`,
-				[user.username, msg, imageURL.body]
+        			(?, ?, ?, ?)`,
+				[user.username, channel, msg, imageURL.body]
 				);
 
 				return `"${msg}": ${imageURL.body}`;
