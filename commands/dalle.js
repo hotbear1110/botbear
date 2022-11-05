@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { got } = require('./../got');
+const FormData = require('form-data');
 
 module.exports = {
 	name: 'dalle',
@@ -36,12 +37,14 @@ module.exports = {
 
                 const image =  await got(response.data[0].url);
 
+				const formData = new FormData(image.body);
+
                 const imageURL =  await got.post('https://i.hotbear.org/upload', {
 					headers: {
 						'Authorization': process.env.hotbearIMG,
 						'Content-Type': 'multipart/form-data'
 					},
-					form: image.body
+					form: formData
 				});
 
 				console.log(imageURL);
