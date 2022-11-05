@@ -2,6 +2,7 @@ require('dotenv').config();
 const { got } = require('./../got');
 const { activetrivia, triviaanswer } = require('../bot.js');
 const { URL } = require('./../tools/regex.js');
+const sql = require('./../sql/index.js');
 
 module.exports = {
 	name: 'ask',
@@ -59,6 +60,14 @@ module.exports = {
 					}
 				}
 				console.log(output);
+
+				await sql.Query(`INSERT INTO Ask 
+        			(User, Channel, Prompt, Response) 
+            			values 
+        			(?, ?, ?, ?)`,
+				[user.username, channel, msg, output]
+				);
+
 				return output;
 			} catch (err) {
 				console.log(err);
