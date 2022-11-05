@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { got } = require('./../got');
-
+let messageHandler = require('../tools/messageHandler.js').messageHandler;
 
 module.exports = {
 	name: 'dalle',
@@ -39,6 +39,9 @@ module.exports = {
 
 
 			try {
+
+				await new messageHandler(channel, 'ppCircle generating dalle2 image...', true).newMessage();
+
 				
 				const response = await got.post(url, { json: params, headers: headers }).json();
 
