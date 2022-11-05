@@ -65,7 +65,7 @@ module.exports = {
 			} catch (err) {
 				console.log(err);
 				if (err.response.statusCode === 429) {
-					return 'Nime you have used all of this months bb ask';
+					return 'Nime I\'m currently rate limited';
 				}
 			}
 		} catch (err) {
