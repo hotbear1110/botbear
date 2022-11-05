@@ -52,7 +52,7 @@ module.exports = {
 				formData.append('file', img);
 				
 
-                const imageURL =  await got.post('https://i.hotbear.org/upload', {
+                const imageURL =  await got.post('http://localhost:9005', {
 					headers: {
 						'Authorization': process.env.hotbearIMG,
 					},
