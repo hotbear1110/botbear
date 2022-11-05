@@ -70,6 +70,9 @@ module.exports = {
 				if (err.response.statusCode === 429) {
 					return 'Nime I\'m currently rate limited. Try again in 5 min';
 				}
+				if (err.response.statusCode === 400) {
+					return 'Nime Bad request.....';
+				}
 			}
 		} catch (err) {
 			console.log(err);
