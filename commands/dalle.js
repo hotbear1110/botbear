@@ -65,7 +65,7 @@ module.exports = {
 			} catch (err) {
 				console.log(err);
 				if (err.response.statusCode === 429) {
-					return 'Nime I\'m currently rate limited';
+					return 'Nime I\'m currently rate limited. Try again in 5 min';
 				}
 			}
 		} catch (err) {
