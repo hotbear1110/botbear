@@ -29,8 +29,9 @@ module.exports = {
 				'size': '1024x1024'
 			};
 			const headers = {
-				'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
-				};
+				'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+                'Content-Type' : 'application/json'
+			};
 
 			try {
 				const response = await got.post(url, { json: params, headers: headers }).json();
@@ -44,7 +45,6 @@ module.exports = {
                 const imageURL =  await got.post('https://i.hotbear.org/upload', {
 					headers: {
 						'Authorization': process.env.hotbearIMG,
-						'Content-Type': `multipart/form-data; boundary=${formData.getBoundary()}`
 					},
 					body: formData
 				});
