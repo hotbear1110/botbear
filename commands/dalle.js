@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { got } = require('./../got');
-const FormData = require('form-data');
+
 
 module.exports = {
 	name: 'dalle',
@@ -11,7 +11,7 @@ module.exports = {
 	category: 'Random command',
 	execute: async (channel, user, input, perm) => {
 		try {
-			const {Blob} = (await import('formdata-node'));
+			const {FormData, Blob} = (await import('formdata-node'));
 
 			if (module.exports.permission > perm) {
 				return;
@@ -28,7 +28,8 @@ module.exports = {
 				'prompt': msg,
 				'n': 1,
 				'size': '1024x1024',
-				'response_format': 'b64_json'
+				'response_format': 'b64_json',
+				'user': user.username
 			};
 			const headers = {
 				'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
@@ -42,28 +43,23 @@ module.exports = {
 				
 				const response = await got.post(url, { json: params, headers: headers }).json();
 
-				const b64toBlob = (dataURI) => {
-    
-					var byteString = atob(dataURI);
-					var ab = new ArrayBuffer(byteString.length);
-					var ia = new Uint8Array(ab);
-					
-					for (var i = 0; i < byteString.length; i++) {
-						ia[i] = byteString.charCodeAt(i);
-					}
-					return new Blob([ab], { type: 'image/jpeg' });
-				};
-				
-				const image = await b64toBlob(response.data[0].b64_json);
-				const formData = new FormData();
-				formData.append('file', await image);
+				const dalleImageToBlob = async (url) =>
+				new Blob([await got(url).buffer()], { type: 'image/png' });
 
+				const imgurl = response.data[0].url;
+				const img = await dalleImageToBlob(imgurl);
+    
+				const formData = new FormData();
+				formData.append('file', img);
+				
 
                 const imageURL =  await got.post('https://i.hotbear.org/upload', {
 					headers: {
 						'Authorization': process.env.hotbearIMG,
 					},
-					body: formData
+					body: formData,
+					throwHttpErrors: false
+
 				});
 
 				console.log(imageURL);
