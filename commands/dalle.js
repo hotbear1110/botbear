@@ -35,7 +35,7 @@ module.exports = {
 				const response = await got.post(url, { json: params, headers: headers }).json();
 
 
-				console.log(response);
+				console.log(response.data[0].url);
 				return `"${msg}": ` + await response.data[0].url;
 			} catch (err) {
 				console.log(err);
