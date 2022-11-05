@@ -35,17 +35,16 @@ module.exports = {
 			try {
 				const response = await got.post(url, { json: params, headers: headers }).json();
 
-                //const dalleImageToBlob = async (url) => Buffer.from(await got(url, { responseType: 'buffer' }).then((res) => res.body));
+                const dalleImageToBlob = async (url) => Buffer.from(await got(url, { responseType: 'buffer' }).then((res) => res.body));
 
-				//const image = dalleImageToBlob(response.data[0].url);
-				const image = await got(response.data[0].url);
+				const image = dalleImageToBlob(response.data[0].url);
 				const formData = new FormData();
-				formData.append('file', image.body);
+				formData.append('file', image);
 
                 const imageURL =  await got.post('https://i.hotbear.org/upload', {
 					headers: {
 						'Authorization': process.env.hotbearIMG,
-						'Content-Type': 'multipart/form-data'
+						'Content-Type': `multipart/form-data; boundary=${formData.getBoundary()}`
 					},
 					body: formData
 				});
