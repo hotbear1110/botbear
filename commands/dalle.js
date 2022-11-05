@@ -38,7 +38,7 @@ module.exports = {
 
                 const dalleImageToBlob = async (url) => new Blob([await got(url).buffer()], { type: 'image/png' });
 
-				const image = dalleImageToBlob(response.data[0].url);
+				const image = await dalleImageToBlob(response.data[0].url);
 				const formData = new FormData();
 				formData.append('file', image);
 
