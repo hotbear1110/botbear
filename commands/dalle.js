@@ -36,7 +36,7 @@ module.exports = {
 
 
 				console.log(response);
-				return `"${msg}": ` + response.data[0]['url'];
+				return `"${msg}": ` + response.data[0].url;
 			} catch (err) {
 				console.log(err);
 				if (err.response.statusCode === 429) {
