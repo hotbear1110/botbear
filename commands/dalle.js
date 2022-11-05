@@ -61,7 +61,7 @@ module.exports = {
 				});
 
 				console.log(imageURL);
-				return `"${msg}": ${imageURL.body}.png`;
+				return `"${msg}": ${imageURL.body}`;
 			} catch (err) {
 				console.log(err);
 				if (err.response.statusCode === 429) {
