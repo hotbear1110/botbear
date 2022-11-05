@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { got } = require('./../got');
-const FormData = require('form-data');
+const {FormData, Blob} = require('formdata-node');
 
 module.exports = {
 	name: 'dalle',
@@ -35,11 +35,11 @@ module.exports = {
 			try {
 				const response = await got.post(url, { json: params, headers: headers }).json();
 
-                const dalleImageToBlob = async (url) => Buffer.from(await got(url, { responseType: 'buffer' }).then((res) => res.body));
+                const dalleImageToBlob = async (url) => new Blob([await got(url).buffer()], { type: 'image/png' });
 
 				const image = dalleImageToBlob(response.data[0].url);
 				const formData = new FormData();
-				formData.append('file', image, {contentType: 'image/png', filename: `${msg}.png`, knownLength: (await image).length});
+				formData.append('file', image);
 
                 const imageURL =  await got.post('https://i.hotbear.org/upload', {
 					headers: {
