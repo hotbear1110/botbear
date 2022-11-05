@@ -39,7 +39,7 @@ module.exports = {
 
 				const image = dalleImageToBlob(response.data[0].url);
 				const formData = new FormData();
-				formData.append('file', image);
+				formData.append('file', image, `${msg}.png`);
 
                 const imageURL =  await got.post('https://i.hotbear.org/upload', {
 					headers: {
