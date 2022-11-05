@@ -49,7 +49,7 @@ module.exports = {
 				const img = await dalleImageToBlob(imgurl);
     
 				const formData = new FormData();
-				formData.append('file', img, {name: 'file.png' });
+				formData.append('file', img, 'file.png');
 				
 
                 const imageURL =  await got.post('http://localhost:9005', {
