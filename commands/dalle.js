@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { got } = require('./../got');
 let messageHandler = require('../tools/messageHandler.js').messageHandler;
+const sql = require('./../sql/index.js');
 
 module.exports = {
 	name: 'dalle',
@@ -68,6 +69,14 @@ module.exports = {
 				});
 
 				console.log(imageURL);
+
+				await sql.Query(`INSERT INTO Dalle 
+        			(User, Prompt, Image) 
+            			values 
+        			(?, ?, ?)`,
+				[user.username, msg, imageURL.body]
+				);
+
 				return `"${msg}": ${imageURL.body}`;
 			} catch (err) {
 				console.log(err);
