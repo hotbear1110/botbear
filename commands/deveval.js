@@ -20,7 +20,7 @@ module.exports = {
 			let msg = input.join(' ');
             const js = eval(msg);
 
-			return js;
+			return js.toString();
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
