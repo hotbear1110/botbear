@@ -1,3 +1,5 @@
+const tools = require('../tools/tools.js');
+
 module.exports = {
 	name: 'deveval',
 	ping: true,
@@ -17,7 +19,7 @@ module.exports = {
             input = input.splice(2);
 			let msg = input.join(' ');
             const js = eval(msg);
-            
+
 			return js;
 		} catch (err) {
 			console.log(err);
