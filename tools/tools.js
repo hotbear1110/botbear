@@ -278,6 +278,12 @@ exports.asciiLength = (message) => {
 
 };
 
+exports.brailleCheck  = (message) => {
+	if (/[\u{2800}-\u{28ff}]/u.test(message)) {
+		return true;
+	}
+	return false;
+};
 
 exports.Alias = (message) => new Promise(async (resolve) => {		
 		/** @type { Array<SQL.Aliases> } */
@@ -470,6 +476,12 @@ exports.checkAllBanphrases = async function (message, channel) {
 	if (reallength > 30) {
 		return '[Too many emojis]';
 	}
+
+	const braille = await tools.brailleCheck(message);
+	if (braille) {
+		return '[BRAILLE DETECTED]';
+	}
+
 
 	const massping = await tools.massping(message, channel);
 	if (massping === '[MASS PING]') {
