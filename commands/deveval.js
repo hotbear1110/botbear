@@ -18,9 +18,9 @@ module.exports = {
 			}
             input = input.splice(2);
 			let msg = input.join(' ');
-            const js = eval(msg);
+            const js = await eval(msg);
 
-			return js.toString();
+			return await js.toString();
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
