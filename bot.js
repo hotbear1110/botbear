@@ -304,7 +304,8 @@ async function onMessageHandler(channel, user, msg, self) {
 	const perm = await tools.getPerm(user.username);
 
 	let commandCD = await sql.Query('SELECT Cooldown FROM Commands WHERE Name=?', [input[1]]);
-	if (!commandCD.length) {
+
+	if (!commandCD[0].Cooldown) {
 		commandCD = 3000;
 	} else {
 		commandCD = commandCD[0].Cooldown * 1000;

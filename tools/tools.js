@@ -121,12 +121,6 @@ exports.Cooldown = class Cooldown {
 		this.key = `${this.userId}_${this.command}`;
 	}
 
-	async cooldownReduction() {
-		const cooldown = this.cooldown;
-
-		return cooldown;
-	}
-
 	// command cooldown
 	async setCooldown(perm) {
 		if (perm >= 1500) { return []; }
@@ -137,12 +131,11 @@ exports.Cooldown = class Cooldown {
 
 		cooldownTime[this.key] = new Date().getTime();
 
-
 		setTimeout(() => {
 			hasCooldown.delete(this.key);
 			delete cooldownTime[this.key];
 
-		}, await this.cooldownReduction());
+		}, this.cooldown);
 		return [];
 	}
 
