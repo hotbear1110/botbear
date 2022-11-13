@@ -17,6 +17,10 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
+			//temp change
+			if (user.username !== 'hotbear1110') {
+				return 'This command is currently disabled :)';
+			}
 			if (channel !== 'nymn' && channel !== 'hotbear1110' && channel !== 'pajlada' && channel !== 'brian6932' && !(perm >= 1500)) {
 				return 'This command is currently disabled :)';
 			}
