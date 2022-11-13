@@ -308,7 +308,7 @@ async function onMessageHandler(channel, user, msg, self) {
 	if (!commandCD[0].Cooldown) {
 		commandCD = 3000;
 	} else {
-		commandCD = commandCD[0].Cooldown * 1000;
+		commandCD = commandCD[0].Cooldown * 1000;					
 	}
 
 	const userCD = new tools.Cooldown(user, realcommand, commandCD);
