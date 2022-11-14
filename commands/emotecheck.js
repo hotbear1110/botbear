@@ -19,6 +19,15 @@ module.exports = {
 			let emoteId = input[2];
 			if (user.emotes) {
 				emoteId = Object.keys(user.emotes)[0] + '?id=true';
+			} else {
+				const v1 = /\b\d{1,9}(?!\/emotes)\b/.exec(emoteId);
+				let v2 = /(?<=\b|_)[a-f0-9]{32}(?!\/emotes)\b/i.exec(emoteId);
+
+				v2 &&= `emotesv2_${v2}`;
+
+				let id = v2 ?? v1;
+
+				emoteId = id ? id + '?id=true' : emoteId;
 			}
 
 			const emotecheck = await got(`https://api.ivr.fi/v2/twitch/emotes/${emoteId}`).json();
