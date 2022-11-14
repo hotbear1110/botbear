@@ -115,7 +115,7 @@ module.exports = {
 				if (emoteType === 'BITS_BADGE_TIERS') {
 
 
-					const emoteCost = await got(`https://api.ivr.fi/twitch/allemotes/${emotechannel}`).json();
+					const emoteCost = await got(`https://api.ivr.fi/v2/twitch/emotes/channel/${emotechannel}`).json();
 					let bitEmotes = emoteCost['bitEmotes'];
 					let realemoteCost = 0;
 					for (const emote of bitEmotes) {
