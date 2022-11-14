@@ -18,23 +18,7 @@ module.exports = {
 			}
 			let emoteId = input[2];
 			if (user.emotes) {
-				/*
-                 if (input[0].toLowerCase() === "forsenbb") {
-                    emoteId = JSON.stringify(user.emotes).split(",")[1].split(":")[0];
-                    emoteId = emoteId.substring(1);
-                } else {
-                    emoteId = JSON.stringify(user.emotes).split(":")[0];
-                    emoteId = emoteId.substring(2);
-                }
-                */
-				emoteId = JSON.stringify(user.emotes).split(':')[0];
-				emoteId = emoteId.substring(2);
-
-
-				emoteId = emoteId.slice(0, -1);
-				emoteId = `${emoteId}?id=true`;
-			} else if (emoteId.split('_')[0] === 'emotesv2') {
-				emoteId = `${emoteId}?id=true`;
+				emoteId = Object.keys(user.emotes)[0];
 			}
 
 			const emotecheck = await got(`https://api.ivr.fi/v2/twitch/emotes/${emoteId}`).json();
