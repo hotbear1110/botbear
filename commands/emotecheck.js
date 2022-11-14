@@ -65,9 +65,6 @@ module.exports = {
 					console.log(err);
 				}
 
-
-				ecount = (ecount === 0) ? '' : `| Ecount: ${ecount} |`;
-
 				const emoteCost = await got(`https://api.ivr.fi/v2/twitch/emotes/channel/${emotechannel}`).json();
 				let bitEmotes = emoteCost['bitEmotes'];
 				let realemoteCost = undefined;
