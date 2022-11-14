@@ -13,7 +13,7 @@ module.exports = {
       if (module.exports.permission > perm) {
         return;
       }
-      const apiKey = process.env.NASA_API_KEY;
+      const apiKey = process.env.NASA_API;
       if (!apiKey) {
         return 'This command is currently not available';
       }
