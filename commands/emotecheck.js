@@ -27,7 +27,7 @@ module.exports = {
 				let emotechannel = emotecheck['channelName'];
 				let tier = emotecheck['emoteTier'];
 				let url = `https://static-cdn.jtvnw.net/emoticons/v2/${emotecheck['emoteID']}/default/dark/3.0`;
-				let emoteType = emotecheck['emoteType'];
+				let emoteType = emotecheck['emoteType'].toLowerCase();
 				let realid = emotecheck['emoteID'];
 				let emoteStatus = 'null';
 				if (emotecheck['emoteAssetType']) {
@@ -41,7 +41,7 @@ module.exports = {
 					}
 				}
 
-				let ecount = 0;
+				let ecount = false;
 
 				try {
 					const { body, statusCode } = await got(`https://api.streamelements.com/kappa/v2/chatstats/${channel}/stats`, {
@@ -66,87 +66,31 @@ module.exports = {
 				}
 
 
+				ecount = (ecount === 0) ? '' : `| Ecount: ${ecount} |`;
 
-				if (emotechannel === null && emoteType === 'SUBSCRIPTIONS') {
-					if (ecount !== 0) {
-						return `${realemote} (ID ${realid}) is an emote (${emoteStatus}) from an unknown banned/deleted channel, the emote has been used ${ecount} times in this chat - ${url}`;
-					}
-					else {
-						return `${realemote} (ID ${realid}) is an emote (${emoteStatus}) from an unknown banned/deleted channel- ${url}`;
-					}
-				}
-				if (emotechannel === null && emoteType === 'PRIME') {
-					if (ecount !== 0) {
-						return `${realemote} (ID ${realid}) is a Twitch prime global ${emoteStatus} emote, the emote has been used ${ecount} times in this chat - ${url}`;
-					}
-					else {
-						return `${realemote} (ID ${realid}) is a Twitch prime global ${emoteStatus} emote - ${url}`;
+				const emoteCost = await got(`https://api.ivr.fi/v2/twitch/emotes/channel/${emotechannel}`).json();
+				let bitEmotes = emoteCost['bitEmotes'];
+				let realemoteCost = undefined;
+				for (const emote of bitEmotes) {
+					if (emote['code'] === realemote) {
+						realemoteCost = emote['bitCost'];
+						break;
 					}
 				}
-				if (emotechannel === null && emoteType === 'TURBO') {
-					if (ecount !== 0) {
-						return `${realemote} (ID ${realid}) is a Twitch turbo global ${emoteStatus} emote, the emote has been used ${ecount} times in this chat - ${url}`;
-					}
-					else {
-						return `${realemote} (ID ${realid}) is a Twitch turbo global ${emoteStatus} emote - ${url}`;
-					}
-				}
-				if (emotechannel === null) {
-					if (ecount !== 0) {
-						return `${realemote} (ID ${realid}) is a Twitch global ${emoteStatus} emote, the emote has been used ${ecount} times in this chat - ${url}`;
-					}
-					else {
-						return `${realemote} (ID ${realid}) is a Twitch global ${emoteStatus} emote - ${url}`;
-					}
-				}
-				if (emotechannel === 'qa_TW_Partner') {
-					if (ecount !== 0) {
-						return `${realemote} (ID ${realid}) is a (Limited time) Twitch global ${emoteStatus} emote, the emote has been used ${ecount} times in this chat - ${url}`;
-					}
-					return `${realemote} (ID ${realid}) is a (Limited time) Twitch global ${emoteStatus} emote - ${url}`;
 
-				}
-				if (tier !== null) {
-					if (ecount !== 0) {
-						return `${realemote} (ID ${realid}) is a tier ${tier} ${emoteStatus} emote, from the channel (#${emotechannel}), the emote has been used ${ecount} times in this chat - ${url}`;
-					}
-					return `${realemote} (ID ${realid}) is a tier ${tier} ${emoteStatus} emote, from the channel (#${emotechannel}) - ${url}`;
-				}
-				if (emoteType === 'BITS_BADGE_TIERS') {
+				let emoteData = [
+					(emoteType === 'BITS_BADGE_TIERS') ? 'Type: Bits Emote' : `Type: ${emoteType[0]?.toUpperCase() + emoteType.slice(1)}`,
+					tier && `Tier: ${tier}`,
+					realemoteCost && `Bit Cost: ${realemoteCost}`,
+					`Name: ${realemote}`,
+					`ID: ${realid}`,
+					(!emotechannel && emoteType === 'SUBSCRIPTIONS')  ? 'Channel: banned/deleted' : emotechannel && `Channel: @${emotechannel}`,
+					`assetType: ${emoteStatus}`,
+					ecount && `Ecount: ${ecount}`,
+					`Image Link: ${url}`
+				].filter(Boolean).join(' | ');
 
-
-					const emoteCost = await got(`https://api.ivr.fi/v2/twitch/emotes/channel/${emotechannel}`).json();
-					let bitEmotes = emoteCost['bitEmotes'];
-					let realemoteCost = 0;
-					for (const emote of bitEmotes) {
-						if (emote['code'] === realemote) {
-							realemoteCost = emote['bitCost'];
-							break;
-						}
-					}
-
-					if (ecount !== 0) {
-						if (realemoteCost !== 0) {
-							return `${realemote} (ID ${realid}) is a  bit emote (${emoteStatus}), from the channel (#${emotechannel}), the emote costs ${realemoteCost} bits and the emote has been used ${ecount} times in this chat - ${url}`;
-						}
-						return `${realemote} (ID ${realid}) is a bit emote (${emoteStatus}), from the channel (#${emotechannel}), the emote has been used ${ecount} times in this chat - ${url}`;
-					}
-					if (realemoteCost !== 0) {
-						return `${realemote} (ID ${realid}) is a  bit emote (${emoteStatus}), from the channel (#${emotechannel}), the emote costs ${realemoteCost} bits - ${url}`;
-					}
-					return `${realemote} (ID ${realid}) is a bit emote (${emoteStatus}), from the channel (#${emotechannel}) - ${url}`;
-				}
-				if (emoteType === 'FOLLOWER') {
-					if (ecount !== 0) {
-						return `${realemote} (ID ${realid}) is a follower emote (${emoteStatus}), from the channel (#${emotechannel}), the emote has been used ${ecount} times in this chat - ${url}`;
-					}
-					return `${realemote} (ID ${realid}) is a follower emote (${emoteStatus}), from the channel (#${emotechannel}) - ${url}`;
-				}
-				if (ecount !== 0) {
-					return `${realemote} (ID ${realid}) is a ${emoteStatus} emote, from the channel (#${emotechannel}), the emote has been used ${ecount} times in this chat - ${url}`;
-				}
-				return `${realemote} (ID ${realid}) is a ${emoteStatus} emote, from the channel (#${emotechannel}) - ${url}`;
-
+				return emoteData;
 			}
 
 		} catch (err) {
