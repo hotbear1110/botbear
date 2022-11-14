@@ -21,7 +21,7 @@ module.exports = {
 			let msg = input.join(' ');
             const js = await eval(msg);
 
-			return await js.toString();
+			return await JSON.stringify(js);
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
