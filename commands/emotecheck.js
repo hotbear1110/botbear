@@ -150,7 +150,7 @@ module.exports = {
 			}
 
 		} catch (err) {
-			console.log(err.url);
+			console.log(err);
 		}
 		try {
 			const streamer = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
