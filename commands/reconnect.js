@@ -14,33 +14,34 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
+			let username = user.username;
 			if (input[2]) {
-				if (input[2].startsWith('@')) {
-					input[2] = input[2].substring(1);
+				username = input[2];
+				if (username.startsWith('@')) {
+					username = username.substring(1);
 				}
-			} else {
-				return 'Please specify a channel. FeelsDankMan';
 			}
-			let modresponse = await tools.isMod(user, input[2]);
+
+			let modresponse = await tools.isMod(username, username);
 
 			if (!modresponse && perm < 2000) {
 				return 'You can only reconnect to your own chat or a chat you moderate';
 			}
 
-			const isinDB = await sql.Query('SELECT username FROM Streamers WHERE username=?', [input[2]]);
+			const isinDB = await sql.Query('SELECT username FROM Streamers WHERE username=?', [username]);
 			if (!isinDB[0]) {
 				return 'That streamer is not in my database';
 			}
-			cc.part(input[2]).catch((err) => {
+			cc.part(username).catch((err) => {
 				console.log(err);
 			});
 
-			cc.join(input[2]).catch((err) => {
+			cc.join(username).catch((err) => {
 				console.log(err);
 			});
-			new messageHandler(`#${input[2]}`, 'nymnDank reconnected to the chat!', true).newMessage();
+			new messageHandler(`#${username}`, 'nymnDank reconnected to the chat!', true).newMessage();
 
-			return `successfully reconnected to #${input[2]}`;
+			return `successfully reconnected to #${username}`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
