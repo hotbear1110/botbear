@@ -155,12 +155,12 @@ module.exports = {
 				if (emote[0] === input[2]) {
 					found = 1;
 					response = [
-						`Emote Name: ${input[2]}`,
+						`Name: ${input[2]}`,
 						(emote[5] === '7tv_ZERO_WIDTH') ? 'Platform: 7tv (zero width)' : `Platform: ${emote[5]}`,
 						`Added: ${tools.humanizeDuration(now - emote[2])} ago`,
 						ecount && `Ecount: ${ecount}`,
 						`Uploaded By: ${emote[3]}`,
-						`Emote Link: ${emote[4]}`
+						`Link: ${emote[4]}`
 					].filter(Boolean).join(' | ');
 					break;
 				}
@@ -171,11 +171,11 @@ module.exports = {
 			}
 			const returnContruct = (Name, Platform, Creator, Ecount, Url) => {
 				return [
-					`Emote Name: ${Name}`,
+					`Name: ${Name}`,
 					`Platform: ${Platform}`,
 					Creator && `Creator: ${Creator}`,
-					`Ecount: ${Ecount}`,
-					Url && `Emote Link: ${Url}`
+					ecount && `Ecount: ${Ecount}`,
+					Url && `Link: ${Url}`
 				].filter(Boolean).join(' | ');
 			};
 			if (found === 0) {
