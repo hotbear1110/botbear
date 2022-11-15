@@ -85,7 +85,7 @@ module.exports = {
 				}
 
 				let emoteData = [
-					(emoteType === 'BITS_BADGE_TIERS') ? 'Type: Bits Emote' : `Type: ${emoteType[0]?.toUpperCase() + emoteType.slice(1)}`,
+					(emoteType === 'bits_badge_tiers') ? 'Type: Bits Emote' : `Type: ${emoteType[0]?.toUpperCase() + emoteType.slice(1)}`,
 					tier && `Tier: ${tier}`,
 					realemoteCost && `Bit Cost: ${realemoteCost}`,
 					`Name: ${realemote}`,
@@ -112,7 +112,7 @@ module.exports = {
 			let found = 0;
 
 			let response = '';
-			let ecount = 0;
+			let ecount = false;
 			let foundemote = 0;
 
             // TODO Uhh some cleanup in aisle 3
@@ -150,30 +150,34 @@ module.exports = {
 			} catch (err) {
 				console.log(err);
 			}
+
 			for (const emote of emotes) {
 				if (emote[0] === input[2]) {
-
-					emote[2] = `(${tools.humanizeDuration(now - emote[2])})`;
-
 					found = 1;
-					if (emote[5] === '7tv_ZERO_WIDTH') {
-						emote[5] = '7tv (zero width)';
-					}
-					if (ecount !== 0) {
-						response = `${input[2]} is a ${emote[5]} emote, the emote was added to the channel ${emote[2]} ago, and has been used ${ecount} times in this chat. The emote was uploaded by the user "${emote[3]}" - ${emote[4]}`;
-					}
-					else {
-						response = `${input[2]} is a ${emote[5]} emote, the emote was added to the channel ${emote[2]} ago. The emote was uploaded by the user "${emote[3]}" - ${emote[4]}`;
-
-					}
+					response = [
+						`Emote Name: ${input[2]}`,
+						(emote[5] === '7tv_ZERO_WIDTH') ? 'Platform: 7tv (zero width)' : `Platform: ${emote[5]}`,
+						`Added: ${tools.humanizeDuration(now - emote[2])} ago`,
+						ecount && `Ecount: ${ecount}`,
+						`Uploaded By: ${emote[3]}`,
+						`Emote Link: ${emote[4]}`
+					].filter(Boolean).join(' | ');
 					break;
 				}
 
 			}
-
 			if (found === 1) {
 				return response;
 			}
+			const returnContruct = (Name, Platform, Creator, Ecount, Url) => {
+				return [
+					`Emote Name: ${Name}`,
+					`Platform: ${Platform}`,
+					Creator && `Creator: ${Creator}`,
+					`Ecount: ${Ecount}`,
+					Url && `Emote Link: ${Url}`
+				].filter(Boolean).join(' | ');
+			};
 			if (found === 0) {
 				const ffzglobal = await got('https://api.frankerfacez.com/v1/set/global').json();
 				const bttvglobal = await got('https://api.betterttv.net/3/cached/emotes/global').json();
@@ -188,13 +192,7 @@ module.exports = {
 						found = 1;
 						let url = emote['urls'];
 						let owner = emote['owner'];
-						if (ecount !== 0) {
-							response = `${input[2]} is a global ffz emote by ${owner['name']}, the emote has been used ${ecount} times in this chat. - ${url['1']}`;
-						}
-						else {
-							response = `${input[2]} is a global ffz emote by ${owner['name']}  - https:${url['1']}`;
-
-						}
+						response = returnContruct(input[2], 'ffz', owner['name'], ecount, `https://${url['1']}`);
 						break;
 					}
 				}
@@ -207,13 +205,7 @@ module.exports = {
 				for (const emote of bttvemotes) {
 					if (emote['code'] === input[2]) {
 						found = 1;
-						if (ecount !== 0) {
-							response = `${input[2]} is a global bttv emote, the emote has been used ${ecount} times in this chat.`;
-						}
-						else {
-							response = `${input[2]} is a global bttv emote.`;
-
-						}
+						response = returnContruct(input[2], 'bttv', false, ecount, `https://betterttv.com/emotes/${emote['id']}`);
 						break;
 					}
 				}
@@ -229,14 +221,7 @@ module.exports = {
 						found = 1;
 						let url = emote['urls'];
 						url = url[3];
-
-						if (ecount !== 0) {
-							response = `${input[2]} is a global 7tv emote, the emote has been used ${ecount} times in this chat - ${url[1]}`;
-						}
-						else {
-							response = `${input[2]} is a global 7tv emote - ${url[1]}`;
-
-						}
+						response = returnContruct(input[2], '7tv', false, ecount, url[1]);
 						break;
 					}
 				}
