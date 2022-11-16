@@ -39,6 +39,7 @@ module.exports = {
 				let emoteType = emotecheck['emoteType'].toLowerCase();
 				let realid = emotecheck['emoteID'];
 				let emoteStatus = 'null';
+				let emoteState = emotecheck['emoteState'].toLowerCase();
 				if (emotecheck['emoteAssetType']) {
 					emoteStatus = emotecheck['emoteAssetType'].toLowerCase();
 				}
@@ -87,6 +88,7 @@ module.exports = {
 				let emoteData = [
 					(emoteType === 'bits_badge_tiers') ? 'Type: Bits Emote' : `Type: ${emoteType[0]?.toUpperCase() + emoteType.slice(1)}`,
 					tier && `Tier: ${tier}`,
+					`State: ${emoteState[0]?.toUpperCase() + emoteState.slice(1)}`,
 					realemoteCost && `Bit Cost: ${realemoteCost}`,
 					`Name: ${realemote}`,
 					`ID: ${realid}`,
