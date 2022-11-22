@@ -6,9 +6,9 @@ const sql = require('./../sql/index.js');
 module.exports = {
 	name: 'dalle',
 	ping: true,
-	description: 'Make any image you can think of using the power of dalle2 ai! - The cooldown on this is 2 min.',
+	description: 'Make any image you can think of using the power of dalle2 ai! - The cooldown on this is 1 hour.',
 	permission: 100,
-	cooldown: 120,
+	cooldown: 3600,
 	category: 'Random command',
 	execute: async (channel, user, input, perm) => {
 		try {
@@ -18,9 +18,6 @@ module.exports = {
 				return;
 			}
 			//temp change
-			if (user.username !== 'hotbear1110') {
-				return 'This command is currently disabled :)';
-			}
 			if (channel !== 'nymn' && channel !== 'hotbear1110' && channel !== 'pajlada' && channel !== 'brian6932' && !(perm >= 1500)) {
 				return 'This command is currently disabled :)';
 			}
