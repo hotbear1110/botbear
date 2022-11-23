@@ -21,7 +21,7 @@ module.exports = {
 
             const prompt =  prompts[~~(Math.random() * prompts.length)];
 
-			return `Random dalle prompt | ID: ${prompt.ID} | User: ${prompt.User} | Prompt: ${prompt.Prompt} | Image: ${prompt.Image} | TimeStamp: ${prompt.Timestamp}`;
+			return `Random dalle prompt | User: ${prompt.User} | Prompt: ${prompt.Prompt} | Image: ${prompt.Image} | TimeStamp: ${prompt.Timestamp.toLocaleString()}`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
