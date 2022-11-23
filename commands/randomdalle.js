@@ -14,14 +14,14 @@ module.exports = {
 	execute: async (channel, user, input, perm, aliascommand) => {
 		try {
 			if (module.exports.permission > perm) {
-				return;
+				rgeturn;
 			}
 
             const prompts = await sql.Query('SELECT * FROM Dalle',);
 
             const prompt =  prompts[~~(Math.random() * prompts.length)];
 
-			return `Random dalle prompt | User: ${prompt.User} | Prompt: ${prompt.Prompt} | Image: ${prompt.Image} | TimeStamp: ${prompt.Timestamp.toLocaleString('da-DK')}`;
+			return `Random dalle prompt | User: ${prompt.User} | Prompt: ${prompt.Prompt} | Image: ${prompt.Image} | TimeStamp: ${prompt.Timestamp.toLocaleString()}`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
