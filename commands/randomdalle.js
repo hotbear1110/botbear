@@ -14,7 +14,7 @@ module.exports = {
 	execute: async (channel, user, input, perm, aliascommand) => {
 		try {
 			if (module.exports.permission > perm) {
-				rgeturn;
+				return;
 			}
 
             const prompts = await sql.Query('SELECT * FROM Dalle',);
