@@ -18,7 +18,7 @@ module.exports = {
 				return;
 			}
             let pidMax = 4840;
-            const remRequest = await got(`https://safebooru.org/index.php?page=dapi&s=post&q=index&limit=1&tags=rem_%28re%3Azero%29&pid=${~~(Math.random() * pidMax)}`).json();
+            const remRequest = await got(`https://safebooru.org/index.php?page=dapi&s=post&q=index&limit=1&tags=rem_%28re%3Azero%29&pid=${~~(Math.random() * pidMax)}`);
 
             const xml = convert.xml2json(remRequest.body, {compact: true, spaces: 4});
 
