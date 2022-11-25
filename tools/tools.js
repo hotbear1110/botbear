@@ -428,7 +428,7 @@ function editDistance(s1, s2) {
  */
 exports.isMod = async function (user, channel) {
 	const isMod = user.mod || user['user-type'] === 'mod';
-	const isBroadcaster = channel === user.username;
+	const isBroadcaster = channel.toLowerCase() === user.username.toLowerCase();
 	const modCheck = await ((await got(`https://api.ivr.fi/v2/twitch/modvip/${channel}`).json()).mods
 							.map(x => x = (x.login === user.username) ? true : false)
 							.includes(true));

@@ -22,9 +22,9 @@ module.exports = {
 				}
 			}
 
-			let modresponse = await tools.isMod(username, username);
+			let modresponse = await tools.isMod(user, username);
 
-			if (!modresponse && perm < 2000) {
+			if (!await modresponse && perm < 2000) {
 				return 'You can only reconnect to your own chat or a chat you moderate';
 			}
 
