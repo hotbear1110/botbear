@@ -7,7 +7,7 @@ module.exports = {
 	category: 'Random command',
 	opt_outable: false,
 	showDelay: false,
-	noBanphrase: true,
+	noBanphrase: false,
 	// eslint-disable-next-line no-unused-vars
 	execute: async (channel, user, input, perm, aliascommand) => {
 		try {
