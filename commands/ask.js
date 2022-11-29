@@ -32,7 +32,7 @@ module.exports = {
 			let msg = input.toString().replaceAll(',', ' ');
 			const prompt = `Q: ${msg}\nA:`;
 
-			const url = 'https://api.openai.com/v1/engines/text-davinci-002/completions';
+			const url = 'https://api.openai.com/v1/engines/text-davinci-003/completions';
 			const params = {
 				'prompt': prompt,
 				'max_tokens': 160,
