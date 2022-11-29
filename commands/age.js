@@ -19,18 +19,18 @@ module.exports = {
 
             let age = ~~(Math.random() * 102 + 18);
 
-			let user = input[2] ?? user.username;
+			let username = input[2] ?? user.username;
 
-			user.replace(regex.invisChar, '');
+			username.replace(regex.invisChar, '');
 
-            if (user.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g) && !user.match(/^[./]me /)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
-				user = '. ' + user.charAt(0) + '\u{E0000}' + user.substring(1);
+            if (username.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g) && !username.match(/^[./]me /)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
+				username = '. ' + username.charAt(0) + '\u{E0000}' + username.substring(1);
 			}
-			if (user.match(/^!/g)) {
-				user = '❗ ' + user.substring(1);
+			if (username.match(/^!/g)) {
+				username = '❗ ' + username.substring(1);
 			}
 
-			return `${user} is ${age} years old.`;
+			return `${username} is ${age} years old.`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
