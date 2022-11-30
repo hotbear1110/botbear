@@ -22,7 +22,7 @@ module.exports = {
         return commands;
     },
     Load: async function () {
-        const commands = this.Find(__dirname);
+        const commands = this.Find(__dirname).concat(this.Find(__dirname+'/customCommands'));
         const dbCommands = await sql.Query('SELECT * FROM Commands');
         const disableCommand = await sql.Query('SELECT username FROM Streamers WHERE command_default = ?', [1]);
 
@@ -47,7 +47,7 @@ module.exports = {
         const commandDiff = commands.filter(x => !dbcommandNames.includes(x.name));
         const dbcommandDiff = dbCommands.filter(x => !commandNames.includes(x.Name));
         for (const command of commandDiff) {
-            if (disableCommand.length && command.category !== 'Core command' && command.category !== 'Dev command') {
+            if (disableCommand.length && command.category !== 'Core command' && command.category !== 'Dev command' && !command.channelSpecific) {
                 for (const user of disableCommand) {
                     let disabledList = await sql.Query(`
                     SELECT disabled_commands
