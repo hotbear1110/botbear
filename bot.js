@@ -302,7 +302,7 @@ async function onMessageHandler(channel, user, msg, self) {
 		return;
 	}
 
-	if(customCommands[realcommand].channelSpecific) {
+	if(customCommands[realcommand]?.channelSpecific) {
 		commands = customCommands;
 	}
 
