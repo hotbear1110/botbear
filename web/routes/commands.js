@@ -13,7 +13,7 @@ module.exports = (function () {
             }
         }
 
-        categorylist = [categorylist[4], categorylist[0], categorylist[1], categorylist[3], categorylist[5], categorylist[2]];
+        categorylist = [categorylist[4], categorylist[5], categorylist[1], categorylist[3], categorylist[0], categorylist[2]];
 
         res.render('commands', { commands: commandlist, categories: categorylist });
     });
