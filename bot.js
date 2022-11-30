@@ -294,11 +294,16 @@ async function onMessageHandler(channel, user, msg, self) {
 		return;
 	}
 
-	const commands = requireDir('./commands');
+	let commands = requireDir('./commands');
+	let customCommands = requireDir('./commands/customCommands');
 
-	if (typeof commands[realcommand] === 'undefined') {
+	if ((typeof commands[realcommand] === 'undefined' && typeof customCommands[realcommand] === 'undefined') || (customCommands[realcommand].channelSpecific && customCommands[realcommand].activeChannel !== channel)) {
 		console.log(channel, ': undefined - \'', input, '\'');
 		return;
+	}
+
+	if(customCommands[realcommand].channelSpecific) {
+		commands = customCommands;
 	}
 
 	const perm = await tools.getPerm(user.username);

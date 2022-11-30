@@ -8,6 +8,8 @@ module.exports = {
 	opt_outable: false,
 	showDelay: false,
 	noBanphrase: false,
+	channelSpecific: false,
+	activeChannel: '',
 	// eslint-disable-next-line no-unused-vars
 	execute: async (channel, user, input, perm, aliascommand) => {
 		try {
