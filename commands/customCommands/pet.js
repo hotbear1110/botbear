@@ -23,11 +23,11 @@ module.exports = {
 
 			let users = [];
 
-			pets.map(x => (users.includes(x.User) ? false : users.push(x.User)));
+			pets.map(x => users.includes(x.User) ? false : users.push(x.User));
 
             let user =  users[~~(Math.random() * users.length - 1)];
 
-			pets = pets.filter(x => x.User = user);
+			pets = pets.filter(x => (x.User === user));
 
 			let pet =  pets[~~(Math.random() * pets.length - 1)];
 
