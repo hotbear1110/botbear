@@ -34,13 +34,13 @@ module.exports = {
 
 					let msg = input.join(' ');
 
-					this.user = [...msg.matchAll(/user:"([a-z\s0-9]+)"/gi)][0];
+					this.user = [...msg.matchAll(/user:"([\sa-z\s0-9./:]+)"/gi)][0];
 					this.user = (this.user) ? this.user[1] : user.username;
-					this.pet = [...msg.matchAll(/pet:"([a-z\s0-9]+)"/gi)][0];
+					this.pet = [...msg.matchAll(/pet:"([\sa-z\s0-9./:]+)"/gi)][0];
 					this.pet = (this.pet) ? this.pet[1] : undefined;
-					this.name = [...msg.matchAll(/name:"([a-z\s0-9]+)"/gi)][0];
+					this.name = [...msg.matchAll(/name:"([\sa-z\s0-9./:]+)"/gi)][0];
 					this.name = this.name ? this.name[1] : undefined;
-					this.link = [...msg.matchAll(/link:"([a-z\s0-9]+)"/gi)][0];
+					this.link = [...msg.matchAll(/link:"([\sa-z\s0-9./:]+)"/gi)][0];
 					this.link = this.link ? this.link[1] : undefined;
 
 					if (!this.user || !this.pet || !this.name || !this.link) {
