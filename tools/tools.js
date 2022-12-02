@@ -123,7 +123,7 @@ exports.Cooldown = class Cooldown {
 
 	// command cooldown
 	async setCooldown(perm) {
-		if (perm >= 1500) { return []; }
+		if (perm >= 500) { return []; }
 
 		if (hasCooldown.has(this.key)) { return [this.key]; }
 
