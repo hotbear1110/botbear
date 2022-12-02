@@ -31,16 +31,20 @@ module.exports = {
 					let id = (await sql.Query('SELECT ID FROM Yabbe_pet'));
 
 					id = id[id.length - 1].ID + 1;
-					this.user = input.filter(x => x.toLowerCase().startsWith('user:'))[0]?.split(':')[1].slice(1, -1) ?? user.username;
 
-					this.pet = input.filter(x => x.toLowerCase().startsWith('pet:'))[0]?.split(':')[1].slice(1, -1) ?? undefined;
+					let msg = input.join(' ');
 
-					this.name = input.filter(x => x.toLowerCase().startsWith('name:'))[0]?.split(':')[1].slice(1, -1) ?? undefined;
-
-					this.link = input.filter(x => x.toLowerCase().startsWith('link:'))[0]?.split(':')[1].slice(1, -1) ?? undefined;
+					this.user = [...msg.matchAll(/user:"([a-z\s0-9]+)"/gi)][0];
+					this.user = (this.user) ? this.user[1] : user.username;
+					this.pet = [...msg.matchAll(/pet:"([a-z\s0-9]+)"/gi)][0];
+					this.pet = (this.pet) ? this.pet[1] : undefined;
+					this.name = [...msg.matchAll(/name:"([a-z\s0-9]+)"/gi)][0];
+					this.name = this.name ? this.name[1] : undefined;
+					this.link = [...msg.matchAll(/link:"([a-z\s0-9]+)"/gi)][0];
+					this.link = this.link ? this.link[1] : undefined;
 
 					if (!this.user || !this.pet || !this.name || !this.link) {
-						return 'Unexpected unput - Example: bb test add user:"NymN" pet:"Cat" name:"Apollo" link:"Link To "';
+						return 'Unexpected unput - Example: bb test add user:"NymN" pet:"Cat" name:"Apollo" link:"Link To Image"';
 					}
 
 					await sql.Query(`INSERT INTO Yabbe_pet 
@@ -97,7 +101,7 @@ module.exports = {
 				['pet', input[3].toLowerCase()]
 				);
 
-					return `@${input[3]} Is now banned`;
+					return `@${input[3]} Is now banned from adding pets`;
 				}
 				case 'unban': {
 					let isBanned = (await sql.Query('SELECT * FROM Yabbe_bans WHERE Command=? AND User=?', ['pet', input[3].toLowerCase()]));
@@ -111,7 +115,7 @@ module.exports = {
 				['pet', input[3].toLowerCase()]
 				);
 
-					return `@${input[3]} Is now unbanned`;
+					return `@${input[3]} Is now unbanned from adding pets`;
 				}
 				default: {
 					let pets = await sql.Query('SELECT * FROM Yabbe_pet',);
