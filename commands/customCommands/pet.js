@@ -34,13 +34,13 @@ module.exports = {
 
 					let msg = input.join(' ');
 
-					this.user = /(?<=user:")[^"]+(?=")/gi.exec(msg);
+					this.user = /(?<=user:")[^"]+(?=")/i.exec(msg);
 
-					this.pet = /(?<=pet:")[^"]+(?=")/gi.exec(msg);
+					this.pet = /(?<=pet:")[^"]+(?=")/i.exec(msg);
 
-					this.name = /(?<=name:")[^"]+(?=")/gi.exec(msg);
+					this.name = /(?<=name:")[^"]+(?=")/i.exec(msg);
 
-					this.link = /(?<=link:")[^"]+(?=")/gi.exec(msg);
+					this.link = /(?<=link:")[^"]+(?=")/i.exec(msg);
 
 					
 					if (!this.user || !this.pet || !this.name || !this.link) {
