@@ -5,7 +5,7 @@ module.exports = {
 	ping: true,
 	description: 'Shows an image of a pet from a random chatter',
 	permission: 100,
-	cooldown: 3, //in seconds
+	cooldown: 1800, //in seconds
 	category: 'channelSpecific command',
 	opt_outable: false,
 	showDelay: false,
@@ -34,15 +34,15 @@ module.exports = {
 
 					let msg = input.join(' ');
 
-					this.user = [...msg.matchAll(/user:"([a-z\s0-9]+)"/gi)][0];
-					this.user = (this.user) ? this.user[1] : user.username;
-					this.pet = [...msg.matchAll(/pet:"([a-z\s0-9]+)"/gi)][0];
-					this.pet = (this.pet) ? this.pet[1] : undefined;
-					this.name = [...msg.matchAll(/name:"([a-z\s0-9]+)"/gi)][0];
-					this.name = this.name ? this.name[1] : undefined;
-					this.link = [...msg.matchAll(/link:"([a-z\s0-9]+)"/gi)][0];
-					this.link = this.link ? this.link[1] : undefined;
+					this.user = /(?<=user:")[^"]+(?=")/gi.exec(msg);
 
+					this.pet = /(?<=pet:")[^"]+(?=")/gi.exec(msg);
+
+					this.name = /(?<=name:")[^"]+(?=")/gi.exec(msg);
+
+					this.link = /(?<=link:")[^"]+(?=")/gi.exec(msg);
+
+					
 					if (!this.user || !this.pet || !this.name || !this.link) {
 						return 'Unexpected unput - Example: bb test add user:"NymN" pet:"Cat" name:"Apollo" link:"Link To Image"';
 					}
