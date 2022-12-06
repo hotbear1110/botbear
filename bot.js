@@ -68,7 +68,7 @@ async function onMessageHandler(channel, user, msg, self) {
 	if (user['message-type'] === 'whisper') {
 		return;
 	}
-	
+
 	channel = channel.replace('#', '');
 	let start = new Date().getTime();
 	msg = msg.replaceAll(regex.invisChar, '').replaceAll('  ', '');
@@ -551,7 +551,7 @@ const onChatUpdateHandler = async (Data) => {
 
 // Karim/Backous module
 
-cc.on('whisper', async function (from, userstate, msg, self) {
+cc.on('whisper', async function (from, user, msg, self) {
 	from = from.replace('#', '');
 	console.log(`User: ${from} - Msg: ${msg}`);
 	// Don't listen to my own messages..
@@ -591,7 +591,7 @@ cc.on('whisper', async function (from, userstate, msg, self) {
 		return;
 	}
 
-	let result = await commands[realcommand].execute(channel, from, input, perm, aliascommand);
+	let result = await commands[realcommand].execute(channel, user, input, perm, aliascommand);
 
 	if (!result) {
 		return;
