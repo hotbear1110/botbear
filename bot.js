@@ -558,7 +558,7 @@ cc.on('whisper', async function (from, userstate, msg, self) {
 
 	input.shift();
 
-	if (!msg.toLowerCase().startsWith(prefix + ' ') || input[1] === undefined) {
+	if (input[0] !== prefix || input[1] === undefined) {
 		return;
 	}
 
@@ -592,7 +592,7 @@ cc.on('whisper', async function (from, userstate, msg, self) {
 
 	result = tools.splitLine(result, 396);
 
-	new whisperHandler(input[2], result).newWhisper();
+	new whisperHandler(from, result).newWhisper();
 	return;
 });
 
