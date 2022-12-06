@@ -8,6 +8,7 @@ const sql = require('./sql/index.js');
 const positive_bot = require('./reminders/index.js');
 let messageHandler = require('./tools/messageHandler.js').messageHandler;
 const redis = require('./tools/redis.js');
+const { user } = require('./commands/customCommands/pet.js');
 const whisperHandler = require('./tools/whisperHandler.js').whisperHandler;
 
 const cc = new tmi.client(login.TMISettings);
@@ -547,6 +548,7 @@ const onChatUpdateHandler = async (Data) => {
 // Karim/Backous module
 
 cc.on('whisper', async function (from, userstate, msg, self) {
+	console.log(`User: ${from} - Userstate: ${userstate} - Msg: ${msg}`);
 	// Don't listen to my own messages..
 	if (self) return;
 
