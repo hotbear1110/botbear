@@ -547,16 +547,16 @@ const onChatUpdateHandler = async (Data) => {
 
 // Karim/Backous module
 
-cc.on('whisper', async function (from, userstate, msg, self) {
-	console.log(`User: ${from} - Userstate: ${userstate} - Msg: ${msg}`);
+cc.on('whisper', async function (from, userstate, input, self) {
+	console.log(`User: ${from} - Msg: ${msg}`);
 	// Don't listen to my own messages..
 	if (self) return;
-
-	let input = msg.split(' ');
 
 	let channel = input[0].replace('#', '');
 
 	input.shift();
+
+	const msg = input.join(' ');
 
 	if (input[0] !== prefix || input[1] === undefined) {
 		return;
