@@ -153,14 +153,14 @@ exports.setCookie = async (status, user, channel, remindtime, cdr) => {
         switch (status) {
             case 'Confirmed': {
                 if (cdr) {
-                    return { Channel: CorrectChannel, msg: disabledSendMessage(user, 'I will remind you to eat your cookie in 2 hours nymnOkay (You have a cdr ready!)') };
+                    return { Channel: CorrectChannel, msg: disabledSendMessage(user, 'I will remind you to eat your cookie in 2 hours nymnOkey (You have a cdr ready!)') };
         
                 } else {
-                    return { Channel: CorrectChannel, msg: disabledSendMessage(user, 'I will remind you to eat your cookie in 2 hours nymnOkay') };
+                    return { Channel: CorrectChannel, msg: disabledSendMessage(user, 'I will remind you to eat your cookie in 2 hours nymnOkey') };
                 }
             }
             case 'Confirmed2': {
-                return { Channel: CorrectChannel, msg: disabledSendMessage(user, 'I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay') };
+                return { Channel: CorrectChannel, msg: disabledSendMessage(user, 'I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkey') };
             }
             case 'CD': {
                 return { Channel: CorrectChannel, msg: disabledSendMessage(user, `Your cookie is still on cooldown, it will be available in ${remindtime}`) };
@@ -170,15 +170,15 @@ exports.setCookie = async (status, user, channel, remindtime, cdr) => {
     switch (status) {
         case 'Confirmed': {
             if (cdr) {
-                return { Channel: CorrectChannel, msg: cdrSendMessage(user, 'I will remind you to eat your cookie in 2 hours nymnOkay') };
+                return { Channel: CorrectChannel, msg: cdrSendMessage(user, 'I will remind you to eat your cookie in 2 hours nymnOkey') };
     
             } else {
-                return { Channel: CorrectChannel, msg: sendMessage(user, 'I will remind you to eat your cookie in 2 hours nymnOkay') };
+                return { Channel: CorrectChannel, msg: sendMessage(user, 'I will remind you to eat your cookie in 2 hours nymnOkey') };
             }
         }
 
         case 'Confirmed2': {
-            return { Channel: CorrectChannel, msg: sendMessage(user, 'I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkay') };
+            return { Channel: CorrectChannel, msg: sendMessage(user, 'I updated your reminder and will remind you to eat your cookie in 2 hours nymnOkey') };
         }
 
         case 'CD': {

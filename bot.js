@@ -228,7 +228,7 @@ async function onMessageHandler(channel, user, msg, self) {
         }
         else if (positive_bot.cdr.validateIsPositiveBot(user, input)) {
             const status = await positive_bot.cdr.setCdr(input, channel);
-            const message = (dst, prefix = '', suffix = '') => new messageHandler(dst, `${prefix} I will remind you to use your cdr in 3 hours nymnOkay ${suffix}`).newMessage();
+            const message = (dst, prefix = '', suffix = '') => new messageHandler(dst, `${prefix} I will remind you to use your cdr in 3 hours nymnOkey ${suffix}`).newMessage();
         
             /** @type { SQL.Cookies[] } */
             let [checkmode] = await sql.Query('SELECT Mode FROM Cookies WHERE User=?', [status.User]);
