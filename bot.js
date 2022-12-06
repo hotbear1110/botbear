@@ -548,6 +548,7 @@ const onChatUpdateHandler = async (Data) => {
 // Karim/Backous module
 
 cc.on('whisper', async function (from, userstate, msg, self) {
+	from = from.replace('#', '');
 	console.log(`User: ${from} - Msg: ${msg}`);
 	// Don't listen to my own messages..
 	if (self) return;
@@ -559,8 +560,6 @@ cc.on('whisper', async function (from, userstate, msg, self) {
 	input.shift();
 
 	msg = input.join(' ');
-
-	console.log(msg + ' - ' + input);
 
 	if (input[0] !== prefix || input[1] === undefined) {
 		return;
