@@ -560,6 +560,8 @@ cc.on('whisper', async function (from, userstate, msg, self) {
 
 	msg = input.join(' ');
 
+	console.log(msg + ' - ' + input);
+
 	if (input[0] !== prefix || input[1] === undefined) {
 		return;
 	}
