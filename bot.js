@@ -65,6 +65,10 @@ let userList = [];
  * @returns 
  */
 async function onMessageHandler(channel, user, msg, self) {
+	if (user['message-type'] === 'whisper') {
+		return;
+	}
+	
 	channel = channel.replace('#', '');
 	let start = new Date().getTime();
 	msg = msg.replaceAll(regex.invisChar, '').replaceAll('  ', '');
