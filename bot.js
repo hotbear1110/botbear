@@ -8,6 +8,7 @@ const sql = require('./sql/index.js');
 const positive_bot = require('./reminders/index.js');
 let messageHandler = require('./tools/messageHandler.js').messageHandler;
 const redis = require('./tools/redis.js');
+const whisperHandler = require('./tools/whisperHandler.js').whisperHandler;
 
 const cc = new tmi.client(login.TMISettings);
 
@@ -545,17 +546,51 @@ const onChatUpdateHandler = async (Data) => {
 
 // Karim/Backous module
 
-cc.on('whisper', (from, userstate, message, self) => {
+cc.on('whisper', async function (from, userstate, msg, self) {
 	// Don't listen to my own messages..
 	if (self) return;
 
-	console.log(from);
-	if (from === `#${process.env.someguy1}` && message.startsWith(prefix + ' say ')) {
-		new messageHandler('#nymn', `/me @Retard: ${message.substring(7)}`).newMessage();
+	let input = msg.split(' ');
+
+	let channel = input[0].replace('#', '');
+
+	input.shift();
+
+	if (!msg.toLowerCase().startsWith(prefix + ' ') || input[1] === undefined) {
+		return;
 	}
-	if (from === `#${process.env.someguy2}` && message.startsWith(prefix + ' say ')) {
-		new messageHandler('#nymn', `/me @Backous: ${message.substring(7)}`).newMessage();
+
+	let aliascommand = input[1];
+	input = await tools.Alias(msg);
+	let realcommand = input[1].toLowerCase();
+
+	let commands = requireDir('./commands');
+	let customCommands = requireDir('./commands/customCommands');
+
+	if ((typeof commands[realcommand] === 'undefined' && typeof customCommands[realcommand] === 'undefined') || (customCommands[realcommand]?.channelSpecific && customCommands[realcommand]?.activeChannel !== channel)) {
+		console.log(channel, ': undefined - \'', input, '\'');
+		return;
 	}
+
+	if(customCommands[realcommand]?.channelSpecific) {
+		commands = customCommands;
+	}
+
+	const perm = await tools.getPerm(from);
+
+	if (!perm || perm < 500) {
+		return;
+	}
+
+	let result = await commands[realcommand].execute(channel, from, input, perm, aliascommand);
+
+	if (!result) {
+		return;
+	}
+
+	result = tools.splitLine(result, 396);
+
+	new whisperHandler(input[2], result).newWhisper();
 	return;
 });
 
