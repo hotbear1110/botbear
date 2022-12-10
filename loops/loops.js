@@ -200,7 +200,7 @@ setInterval(async function () {
 setInterval(async function () {
     const Time = new Date().getTime();
     
-    const sendMessage = (dst, user, suffix = '') => new messageHandler(dst, `${user} Reminder to eat your cookie nymnOkay ${suffix}`).newMessage();
+    const sendMessage = (dst, user, suffix = '') => new messageHandler(dst, `${user} Reminder to eat your cookie nymnOkey ${suffix}`).newMessage();
     
     /** @type { SQL.Cookies[] } */
 	(await sql.Query('SELECT * FROM Cookies'))
