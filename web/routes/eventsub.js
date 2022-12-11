@@ -131,6 +131,7 @@ module.exports = (async function() {
 
             const spamAllowed = (streamer.spamAllowed === 1);
             
+            console.log('eventsub: ' + spamAllowed);
             const newTitle = notification.event.title;
             const titleusers = JSON.parse(streamer.title_ping).
                                 filter(Boolean).
