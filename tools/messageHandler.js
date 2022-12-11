@@ -54,8 +54,6 @@ exports.messageHandler = class Cooldown {
 
 		}
 
-		console.log('messagehandler: ' + this.spamAllowed);
-
 		if (talkedRecently[this.channel] && !this.spamAllowed) {
 			this.noCD = 0;
 			let tempList = talkedRecently[this.channel];
