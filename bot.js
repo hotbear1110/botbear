@@ -540,6 +540,7 @@ async function onConnectedHandler(addr, port) {
  * @param { import('./tools/redis.js').EventSubChatUpdate } Data
  */
 const onChatUpdateHandler = async (Data) => {
+	console.log('onchatupdatehandler: ' + Data.spamAllowed);
     if (Data.Message) {
         Data.Message.every((msg, i) => 
 		setTimeout(() => {
