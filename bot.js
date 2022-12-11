@@ -544,7 +544,7 @@ const onChatUpdateHandler = async (Data) => {
     if (Data.Message) {
         Data.Message.every((msg, i) => 
 		setTimeout(() => {
-			new messageHandler(`${Data.Channel}`, msg, true, false, false, false, 0, null, Data.spamAllowed).newMessage();
+			new messageHandler(`${Data.Channel}`, msg, true, false, 0, false, null, Data.spamAllowed).newMessage();
 			}, 10*i));
     }
 };
