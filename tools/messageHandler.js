@@ -5,7 +5,7 @@ const talkedRecently = {};
 let oldmessage = '';
 
 exports.messageHandler = class Cooldown {
-	constructor(channel, message, noBanphrase, showDelay, start, ping, user) {
+	constructor(channel, message, noBanphrase, showDelay, start, ping, user, spamAllowed) {
 		this.channel = channel;
 		this.message = message;
 		this.noBanphrase = noBanphrase || false;
@@ -13,6 +13,7 @@ exports.messageHandler = class Cooldown {
 		this.ping = ping || false;
 		this.start = start || 0;
 		this.user = user || null;
+		this.spamAllowed = spamAllowed  || false;
 		this.noCD = 0;
 	}
 	Cooldown() {
@@ -53,7 +54,7 @@ exports.messageHandler = class Cooldown {
 
 		}
 
-		if (talkedRecently[this.channel]) {
+		if (talkedRecently[this.channel] && !this.spamAllowed) {
 			this.noCD = 0;
 			let tempList = talkedRecently[this.channel];
 			tempList.push(this.message);

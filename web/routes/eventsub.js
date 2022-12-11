@@ -128,6 +128,8 @@ module.exports = (async function() {
             const myping = await sql.Query('SELECT * FROM MyPing');
 
             const notifyDisabled = await tools.commandDisabled('notify', streamer.username);
+
+            const spamAllowed = (streamer.spamAllowed === 1);
             
             const newTitle = notification.event.title;
             const titleusers = JSON.parse(streamer.title_ping).
@@ -185,7 +187,7 @@ module.exports = (async function() {
                 }
                 let gameTime = new Date().getTime();
                 console.log(gameusers);
-                await sql.Query('UPDATE Streamers SET game=?, game_time=? WHERE username=?', [newGame, gameTime, streamer.username]);
+                await sql.Query('UPDATE StreamerSET game=?, game_time=? WHERE username=?', [newGame, gameTime, streamer.username]);
 
                 console.log(streamer.username + ' NEW GAME: ' + newGame);
                 if (!notifyDisabled || channel === 'botbear1110') {
@@ -199,6 +201,7 @@ module.exports = (async function() {
                 Data: {
                     Channel: channel,
                     Message: response,
+                    spamAllowed: spamAllowed,
                 }
             };
         },
@@ -209,6 +212,8 @@ module.exports = (async function() {
 
             const notifyDisabled = await tools.commandDisabled('notify', streamer.username);
             
+            const spamAllowed = (streamer.spamAllowed === 1);
+
             const users = JSON.parse(streamer.live_ping).
                             filter(Boolean).
                             join(' ');
@@ -232,7 +237,8 @@ module.exports = (async function() {
                         Type: 'ChatUpdate',
                         Data: {
                             Channel: channel,
-                            Message: streamUpdateTemplate(streamer.liveemote, streamer.username, 'LIVE', userlist)
+                            Message: streamUpdateTemplate(streamer.liveemote, streamer.username, 'LIVE', userlist),
+                            spamAllowed:  spamAllowed,
                         }
                     };
                 }
@@ -245,6 +251,8 @@ module.exports = (async function() {
             if (!streamer) return;
             
             const notifyDisabled = await tools.commandDisabled('notify', streamer.username);
+
+            const spamAllowed = (streamer.spamAllowed === 1);
 
             const users = JSON.parse(streamer.offline_ping).
                                 filter(Boolean).
@@ -269,7 +277,8 @@ module.exports = (async function() {
                         Type: 'ChatUpdate',
                         Data: {
                             Channel: channel,
-                            Message: streamUpdateTemplate(streamer.offlineemote, streamer.username, 'OFFLINE', userlist)
+                            Message: streamUpdateTemplate(streamer.offlineemote, streamer.username, 'OFFLINE', userlist),
+                            spamAllowed: spamAllowed,
                         }
                     };
                 }
