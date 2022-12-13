@@ -24,17 +24,23 @@ module.exports = {
             input = input.filter(x  => x !== `channel:${this.channel}`);
             let msg = input.join(' ');
             let markovAPI;
+            let markovError;
             
             console.log(msg);
             try {
                 markovAPI = await got(`https://magnolia.melon095.live/api/markov?channel=${this.channel}&seed=${encodeURIComponent(msg)}`, { throwHttpErrors: false, timeout: {
                     request: 3000
                 } }).json();
+                markovError = '';
             } catch (err) {
                 console.log(err);
+            }
+            if (!markovAPI.success) {
+                console.log(markovAPI);
+                markovError = await markovAPI.error;
                 markovAPI = null;
             }
-            
+
             let result =  await markovAPI?.data?.markov;
             if (await markovAPI === null || !await markovAPI?.success) {
                 result = await new Promise(async (resolve) => {  await redisC.get(`Markov:${this.channel.toLowerCase()}`, async function (err, reply) {
@@ -58,7 +64,10 @@ module.exports = {
     
                 } catch(err) {
                     console.log(err);
-                    resolve('Failed to generate markov string');
+                    if (markovError === 'no data') {
+                        resolve('Error: No data from this channel, but it\'s getting logged (if it\'s a real channel).');
+                    }
+                    resolve('Error: ' + markovError);
                 }
                 }); 
             });
