@@ -12,6 +12,9 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
+			if (!input[2]) {
+				return 'Please provide both the user and the permission level. Example: bb permission nymn 123';
+			}
 			await sql.Query('UPDATE Users SET permission=? WHERE username=?', [input[3], input[2]]);
 			return `${input[2]} now has permission ${input[3]}`;
 
