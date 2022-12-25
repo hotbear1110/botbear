@@ -1,7 +1,7 @@
 const { got } = require('./../got');
 
 module.exports = {
-	name: 'rem',
+	name: 'rem2',
 	ping: true,
 	description: 'Gives you a random image of rem',
 	permission: 100,
@@ -20,6 +20,7 @@ module.exports = {
 
             const json = JSON.parse(remRequest.body);
 
+            console.log(json);
             const image = json[~~(Math.random() * json.length - 1)].src.image;
 
 			return `nymnAww ${image}`;
