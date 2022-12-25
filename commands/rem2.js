@@ -18,7 +18,7 @@ module.exports = {
 			}
             const remRequest = await got('https://pastebin.com/raw/J7SxVQJg');
 
-            const json = JSON.parse(remRequest);
+            const json = JSON.parse(remRequest.body);
 
             const image = json[~~(Math.random() * json.length - 1)].src.image;
 
