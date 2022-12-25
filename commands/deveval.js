@@ -19,7 +19,7 @@ module.exports = {
 			}
             input = input.splice(2);
 			let msg = input.join(' ');
-            const js = await eval(msg);
+            const js = await eval(async () => { msg; });
 
 			return await JSON.stringify(js);
 		} catch (err) {
