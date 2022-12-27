@@ -162,9 +162,9 @@ module.exports = (async function() {
                 let titleuserlist = '';
                 //temp edit
                 if (channel === 'yabbe') {
-                    titleuserlist = tools.splitLine(titleusers, 290 - newTitle.length - titleuserlist.length - (streamer.titleemote.length * 2));
+                    titleuserlist = tools.splitLine(titleusers, 280 - newTitle.length - (streamer.titleemote.length * 2));
                 } else {
-                    titleuserlist = tools.splitLine(titleusers, 430 - newTitle.length - titleuserlist.length - (streamer.titleemote.length * 2));
+                    titleuserlist = tools.splitLine(titleusers, 430 - newTitle.length - (streamer.titleemote.length * 2));
                 }
                 console.log(titleuserlist);
                 let titleTime = new Date().getTime();
@@ -181,9 +181,9 @@ module.exports = (async function() {
                 //temp edit
                 let gameuserlist = '';
                 if (channel === 'yabbe') {
-                    gameuserlist = tools.splitLine(gameusers, 290 - newGame.length - gameuserlist.length - (streamer.gameemote.length * 2));
+                    gameuserlist = tools.splitLine(gameusers, 280 - newGame.length - (streamer.gameemote.length * 2));
                 } else {
-                    gameuserlist = tools.splitLine(gameusers, 430 - newGame.length - gameuserlist.length - (streamer.gameemote.length * 2));
+                    gameuserlist = tools.splitLine(gameusers, 430 - newGame.length - (streamer.gameemote.length * 2));
                 }
                 let gameTime = new Date().getTime();
                 console.log(gameusers);
@@ -225,9 +225,9 @@ module.exports = (async function() {
             //temp edit
             let userlist = '';
             if (channel === 'yabbe') {
-                userlist = tools.splitLine(users, 290 - userlist.length - (streamer.liveemote.length * 2));
+                userlist = tools.splitLine(users, 280 - (streamer.liveemote.length * 2));
             } else {
-                userlist = tools.splitLine(users, 430 - userlist.length - (streamer.liveemote.length * 2));
+                userlist = tools.splitLine(users, 430 - (streamer.liveemote.length * 2));
             }
             console.log(streamer.username + ' IS NOW LIVE');
             await sql.Query('UPDATE Streamers SET islive = 1 WHERE username = ?' , [streamer.username]);
@@ -265,9 +265,9 @@ module.exports = (async function() {
             //temp edit
             let userlist = '';
             if (channel === 'yabbe') {
-                userlist = tools.splitLine(users, 290 - userlist.length - (streamer.offlineemote.length * 2));
+                userlist = tools.splitLine(users, 280 - (streamer.offlineemote.length * 2));
             } else {
-                userlist = tools.splitLine(users, 430 - userlist.length - (streamer.offlineemote.length * 2));
+                userlist = tools.splitLine(users, 430 - (streamer.offlineemote.length * 2));
             }
             console.log(streamer.username + ' IS NOW OFFLINE');
             await sql.Query('UPDATE Streamers SET islive = 0 WHERE username = ? ', [streamer.username]);
