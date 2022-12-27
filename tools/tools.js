@@ -842,7 +842,7 @@ exports.getMods = async (channel) => {
 					"displayName" : "${mod.node.displayName}"
 				}`)));
 		hasNextPage = ThreeLetterApiCall.pageInfo.hasNextPage;
-		cursor = ThreeLetterApiCall.edges[ThreeLetterApiCall.edges.length - 1].cursor;
+		cursor = ThreeLetterApiCall.edges[ThreeLetterApiCall.edges.length - 1]?.cursor;
 	}
 
 	return await mods;
@@ -893,7 +893,7 @@ exports.getVips = async (channel) => {
 				}`)));
 
 		hasNextPage = ThreeLetterApiCall.pageInfo.hasNextPage;
-		cursor = ThreeLetterApiCall.edges[ThreeLetterApiCall.edges.length - 1].cursor;
+		cursor = ThreeLetterApiCall.edges[ThreeLetterApiCall.edges.length - 1]?.cursor;
 	}
 	
 	return await vips;
