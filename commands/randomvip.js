@@ -14,7 +14,7 @@ module.exports = {
 			}
 			let realchannel = channel;
 			if (input[2]) {
-				realchannel = input[2];
+				realchannel = input[2].toLowerCase();
 			}
 			let vips = await tools.getVips(realchannel);
 			vips = await tools.optOutList(vips, module.exports.name, true);

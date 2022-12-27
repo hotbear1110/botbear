@@ -14,7 +14,7 @@ module.exports = {
 			}
 			let realchannel = channel;
 			if (input[2]) {
-				realchannel = input[2];
+				realchannel = input[2].toLowerCase();
 			}
 			let mods = await tools.getMods(realchannel);
 			mods = await tools.optOutList(mods, module.exports.name, true);
