@@ -164,7 +164,7 @@ module.exports = (async function() {
                 if (channel === 'yabbe') {
                     titleuserlist = tools.splitLine(titleusers, 290 - newTitle.length);
                 } else {
-                    titleuserlist = tools.splitLine(titleusers, 450 - newTitle.length);
+                    titleuserlist = tools.splitLine(titleusers, 430 - newTitle.length);
                 }
                 console.log(titleuserlist);
                 let titleTime = new Date().getTime();
@@ -183,7 +183,7 @@ module.exports = (async function() {
                 if (channel === 'yabbe') {
                     gameuserlist = tools.splitLine(gameusers, 290 - newGame.length);
                 } else {
-                    gameuserlist = tools.splitLine(gameusers, 450 - newGame.length);
+                    gameuserlist = tools.splitLine(gameusers, 430 - newGame.length);
                 }
                 let gameTime = new Date().getTime();
                 console.log(gameusers);
