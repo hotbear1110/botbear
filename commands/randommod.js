@@ -19,7 +19,7 @@ module.exports = {
 			let mods = await tools.getMods(realchannel);
 			mods = await tools.optOutList(mods, module.exports.name, true);
 			if (!mods.length) {
-				return 'This channel has no mods';
+				return (channel === realchannel) ? 'This channel has no mods' : 'That channel has no mods';
 			}
 			let number = Math.floor(Math.random() * (mods.length - 0) + 0);
 

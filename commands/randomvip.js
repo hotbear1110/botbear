@@ -19,7 +19,7 @@ module.exports = {
 			let vips = await tools.getVips(realchannel);
 			vips = await tools.optOutList(vips, module.exports.name, true);
 			if (!vips.length) {
-				return 'This channel has no vips';
+				return (channel === realchannel) ? 'This channel has no vips' : 'That channel has no vips';
 			}
 			let number = Math.floor(Math.random() * (vips.length - 0) + 0);
 
