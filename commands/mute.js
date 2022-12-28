@@ -32,7 +32,7 @@ module.exports = {
             const mute = await redis.Get().Set(`${channel}:unmute_time`, unmuteTime);
             mute(duration / 1000);
 
-			return `Successfully muted notifications for ${input[2]} min`;
+			return `Successfully muted notifications for ${input[2] ?? 1} min`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
