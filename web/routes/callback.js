@@ -32,7 +32,7 @@ module.exports = (function () {
           await sql.Query(`INSERT INTO Spotify 
         			(state, access_token, refresh_token) 
             			values 
-        			(?, ?)`,
+        			(?, ?, ?)`,
 				[state, authOptions.access_token, authOptions.refresh_token]
 				);
 
