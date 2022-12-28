@@ -25,7 +25,7 @@ module.exports = {
                 return;
             }
 
-            await redis.Get().Set(`${channel}:unmute_time`, null);
+            await redis.Get().Set(`${channel}:unmute_time`, 0);
 
 			return 'Successfully unmuted notifications';
 		} catch (err) {
