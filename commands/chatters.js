@@ -15,7 +15,7 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			const realchannel = input[2] ? channel;
+			const realchannel = input[2] ?? channel;
             const cache = await redis.Get().Get(`${realchannel}:chatters_count`);
             if (cache) {
 		return (realchannel === channel) ? `There are ${cache} users in chat rn :O` : `There are ${cache} users in that chat rn :O`;
