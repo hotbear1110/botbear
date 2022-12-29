@@ -1,4 +1,5 @@
 const redis = require('./../tools/redis.js');
+const cc = require('../bot.js').cc;
 
 module.exports = {
 	name: 'unmute',
@@ -26,6 +27,10 @@ module.exports = {
             }
 
             await redis.Get().Set(`${channel}:unmute_time`, 0);
+
+			if (channel === 'nymn') {
+				cc.say(channel, '/unban TitleChange_Bot');
+			}
 
 			return 'Successfully unmuted notifications';
 		} catch (err) {

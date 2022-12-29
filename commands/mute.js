@@ -1,4 +1,5 @@
 const redis = require('./../tools/redis.js');
+const cc = require('../bot.js').cc;
 
 module.exports = {
 	name: 'mute',
@@ -31,6 +32,10 @@ module.exports = {
 
             const mute = await redis.Get().Set(`${channel}:unmute_time`, unmuteTime);
             mute(duration / 1000);
+
+			if (channel === 'nymn') {
+				cc.say(channel, '/timeout TitleChange_Bot ' + input[2] ?? 1 + 'm');
+			}
 
 			return `Successfully muted notifications for ${input[2] ?? 1} min`;
 		} catch (err) {
