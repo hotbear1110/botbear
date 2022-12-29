@@ -7,7 +7,7 @@ module.exports = (function () {
     router.get('/', async (req, res) => {
         let state = req.query.state || '';
         
-        res.render('resolved', state);
+        res.render('resolved', { state: state });
     });
 
     return router;
