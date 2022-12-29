@@ -1,5 +1,6 @@
 require('dotenv').config();
 const querystring = require('querystring');
+const { got } = require('../../got');
 
 module.exports = (function () {
     const sql = require('../../sql/index.js');
@@ -16,7 +17,7 @@ module.exports = (function () {
       
 
          if (state) {
-          var authOptions = {
+          let authOptions = {
             url: 'https://accounts.spotify.com/api/token',
             form: {
               code: code,
@@ -29,11 +30,16 @@ module.exports = (function () {
             json: true
           };
 
+          const spotifyToken = await got(authOptions.url, {
+						headers: authOptions.headers,
+            body: authOptions.form
+					}).json();
+
           await sql.Query(`INSERT INTO Spotify 
         			(state, access_token, refresh_token) 
             			values 
         			(?, ?, ?)`,
-				[state, authOptions.access_token, authOptions.refresh_token]
+				[state, spotifyToken.access_token, spotifyToken.refresh_token]
 				);
 
                 res.redirect('/resolved?' + 
