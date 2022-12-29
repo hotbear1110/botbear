@@ -32,7 +32,7 @@ module.exports = (function () {
 
           const spotifyToken = await got(authOptions.url, {
 						headers: authOptions.headers,
-            body: authOptions.form
+            json: authOptions.form
 					}).json();
 
           await sql.Query(`INSERT INTO Spotify 
