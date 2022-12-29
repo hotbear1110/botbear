@@ -32,7 +32,11 @@ module.exports = (function () {
 
           const spotifyToken = await got.post(authOptions.url, {
 						headers: authOptions.headers,
-            json: authOptions.form
+            body: {
+              code: code,
+              redirect_uri: redirect_uri,
+              grant_type: 'authorization_code'
+            },
 					}).json();
 
           await sql.Query(`INSERT INTO Spotify 
