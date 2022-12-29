@@ -26,6 +26,15 @@ module.exports = {
                 return;
             }
 
+			if (input[2].startsWith('-') || input[2] === '0') {
+				return '2nd input can\'t be negative or 0';
+
+			}
+			let isnumber = !isNaN(input[2]);
+			if (!isnumber) {
+				return '2nd input should be a number';
+			}
+
             let duration = input[2] * 60 * 1000 ?? 60 * 1000;
 
             let unmuteTime = Date.now() + duration;
