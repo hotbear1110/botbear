@@ -30,7 +30,7 @@ module.exports = (function () {
             json: true
           };
 
-          const spotifyToken = await got(authOptions.url, {
+          const spotifyToken = await got.post(authOptions.url, {
 						headers: authOptions.headers,
             json: authOptions.form
 					}).json();
