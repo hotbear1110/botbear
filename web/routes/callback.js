@@ -36,7 +36,7 @@ module.exports = (function () {
 				[state, authOptions.access_token, authOptions.refresh_token]
 				);
 
-                res.redirect(200, '/resolved' + 
+                res.redirect(200, '/resolved?' + 
                 querystring.stringify({
                     state: state
                   })

@@ -5,9 +5,9 @@ module.exports = (function () {
     
     /* /resolved */
     router.get('/', async (req, res) => {
-        let state = req.query.state || null;
+        let state = req.query.state || '';
         
-        res.render('state', state);
+        res.render('resolved', state);
     });
 
     return router;
