@@ -561,7 +561,7 @@ cc.on('whisper', async function (from, user, msg, self) {
 			return;
 		}
 
-		await sql.Query('UPDATE Spotify SET username = ? AND uid = ? WHERE state = ? ', [user.username, user['user-id'], state]);
+		await sql.Query('UPDATE Spotify SET username = ?, uid = ? WHERE state = ? ', [user.username, user['user-id'], state]);
 	}
 
 	from = from.replace('#', '');
