@@ -1,5 +1,5 @@
 const { got } = require('./../got');
-const sql = require('./../../sql/index.js');
+const sql = require('./../sql/index.js');
 
 module.exports = {
 	name: 'spotify',
