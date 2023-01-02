@@ -6,14 +6,16 @@ exports.refreshToken = async function(username, refresh_token) {
     const client_id = process.env.SPOTIFY_CLIENT_ID;
 	const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 
+    const searchParams = new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token,
+    });
+
 	const spotifyRefresh = await got.post('https://accounts.spotify.com/api/token', {
+        searchParams,
         headers: {
             'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64')),
             'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        form: {
-            'grant_type': 'refresh_token',
-            refresh_token: refresh_token
         }
     }).json();
 
