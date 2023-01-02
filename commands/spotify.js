@@ -50,7 +50,7 @@ module.exports = {
             console.log(spotifyData);
 
 			if (!spotifyData.device) {
-				return 'Nothing is curently playing';
+				return 'Nothing is currently playing';
 			}
 
             const progress_ms = spotifyData.progress_ms;
