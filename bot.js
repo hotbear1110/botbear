@@ -554,6 +554,8 @@ cc.on('whisper', async function (from, user, msg, self) {
 	if (msg.startsWith('spotifystate:')) {
 		const state = msg.split(':')[1];
 
+		const isRegistered = await sql.Query('SELECT * FROM Spotify WHERE uid = ? ',[user['user-id']]);
+
 		const hasState = await sql.Query('SELECT state FROM Spotify WHERE state = ? ',[state]);
 
 		if (!hasState.length) {
