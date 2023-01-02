@@ -19,8 +19,10 @@ exports.refreshToken = async function(username, refresh_token) {
 
     const new_access_token = spotifyRefresh.access_token;
 
-    await sql.Query('UPDATE Spotify SET access_token = ? WHERE username = ?',
-        [new_access_token, username]);
+    const expires_in = Date.now() + spotifyRefresh.expires_in * 1000;
+
+    await sql.Query('UPDATE Spotify SET access_token = ?, expires_in = ? WHERE username = ?',
+        [new_access_token, expires_in, username]);
 
     const spotifyData = await got('https://api.spotify.com/v1/me/player', {
         headers: {

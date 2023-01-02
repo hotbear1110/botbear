@@ -30,17 +30,20 @@ module.exports = {
 
             const access_token = spotify_user[0].access_token;
             const refresh_token = spotify_user[0].refresh_token;
-
-            let spotifyData = await got('https://api.spotify.com/v1/me/player', {
-				throwHttpErrors: false,
-                headers: {
-                    'Authorization': 'Bearer ' + access_token,
-                    'Content-Type': 'application/json'
-                }
-            }).json();
-
-			if (spotifyData.error.status === 401) {
+			const expires_in = spotify_user[0].expires_in;
+			
+			let spotifyData;
+			
+			if(Date.now() > expires_in) {
 				spotifyData = await spotifyTools.refreshToken(user.username, refresh_token);
+			} else {
+				spotifyData = await got('https://api.spotify.com/v1/me/player', {
+				throwHttpErrors: false,
+				headers: {
+					'Authorization': 'Bearer ' + access_token,
+					'Content-Type': 'application/json'
+				}
+			}).json();
 			}
 
             console.log(spotifyData);

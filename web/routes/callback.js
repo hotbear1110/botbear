@@ -35,11 +35,13 @@ module.exports = (function () {
             form: authOptions.form,
 					}).json();
 
+        const expires_in = Date.now() + spotifyToken.expires_in * 1000; 
+
           await sql.Query(`INSERT INTO Spotify 
-        			(state, access_token, refresh_token) 
+        			(state, access_token, refresh_token, expires_in) 
             			values 
-        			(?, ?, ?)`,
-				[state, spotifyToken.access_token, spotifyToken.refresh_token]
+        			(?, ?, ?, ?)`,
+				[state, spotifyToken.access_token, spotifyToken.refresh_token, expires_in]
 				);
 
                 res.redirect('/resolved?' + 
