@@ -9,12 +9,13 @@ exports.refreshToken = async function(username, refresh_token) {
 	const spotifyRefresh = await got.post('https://accounts.spotify.com/api/token', {
         headers: {
             'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64')),
+            'Content-Type': 'application/x-www-form-urlencoded'
         },
         form: {
             'grant_type': 'refresh_token',
             refresh_token: refresh_token
         }
-    });
+    }).json();
 
     const new_access_token = spotifyRefresh.access_token;
 
