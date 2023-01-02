@@ -6,7 +6,7 @@ exports.refreshToken = async function(username, refresh_token) {
     const client_id = process.env.SPOTIFY_CLIENT_ID;
 	const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 
-	const spotifyRefresh = await got.post('https://api.spotify.com/v1/me/player', {
+	const spotifyRefresh = await got.post('https://accounts.spotify.com/api/token', {
         headers: {
             'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64')),
         },
@@ -21,7 +21,7 @@ exports.refreshToken = async function(username, refresh_token) {
     await sql.Query('UPDATE Spotify SET access_token = ? WHERE username = ?',
         [new_access_token, username]);
 
-    const spotifyData = await got('https://accounts.spotify.com/api/token', {
+    const spotifyData = await got('https://api.spotify.com/v1/me/player', {
         headers: {
             'Authorization': 'Bearer ' + new_access_token,
             'Content-Type': 'application/json'
