@@ -1,5 +1,7 @@
+require('dotenv').config();
 const { got } = require('./../got');
 const sql = require('./../sql/index.js');
+const spotifyTools = require('../tools/spotifyTools.js');
 
 module.exports = {
 	name: 'spotify',
@@ -22,14 +24,23 @@ module.exports = {
 
             const spotify_user = await sql.Query('SELECT * FROM Spotify WHERE uid = ?',[user['user-id']]);
 
-            const access_token = spotify_user[0].access_token;
+			if (!spotify_user.length) {
+				return 'You have not authorized with the bot. Please login here: https://hotbear.org/login';
+			}
 
-            const spotifyData = await got('https://api.spotify.com/v1/me/player', {
+            const access_token = spotify_user[0].access_token;
+            const refresh_token = spotify_user[0].refresh_token;
+
+            let spotifyData = await got('https://api.spotify.com/v1/me/player', {
                 headers: {
                     'Authorization': 'Bearer ' + access_token,
                     'Content-Type': 'application/json'
                 }
             }).json();
+
+			if (spotifyData.error.status === 401) {
+				spotifyData = await spotifyTools.refreshToken(user.username, refresh_token);
+			}
 
             console.log(spotifyData);
 
