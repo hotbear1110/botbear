@@ -28,35 +28,52 @@ module.exports = {
 				return 'You have not authorized with the bot. Please login here: https://hotbear.org/login';
 			}
 
-            const access_token = spotify_user[0].access_token;
+            let access_token = spotify_user[0].access_token;
             const refresh_token = spotify_user[0].refresh_token;
 			const expires_in = spotify_user[0].expires_in;
 			
 			let spotifyData;
-			
+
 			if(Date.now() > expires_in) {
-				spotifyData = await spotifyTools.refreshToken(user.username, refresh_token);
-			} else {
-				spotifyData = await got('https://api.spotify.com/v1/me/player', {
+				access_token = await spotifyTools.refreshToken(user.username, refresh_token);
+			}
+
+			spotifyData = await got('https://api.spotify.com/v1/me/player', {
 				throwHttpErrors: false,
 				headers: {
 					'Authorization': 'Bearer ' + access_token,
 					'Content-Type': 'application/json'
 				}
 			}).json();
-			}
+			
 
             console.log(spotifyData);
+
+			if (!spotifyData.device) {
+				return 'Nothing is curently playing';
+			}
 
             const progress_ms = spotifyData.progress_ms;
             const duration_ms = spotifyData.item.duration_ms;
             const artist = spotifyData.item.artists[0].name;
             const title = spotifyData.item.name;
 
-			return `Currently playing on Spotify: ${title}, by ${artist}`;
+			const progress_min_sec = millisToMinutesAndSeconds(progress_ms);
+			const duration_min_sec = millisToMinutesAndSeconds(duration_ms);
+
+			return `Song: ${title} | Artist: ${artist} | Progress ${progress_min_sec}/${duration_min_sec}`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
 		}
 	}
 };
+
+function millisToMinutesAndSeconds(ms) {
+	let minutes = Math.floor(ms / 60000);
+	let seconds = ((ms % 60000) / 1000).toFixed(0);
+	return (
+		seconds == 60 ?
+		(minutes+1) + ':00' :
+		minutes + ':' + (seconds < 10 ? '0' : '') + seconds);
+  }

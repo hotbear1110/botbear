@@ -4,7 +4,7 @@ require('dotenv').config();
 
 exports.refreshToken = async function(username, refresh_token) {
     const client_id = process.env.SPOTIFY_CLIENT_ID;
-	const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
+    const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 
     let authOptions = {
         url: 'https://accounts.spotify.com/api/token',
@@ -13,7 +13,7 @@ exports.refreshToken = async function(username, refresh_token) {
             grant_type: 'refresh_token',
         },
         headers: {
-          'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64'))
+            'Authorization': 'Basic ' + (Buffer.from(client_id + ':' + client_secret).toString('base64'))
         },
         json: true
       };
@@ -23,7 +23,7 @@ exports.refreshToken = async function(username, refresh_token) {
         form: authOptions.form
     }).json();
 
-    console.log(spotifyRefresh.body);
+    console.log(spotifyRefresh);
 
     const new_access_token = spotifyRefresh.access_token;
 
@@ -32,12 +32,5 @@ exports.refreshToken = async function(username, refresh_token) {
     await sql.Query('UPDATE Spotify SET access_token = ?, expires_in = ? WHERE username = ?',
         [new_access_token, expires_in, username]);
 
-    const spotifyData = await got('https://api.spotify.com/v1/me/player', {
-        headers: {
-            'Authorization': 'Bearer ' + new_access_token,
-            'Content-Type': 'application/json'
-        }
-    }).json();
-
-    return spotifyData;
+    return new_access_token;
 };
