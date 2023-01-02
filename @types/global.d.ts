@@ -11,6 +11,14 @@ declare global {
         export interface Aliases {
             Aliases: string[];
         }
+        export interface Ask {
+            ID: number;
+            User?: string;
+            Channel?: string;
+            Prompt?: string;
+            Response?: string;
+            Timestamp: number; // UNIX_TIMESTAMP
+        }
         export interface Cdr {
             ID: number;
             User?: string;
@@ -34,6 +42,14 @@ declare global {
             RemindTime?: number;
             Mode: number | 0;
         }
+        export interface Dalle {
+            ID: number;
+            User?: string;
+            Channel?: string;
+            Prompt?: string;
+            Image?: string;
+            Timestamp: number; // UNIX_TIMESTAMP
+        }
         export interface Latency {
             ID: number;
             Latency?: number; // Double
@@ -50,6 +66,14 @@ declare global {
         export interface NukeList {
             ID?: string;
             User?: string;
+        }
+        export interface Spotify {
+            username?: string;
+            uid?: number;
+            state: string | '0';
+            access_token: string | '';
+            refresh_token: string | '';
+            expires_in?: string;
         }
         export interface Streamers {
             username?: string;
@@ -90,6 +114,17 @@ declare global {
             uid?: number;
             permission: number | 100;
             date_spotted: number; // UNIX_TIMESTAMP
+        }
+        export interface Yabbe_bans {
+            Command?: string;
+            User?: string;
+        }
+        export interface Yabbe_pet {
+            ID: number;
+            User?: string;
+            Pet?: string;
+            Pet_name?: string;
+            Image?: string;
         }
     }
 }
