@@ -14,7 +14,7 @@ exports.refreshToken = async function(username, refresh_token) {
             'grant_type': 'refresh_token',
             refresh_token: refresh_token
         }
-    }).json();
+    });
 
     const new_access_token = spotifyRefresh.access_token;
 
