@@ -32,6 +32,7 @@ module.exports = {
             const refresh_token = spotify_user[0].refresh_token;
 
             let spotifyData = await got('https://api.spotify.com/v1/me/player', {
+				throwHttpErrors: false,
                 headers: {
                     'Authorization': 'Bearer ' + access_token,
                     'Content-Type': 'application/json'
