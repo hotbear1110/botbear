@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS `Commands` (
   `Command` longtext DEFAULT NULL,
   `Perm` int(11) DEFAULT NULL,
   `Category` varchar(255) DEFAULT NULL,
-  `Cooldown` varchar(255) DEFAULT NULL
+  `Cooldown` varchar(255) DEFAULT NULL,
+  `opt_out` longtext DEFAULT '[]'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `Cookies` (
@@ -76,7 +77,8 @@ CREATE TABLE IF NOT EXISTS `Streamers` (
   `offlineonly` int(11) DEFAULT 0,
   `seventv_sub` int(11) NOT NULL DEFAULT 0,
   `title_time` bigint(20) DEFAULT NULL,
-  `command_default` int(11) NOT NULL DEFAULT 0
+  `command_default` int(11) NOT NULL DEFAULT 0,
+  `spamAllowed` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS `Suggestions` (
