@@ -6,18 +6,24 @@ exports.refreshToken = async function(username, refresh_token) {
     const client_id = process.env.SPOTIFY_CLIENT_ID;
 	const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 
-    const searchParams = new URLSearchParams({
-        grant_type: 'refresh_token',
-        refresh_token,
-    });
-
-	const spotifyRefresh = await got.post('https://accounts.spotify.com/api/token', {
-        searchParams,
+    let authOptions = {
+        url: 'https://accounts.spotify.com/api/token',
+        form: {
+            refresh_token: refresh_token,
+            grant_type: 'refresh_token',
+        },
         headers: {
-            'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64')),
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
+          'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64'))
+        },
+        json: true
+      };
+
+	const spotifyRefresh = await got.post(authOptions.url, {
+        headers: authOptions.headers,
+        form: authOptions.form
     }).json();
+
+    console.log(spotifyRefresh.body);
 
     const new_access_token = spotifyRefresh.access_token;
 
