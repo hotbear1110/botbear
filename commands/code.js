@@ -6,7 +6,7 @@ module.exports = {
 	ping: true,
 	description: 'Gives the user a link to the source code of a given command',
 	permission: 100,
-	category: 'Info Command',
+	category: 'Info command',
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {
