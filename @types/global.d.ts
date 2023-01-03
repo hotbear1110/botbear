@@ -74,6 +74,7 @@ declare global {
             access_token: string | '';
             refresh_token: string | '';
             expires_in?: string;
+            opt_in: string | 'false';
         }
         export interface Streamers {
             username?: string;
