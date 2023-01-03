@@ -10,7 +10,7 @@ module.exports = {
 	permission: 100,
 	cooldown: 3, //in seconds
 	category: 'Info command',
-	opt_outable: true,
+	opt_outable: false,
 	showDelay: false,
 	noBanphrase: false,
 	channelSpecific: false,
@@ -22,10 +22,31 @@ module.exports = {
 				return;
 			}
 
-            const spotify_user = await sql.Query('SELECT * FROM Spotify WHERE uid = ?',[user['user-id']]);
+			let username = user.username;
+
+			if (input[2]) {
+				username = (input[2][0] === '@') ? input[2].replace('@', '') : username;
+			}
+
+            const spotify_user = await sql.Query('SELECT * FROM Spotify WHERE username = ?',[username]);
 
 			if (!spotify_user.length) {
-				return 'You have not authorized with the bot. Please login here: https://hotbear.org/login';
+				return (username === user.username) ? 'You have not authorized with the bot. Please login here: https://hotbear.org/login' : 'That user has not authorized with the bot.';
+			}
+
+			switch(input[2]) {
+				case 'allow': {
+					await sql.Query('UPDATE Spotify SET opt_in = ? WHERE username = ?', ['true', username]);
+					return (spotify_user[0].opt_in === 'true') ? 'You had already allowed others to target you with the spotify command. If you wish to revert this do: bb spotify disallow' : 'You have now allowed others to target you with the spotify command. If you wish to revert this do: bb spotify disallow';
+				}
+				case 'disallow': {
+					await sql.Query('UPDATE Spotify SET opt_in = ? WHERE username = ?', ['false', username]);
+					return (spotify_user[0].opt_in === 'false') ? 'You had not allowed people to target you with the spotify command. If you wish to allow that do: bb spotify allow' : 'You now no longer allow others to target you with the spotify command. If you wish to allow that again do: bb spotify allow';
+				}
+			}
+
+			if (spotify_user[0].opt_in === 'false' && username !== user.username) {
+				return 'That user has not allowed others to target them. Tell them to do: bb spotify allow';
 			}
 
             let access_token = spotify_user[0].access_token;
@@ -35,7 +56,7 @@ module.exports = {
 			let spotifyData;
 
 			if(Date.now() > expires_in) {
-				access_token = await spotifyTools.refreshToken(user.username, refresh_token);
+				access_token = await spotifyTools.refreshToken(username, refresh_token);
 			}
 
 			spotifyData = await got('https://api.spotify.com/v1/me/player', {
