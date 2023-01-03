@@ -14,36 +14,34 @@
 
     <div class="wrapper">
         <table>
-            <div class="commands">
+            <tr>
+                <th>ID:</th>
+                <th>
+                    User:
+                </th>
+                <th>Suggestion:</th>
+                <th>Status:</th>
+                <th>Description:</th>
+            </tr>
+            <% suggestions.forEach(function(suggestion) { %>
                 <tr>
-                    <th>
-                        User:
-                    </th>
-                    <th>Suggestion:</th>
-                    <th>Status:</th>
-                    <th>Description:</th>
+                    <td>
+                        <%- suggestion.ID %>
+                    </td>
+                    <td>
+                        <%- suggestion.User %>
+                    </td>
+                    <td>
+                        <%- suggestion.Suggestion%>
+                    </td>
+                    <td>
+                        <%- suggestion.Status%>
+                    </td>
+                    <td>
+                        <%- suggestion.Description%>
+                    </td>
                 </tr>
-                <% suggesions.forEach(function(suggesion) { %>
-                    <div class="commands__row">
-                        <tr>
-                            <td>
-                                <%- suggesion.User %>
-                            </td>
-                            <td>
-                                <%- suggesion.Suggestion%>
-                            </td>
-                            <td>
-                                <%- suggesion.Status%>
-                            </td>
-                            <td>
-                                <%- suggesion.Description%>
-                            </td>
-                        </tr>
-
-                    </div>
-
-                    <% }) %>
-            </div>
+                <% }) %>
         </table>
     </div>
 
