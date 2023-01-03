@@ -23,12 +23,14 @@ module.exports = {
 			}
 
 			let username = user.username;
+			let uid = user.uid
 
 			if (input[2]) {
-				username = (input[2][0] === '@') ? input[2].replace('@', '') : username;
+				username = (input[2][0] === '@') ? input[2].replace('@', '').toLowerCase() : username;
+				uid = (input[2][0] === '@') ? (await sql.Query('SELECT uid FROM Users WHERE username = ?',[input[2].replace('@', '').toLowerCase()]))[0]?.uid : user.uid;
 			}
 
-            const spotify_user = await sql.Query('SELECT * FROM Spotify WHERE username = ?',[username]);
+            const spotify_user = await sql.Query('SELECT * FROM Spotify WHERE uid = ?',[uid]);
 
 			if (!spotify_user.length) {
 				return (username === user.username) ? 'You have not authorized with the bot. Please login here: https://hotbear.org/login' : 'That user has not authorized with the bot.';
@@ -37,11 +39,11 @@ module.exports = {
 			switch(input[2]) {
 				case 'allow': {
 					await sql.Query('UPDATE Spotify SET opt_in = ? WHERE username = ?', ['true', username]);
-					return (spotify_user[0].opt_in === 'true') ? 'You had already allowed others to target you with the spotify command. If you wish to revert this do: bb spotify disallow' : 'You have now allowed others to target you with the spotify command. If you wish to revert this do: bb spotify disallow';
+					return (spotify_user[0].opt_in === 'true') ? 'You have already allowed others to target you with the spotify command. If you wish to revert this do: bb spotify disallow' : 'You have now allowed others to target you with the spotify command. If you wish to revert this do: bb spotify disallow';
 				}
 				case 'disallow': {
 					await sql.Query('UPDATE Spotify SET opt_in = ? WHERE username = ?', ['false', username]);
-					return (spotify_user[0].opt_in === 'false') ? 'You had not allowed people to target you with the spotify command. If you wish to allow that do: bb spotify allow' : 'You now no longer allow others to target you with the spotify command. If you wish to allow that again do: bb spotify allow';
+					return (spotify_user[0].opt_in === 'false') ? 'You have not allowed people to target you with the spotify command. If you wish to allow that do: bb spotify allow' : 'You now no longer allow others to target you with the spotify command. If you wish to allow that again do: bb spotify allow';
 				}
 			}
 
@@ -82,7 +84,9 @@ module.exports = {
 			const progress_min_sec = millisToMinutesAndSeconds(progress_ms);
 			const duration_min_sec = millisToMinutesAndSeconds(duration_ms);
 
-			return `Song: ${title} | Artist: ${artist} | Progress ${progress_min_sec}/${duration_min_sec}`;
+			return (username === user.username) ?
+					`Currently playing song: ${title} by ${artist} - Progress ${progress_min_sec}/${duration_min_sec}` :
+					`Currently playing song on ${username}'s spotify: ${title} by ${artist} - Progress ${progress_min_sec}/${duration_min_sec}`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
