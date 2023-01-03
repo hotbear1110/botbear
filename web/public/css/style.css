@@ -36,5 +36,6 @@ h2 {
 .space tr, .space td{
     background-color: #010409;
     color: #010409;
+    padding: 25px;
     border: 0px;
 }
