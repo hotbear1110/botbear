@@ -14,7 +14,7 @@ module.exports = {
 			}
 			input = input.splice(2);
 
-			const msg = input.toString().replaceAll(',', ' ');
+			const msg = input.join(' ');
 
 			await sql.Query('INSERT INTO Suggestions (User, Suggestion) values (?, ?)', [user.username, msg]);
 

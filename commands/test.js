@@ -5,7 +5,7 @@ module.exports = {
 	ping: true,
 	description: 'Shows an image of a pet from a random chatter',
 	permission: 2000,
-	cooldown: 1800, //in seconds
+	cooldown: 3, //in seconds
 	category: 'Dev command',
 	opt_outable: false,
 	showDelay: false,

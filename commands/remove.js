@@ -13,7 +13,7 @@ module.exports = {
 			}
 			switch (input[2]) {
 			case 'live': {
-				const liveUsers = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+				const liveUsers = await sql.Query('SELECT * FROM Streamers WHERE username=?', [channel]);
 				let liveusers = JSON.parse(liveUsers[0].live_ping);
 
 				if (liveusers.includes(user.username)) {
@@ -29,7 +29,7 @@ module.exports = {
 				}
             }
 			case 'offline': {
-				const offlineUsers = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+				const offlineUsers = await sql.Query('SELECT * FROM Streamers WHERE username=?', [channel]);
 				let offlineusers = JSON.parse(offlineUsers[0].offline_ping);
 
 				if (offlineusers.includes(user.username)) {
@@ -45,7 +45,7 @@ module.exports = {
 				}
             }
 			case 'title': {
-                const titleUsers = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+                const titleUsers = await sql.Query('SELECT * FROM Streamers WHERE username=?', [channel]);
 				let titleusers = JSON.parse(titleUsers[0].title_ping);
                 
 				if (titleusers.includes(user.username)) {
@@ -61,7 +61,7 @@ module.exports = {
 				}
             }
 			case 'game': {
-				const gameUsers = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+				const gameUsers = await sql.Query('SELECT * FROM Streamers WHERE username=?', [channel]);
 				let gameusers = JSON.parse(gameUsers[0].game_ping);
 
 				if (gameusers.includes(user.username)) {
@@ -77,7 +77,7 @@ module.exports = {
 				}
             }
 			case 'all': {
-				const notifyUsers = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+				const notifyUsers = await sql.Query('SELECT * FROM Streamers WHERE username=?', [channel]);
 				let liveusers = JSON.parse(notifyUsers[0].live_ping);
 				let offlineusers = JSON.parse(notifyUsers[0].offline_ping);
 				let titleusers = JSON.parse(notifyUsers[0].title_ping);
