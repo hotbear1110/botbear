@@ -7,7 +7,7 @@ module.exports = {
 	description: 'Gives you a list of founders from a given channel. * means that the user is currently subbed',
 	permission: 100,
 	cooldown: 3, //in seconds
-	category: 'Info Command',
+	category: 'Info command',
 	// eslint-disable-next-line no-unused-vars
 	execute: async (channel, user, input, perm, aliascommand) => {
 		try {
