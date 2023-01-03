@@ -6,7 +6,7 @@ module.exports = {
 	description: 'Shows an image of a pet from a random chatter',
 	permission: 100,
 	cooldown: 1800, //in seconds
-	category: 'channelSpecific command',
+	category: 'Dev command',
 	opt_outable: false,
 	showDelay: false,
 	noBanphrase: true,
