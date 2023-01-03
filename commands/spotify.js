@@ -23,11 +23,11 @@ module.exports = {
 			}
 
 			let username = user.username;
-			let uid = user.uid
+			let uid = user['user-id'];
 
 			if (input[2]) {
 				username = (input[2][0] === '@') ? input[2].replace('@', '').toLowerCase() : username;
-				uid = (input[2][0] === '@') ? (await sql.Query('SELECT uid FROM Users WHERE username = ?',[input[2].replace('@', '').toLowerCase()]))[0]?.uid : user.uid;
+				uid = (input[2][0] === '@') ? (await sql.Query('SELECT uid FROM Users WHERE username = ?',[input[2].replace('@', '').toLowerCase()]))[0]?.uid : user['user-id'];
 			}
 
             const spotify_user = await sql.Query('SELECT * FROM Spotify WHERE uid = ?',[uid]);
