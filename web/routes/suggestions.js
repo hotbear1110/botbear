@@ -4,9 +4,9 @@ module.exports = (function () {
 
     /* /suggestions */
     router.get('/', async (req, res) => {
-        const suggesionList = await sql.Query('SELECT * FROM Suggestions');
+        const suggestionList = await sql.Query('SELECT * FROM Suggestions');
     
-        res.render('suggestions', { suggesions: suggesionList.reverse() });
+        res.render('suggestions', { suggestions: suggestionList.reverse() });
     });
 
     return router;
