@@ -7,7 +7,7 @@ module.exports = {
 	description: 'Gets a random founder from a given channel',
 	permission: 100,
 	cooldown: 3, //in seconds
-	category: 'Info Command',
+	category: 'Info command',
 	opt_outable: true,
 	// eslint-disable-next-line no-unused-vars
 	execute: async (channel, user, input, perm, aliascommand) => {
