@@ -2,6 +2,7 @@ require('dotenv').config();
 const { got } = require('./../got');
 const sql = require('./../sql/index.js');
 const spotifyTools = require('../tools/spotifyTools.js');
+const youtube = require('youtube-search-api');
 
 module.exports = {
 	name: 'spotify',
@@ -84,9 +85,12 @@ module.exports = {
 			const progress_min_sec = millisToMinutesAndSeconds(progress_ms);
 			const duration_min_sec = millisToMinutesAndSeconds(duration_ms);
 
+
+			let yt_link = (await youtube.GetListByKeyword(artist + ' ' + title, false, 1, [{ type: 'music' }])).items[0].id;
+
 			return (username === user.username) ?
-					`Currently playing song: ${title} by ${artist} - Progress ${progress_min_sec}/${duration_min_sec}` :
-					`Currently playing song on ${username}'s spotify: ${title} by ${artist} - Progress ${progress_min_sec}/${duration_min_sec}`;
+					`Currently playing song: ${title} by ${artist} - Progress ${progress_min_sec}/${duration_min_sec} | Link: https://www.youtube.com/watch?v=${yt_link}` :
+					`Currently playing song on ${username}'s spotify: ${title} by ${artist} - Progress ${progress_min_sec}/${duration_min_sec} | Link: https://www.youtube.com/watch?v=${yt_link}`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
