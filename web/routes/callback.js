@@ -41,6 +41,7 @@ module.exports = (function () {
 
         if (current_state) {
           await sql.Query('UPDATE Spotify SET  access_token = ?, expires_in = ? WHERE state = ? ', [spotifyToken.access_token, expires_in, current_state]);
+          state = current_state;
         } else {
           await sql.Query(`INSERT INTO Spotify 
         			(state, access_token, refresh_token, expires_in) 
