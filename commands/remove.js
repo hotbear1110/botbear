@@ -115,9 +115,9 @@ module.exports = {
 					return 'You aren\'t subscribed to any events. If you want to subscribe, type "bb notify [live/title/game/all]".';
 				}
 			}
-			case "suggestion": {
+			case 'suggestion': {
                     if (!input[3]) {
-                        return `Please enter a suggestion ID`;
+                        return 'Please enter a suggestion ID';
                     }
 
                     const suggestionID = input[3];
@@ -131,7 +131,7 @@ module.exports = {
                     if (userSuggestion) {
                         sql.Query('DELETE FROM Suggestions WHERE ID=?',[suggestionID]);
 
-                        return `Your suggestion was deleted successfully FeelsDankMan 👍`;
+                        return 'Your suggestion was deleted successfully FeelsDankMan 👍';
                     }
                     else {
                         return 'This suggestion does not belong to you FeelsDankMan';
