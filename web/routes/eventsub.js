@@ -162,9 +162,9 @@ module.exports = (async function() {
                 let titleuserlist = '';
                 //temp edit
                 if (channel === 'yabbe') {
-                    titleuserlist = tools.splitLine(titleusers, 290 - newTitle.length);
+                    titleuserlist = tools.splitLine(titleusers, 250 - newTitle.length - (streamer.titleemote.length * 2));
                 } else {
-                    titleuserlist = tools.splitLine(titleusers, 400);
+                    titleuserlist = tools.splitLine(titleusers, 400 - newTitle.length - (streamer.titleemote.length * 2));
                 }
                 console.log(titleuserlist);
                 let titleTime = new Date().getTime();
@@ -181,9 +181,9 @@ module.exports = (async function() {
                 //temp edit
                 let gameuserlist = '';
                 if (channel === 'yabbe') {
-                    gameuserlist = tools.splitLine(gameusers, 290 - newGame.length);
+                    gameuserlist = tools.splitLine(gameusers, 250 - newGame.length - (streamer.gameemote.length * 2));
                 } else {
-                    gameuserlist = tools.splitLine(gameusers, 400);
+                    gameuserlist = tools.splitLine(gameusers, 400 - newGame.length - (streamer.gameemote.length * 2));
                 }
                 let gameTime = new Date().getTime();
                 console.log(gameusers);
@@ -225,9 +225,9 @@ module.exports = (async function() {
             //temp edit
             let userlist = '';
             if (channel === 'yabbe') {
-                userlist = tools.splitLine(users, 290);
+                userlist = tools.splitLine(users, 250 - (streamer.liveemote.length * 2));
             } else {
-                userlist = tools.splitLine(users, 350);
+                userlist = tools.splitLine(users, 400 - (streamer.liveemote.length * 2));
             }
             console.log(streamer.username + ' IS NOW LIVE');
             await sql.Query('UPDATE Streamers SET islive = 1 WHERE username = ?' , [streamer.username]);
@@ -265,9 +265,9 @@ module.exports = (async function() {
             //temp edit
             let userlist = '';
             if (channel === 'yabbe') {
-                userlist = tools.splitLine(users, 290);
+                userlist = tools.splitLine(users, 250 - (streamer.offlineemote.length * 2));
             } else {
-                userlist = tools.splitLine(users, 350);
+                userlist = tools.splitLine(users, 400 - (streamer.offlineemote.length * 2));
             }
             console.log(streamer.username + ' IS NOW OFFLINE');
             await sql.Query('UPDATE Streamers SET islive = 0 WHERE username = ? ', [streamer.username]);

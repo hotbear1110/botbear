@@ -15,16 +15,17 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-            const cache = await redis.Get().Get(`${channel}:chatters_count`);
+			const realchannel = input[2] ?? channel;
+            const cache = await redis.Get().Get(`${realchannel}:chatters_count`);
             if (cache) {
-                return `There are ${cache} users in the chat`;
+		return (realchannel === channel) ? `There are ${cache} users in chat rn :O` : `There are ${cache} users in that chat rn :O`;
             }
 
-			const { chatter_count } = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`).json();
-            const b = await redis.Get().Set(`${channel}:chatters_count`, chatter_count);
+			const { chatter_count } = await got(`https://tmi.twitch.tv/group/user/${realchannel}/chatters`).json();
+            const b = await redis.Get().Set(`${realchannel}:chatters_count`, chatter_count);
             b(CACHE_TIME);
 
-			return `There are ${chatter_count} users in chat rn :O`;
+			return (realchannel === channel) ? `There are ${chatter_count} users in chat rn :O` : `There are ${chatter_count} users in that chat rn :O`;
 		} catch (err) {
 			console.log(err);
 			if (err.name) {

@@ -540,7 +540,11 @@ async function onConnectedHandler(addr, port) {
  * @param { import('./tools/redis.js').EventSubChatUpdate } Data
  */
 const onChatUpdateHandler = async (Data) => {
-    if (Data.Message) {
+	const unmuteTime = await redis.Get().Get(`${Data.Channel}:unmute_time`) ?? null;
+
+	const currentTime = Date.now();
+
+    if (Data.Message && currentTime >= unmuteTime) {
         Data.Message.every((msg, i) => 
 		setTimeout(() => {
 			new messageHandler(`${Data.Channel}`, msg, true, false, 0, false, null, Data.spamAllowed).newMessage();

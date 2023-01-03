@@ -26,31 +26,25 @@ module.exports = {
 			if (!this.streamer.length) {
 				return 'I don\'t have an emote list for that channnel.';
 		}
-			let emotes = JSON.parse(this.streamer[0].emote_list);
+			let emotes = JSON.parse(this.streamer[0].emote_list).reverse();
 
 			
 			if (!emotes.length) {
 				return 'there are no 3rd party emotes in this channel.';
 			}
 
-			if (input[2]) {
-				if (input[2].startsWith('-') || input[2] === '0') {
-					return '2nd input can\'t be negative or 0';
+			let index = input[2] || '1';
 
-				}
-				let isnumber = !isNaN(input[2]);
-				if (!isnumber) {
-					return '2nd input should be a number';
-				}
-				if (input[2] !== '1') {
-					emotes = emotes.slice(-(12 * (input[2] - 1))).reverse();
-					emotes = emotes.slice((6 * (input[2] - 2) + (6 * (input[2] - 1))));
-				} else {
-					emotes = emotes.slice(-6).reverse();
-				}
-			} else {
-				emotes = emotes.slice(-6).reverse();
+			if (index.startsWith('-') || index === '0') {
+				return '2nd input can\'t be negative or 0';
 			}
+			let isnumber = !isNaN(index);
+			if (!isnumber) {
+				return '2nd input should be a number';
+			}
+
+			emotes = emotes.slice((6*(index-1)), (6*index));
+
 			if (!emotes.length) {
 				return 'monkaS You are going too far now';
 			}
