@@ -552,9 +552,24 @@ const onChatUpdateHandler = async (Data) => {
     }
 };
 
-// Karim/Backous module
 
 cc.on('whisper', async function (from, user, msg, self) {
+
+	if (msg.startsWith('spotifystate:')) {
+		const state = msg.split(':')[1];
+
+		const isRegistered = await sql.Query('SELECT * FROM Spotify WHERE uid = ? ',[user['user-id']]);
+
+		const hasState = await sql.Query('SELECT state FROM Spotify WHERE state = ? ',[state]);
+
+		if (!hasState.length) {
+			new whisperHandler(from, 'Unable to find state.').newWhisper();
+			return;
+		}
+
+		await sql.Query('UPDATE Spotify SET username = ?, uid = ? WHERE state = ? ', [user.username, user['user-id'], state]);
+	}
+
 	from = from.replace('#', '');
 	console.log(`User: ${from} - Msg: ${msg}`);
 	// Don't listen to my own messages..

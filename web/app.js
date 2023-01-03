@@ -22,7 +22,10 @@
     const routes = [
         { router: 'commands', path: '/' },
         { router: 'suggestions', path: '/suggestions'},
-        { router: 'eventsub', path: '/eventsub' }
+        { router: 'eventsub', path: '/eventsub' },
+        { router: 'callback', path: '/callback' },
+        { router: 'login', path: '/login'},
+        { router: 'resolved', path: '/resolved' }
     ];
     
     const express = require('express');
