@@ -3,7 +3,7 @@ const sql = require('./../sql/index.js');
 module.exports = {
 	name: 'remove',
 	ping: true,
-	description: 'This command will unregister you from chat notifications. Available notify commands: "bb remove [live/offline/title/game/all]"(you will now not get notified when the streamer goes live/goes offline/changes title/switches category/all of the previous)',
+	description: 'This command will unregister you from chat notifications or delete a pending suggestion "bb remove suggestion [ID]". Available notify commands: "bb remove [live/offline/title/game/all]"(you will now not get notified when the streamer goes live/goes offline/changes title/switches category/all of the previous)',
 	permission: 100,
 	category: 'Notify command',
 	execute: async (channel, user, input, perm) => {
@@ -115,8 +115,30 @@ module.exports = {
 					return 'You aren\'t subscribed to any events. If you want to subscribe, type "bb notify [live/title/game/all]".';
 				}
 			}
+			case "suggestion": {
+                    if (!input[3]) {
+                        return `Please enter a suggestion ID`;
+                    }
+
+                    const suggestionID = input[3];
+
+                    if (isNaN(suggestionID)) {
+                        return 'You have entered an invalid ID number FeelsDankMan';
+                    }
+
+                    const userSuggestion = (await sql.Query('SELECT User FROM Suggestions WHERE ID=? AND User=?',[suggestionID, user.username]))[0]?.User;
+
+                    if (userSuggestion) {
+                        sql.Query('DELETE FROM Suggestions WHERE ID=?',[suggestionID]);
+
+                        return `Your suggestion was deleted successfully FeelsDankMan 👍`;
+                    }
+                    else {
+                        return 'This suggestion does not belong to you FeelsDankMan';
+                    }     
+				}
 			default:
-				return 'Please specify an event to un-subscribe to. The following events are available: live, offline, title, game, all';
+				return 'Please specify an event to remove. The following events are available: live, offline, title, game, all, suggestion';
 			}
 		} catch (err) {
 			console.log(err);
