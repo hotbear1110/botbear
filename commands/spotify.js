@@ -31,7 +31,7 @@ module.exports = {
 				uid = (input[2][0] === '@') ? (await sql.Query('SELECT uid FROM Users WHERE username = ?',[input[2].replace('@', '').toLowerCase()]))[0]?.uid : user['user-id'];
 			}
 
-            const spotify_user = await sql.Query('SELECT * FROM Spotify WHERE uid = ?',[uid]);
+            const spotify_user = await spotifyTools.fetchToken(uid);
 
 			if (!spotify_user.length) {
 				return (username === user.username) ? 'You have not authorized with the bot. Please login here: https://hotbear.org/login' : 'That user has not authorized with the bot.';
@@ -39,28 +39,22 @@ module.exports = {
 
 			switch(input[2]) {
 				case 'allow': {
-					await sql.Query('UPDATE Spotify SET opt_in = ? WHERE username = ?', ['true', username]);
-					return (spotify_user[0].opt_in === 'true') ? 'You have already allowed others to target you with the spotify command. If you wish to revert this do: bb spotify disallow' : 'You have now allowed others to target you with the spotify command. If you wish to revert this do: bb spotify disallow';
+					await sql.Query('UPDATE Spotify SET opt_in = ? WHERE uid = ?', ['true', uid]);
+					return (spotify_user.opt_in === 'true') ? 'You have already allowed others to target you with the spotify command. If you wish to revert this do: bb spotify disallow' : 'You have now allowed others to target you with the spotify command. If you wish to revert this do: bb spotify disallow';
 				}
 				case 'disallow': {
-					await sql.Query('UPDATE Spotify SET opt_in = ? WHERE username = ?', ['false', username]);
-					return (spotify_user[0].opt_in === 'false') ? 'You have not allowed people to target you with the spotify command. If you wish to allow that do: bb spotify allow' : 'You now no longer allow others to target you with the spotify command. If you wish to allow that again do: bb spotify allow';
+					await sql.Query('UPDATE Spotify SET opt_in = ? WHERE uid = ?', ['false', uid]);
+					return (spotify_user.opt_in === 'false') ? 'You have not allowed people to target you with the spotify command. If you wish to allow that do: bb spotify allow' : 'You now no longer allow others to target you with the spotify command. If you wish to allow that again do: bb spotify allow';
 				}
 			}
 
-			if (spotify_user[0].opt_in === 'false' && username !== user.username) {
+			if (spotify_user.opt_in === 'false' && username !== user.username) {
 				return 'That user has not allowed others to target them. Tell them to do: bb spotify allow';
 			}
 
-            let access_token = spotify_user[0].access_token;
-            const refresh_token = spotify_user[0].refresh_token;
-			const expires_in = spotify_user[0].expires_in;
+            const access_token = spotify_user.access_token;
 			
 			let spotifyData;
-
-			if(Date.now() > expires_in) {
-				access_token = await spotifyTools.refreshToken(username, refresh_token);
-			}
 
 			spotifyData = await got('https://api.spotify.com/v1/me/player', {
 				throwHttpErrors: false,
@@ -70,10 +64,7 @@ module.exports = {
 				}
 			}).json();
 			
-
-            console.log(spotifyData);
-
-			if (!spotifyData.device) {
+			if (!spotifyData.is_playing) {
 				return 'Nothing is currently playing';
 			}
 
@@ -82,11 +73,11 @@ module.exports = {
             const artist = spotifyData.item.artists[0].name;
             const title = spotifyData.item.name;
 
-			const progress_min_sec = millisToMinutesAndSeconds(progress_ms);
-			const duration_min_sec = millisToMinutesAndSeconds(duration_ms);
+			const progress_min_sec = spotifyTools.millisToMinutesAndSeconds(progress_ms);
+			const duration_min_sec = spotifyTools.millisToMinutesAndSeconds(duration_ms);
 
 
-			let yt_link = (await youtube.GetListByKeyword(artist + ' ' + title, false, 1, [{ type: 'music' }])).items[0].id;
+			const yt_link = (await youtube.GetListByKeyword(artist + ' ' + title, false, 1, [{ type: 'music' }])).items[0].id;
 
 			return (username === user.username) ?
 					`Currently playing song: ${title} by ${artist} - Progress ${progress_min_sec}/${duration_min_sec} | Link: youtu.be/${yt_link}` :
@@ -97,12 +88,3 @@ module.exports = {
 		}
 	}
 };
-
-function millisToMinutesAndSeconds(ms) {
-	let minutes = Math.floor(ms / 60000);
-	let seconds = ((ms % 60000) / 1000).toFixed(0);
-	return (
-		seconds == 60 ?
-		(minutes+1) + ':00' :
-		minutes + ':' + (seconds < 10 ? '0' : '') + seconds);
-  }

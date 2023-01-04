@@ -4,15 +4,15 @@ const spotifyTools = require('../tools/spotifyTools.js');
 const youtube = require('youtube-search-api');
 
 module.exports = {
-	name: 'test',
+	name: 'grab',
 	ping: true,
-	description: '',
-	permission: 2000,
+	description: 'This command lets you grab other peoples spotify song and listen to the same one',
+	permission: 100,
 	cooldown: 3, //in seconds
-	category: 'Dev command',
+	category: 'Info command',
 	opt_outable: false,
 	showDelay: false,
-	noBanphrase: true,
+	noBanphrase: false,
 	channelSpecific: false,
 	activeChannel: '',
 	// eslint-disable-next-line no-unused-vars
@@ -21,11 +21,11 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-
+			
 			const uid = user['user-id'];
 
 			if (!input[2]) {
-				return 'You need to provide a user to yoink from';
+				return 'You need to provide a user to grab from';
 			}
 
 			const setTimestamp = (input[3] === '-t');
@@ -35,6 +35,10 @@ module.exports = {
 	
             const spotify_user = await spotifyTools.fetchToken(uid);
 			const spotify_target = await spotifyTools.fetchToken(target_uid);
+
+            if (user.username === target_user) {
+                return 'FeelsDankMan You can\'t grab your own spotify';
+            }
 
 			if (spotify_user.no_auth) {
 				return 'You have not authorized with the bot. Please login here: https://hotbear.org/login';
@@ -48,6 +52,20 @@ module.exports = {
 
             const access_token = spotify_user.access_token;
 			const target_token = spotify_target.access_token;
+
+            const checkPremium = await got('https://api.spotify.com/v1/me', {
+				throwHttpErrors: false,
+				headers: {
+					'Authorization': 'Bearer ' + access_token,
+					'Content-Type': 'application/json'
+				}
+            }).json();
+
+            console.log(checkPremium);
+
+            if (checkPremium.product !== 'premium') {
+                return 'You need Spotify premium to use this feature';
+            }
 
 			const targetData = await got('https://api.spotify.com/v1/me/player', {
 				throwHttpErrors: false,
