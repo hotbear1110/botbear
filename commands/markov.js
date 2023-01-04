@@ -35,7 +35,7 @@ module.exports = {
             } catch (err) {
                 console.log(err);
             }
-            if (!markovAPI.success) {
+            if (!markovAPI?.success) {
                 console.log(markovAPI);
                 markovError = await markovAPI.error;
                 markovAPI = null;
