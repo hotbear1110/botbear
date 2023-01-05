@@ -54,11 +54,11 @@ module.exports = {
                 return 'FeelsDankMan something went wrong in fetching usenames from twitch';
             }
 
-            userData = userData.data.map(x => x.login).join(' ');
+            userData = userData.data.map(x => x.login).join('\n');
 
-            response = (await tools.unpingString(userData, channel)).replaceAll(' ', ', ');
+            let hastebinlist = await tools.makehastebin(userData);
 
-			return `${emotename} is currently upvoted by: ${response}`;
+			return `${emotename} is currently upvoted by: ${hastebinlist}`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
