@@ -3,9 +3,9 @@ const tools = require('./../../tools/tools.js');
 require('dotenv').config();
 
 module.exports = {
-	name: 'downvoted',
+	name: 'upvoted',
 	ping: true,
-	description: 'Shows who downvoted the specific emote',
+	description: 'Shows who upvoted the specific emote',
 	permission: 100,
 	cooldown: 3, //in seconds
 	category: 'channelSpecific command',
@@ -34,10 +34,10 @@ module.exports = {
                 return 'No emote with that emote-id is curently nominated';
             }
 
-            let response = emotes.filter(x => x.EmoteID === emoteid)[0].Downvotes.map(x => x.VoteBy).join('&id=');
+            let response = emotes.filter(x => x.EmoteID === emoteid)[0].Votes.map(x => x.VoteBy).join('&id=');
 
             if (!response) {
-                return `No user has downvoted ${emotename} yet`;
+                return `No user has upvoted ${emotename} yet`;
             }
 
             let userData;
@@ -58,7 +58,7 @@ module.exports = {
 
             response = (await tools.unpingString(userData, channel)).replaceAll(' ', ', ');
 
-			return `${emotename} is currently downvoted by: ${response}`;
+			return `${emotename} is currently upvoted by: ${response}`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
