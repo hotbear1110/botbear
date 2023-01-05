@@ -22,9 +22,13 @@ module.exports = {
 			}
             const emotes = await got('https://bot-api.gempir.com/api/nominations?channel=nymn').json();
 
+            if (!input[2]) {
+                return 'Please provide an emote-id to look up';
+            }
+
             let emoteid = input[2];
 
-            let emotename = emotes.filter(x => x.EmoteID === emoteid)[0].EmoteCode;
+            let emotename = emotes.filter(x => x.EmoteID === emoteid)[0]?.EmoteCode;
             
             if (!emotename) {
                 return 'No emote with that emote-id is curently nominated';
