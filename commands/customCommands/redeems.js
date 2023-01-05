@@ -1,5 +1,5 @@
 const { got } = require('./../../got');
-const tools = require('../tools/tools.js');
+const tools = require('./../../tools/tools.js');
 
 module.exports = {
 	name: 'redeems',
