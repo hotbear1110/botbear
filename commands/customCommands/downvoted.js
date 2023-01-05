@@ -25,19 +25,34 @@ module.exports = {
             let emoteid = input[2];
 
             let emotename = emotes.filter(x => x.EmoteID === emoteid)[0].EmoteCode;
+            
+            if (!emotename) {
+                return 'No emote with that emote-id is curently nominated';
+            }
 
             let response = emotes.filter(x => x.EmoteID === emoteid)[0].Downvotes.map(x => x.VoteBy).join('&id=');
 
-            let userData = await got(`https://api.twitch.tv/helix/users?id=${response}`, {
-						headers: {
-							'client-id': process.env.TWITCH_CLIENTID,
-							'Authorization': process.env.TWITCH_AUTH
-						}
-					}).json();
+            if (!response) {
+                return `No user has downvoted ${emotename} yet`;
+            }
 
-            userData = userData.data.map(x => x.login).join(', ');
+            let userData;
 
-            response = await tools.unpingString(userData, channel);
+            try {
+                userData = await got(`https://api.twitch.tv/helix/users?id=${response}`, {
+                    headers: {
+                        'client-id': process.env.TWITCH_CLIENTID,
+                        'Authorization': process.env.TWITCH_AUTH
+                    }
+                }).json();
+            } catch (err) {
+                console.log(err);
+                return 'FeelsDankMan something went wrong in fetching usenames from twitch';
+            }
+
+            userData = userData.data.map(x => x.login).join(' ');
+
+            response = (await tools.unpingString(userData, channel)).replaceAll(' ', ', ');
 
 			return `${emotename} is currently downvoted by: ${response}`;
 		} catch (err) {
