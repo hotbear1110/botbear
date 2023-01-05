@@ -10,7 +10,7 @@ module.exports = {
 	category: 'channelSpecific command',
 	opt_outable: false,
 	showDelay: false,
-	noBanphrase: false,
+	noBanphrase: true,
 	channelSpecific: true,
 	activeChannel: 'nymn',
 	// eslint-disable-next-line no-unused-vars
