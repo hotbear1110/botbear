@@ -13,7 +13,7 @@ module.exports = {
 	showDelay: false,
 	noBanphrase: false,
 	channelSpecific: true,
-	activeChannel: 'nymn',
+	activeChannel: 'hotbear1110',
 	// eslint-disable-next-line no-unused-vars
 	execute: async (channel, user, input, perm, aliascommand) => {
 		try {
@@ -34,29 +34,30 @@ module.exports = {
                 return 'No emote with that emote-id is curently nominated';
             }
 
-            let response = emotes.filter(x => x.EmoteID === emoteid)[0].Votes.map(x => x.VoteBy).join('&id=');
+            let response = emotes.filter(x => x.EmoteID === emoteid)[0].Votes.map(x => x.VoteBy);
 
             if (!response) {
                 return `No user has upvoted ${emotename} yet`;
             }
 
-            let userData;
+            let usernames = [];
 
-            try {
-                userData = await got(`https://api.twitch.tv/helix/users?id=${response}`, {
-                    headers: {
-                        'client-id': process.env.TWITCH_CLIENTID,
-                        'Authorization': process.env.TWITCH_AUTH
-                    }
-                }).json();
-            } catch (err) {
-                console.log(err);
-                return 'FeelsDankMan something went wrong in fetching usenames from twitch';
+            for (const userID of response) {
+                try {
+                    let userData = await got(`https://api.twitch.tv/helix/users?id=${userID}`, {
+                        headers: {
+                            'client-id': process.env.TWITCH_CLIENTID,
+                            'Authorization': process.env.TWITCH_AUTH
+                        }
+                    }).json();
+
+                    usernames.push(userData.data[0].login);
+                } catch (err) {
+                    console.log(err);
+                }
             }
 
-            userData = userData.data.map(x => x.login).join('\n');
-
-            let hastebinlist = await tools.makehastebin(userData);
+            let hastebinlist = await tools.makehastebin(usernames.join('\n'));
 
 			return `${emotename} is currently upvoted by: ${hastebinlist}`;
 		} catch (err) {
