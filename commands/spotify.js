@@ -80,8 +80,8 @@ module.exports = {
 			const yt_link = (await youtube.GetListByKeyword(artist + ' ' + title, false, 1, [{ type: 'music' }])).items[0].id;
 
 			return (username === user.username) ?
-					`Currently playing song: ${title} by ${artist} - Progress ${progress_min_sec}/${duration_min_sec} | Link: youtu.be/${yt_link}` :
-					`Currently playing song on ${username}'s spotify: ${title} by ${artist} - Progress ${progress_min_sec}/${duration_min_sec} | Link: youtu.be/${yt_link}`;
+					`Currently playing song: ${title} by ${artist} - (${progress_min_sec}/${duration_min_sec}) | Link: youtu.be/${yt_link}` :
+					`Currently playing song on ${username}'s spotify: ${title} by ${artist} - (${progress_min_sec}/${duration_min_sec}) | Link: youtu.be/${yt_link}`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';

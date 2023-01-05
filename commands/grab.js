@@ -109,7 +109,7 @@ module.exports = {
 			let yt_link = (await youtube.GetListByKeyword(artist + ' ' + title, false, 1, [{ type: 'music' }])).items[0].id;
 
 			return (setTimestamp) ?
-			`Now playing ${title} by ${artist} - Progress ${progress_min_sec}/${duration_min_sec} | Link: youtu.be/${yt_link}` :
+			`Now playing ${title} by ${artist} - (${progress_min_sec}/${duration_min_sec}) | Link: youtu.be/${yt_link}` :
 			`Now playing ${title} by ${artist} | Link: youtu.be/${yt_link}`;
 
 		} catch (err) {
