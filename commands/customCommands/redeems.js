@@ -20,7 +20,7 @@ module.exports = {
 			}
             const emotes = await got('https://bot-api.gempir.com/api/emotelog?channel=nymn&limit=100').json();
 
-            const response = emotes.filter(x => x.Type === 'seventv').map(x => `${x.EmoteCode} by ${x.AddedBy}`).slice(0, 5).join(', ');
+            const response = emotes.filter(x => x.Type === 'seventv').map(x => `${x.EmoteCode} by ${x.AddedBy}`).slice(0, 10).join(', ');
 
 			return response;
 		} catch (err) {
