@@ -34,31 +34,32 @@ module.exports = {
                 return 'No emote with that emote-id is curently nominated';
             }
 
-            let response = emotes.filter(x => x.EmoteID === emoteid)[0].Downvotes.map(x => x.VoteBy).join('&id=');
+            let response = emotes.filter(x => x.EmoteID === emoteid)[0].Downvotes.map(x => x.VoteBy);
 
             if (!response) {
                 return `No user has downvoted ${emotename} yet`;
             }
 
-            let userData;
+            let usernames = [];
 
-            try {
-                userData = await got(`https://api.twitch.tv/helix/users?id=${response}`, {
-                    headers: {
-                        'client-id': process.env.TWITCH_CLIENTID,
-                        'Authorization': process.env.TWITCH_AUTH
-                    }
-                }).json();
-            } catch (err) {
-                console.log(err);
-                return 'FeelsDankMan something went wrong in fetching usenames from twitch';
+            for (const userID of response) {
+                try {
+                    let userData = await got(`https://api.twitch.tv/helix/users?id=${userID}`, {
+                        headers: {
+                            'client-id': process.env.TWITCH_CLIENTID,
+                            'Authorization': process.env.TWITCH_AUTH
+                        }
+                    }).json();
+
+                    usernames.push(userData.data[0].login);
+                } catch (err) {
+                    console.log(err);
+                }
             }
 
-            userData = userData.data.map(x => x.login).join(' ');
+            let hastebinlist = await tools.makehastebin(usernames.join('\n'));
 
-            response = (await tools.unpingString(userData, channel)).replaceAll(' ', ', ');
-
-			return `${emotename} is currently downvoted by: ${response}`;
+			return `${emotename} is currently downvoted by: ${hastebinlist}`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
