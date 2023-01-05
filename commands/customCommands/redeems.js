@@ -1,4 +1,5 @@
 const { got } = require('./../../got');
+const tools = require('../tools/tools.js');
 
 module.exports = {
 	name: 'redeems',
@@ -20,7 +21,9 @@ module.exports = {
 			}
             const emotes = await got('https://bot-api.gempir.com/api/emotelog?channel=nymn&limit=100').json();
 
-            const response = emotes.filter(x => x.Type === 'seventv').map(x => `${x.EmoteCode} by ${x.AddedBy}`).slice(0, 10).join(', ');
+            let response = emotes.filter(x => x.Type === 'seventv').map(x => `${x.EmoteCode} by ${x.AddedBy}`).slice(0, 10).join(', ');
+
+            response = await tools.unpingString(response, channel);
 
 			return response;
 		} catch (err) {
