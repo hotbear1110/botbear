@@ -36,7 +36,7 @@ module.exports = {
 
             let response = emotes.filter(x => x.EmoteID === emoteid)[0].Votes.map(x => x.VoteBy);
 
-            if (!response) {
+            if (!response.length) {
                 return `No user has upvoted ${emotename} yet`;
             }
 

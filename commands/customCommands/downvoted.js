@@ -29,14 +29,16 @@ module.exports = {
             let emoteid = input[2];
 
             let emotename = emotes.filter(x => x.EmoteID === emoteid)[0]?.EmoteCode;
-            
+                        
             if (!emotename) {
                 return 'No emote with that emote-id is curently nominated';
             }
 
             let response = emotes.filter(x => x.EmoteID === emoteid)[0].Downvotes.map(x => x.VoteBy);
 
-            if (!response) {
+            console.log(response);
+
+            if (!response.length) {
                 return `No user has downvoted ${emotename} yet`;
             }
 
