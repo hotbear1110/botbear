@@ -28,8 +28,6 @@ module.exports = {
 
             const emoteid =  /\b[a-z\d]{24}\b/i.exec(input[2])?.toString();
 
-            console.log('test: ' + emoteid);
-
             let emotename = emotes.filter(x => x.EmoteID === emoteid)[0]?.EmoteCode;
             
             if (!emotename) {
