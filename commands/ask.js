@@ -16,7 +16,7 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			if (!['nymn', 'hotbear1110', 'elina', 'pajlada', 'brian6932', 'minusinsanity', 'tolatos'].includes(channel) && !(perm >= 1500)) {
+			if (!['nymn', 'hbear___', 'elina', 'pajlada', 'brian6932', 'minusinsanity', 'tolatos'].includes(channel) && !(perm >= 1500)) {
 				return 'This command is currently disabled :)';
 			}
 

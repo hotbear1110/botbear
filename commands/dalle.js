@@ -18,7 +18,7 @@ module.exports = {
 				return;
 			}
 			//temp change
-			if (channel !== 'nymn' && channel !== 'hotbear1110' && channel !== 'pajlada' && channel !== 'brian6932' && !(perm >= 1500)) {
+			if (channel !== 'nymn' && channel !== 'hbear___' && channel !== 'pajlada' && channel !== 'brian6932' && !(perm >= 1500)) {
 				return 'This command is currently disabled :)';
 			}
 
