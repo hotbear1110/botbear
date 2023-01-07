@@ -16,11 +16,11 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			if (!['nymn', 'hbear___', 'elina', 'pajlada', 'brian6932', 'minusinsanity', 'tolatos'].includes(channel) && !(perm >= 1500)) {
+			if (![62300805, 135186096, 174141858, 11148817, 84180052, 17497365, 184066698].includes(+user[`room-id`]) && !(perm >= 1500)) {
 				return 'This command is currently disabled :)';
 			}
 
-			let bannedPhrases = /(\W|^)(racists|racist|racism|race)(\W|$)/gi;
+			let bannedPhrases = /\brac(?:ist[sm]?|e)\b/gi;
 
 			const stringmessage = input.join(' ');
 
@@ -49,8 +49,8 @@ module.exports = {
 			try {
 				const response = await got.post(url, { json: params, headers: headers }).json();
 				const output = `${prompt}${response.choices[0].text}`
-                                    .substring(prompt.length)
-                                    .replace(URL, '$1[DOMAIN]$3$4$5');
+					.substring(prompt.length)
+					.replace(URL, '$1[DOMAIN]$3$4$5');
 
 
 				if (activetrivia[`${channel}`]) {
@@ -62,11 +62,11 @@ module.exports = {
 				}
 				console.log(output);
 
-				await sql.Query(`INSERT INTO Ask 
-        			(User, Channel, Prompt, Response) 
-            			values 
+				await sql.Query(`INSERT INTO Ask
+        			(User, Channel, Prompt, Response)
+            			values
         			(?, ?, ?, ?)`,
-				[user.username, channel, msg, output]
+					[user.username, channel, msg, output]
 				);
 
 				return output;

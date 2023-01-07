@@ -12,13 +12,13 @@ module.exports = {
 	category: 'Random command',
 	execute: async (channel, user, input, perm) => {
 		try {
-			const {FormData, Blob} = (await import('formdata-node'));
+			const { FormData, Blob } = (await import('formdata-node'));
 
 			if (module.exports.permission > perm) {
 				return;
 			}
 			//temp change
-			if (channel !== 'nymn' && channel !== 'hbear___' && channel !== 'pajlada' && channel !== 'brian6932' && !(perm >= 1500)) {
+			if (![62300805, 135186096, 11148817, 84180052].includes(+user[`room-id`]) && !(perm >= 1500)) {
 				return 'This command is currently disabled :)';
 			}
 
@@ -26,7 +26,7 @@ module.exports = {
 				return 'FeelsDankMan No input text';
 			}
 
-            input = input.splice(2);
+			input = input.splice(2);
 			let msg = input.join(' ');
 
 			const url = 'https://api.openai.com/v1/images/generations';
@@ -38,30 +38,30 @@ module.exports = {
 			};
 			const headers = {
 				'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-                'Content-Type' : 'application/json'
+				'Content-Type': 'application/json'
 			};
 
-			
+
 
 
 			try {
 
 				await new messageHandler(channel, user.username + ' ppCircle generating dalle2 image...', true).newMessage();
 
-				
+
 				const response = await got.post(url, { json: params, headers: headers }).json();
 
 				const dalleImageToBlob = async (url) =>
-				new Blob([await got(url).buffer()], { type: 'image/png' });
+					new Blob([await got(url).buffer()], { type: 'image/png' });
 
 				const imgurl = response.data[0].url;
 				const img = await dalleImageToBlob(imgurl);
-    
+
 				const formData = new FormData();
 				formData.append('file', img, 'file.png');
-				
 
-                const imageURL =  await got.post('http://localhost:9005', {
+
+				const imageURL = await got.post('http://localhost:9005', {
 					headers: {
 						'Authorization': process.env.hotbearIMG,
 					},
@@ -71,11 +71,11 @@ module.exports = {
 
 				console.log(imageURL);
 
-				await sql.Query(`INSERT INTO Dalle 
-        			(User, Channel, Prompt, Image) 
-            			values 
+				await sql.Query(`INSERT INTO Dalle
+        			(User, Channel, Prompt, Image)
+            			values
         			(?, ?, ?, ?)`,
-				[user.username, channel, msg, imageURL.body]
+					[user.username, channel, msg, imageURL.body]
 				);
 
 				return `"${msg}": ${imageURL.body}`;
