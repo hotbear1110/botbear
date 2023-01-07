@@ -321,7 +321,40 @@ exports.nameChanges = async () => {
     const changed = [];
     const promises = [];
 
-    const channels = await sql.Query('SELECT * FROM Streamers');
+    let channels = await sql.Query('SELECT * FROM Streamers');
+
+	channels = [...this.groupArray(channels, 100)];
+
+	channels.map(async(streamers) => {
+		const { statusCode, body } = await got(`https://api.twitch.tv/helix/users?id=${streamers.map(x => x.uid).join('&id=')}`, {
+            headers: {
+                'client-id': process.env.TWITCH_CLIENTID,
+                'Authorization': process.env.TWITCH_AUTH
+            },
+            timeout: 10000,
+            throwOnHttpError: false,
+        });
+    
+        if (statusCode >= 400) {
+            console.error('Error while fetching name changes', { u: streamers.map(x => x.uid), s: statusCode, b: body });
+        } else {
+            const userData = JSON.parse(body);
+            
+            if (userData.data.length) {
+
+				userData.data.map(streamer => {
+					const realUser = streamer['login'];
+                
+					if (!streamers.filter(x => x.username === realUser)) {
+
+						sql.Query('UPDATE Streamers SET username=? WHERE uid=?', [realUser, streamer.uid]);
+					
+						changed.push([realUser, streamer.username]);
+					}
+				});
+            }
+        }   
+	});
 
     promises.push(channels.map(async(streamer) => {
         const { statusCode, body } = await got(`https://api.twitch.tv/helix/users?id=${streamer.uid}`, {
@@ -908,3 +941,11 @@ exports.unpingString = (message, channel) => new Promise(async (resolve) => {
 
 	resolve(await message);
 });
+
+exports.groupArray = function*(arr, size) {
+	let i = 0;
+	
+	while (i < arr.length) {
+		yield arr.slice(i, (i += size));
+	}
+};
