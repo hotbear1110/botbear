@@ -61,8 +61,6 @@ module.exports = {
 				}
             }).json();
 
-            console.log(checkPremium);
-
             if (checkPremium.product !== 'premium') {
                 return 'You need Spotify premium to use this feature';
             }
@@ -83,6 +81,18 @@ module.exports = {
 				return `${target_user} is listening to a local song` ;
 			}
 
+			const spotifyData = await got('https://api.spotify.com/v1/me/player', {
+				throwHttpErrors: false,
+				headers: {
+					'Authorization': 'Bearer ' + access_token,
+					'Content-Type': 'application/json'
+				}
+			}).json();
+			
+			if (!spotifyData.device.id) {
+				return 'You need to be listening to a song for this command to work';
+			}
+
 			const uri = targetData.item.uri;
 
             const duration_ms = targetData.item.duration_ms;
@@ -100,6 +110,9 @@ module.exports = {
 				json: {
 					'uris': [uri],
 					'position_ms': position
+				},
+				searchParams: {
+					device_id: spotifyData.device.id
 				}
 			}).json();
 
