@@ -302,7 +302,7 @@ async function onMessageHandler(channel, user, msg, self) {
 	let commands = requireDir('./commands');
 	let customCommands = requireDir('./commands/customCommands');
 
-	if ((typeof commands[realcommand] === 'undefined' && typeof customCommands[realcommand] === 'undefined') || (customCommands[realcommand]?.channelSpecific && customCommands[realcommand]?.activeChannel !== channel)) {
+	if ((typeof commands[realcommand] === 'undefined' && typeof customCommands[realcommand] === 'undefined') || (customCommands[realcommand]?.channelSpecific && !customCommands[realcommand]?.activeChannel?.includes(channel))) {
 		console.log(channel, ': undefined - \'', input, '\'');
 		return;
 	}
@@ -592,7 +592,7 @@ cc.on('whisper', async function (from, user, msg, self) {
 	let commands = requireDir('./commands');
 	let customCommands = requireDir('./commands/customCommands');
 
-	if ((typeof commands[realcommand] === 'undefined' && typeof customCommands[realcommand] === 'undefined') || (customCommands[realcommand]?.channelSpecific && customCommands[realcommand]?.activeChannel !== channel)) {
+	if ((typeof commands[realcommand] === 'undefined' && typeof customCommands[realcommand] === 'undefined') || (customCommands[realcommand]?.channelSpecific && !customCommands[realcommand]?.activeChannel?.includes(channel))) {
 		console.log(channel, ': undefined - \'', input, '\'');
 		return;
 	}
