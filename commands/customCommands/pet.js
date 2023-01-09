@@ -11,7 +11,7 @@ module.exports = {
 	showDelay: false,
 	noBanphrase: true,
 	channelSpecific: true,
-	activeChannel: 'yabbe',
+	activeChannel: ['yabbe'],
 	// eslint-disable-next-line no-unused-vars
 	execute: async (channel, user, input, perm, aliascommand) => {
 		try {
