@@ -1,3 +1,5 @@
+const { con } = require('../../sql');
+
 module.exports = (function () {
     const router = require('express').Router();
     const { got } = require('./../../got');
@@ -82,8 +84,50 @@ module.exports = (function () {
             AddedBy: 'gempir',
             Type: 'election'
          });
+
+         const nymnEmotes = [
+            {
+                EmoteCode: 'Excel',
+                EmoteID: '61fe824dd771ca5bf0379bb2',
+            },
+            {
+                EmoteCode: 'peepoChat',
+                EmoteID: '63438a743d1bc89e0ff9e400',
+            },
+            {
+                EmoteCode: 'veryFors',
+                EmoteID: '62af8dd26f979a8714748dd2',
+            },
+            {
+                EmoteCode: 'Buhh',
+                EmoteID: '61d679c83d52bb5c33c4f9a6',
+            },
+            {
+                EmoteCode: 'docLeave',
+                EmoteID: '60a7c696928d15c10b4de1d9',
+            },
+            {
+                EmoteCode: 'TimeToNime',
+                EmoteID: '6329beb61c85cd937753ec61',
+            },
+            {
+                EmoteCode: 'Okayeg',
+                EmoteID: '603caa69faf3a00014dff0b1',
+            },
+            {
+                EmoteCode: 'FloppaJAM',
+                EmoteID: '60af0116a564afa26e3a7e86',
+            }
+        ];
+
+        const modsEmotes = [
+            {
+                EmoteCode: 'pepeW',
+                EmoteID: '63072162942ffb69e13d703f',
+            }
+        ];
     
-        res.render('newemotes', { emotes: emotes });
+        res.render('newemotes', { emotes: emotes, nymnEmotes: nymnEmotes, modsEmotes: modsEmotes });
     });
 
     return router;

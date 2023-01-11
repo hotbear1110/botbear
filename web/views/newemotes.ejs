@@ -11,27 +11,30 @@
 
 <body>
     <div class="emotes">
-        <h1>Emotes added</h1>
-        <h1 id="sorted">Sorted by: First added </h1>
-        <table id="emoteSort">
+    <div class="subTable" style="float: left;">
+        <h1>Nomination Emotes</h1>
+        <h1 id="Nomination-sorted">Sorted by: First added </h1>
+        <table id="Nomination-emoteSort">
 
             <tr>
-                <th id="sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseTableRows()">Sort ▲</th>
+                <th id="Nomination-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseNominations()">Sort ▲</th>
                 <th>Emote name:</th>
-                <th>Added by:</th>
+                <th>Nominated by:</th>
             </tr>
             <%emotes.reverse()%>
         <% emotes.forEach(function(emote) { %>
 
             <%if (emote.Type === "election") { %>
             <%emoteImage = `https://cdn.7tv.app/emote/${emote.EmoteID}/2x`%>
+            <%emoteLink = `https://7tv.app/emotes/${emote.EmoteID}`%>
 
             <%if (emote.EmoteCode === "dankHug") { %>
                 <%emoteImage = "https://cdn.7tv.app/emote/616edc115ff09767de29919b/2x" %>
+                <%emoteLink = `https://7tv.app/emotes/616edc115ff09767de29919b`%>
             <%}%>
 
             <tr>
-                <td> <img src="<%= emoteImage %>"> </td>
+                <td> <a href="<%= emoteLink %>"><img src="<%= emoteImage %>"> </a></td>
 
                 <td> <p><%- emote.EmoteCode%></p> </td>
             
@@ -43,6 +46,58 @@
         </table>
     </div>
 
+    <div class="subTable" style="float: left;">
+        <h1>Emotes Added by NymN</h1>
+        <h1 id="Nymn-sorted">Sorted by: First added </h1>
+        <table id="Nymn-emoteSort">
+
+            <tr>
+                <th id="Nymn-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseNymn()">Sort ▲</th>
+                <th>Emote name:</th>
+            </tr>
+            <%nymnEmotes.reverse()%>
+        <% nymnEmotes.forEach(function(emote) { %>
+        <%emoteLink = `https://7tv.app/emotes/${emote.EmoteID}`%>
+
+            <%emoteImage = `https://cdn.7tv.app/emote/${emote.EmoteID}/2x`%>
+
+            <tr>
+                <td> <a href="<%= emoteLink %>"><img src="<%= emoteImage %>"> </a></td>
+
+                <td> <p><%- emote.EmoteCode%></p> </td>
+            
+            </tr>
+        <% }) %>
+
+        </table>
+    </div>
+
+    <div class="subTable" style="float: left;">
+        <h1>Emotes Added by MODS</h1>
+        <h1 id="Mods-sorted">Sorted by: First added </h1>
+        <table id="Mods-emoteSort">
+
+            <tr>
+                <th id="Mods-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseMods()">Sort ▲</th>
+                <th>Emote name:</th>
+            </tr>
+            <%modsEmotes.reverse()%>
+        <% modsEmotes.forEach(function(emote) { %>
+        <%emoteLink = `https://7tv.app/emotes/${emote.EmoteID}`%>
+
+            <%emoteImage = `https://cdn.7tv.app/emote/${emote.EmoteID}/2x`%>
+
+            <tr>
+                <td> <a href="<%= emoteLink %>"><img src="<%= emoteImage %>"> </a></td>
+
+                <td> <p><%- emote.EmoteCode%></p> </td>
+            
+            </tr>
+        <% }) %>
+
+        </table>
+    </div>
+</div>
 </body>
 <script>
 
@@ -52,8 +107,8 @@ function getReversed() {
     return reversed;
 }
     
-    function reverseTableRows() {
-    let table = document.getElementById('emoteSort'),
+    function reverseNominations() {
+    let table = document.getElementById('Nomination-emoteSort'),
         newTbody = document.createElement('tbody'),
         oldTbody = table.tBodies[0],
         rows = oldTbody.rows,
@@ -68,8 +123,62 @@ function getReversed() {
     oldTbody.parentNode.replaceChild(newTbody, oldTbody);
 
     reversed = (reversed) ? false : true;
-    let sorted = document.getElementById('sorted');
-    let Sort = document.getElementById('sort-button');
+    let sorted = document.getElementById('Nomination-sorted');
+    let Sort = document.getElementById('Nomination-sort-button');
+    if (reversed) {
+        sorted.innerText = 'Sorted by: Last added'
+        Sort.innerText = 'Sort ▼'
+    } else {
+        sorted.innerText = 'Sorted by: First added'
+        Sort.innerText = 'Sort ▲'
+    }
+}
+
+function reverseNymn() {
+    let table = document.getElementById('Nymn-emoteSort'),
+        newTbody = document.createElement('tbody'),
+        oldTbody = table.tBodies[0],
+        rows = oldTbody.rows,
+        i = rows.length - 2;
+        newTbody.appendChild(rows[0]);
+        console.log(newTbody);
+    while (i >= 0) {
+        newTbody.appendChild(rows[i]);
+        i -= 1;
+    }
+
+    oldTbody.parentNode.replaceChild(newTbody, oldTbody);
+
+    reversed = (reversed) ? false : true;
+    let sorted = document.getElementById('Nymn-sorted');
+    let Sort = document.getElementById('Nymn-sort-button');
+    if (reversed) {
+        sorted.innerText = 'Sorted by: Last added'
+        Sort.innerText = 'Sort ▼'
+    } else {
+        sorted.innerText = 'Sorted by: First added'
+        Sort.innerText = 'Sort ▲'
+    }
+}
+
+function reverseMods() {
+    let table = document.getElementById('Mods-emoteSort'),
+        newTbody = document.createElement('tbody'),
+        oldTbody = table.tBodies[0],
+        rows = oldTbody.rows,
+        i = rows.length - 2;
+        newTbody.appendChild(rows[0]);
+        console.log(newTbody);
+    while (i >= 0) {
+        newTbody.appendChild(rows[i]);
+        i -= 1;
+    }
+
+    oldTbody.parentNode.replaceChild(newTbody, oldTbody);
+
+    reversed = (reversed) ? false : true;
+    let sorted = document.getElementById('Mods-sorted');
+    let Sort = document.getElementById('Mods-sort-button');
     if (reversed) {
         sorted.innerText = 'Sorted by: Last added'
         Sort.innerText = 'Sort ▼'
