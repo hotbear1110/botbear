@@ -25,7 +25,8 @@
         { router: 'eventsub', path: '/eventsub' },
         { router: 'callback', path: '/callback' },
         { router: 'login', path: '/login'},
-        { router: 'resolved', path: '/resolved' }
+        { router: 'resolved', path: '/resolved' },
+        { router: 'newemotes', path: '/newemotes/nymn' }
     ];
     
     const express = require('express');

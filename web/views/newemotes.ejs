@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>newEmotes</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="emotes">
+        <table>
+            <tr>
+                <th>Emote name:</th>
+                <th>Added by:</th>
+            </tr>
+
+        <% emotes.forEach(function(emote) { %>
+            <%if (emote.Type === "election") { %>
+            <%emoteImage = `https://cdn.7tv.app/emote/${emote.EmoteID}/2x`%>
+            <tr>
+                <th> <p><%- emote.EmoteCode%></p> </th>
+            
+                <th> <p><%- emote.AddedBy%></p> </th>
+                <td> <img src="<%= emoteImage %>"> </td>
+            </tr>
+
+            <%}%>
+            <% }) %>
+        </table>
+
+    </div>
+
+</body>
+
+</html>
