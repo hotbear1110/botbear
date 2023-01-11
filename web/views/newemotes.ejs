@@ -16,9 +16,9 @@
         <table id="emoteSort">
 
             <tr>
+                <th id="sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseTableRows()">Sort ▲</th>
                 <th>Emote name:</th>
                 <th>Added by:</th>
-                <th id="sort-button" style="cursor: pointer; text-align: right;" onclick="reverseTableRows()">Sort ▲</th>
             </tr>
             <%emotes.reverse()%>
         <% emotes.forEach(function(emote) { %>
@@ -31,10 +31,11 @@
             <%}%>
 
             <tr>
+                <td> <img src="<%= emoteImage %>"> </td>
+
                 <td> <p><%- emote.EmoteCode%></p> </td>
             
                 <td> <p><%- emote.AddedBy%></p> </td>
-                <td> <img src="<%= emoteImage %>"> </td>
             </tr>
             <%}%>
         <% }) %>
