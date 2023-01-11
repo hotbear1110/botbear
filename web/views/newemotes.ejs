@@ -18,10 +18,10 @@
         <table id="Nomination-emoteSort">
 
             <tr>
-                <th id="Nomination-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseNominations()">Sort ▲</th>
+                <th>Emote</th>
                 <th>Emote name</th>
                 <th>Nominated by</th>
-                <th>Date added</th>
+                <th id="Nomination-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseNominations()">Date added ▲</th>
             </tr>
             <%emotes.reverse()%>
         <% emotes.forEach(function(emote) { %>
@@ -56,15 +56,21 @@
         <table id="Nymn-emoteSort">
 
             <tr>
-                <th id="Nymn-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseNymn()">Sort ▲</th>
+                <th>Emote</th>
                 <th>Emote name</th>
+                <th id="Nymn-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseNymn()">Date added ▲</th>
+
             </tr>
             <%nymnEmotes.reverse()%>
         <% nymnEmotes.forEach(function(emote) { %>
         <%emoteLink = `https://7tv.app/emotes/${emote.EmoteID}`%>
 
             <%emoteImage = `https://cdn.7tv.app/emote/${emote.EmoteID}/2x`%>
+            <% if (!emote.EmoteID.length) { %>
+                <%emoteLink = ''%>
 
+                <%emoteImage = ''%>
+                <%}%>
             <tr>
                 <td> <a href="<%= emoteLink %>"><img src="<%= emoteImage %>"> </a></td>
 
@@ -84,8 +90,9 @@
         <table id="Mods-emoteSort">
 
             <tr>
-                <th id="Mods-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseMods()">Sort ▲</th>
+                <th>Emote</th>
                 <th>Emote name</th>
+                <th id="Mods-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseMods()">Date added ▲</th>
             </tr>
             <%modsEmotes.reverse()%>
         <% modsEmotes.forEach(function(emote) { %>
@@ -136,10 +143,10 @@ function getReversed() {
     let Sort = document.getElementById('Nomination-sort-button');
     if (reversed) {
         sorted.innerText = 'Sorted by: Last added';
-        Sort.innerText = 'Sort ▼';
+        Sort.innerText = 'Date added ▼';
     } else {
         sorted.innerText = 'Sorted by: First added';
-        Sort.innerText = 'Sort ▲';
+        Sort.innerText = 'Date added ▲';
     }
 }
 
@@ -163,10 +170,10 @@ function reverseNymn() {
     let Sort = document.getElementById('Nymn-sort-button');
     if (reversed) {
         sorted.innerText = 'Sorted by: Last added';
-        Sort.innerText = 'Sort ▼';
+        Sort.innerText = 'Date added ▼';
     } else {
         sorted.innerText = 'Sorted by: First added';
-        Sort.innerText = 'Sort ▲';
+        Sort.innerText = 'Date added ▲';
     }
 }
 
@@ -190,10 +197,10 @@ function reverseMods() {
     let Sort = document.getElementById('Mods-sort-button');
     if (reversed) {
         sorted.innerText = 'Sorted by: Last added';
-        Sort.innerText = 'Sort ▼';
+        Sort.innerText = 'Date added ▼';
     } else {
         sorted.innerText = 'Sorted by: First added';
-        Sort.innerText = 'Sort ▲';
+        Sort.innerText = 'Date added ▲';
     }
 }
 </script>

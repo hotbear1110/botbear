@@ -118,6 +118,11 @@ module.exports = (function () {
                 CreatedAt: '2023-01-08T00:00:00.000000Z'
             },
             {
+                EmoteCode: 'Saturday day off',
+                EmoteID: '',
+                CreatedAt: '2023-01-07T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'docLeave',
                 EmoteID: '60a7c696928d15c10b4de1d9',
                 CreatedAt: '2023-01-06T00:00:00.000000Z'
