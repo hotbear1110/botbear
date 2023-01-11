@@ -123,8 +123,8 @@ module.exports = (function () {
                 CreatedAt: '2023-01-07T00:00:00.000000Z'
             },
             {
-                EmoteCode: 'docLeave',
-                EmoteID: '60a7c696928d15c10b4de1d9',
+                EmoteCode: 'FeelsDonkMan',
+                EmoteID: '603cb56bc20d020014423c60',
                 CreatedAt: '2023-01-06T00:00:00.000000Z'
             },
             {
@@ -156,7 +156,7 @@ module.exports = (function () {
                 CreatedAt: '2023-01-04T00:00:00.000000Z'
             }
         ];
-    
+
         res.render('newemotes', { emotes: emotes, nymnEmotes: nymnEmotes, modsEmotes: modsEmotes });
     });
 
