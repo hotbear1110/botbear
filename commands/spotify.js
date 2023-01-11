@@ -3,6 +3,7 @@ const { got } = require('./../got');
 const sql = require('./../sql/index.js');
 const spotifyTools = require('../tools/spotifyTools.js');
 const youtube = require('youtube-search-api');
+const { ErrorReply } = require('redis');
 
 module.exports = {
 	name: 'spotify',
@@ -84,6 +85,9 @@ module.exports = {
 					`Currently playing song on ${username}'s spotify: ${title} by ${artist} - (${progress_min_sec}/${duration_min_sec}) | Link: youtu.be/${yt_link}`;
 		} catch (err) {
 			console.log(err);
+			if (err.starsWith('RequestError: Unexpected token U in JSON at position 0')) {
+				return 'FeelsDankMan I\'m still not verified by spotify, so I can only add spotify "testers" manually via the dev dashboard. If you want to become a "tester" message @hbear___. You will need to provide your Email to get added.';
+			}
 			return 'FeelsDankMan Error';
 		}
 	}
