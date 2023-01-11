@@ -41,11 +41,12 @@ h2 {
 }
 
 .emotes {
-  width: 60%;
-  margin-left: auto;
-  margin-right: auto;
+  display: flex;
+  justify-content: center;
+
 }
 
 .subTable {
-  margin-left: 5%;
+  margin-left: 2%;
+
 }
