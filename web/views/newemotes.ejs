@@ -16,93 +16,20 @@
                 <th>Emote name:</th>
                 <th>Added by:</th>
             </tr>
-            <tr>
-                <th> <p>PagMan</p> </th>
-            
-                <th> <p>gempir</p> </th>
-                <td> <img src="https://cdn.7tv.app/emote/60ae9a57ac03cad60771b2d8/2x"> </td>
-            </tr>
 
+        <%if (reverse) { %>
+            <% emotes.reverse() %>
+        <%}%>
 
-            <tr>
-                <th> <p>POGPLANT</p> </th>
-            
-                <th> <p>fawcan</p> </th>
-                <td> <img src="https://cdn.7tv.app/emote/60b4fd124eb0019aa6ed4ec7/2x"> </td>
-            </tr>
-
-            <tr>
-                <th> <p>pokiDance</p> </th>
-            
-                <th> <p>gempir</p> </th>
-                <td> <img src="https://cdn.7tv.app/emote/60a1de4aac2bcb20efc751fb/2x"> </td>
-            </tr>
-
-            <tr>
-                <th> <p>nymn123</p> </th>
-            
-                <th> <p>aiterace</p> </th>
-                <td> <img src="https://cdn.7tv.app/emote/6162d21ef7b7a929341244dd/2x"> </td>
-            </tr>
-
-
-            <tr>
-                <th> <p>Cat</p> </th>
-            
-                <th> <p>fawcan</p> </th>
-                <td> <img src="https://cdn.7tv.app/emote/60b5917d22b0373436c28ac0/2x"> </td>
-            </tr>
-
-
-            <tr>
-                <th> <p>LULE</p> </th>
-            
-                <th> <p>dagaugl</p> </th>
-                <td> <img src="https://cdn.7tv.app/emote/605305868c870a000de38b6f/2x"> </td>
-            </tr>
-
-            <tr>
-                <th> <p>Aware</p> </th>
-            
-                <th> <p>cybo_</p> </th>
-                <td> <img src="https://cdn.7tv.app/emote/6145e8b10969108b671957ec/2x"> </td>
-            </tr>
-
-            <tr>
-                <th> <p>Clueless</p> </th>
-            
-                <th> <p>cycionetm</p> </th>
-                <td> <img src="https://cdn.7tv.app/emote/6154ecd36251d7e000db18a0/2x"> </td>
-            </tr>
-
-            <tr>
-                <th> <p>NymN</p> </th>
-            
-                <th> <p>cycionetm</p> </th>
-                <td> <img src="https://cdn.7tv.app/emote/60ae546c9986a00349ea35d5/2x"> </td>
-            </tr>
-
-            <tr>
-                <th> <p>DOCING</p> </th>
-            
-                <th> <p>soaral</p> </th>
-                <td> <img src="https://cdn.7tv.app/emote/603cd0152c7b4500143b46db/2x"> </td>
-            </tr>
-
-            <tr>
-                <th> <p>AlienPls</p> </th>
-            
-                <th> <p>kurrekts</p> </th>
-                <td> <img src="https://cdn.7tv.app/emote/60e8677677b18d5dd3800410/2x"> </td>
-            </tr>
-
-        <% emotes.reverse() %>
         <% emotes.forEach(function(emote) { %>
+
             <%if (emote.Type === "election") { %>
             <%emoteImage = `https://cdn.7tv.app/emote/${emote.EmoteID}/2x`%>
+
             <%if (emote.EmoteCode === "dankHug") { %>
                 <%emoteImage = "https://cdn.7tv.app/emote/616edc115ff09767de29919b/2x" %>
-                <%}%>
+            <%}%>
+
             <tr>
                 <th> <p><%- emote.EmoteCode%></p> </th>
             
@@ -111,7 +38,7 @@
             </tr>
 
             <%}%>
-            <% }) %>
+        <% }) %>
 
         </table>
 
