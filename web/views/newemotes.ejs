@@ -100,6 +100,9 @@
         <% emotes.forEach(function(emote) { %>
             <%if (emote.Type === "election") { %>
             <%emoteImage = `https://cdn.7tv.app/emote/${emote.EmoteID}/2x`%>
+            <%if (emote.EmoteCode === "dankHug") { %>
+                <%emoteImage = "https://cdn.7tv.app/emote/616edc115ff09767de29919b/2x" %>
+                <%}%>
             <tr>
                 <th> <p><%- emote.EmoteCode%></p> </th>
             
