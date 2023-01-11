@@ -21,6 +21,7 @@
                 <th id="Nomination-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseNominations()">Sort ▲</th>
                 <th>Emote name</th>
                 <th>Nominated by</th>
+                <th>Date added</th>
             </tr>
             <%emotes.reverse()%>
         <% emotes.forEach(function(emote) { %>
@@ -40,6 +41,8 @@
                 <td> <p><%- emote.EmoteCode%></p> </td>
             
                 <td> <p><%- emote.AddedBy%></p> </td>
+
+                <td> <p><%- emote.CreatedAt?.split('T')[0]%></p> </td>
             </tr>
             <%}%>
         <% }) %>
@@ -66,6 +69,8 @@
                 <td> <a href="<%= emoteLink %>"><img src="<%= emoteImage %>"> </a></td>
 
                 <td> <p><%- emote.EmoteCode%></p> </td>
+
+                <td> <p><%- emote.CreatedAt?.split('T')[0]%></p> </td>
             
             </tr>
         <% }) %>
@@ -92,6 +97,8 @@
                 <td> <a href="<%= emoteLink %>"><img src="<%= emoteImage %>"> </a></td>
 
                 <td> <p><%- emote.EmoteCode%></p> </td>
+
+                <td> <p><%- emote.CreatedAt?.split('T')[0]%></p> </td>
             
             </tr>
         <% }) %>
