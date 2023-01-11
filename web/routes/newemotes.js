@@ -5,7 +5,6 @@ module.exports = (function () {
     /* /suggestions */
     router.get('/', async (req, res) => {
         let emotes = await got('https://bot-api.gempir.com/api/emotelog?channel=nymn&limit=1000').json();
-        const reverse = (req.query.reverse === undefined);
 
         emotes.push({ 
             EmoteCode: 'AlienPls',
@@ -84,7 +83,7 @@ module.exports = (function () {
             Type: 'election'
          });
     
-        res.render('newemotes', { emotes: emotes, reverse: reverse });
+        res.render('newemotes', { emotes: emotes });
     });
 
     return router;

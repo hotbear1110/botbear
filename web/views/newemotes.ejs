@@ -12,18 +12,15 @@
 <body>
     <div class="emotes">
         <h1>Emotes added</h1>
-        <h1>Sorted by: <%-((reverse) ? "First added" : "Last added")%></h1>
+        <h1 id="sorted">Sorted by: First added </h1>
+        <table id="emoteSort">
 
-        <table>
             <tr>
                 <th>Emote name:</th>
                 <th>Added by:</th>
+                <th id="sort-button" style="cursor: pointer; text-align: right;" onclick="reverseTableRows()">Sort ▲</th>
             </tr>
-
-        <%if (reverse) { %>
-            <% emotes.reverse() %>
-        <%}%>
-
+            <%emotes.reverse()%>
         <% emotes.forEach(function(emote) { %>
 
             <%if (emote.Type === "election") { %>
@@ -34,19 +31,53 @@
             <%}%>
 
             <tr>
-                <th> <p><%- emote.EmoteCode%></p> </th>
+                <td> <p><%- emote.EmoteCode%></p> </td>
             
-                <th> <p><%- emote.AddedBy%></p> </th>
+                <td> <p><%- emote.AddedBy%></p> </td>
                 <td> <img src="<%= emoteImage %>"> </td>
             </tr>
-
             <%}%>
         <% }) %>
 
         </table>
-
     </div>
 
 </body>
+<script>
+
+let reversed = false;
+
+function getReversed() {
+    return reversed;
+}
+    
+    function reverseTableRows() {
+    let table = document.getElementById('emoteSort'),
+        newTbody = document.createElement('tbody'),
+        oldTbody = table.tBodies[0],
+        rows = oldTbody.rows,
+        i = rows.length - 2;
+        newTbody.appendChild(rows[0]);
+        console.log(newTbody);
+    while (i >= 0) {
+        newTbody.appendChild(rows[i]);
+        i -= 1;
+    }
+
+    oldTbody.parentNode.replaceChild(newTbody, oldTbody);
+
+    reversed = (reversed) ? false : true;
+    let sorted = document.getElementById('sorted');
+    let Sort = document.getElementById('sort-button');
+    if (reversed) {
+        sorted.innerText = 'Sorted by: Last added'
+        Sort.innerText = 'Sort ▼'
+    } else {
+        sorted.innerText = 'Sorted by: First added'
+        Sort.innerText = 'Sort ▲'
+    }
+}
+
+</script> 
 
 </html>
