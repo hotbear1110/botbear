@@ -100,7 +100,7 @@ module.exports = (function () {
             {
                 EmoteCode: 'RAGEY',
                 EmoteID: '6309e73ffe72a7a37ff476f5',
-                CreatedAt: '2023-01-01T00:00:00.000000Z'
+                CreatedAt: '2023-01-12T00:00:00.000000Z'
             },
             {
                 EmoteCode: 'Excel',
