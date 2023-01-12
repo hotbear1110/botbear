@@ -140,6 +140,20 @@ module.exports = (function () {
                 Type: 'election',
                 CreatedAt: '2023-01-09T00:00:00.000000Z'
             },
+            {
+                EmoteCode: 'ok',
+                EmoteID: '62af82f5454b0130fba333ba',
+                AddedBy: 'tolatos',
+                Type: 'election',
+                CreatedAt: '2023-01-05T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'docLeave',
+                EmoteID: '60a7c696928d15c10b4de1d9',
+                AddedBy: 'rexinus1',
+                Type: 'election',
+                CreatedAt: '2023-01-06T00:00:00.000000Z'
+            },
          ];
 
 
