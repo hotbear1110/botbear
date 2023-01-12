@@ -11,6 +11,7 @@ module.exports = (function () {
     router.get('/', async (req, res) => {
         let state = generateRandomString(16);
         let scope = 'user-modify-playback-state user-read-playback-position user-top-read user-read-playback-state user-read-recently-played user-read-currently-playing user-read-email user-read-private';
+        let scope = 'user-read-playback-state user-read-currently-playing user-read-private user-modify-playback-state';
       
         res.redirect('https://accounts.spotify.com/authorize?' +
           querystring.stringify({
