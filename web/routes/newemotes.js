@@ -98,6 +98,11 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: 'RAGEY',
+                EmoteID: '6309e73ffe72a7a37ff476f5',
+                CreatedAt: '2023-01-01T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'Excel',
                 EmoteID: '61fe824dd771ca5bf0379bb2',
                 CreatedAt: '2023-01-11T00:00:00.000000Z'
@@ -145,11 +150,6 @@ module.exports = (function () {
             {
                 EmoteCode: 'FloppaJAM',
                 EmoteID: '60af0116a564afa26e3a7e86',
-                CreatedAt: '2023-01-01T00:00:00.000000Z'
-            },
-            {
-                EmoteCode: 'RAGEY',
-                EmoteID: '6309e73ffe72a7a37ff476f5',
                 CreatedAt: '2023-01-01T00:00:00.000000Z'
             }
         ];
