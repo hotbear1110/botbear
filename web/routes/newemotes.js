@@ -96,10 +96,60 @@ module.exports = (function () {
             CreatedAt: '2022-12-31T00:00:00.000000Z'
          });
 
+
+         const modifyEmotes = [
+            {
+                EmoteCode: 'dankHug',
+                EmoteID: '616edc115ff09767de29919b',
+                AddedBy: 'hbear___',
+                Type: 'election',
+                CreatedAt: '2023-01-06T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'docPls',
+                EmoteID: '618fd73e17e4d50afc0d4e3f',
+                AddedBy: 'ralkur',
+                Type: 'election',
+                CreatedAt: '2023-01-04T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'Sadge',
+                EmoteID: '61630205c1ff9a17cc396522',
+                AddedBy: 'rexinus1',
+                Type: 'election',
+                CreatedAt: '2023-01-10T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'Pepege',
+                EmoteID: '60afc290ebfcf7562ee8bab5',
+                AddedBy: 'vlashaaak',
+                Type: 'election',
+                CreatedAt: '2023-01-11T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'docL',
+                EmoteID: '6350bab5462cfc442024c27c',
+                AddedBy: 'timboooooh',
+                Type: 'election',
+                CreatedAt: '2023-01-03T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'eShrug',
+                EmoteID: '61a7bac1e9684edbbc37d009',
+                AddedBy: 'wesselch',
+                Type: 'election',
+                CreatedAt: '2023-01-09T00:00:00.000000Z'
+            },
+         ];
+
+
+         modifyEmotes.map(x => emotes.splice(emotes.map(y => y.EmoteCode).indexOf(x.EmoteCode), 1, x));
+
+
          const nymnEmotes = [
             {
                 EmoteCode: 'RAGEY',
-                EmoteID: '6309e73ffe72a7a37ff476f5',
+                EmoteID: '62f80d745a8981e4c792ca1c',
                 CreatedAt: '2023-01-12T00:00:00.000000Z'
             },
             {
