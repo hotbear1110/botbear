@@ -90,7 +90,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
 	const offlineonly = await sql.Query('SELECT * FROM Streamers WHERE username=?', [channel]);
 
-	if (offlineonly[0].offlineonly === 1 && offlineonly[0].islive === 1 && !await tools.isMod(user, channel)) {
+	if (offlineonly[0].offlineonly === 1 && offlineonly[0].islive === 1 && user.username !== channel) {
 		return;
 	}
 
