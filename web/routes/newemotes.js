@@ -128,8 +128,8 @@ module.exports = (function () {
                 CreatedAt: '2023-01-06T00:00:00.000000Z'
             },
             {
-                EmoteCode: 'docL',
-                EmoteID: '6350bab5462cfc442024c27c',
+                EmoteCode: 'SNIFFA',
+                EmoteID: '60e787dd375879d78fc6b25e',
                 CreatedAt: '2023-01-05T00:00:00.000000Z'
             },
             {
