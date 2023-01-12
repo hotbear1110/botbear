@@ -48,3 +48,23 @@ h2 {
 .subTable {
   margin-left: 2%;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #010409; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #1f2b3a6c;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #1d2633; 
+}
