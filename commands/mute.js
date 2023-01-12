@@ -4,7 +4,7 @@ const cc = require('../bot.js').cc;
 module.exports = {
 	name: 'mute',
 	ping: true,
-	description: 'Mutes bot notifications for x minutes. Default is 1 min',
+	description: 'Mutes bot notifications for x minutes. Default is 5 min',
 	permission: 100,
 	cooldown: 3, //in seconds
 	category: 'Notify command',
@@ -26,6 +26,8 @@ module.exports = {
                 return;
             }
 
+			input[2] = input[2]?.replaceAll('m', '');
+
 			if (input[2].startsWith('-') || input[2] === '0') {
 				return '2nd input can\'t be negative or 0';
 
@@ -35,7 +37,7 @@ module.exports = {
 				return '2nd input should be a number';
 			}
 
-            let duration = input[2] * 60 * 1000 ?? 60 * 1000;
+            let duration = input[2] * 60 * 1000 ?? 5 * 60 * 1000;
 
             let unmuteTime = Date.now() + duration;
 
@@ -43,10 +45,10 @@ module.exports = {
             mute(duration / 1000);
 
 			if (channel === 'nymn') {
-				cc.say(channel, '/timeout TitleChange_Bot ' + input[2] + 'm' ?? 1 + 'm');
+				cc.say(channel, '/timeout TitleChange_Bot ' + input[2] + 'm' ?? 5 + 'm');
 			}
 
-			return `Successfully muted notifications for ${input[2] ?? 1} min`;
+			return `Successfully muted notifications for ${input[2] ?? 5} min`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
