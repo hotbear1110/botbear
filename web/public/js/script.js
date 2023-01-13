@@ -40,7 +40,6 @@
          rows = oldTbody.rows,
          i = rows.length - 2;
          newTbody.appendChild(rows[0]);
-         console.log(newTbody);
      while (i >= 0) {
          newTbody.appendChild(rows[i]);
          i -= 1;
