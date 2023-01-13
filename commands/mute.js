@@ -45,7 +45,7 @@ module.exports = {
             mute(duration / 1000);
 
 			if (channel === 'nymn') {
-				cc.say(channel, '/timeout TitleChange_Bot ' + min + 'm');
+				cc.say(channel, '/timeout TitleChange_Bot ' + min + 'm Muted for notification spam');
 			}
 
 			return `Successfully muted notifications for ${min} min`;
