@@ -103,10 +103,10 @@
 
                 <td> <p><%- emote.EmoteCode%></p> </td>
 
-                <% if (emote.AddedBy === "NymN") { %>
-                    <td> <p><%- emote.AddedBy%></p> </td>
-                <%} else {%>
+                <% if (emote.AddedBy === "MODS") { %>
                     <td> <p><%- emote.AddedBy%> <span style="color:red;">(NymN ditched)</span></p> </td>
+                <%} else {%>
+                    <td> <p><%- emote.AddedBy%></p> </td>
                 <%}%>
                 <td> <p><%- emote.CreatedAt?.split('T')[0]%></p> </td>
             
