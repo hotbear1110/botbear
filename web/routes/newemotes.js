@@ -162,6 +162,11 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: 'GymN',
+                EmoteID: '6305c255d4b348f08e833c90',
+                CreatedAt: '2023-01-13T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'RAGEY',
                 EmoteID: '62f80d745a8981e4c792ca1c',
                 CreatedAt: '2023-01-12T00:00:00.000000Z'
