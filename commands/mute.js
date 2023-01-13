@@ -26,18 +26,18 @@ module.exports = {
                 return;
             }
 
-			input[2] = input[2]?.replaceAll('m', '');
+			let min = input[2]?.replaceAll('m', '') ?? 5;
 
-			if (input[2].startsWith('-') || input[2] === '0') {
+			if (min.startsWith('-') || min === '0') {
 				return '2nd input can\'t be negative or 0';
 
 			}
-			let isnumber = !isNaN(input[2]);
+			let isnumber = !isNaN(min);
 			if (!isnumber) {
 				return '2nd input should be a number';
 			}
 
-            let duration = input[2] * 60 * 1000 ?? 5 * 60 * 1000;
+            let duration = min * 60 * 1000;
 
             let unmuteTime = Date.now() + duration;
 
@@ -45,10 +45,10 @@ module.exports = {
             mute(duration / 1000);
 
 			if (channel === 'nymn') {
-				cc.say(channel, '/timeout TitleChange_Bot ' + input[2] + 'm' ?? 5 + 'm');
+				cc.say(channel, '/timeout TitleChange_Bot ' + min + 'm');
 			}
 
-			return `Successfully muted notifications for ${input[2] ?? 5} min`;
+			return `Successfully muted notifications for ${min} min`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
