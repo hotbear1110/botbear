@@ -231,7 +231,31 @@ module.exports = (function () {
             }
         ];
 
-        res.render('newemotes', { emotes: emotes, nymnEmotes: nymnEmotes, modsEmotes: modsEmotes });
+        const viewerEmotes = [
+            {
+                EmoteCode: 'Ogre',
+                EmoteID: '61c71adaef5a587a07458f83',
+                AddedBy: 'FabulousPotato69',
+                Type: 'election',
+                CreatedAt: '2023-01-13T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'batPls',
+                EmoteID: '610a8aab49dcebc8a3924f42',
+                AddedBy: 'FutureNactiveAccount',
+                Type: 'election',
+                CreatedAt: '2023-01-13T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'monkaE',
+                EmoteID: '63695fc399efe5867cd0d4a5',
+                AddedBy: 'vrethur',
+                Type: 'election',
+                CreatedAt: '2023-01-13T00:00:00.000000Z'
+            },
+        ];
+
+        res.render('newemotes', { emotes: emotes, nymnEmotes: nymnEmotes, modsEmotes: modsEmotes, viewerEmotes: viewerEmotes });
     });
 
     return router;

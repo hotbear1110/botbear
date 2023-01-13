@@ -46,6 +46,38 @@
     </div>
 
     <div class="subTable" style="float: left;">
+        <h2>Emotes Added by viewers</h2>
+        <h3 id="Viewers-sorted">Sorted by: First added </h3>
+        <table id="Viewers-emoteSort">
+
+            <tr>
+                <th>Emote</th>
+                <th>Emote name</th>
+                <th>Nominated by</th>
+                <th id="Viewers-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseViewers()">Date added ▲</th>
+            </tr>
+            <%viewerEmotes.reverse()%>
+        <% viewerEmotes.forEach(function(emote) { %>
+        <%emoteLink = `https://7tv.app/emotes/${emote.EmoteID}`%>
+
+            <%emoteImage = `https://cdn.7tv.app/emote/${emote.EmoteID}/2x`%>
+
+            <tr>
+                <td> <a href="<%= emoteLink %>" target="_blank" rel="noopener noreferrer"><img src="<%= emoteImage %>"> </a></td>
+
+                <td> <p><%- emote.EmoteCode%></p> </td>
+
+                <td> <p><%- emote.AddedBy%></p> </td>
+
+                <td> <p><%- emote.CreatedAt?.split('T')[0]%></p> </td>
+            
+            </tr>
+        <% }) %>
+
+        </table>
+    </div>
+
+    <div class="subTable" style="float: left;">
         <h2>Emotes Added by NymN</h2>
         <h3 id="Nymn-sorted">Sorted by: First added </h3>
         <table id="Nymn-emoteSort">
@@ -107,6 +139,7 @@
 
         </table>
     </div>
+
 </div>
 </body>
 <script>
@@ -136,6 +169,33 @@ function getReversed() {
     reversed = (reversed) ? false : true;
     let sorted = document.getElementById('Nomination-sorted');
     let Sort = document.getElementById('Nomination-sort-button');
+    if (reversed) {
+        sorted.innerText = 'Sorted by: Last added';
+        Sort.innerText = 'Date added ▼';
+    } else {
+        sorted.innerText = 'Sorted by: First added';
+        Sort.innerText = 'Date added ▲';
+    }
+}
+
+function reverseViewers() {
+    let table = document.getElementById('Viewers-emoteSort'),
+        newTbody = document.createElement('tbody'),
+        oldTbody = table.tBodies[0],
+        rows = oldTbody.rows,
+        i = rows.length - 2;
+        newTbody.appendChild(rows[0]);
+        console.log(newTbody);
+    while (i >= 0) {
+        newTbody.appendChild(rows[i]);
+        i -= 1;
+    }
+
+    oldTbody.parentNode.replaceChild(newTbody, oldTbody);
+
+    reversed = (reversed) ? false : true;
+    let sorted = document.getElementById('Viewers-sorted');
+    let Sort = document.getElementById('Viewers-sort-button');
     if (reversed) {
         sorted.innerText = 'Sorted by: Last added';
         Sort.innerText = 'Date added ▼';
