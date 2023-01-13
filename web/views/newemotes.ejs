@@ -77,14 +77,15 @@
     </div>
 
     <div class="subTable" style="float: left;">
-        <h2>Emotes Added by NymN</h2>
-        <h3 id="Nymn-sorted">Sorted by: First added </h3>
-        <table id="Nymn-emoteSort">
+        <h2>Emotes Added by NymN/MODS</h2>
+        <h3 id="Nymn/mods-sorted">Sorted by: First added </h3>
+        <table id="Nymn/mods-emoteSort">
 
             <tr>
                 <th>Emote</th>
                 <th>Emote name</th>
-                <th id="Nymn-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseNymn()">Date added ▲</th>
+                <th>Added by</th>
+                <th id="Nymn/mods-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseNymnMods()">Date added ▲</th>
 
             </tr>
             <%nymnEmotes.reverse()%>
@@ -102,35 +103,11 @@
 
                 <td> <p><%- emote.EmoteCode%></p> </td>
 
-                <td> <p><%- emote.CreatedAt?.split('T')[0]%></p> </td>
-            
-            </tr>
-        <% }) %>
-
-        </table>
-    </div>
-
-    <div class="subTable" style="float: left;">
-        <h2>Emotes Added by MODS</h2>
-        <h3 id="Mods-sorted">Sorted by: First added </h3>
-        <table id="Mods-emoteSort">
-
-            <tr>
-                <th>Emote</th>
-                <th>Emote name</th>
-                <th id="Mods-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseMods()">Date added ▲</th>
-            </tr>
-            <%modsEmotes.reverse()%>
-        <% modsEmotes.forEach(function(emote) { %>
-        <%emoteLink = `https://7tv.app/emotes/${emote.EmoteID}`%>
-
-            <%emoteImage = `https://cdn.7tv.app/emote/${emote.EmoteID}/2x`%>
-
-            <tr>
-                <td> <a href="<%= emoteLink %>" target="_blank" rel="noopener noreferrer"><img src="<%= emoteImage %>"> </a></td>
-
-                <td> <p><%- emote.EmoteCode%></p> </td>
-
+                <% if (emote.AddedBy === "NymN") { %>
+                    <td> <p><%- emote.AddedBy%></p> </td>
+                <%} else {%>
+                    <td> <p><%- emote.AddedBy%> <span style="color:red;">(NymN ditched)</span></p> </td>
+                <%}%>
                 <td> <p><%- emote.CreatedAt?.split('T')[0]%></p> </td>
             
             </tr>
@@ -204,8 +181,8 @@ function reverseViewers() {
     }
 }
 
-function reverseNymn() {
-    let table = document.getElementById('Nymn-emoteSort'),
+function reverseNymnMods() {
+    let table = document.getElementById('Nymn/mods-emoteSort'),
         newTbody = document.createElement('tbody'),
         oldTbody = table.tBodies[0],
         rows = oldTbody.rows,
@@ -220,8 +197,8 @@ function reverseNymn() {
     oldTbody.parentNode.replaceChild(newTbody, oldTbody);
 
     reversed = (reversed) ? false : true;
-    let sorted = document.getElementById('Nymn-sorted');
-    let Sort = document.getElementById('Nymn-sort-button');
+    let sorted = document.getElementById('Nymn/mods-sorted');
+    let Sort = document.getElementById('Nymn/mods-sort-button');
     if (reversed) {
         sorted.innerText = 'Sorted by: Last added';
         Sort.innerText = 'Date added ▼';
@@ -231,32 +208,6 @@ function reverseNymn() {
     }
 }
 
-function reverseMods() {
-    let table = document.getElementById('Mods-emoteSort'),
-        newTbody = document.createElement('tbody'),
-        oldTbody = table.tBodies[0],
-        rows = oldTbody.rows,
-        i = rows.length - 2;
-        newTbody.appendChild(rows[0]);
-        console.log(newTbody);
-    while (i >= 0) {
-        newTbody.appendChild(rows[i]);
-        i -= 1;
-    }
-
-    oldTbody.parentNode.replaceChild(newTbody, oldTbody);
-
-    reversed = (reversed) ? false : true;
-    let sorted = document.getElementById('Mods-sorted');
-    let Sort = document.getElementById('Mods-sort-button');
-    if (reversed) {
-        sorted.innerText = 'Sorted by: Last added';
-        Sort.innerText = 'Date added ▼';
-    } else {
-        sorted.innerText = 'Sorted by: First added';
-        Sort.innerText = 'Date added ▲';
-    }
-}
 </script>
 
 </html>

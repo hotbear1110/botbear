@@ -164,70 +164,80 @@ module.exports = (function () {
             {
                 EmoteCode: 'GymN',
                 EmoteID: '6305c255d4b348f08e833c90',
+                AddedBy: 'NymN',
                 CreatedAt: '2023-01-13T00:00:00.000000Z'
             },
             {
                 EmoteCode: 'RAGEY',
                 EmoteID: '62f80d745a8981e4c792ca1c',
+                AddedBy: 'NymN',
                 CreatedAt: '2023-01-12T00:00:00.000000Z'
             },
             {
                 EmoteCode: 'Excel',
                 EmoteID: '61fe824dd771ca5bf0379bb2',
+                AddedBy: 'NymN',
                 CreatedAt: '2023-01-11T00:00:00.000000Z'
             },
             {
                 EmoteCode: 'peepoChat',
                 EmoteID: '63438a743d1bc89e0ff9e400',
+                AddedBy: 'NymN',
                 CreatedAt: '2023-01-10T00:00:00.000000Z'
             },
             {
                 EmoteCode: 'veryFors',
                 EmoteID: '62af8dd26f979a8714748dd2',
+                AddedBy: 'NymN',
                 CreatedAt: '2023-01-09T00:00:00.000000Z'
             },
             {
                 EmoteCode: 'Buhh',
                 EmoteID: '61d679c83d52bb5c33c4f9a6',
+                AddedBy: 'NymN',
                 CreatedAt: '2023-01-08T00:00:00.000000Z'
             },
             {
                 EmoteCode: '(Saturday day off)',
                 EmoteID: '',
+                AddedBy: 'NymN',
                 CreatedAt: '2023-01-07T00:00:00.000000Z'
             },
             {
                 EmoteCode: 'FeelsDonkMan',
                 EmoteID: '603cb56bc20d020014423c60',
+                AddedBy: 'NymN',
                 CreatedAt: '2023-01-06T00:00:00.000000Z'
             },
             {
                 EmoteCode: 'SNIFFA',
                 EmoteID: '60e787dd375879d78fc6b25e',
+                AddedBy: 'NymN',
                 CreatedAt: '2023-01-05T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'pepeW',
+                EmoteID: '63072162942ffb69e13d703f',
+                AddedBy: 'MODS',
+                CreatedAt: '2023-01-04T00:00:00.000000Z'
             },
             {
                 EmoteCode: 'TimeToNime',
                 EmoteID: '6329beb61c85cd937753ec61',
+                AddedBy: 'NymN',
                 CreatedAt: '2023-01-03T00:00:00.000000Z'
             },
             {
                 EmoteCode: 'Okayeg',
                 EmoteID: '603caa69faf3a00014dff0b1',
+                AddedBy: 'NymN',
                 CreatedAt: '2023-01-02T00:00:00.000000Z'
             },
             {
                 EmoteCode: 'FloppaJAM',
                 EmoteID: '60af0116a564afa26e3a7e86',
+                AddedBy: 'NymN',
                 CreatedAt: '2023-01-01T00:00:00.000000Z'
-            }
-        ];
-
-        const modsEmotes = [
-            {
-                EmoteCode: 'pepeW',
-                EmoteID: '63072162942ffb69e13d703f',
-                CreatedAt: '2023-01-04T00:00:00.000000Z'
             }
         ];
 
@@ -258,7 +268,7 @@ module.exports = (function () {
             },
         ];
 
-        res.render('newemotes', { emotes: emotes, nymnEmotes: nymnEmotes, modsEmotes: modsEmotes, viewerEmotes: viewerEmotes });
+        res.render('newemotes', { emotes: emotes, nymnEmotes: nymnEmotes, viewerEmotes: viewerEmotes });
     });
 
     return router;
