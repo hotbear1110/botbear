@@ -50,7 +50,7 @@ module.exports = {
 			}
 
 			if (spotify_user.opt_in === 'false' && username !== user.username) {
-				return 'That user has not allowed others to target them. Tell them to do: bb spotify allow';
+				return 'That user has not allowed others to target them. Ask them to type the command: bb spotify allow';
 			}
 
             const access_token = spotify_user.access_token;
