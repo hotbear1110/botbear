@@ -59,7 +59,7 @@ module.exports = {
 
 				}
 				if (subdata['endsAt'] === null) {
-					return `User: ${username} | Channel: ${realchannel} | Type: Permanent Sub | Tier: ${subdata['tier']} | Months: ${sublength['months']} | Streak: ${substreak['months']} ${naniresponse}`;
+					return `User: ${username} | Channel: ${realchannel} | Type: Permanent Sub | Tier: ${subdata['tier']} | Months: ${sublength['months']} | Streak: ${substreak['months']} | Anniversary: ${tools.humanizeDuration(anniversaryMS)} ${naniresponse}`;
 				}
 				if (subdata['type'] === 'prime') {
 					return `User: ${username} | Channel: ${realchannel} | Type: Prime Sub | Months: ${sublength['months']} | Streak: ${substreak['months']} | Ends/Renews: ${tools.humanizeDuration(ms)} | Anniversary: ${tools.humanizeDuration(anniversaryMS)} ${naniresponse}`;
