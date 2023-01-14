@@ -6,7 +6,7 @@ module.exports = (function () {
 
     /* /suggestions */
     router.get('/', async (req, res) => {
-        let emotes = await got('https://bot-api.gempir.com/api/emotelog?channel=nymn&limit=1000').json();
+        let emotes = await got('https://bot-api.gempir.com/api/emotelog?channel=nymn&limit=100').json();
 
         emotes.push({ 
             EmoteCode: 'AlienPls',
@@ -161,6 +161,12 @@ module.exports = (function () {
 
 
          const nymnEmotes = [
+            {
+                EmoteCode: 'FeelsNymNge',
+                EmoteID: '63c1e2d7182ccc7de666c18b',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-01-14T00:00:00.000000Z'
+            },
             {
                 EmoteCode: 'GymN',
                 EmoteID: '6305c255d4b348f08e833c90',
