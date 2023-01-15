@@ -1,11 +1,9 @@
  /* eslint-disable */
 
- let reversed = false;
+ let Nom_reversed = false;
+let Viewers_reversed = false;
+let Nymn_reversed = false;
 
- function getReversed() {
-     return reversed;
- }
-     
      function reverseNominations() {
      let table = document.getElementById('Nomination-emoteSort'),
          newTbody = document.createElement('tbody'),
@@ -21,10 +19,10 @@
  
      oldTbody.parentNode.replaceChild(newTbody, oldTbody);
  
-     reversed = (reversed) ? false : true;
+     Nom_reversed = (Nom_reversed) ? false : true;
      let sorted = document.getElementById('Nomination-sorted');
      let Sort = document.getElementById('Nomination-sort-button');
-     if (reversed) {
+     if (Nom_reversed) {
          sorted.innerText = 'Sorted by: Last added';
          Sort.innerText = 'Date added ▼';
      } else {
@@ -47,10 +45,10 @@
  
      oldTbody.parentNode.replaceChild(newTbody, oldTbody);
  
-     reversed = (reversed) ? false : true;
+     Viewers_reversed = (Viewers_reversed) ? false : true;
      let sorted = document.getElementById('Viewers-sorted');
      let Sort = document.getElementById('Viewers-sort-button');
-     if (reversed) {
+     if (Viewers_reversed) {
          sorted.innerText = 'Sorted by: Last added';
          Sort.innerText = 'Date added ▼';
      } else {
@@ -74,10 +72,10 @@
  
      oldTbody.parentNode.replaceChild(newTbody, oldTbody);
  
-     reversed = (reversed) ? false : true;
+     Nymn_reversed = (Nymn_reversed) ? false : true;
      let sorted = document.getElementById('Nymn/mods-sorted');
      let Sort = document.getElementById('Nymn/mods-sort-button');
-     if (reversed) {
+     if (Nymn_reversed) {
          sorted.innerText = 'Sorted by: Last added';
          Sort.innerText = 'Date added ▼';
      } else {
