@@ -26,7 +26,7 @@ module.exports = {
                 return;
             }
 
-			let min = input[2]?.replaceAll('m', '') ?? 5;
+			let min = input[2]?.replaceAll('m', '') ?? '5';
 
 			if (min.startsWith('-') || min === '0') {
 				return '2nd input can\'t be negative or 0';
