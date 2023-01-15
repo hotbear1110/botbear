@@ -319,71 +319,42 @@ exports.getPerm = (user) => new Promise(async (resolve) => {
  */
 exports.nameChanges = async () => {
     const changed = [];
-    const promises = [];
 
     let channels = await sql.Query('SELECT * FROM Streamers');
 
 	channels = [...this.groupArray(channels, 100)];
 
-	channels.map(async(streamers) => {
+	await Promise.all(channels.map(async(streamers) => {
 		const { statusCode, body } = await got(`https://api.twitch.tv/helix/users?id=${streamers.map(x => x.uid).join('&id=')}`, {
-            headers: {
+			throwHttpErrors: false,
+			headers: {
                 'client-id': process.env.TWITCH_CLIENTID,
                 'Authorization': process.env.TWITCH_AUTH
             },
-            timeout: 10000,
-            throwOnHttpError: false,
+           // timeout: 10000,
         });
     
         if (statusCode >= 400) {
             console.error('Error while fetching name changes', { u: streamers.map(x => x.uid), s: statusCode, b: body });
         } else {
             const userData = JSON.parse(body);
-            
+
             if (userData.data.length) {
 
 				userData.data.map(streamer => {
 					const realUser = streamer['login'];
-                
-					if (!streamers.filter(x => x.username === realUser)) {
+					if (!streamers.filter(x => x.username === realUser).length) {
 
-						sql.Query('UPDATE Streamers SET username=? WHERE uid=?', [realUser, streamer.uid]);
-					
-						changed.push([realUser, streamer.username]);
+						sql.Query('UPDATE Streamers SET username=? WHERE uid=?', [realUser, streamer.id]);
+
+						changed.push([realUser, streamers.filter(x => x.uid == streamer.id)[0].username]);
 					}
 				});
             }
         }   
-	});
+	}));
 
-    promises.push(channels.map(async(streamer) => {
-        const { statusCode, body } = await got(`https://api.twitch.tv/helix/users?id=${streamer.uid}`, {
-            headers: {
-                'client-id': process.env.TWITCH_CLIENTID,
-                'Authorization': process.env.TWITCH_AUTH
-            },
-            timeout: 10000,
-            throwOnHttpError: false,
-        });
-    
-        if (statusCode >= 400) {
-            console.error('Error while fetching name changes', { u: streamer.uid, s: statusCode, b: body });
-        } else {
-            const userData = JSON.parse(body);
-            
-            if (userData.data.length) {
-                const realUser = userData.data[0]['login'];
-                
-                if (realUser !== streamer.username) {
-                    sql.Query('UPDATE Streamers SET username=? WHERE uid=?', [realUser, streamer.uid]);
-                
-                    changed.push([realUser, streamer.username]);
-                }
-            }
-        }   
-    }));
-
-    await Promise.all(promises);
+    await Promise.all(changed);
 
     return changed;
 };
