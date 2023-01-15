@@ -162,6 +162,12 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: 'PirateJam',
+                EmoteID: '61485c0e1eb7078240526fd9',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-01-15T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'FeelsNymNge',
                 EmoteID: '63c1e2d7182ccc7de666c18b',
                 AddedBy: 'NymN',
