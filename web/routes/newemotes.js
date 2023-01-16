@@ -1,5 +1,3 @@
-const { con } = require('../../sql');
-
 module.exports = (function () {
     const router = require('express').Router();
     const { got } = require('./../../got');
