@@ -40,6 +40,30 @@ module.exports = {
                 WHERE username=?`,
 				[username]);
 
+				if (alreadyJoined.banned === 1)  {
+					return cc.join(username)
+					.then(async() => {
+						await sql.Query('UPDATE Streamers SET banned = ? WHERE username = ? ', [0, username]);
+
+						await tools.joinEventSub(uid);
+
+						new messageHandler(`#${username}`, 'Rejoined channel after channel ban/deletion', true).newMessage();
+						return `Joined channel: ${username}`;
+					});
+				}
+
+				if (alreadyJoined.left === 1)  {
+					return cc.join(username)
+					.then(async() => {
+						await sql.Query('UPDATE Streamers SET left = ? WHERE username = ? ', [0, username]);
+
+						await tools.joinEventSub(uid);
+
+						new messageHandler(`#${username}`, 'Rejoined channel', true).newMessage();
+						return `Joined channel: ${username}`;
+					});
+				}
+
 				if (alreadyJoined.length) {
 					return 'I am already in your channel :) - If the bot isn\'t responding, try the command bb reconnect [channel]';
 				}
@@ -81,12 +105,12 @@ module.exports = {
                             WHERE username =? `,
 				[username]);
 
-				if (!alreadyJoined.length) {
+				if (!alreadyJoined.length || alreadyJoined.left === 1) {
 					return 'I am not in your channel';
 				}
 
 				else {
-					await sql.Query('DELETE FROM Streamers WHERE username=?', [username]);
+					await sql.Query('UPDATE Streamers SET left = ? WHERE username = ? ', [1, username]);
 					await tools.deleteEventSub(uid);
 
 					cc.part(username).catch((err) => {

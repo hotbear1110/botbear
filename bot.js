@@ -642,32 +642,46 @@ async function triviaTimeout(channel, triviaTimeID, answer) {
 redis.Get().on('ChatUpdate', onChatUpdateHandler);
 
 async function onStart() {
-	userList = (await sql.Query('SELECT username FROM Users')).map(x => x.username);
+	//userList = (await sql.Query('SELECT username FROM Users')).map(x => x.username);
 
-		/*
-            //TODO hotbear: This should be remade, so that it doesn't delete the streamer from db.
-            //              The connect funtion would have to me remade aswell
-                await tools.bannedStreamers()
+	if (process.env.TWITCH_USER !== 'devbear1110') {
+
+
+        await tools.bannedStreamers()
             .then((res) => {
-                res.map(async ([user]) => {
-                    await cc.part(user)
-                        .catch((err) => {
-                            console.log(err);
-                        });
+                res.map(async (user) => {
 
-                    new messageHandler("#botbear1110", `Left channel ${user}. Reason: Banned/deleted channel`).newMessage();
-                })
+					switch(user.Status) {
+						case 'Banned': {
+
+							await cc.part(user.User)
+							.catch((err) => {
+								console.log(err);
+							});
+							await tools.deleteEventSub(user.uid);
+						cc.say(process.env.TWITCH_USER, `Left channel ${user.User}. Reason: Banned/deleted channel`);
+						break;
+						}
+						case 'Unbanned': {
+							await cc.join(user.User)
+							.catch((err) => {
+								console.log(err);
+							});
+							await tools.joinEventSub(user.uid);
+						cc.say(`#${user.User}`, 'Rejoined channel after channel ban/deletion');
+						cc.say(process.env.TWITCH_USER, `Joined channel ${user.User}. Reason: Unbanned/Re-activated channel`);
+						}
+					}
+
+                });
             })
             .catch((err) => {
                 console.log(err);
             });
-        */
-
-
-		if (process.env.TWITCH_USER !== 'devbear1110') {
+        
 			await tools.nameChanges()
 				.then((res) => {
-					res.map(async ([newName, oldName]) => {
+					res.map(async ([newName, oldName, uid]) => {
 						await cc.join(newName)
 							.catch((err) => {
 								console.log(err);
@@ -675,9 +689,11 @@ async function onStart() {
 						cc.part(oldName).catch((err) => {
 							console.log(err);
 						});
+						await tools.deleteEventSub(uid);
+						await tools.joinEventSub(uid);
 
 						cc.say(`#${newName}`, `Name change detected, ${oldName} -> ${newName}`);
-						new messageHandler(process.env.TWITCH_USER, `Left channel ${oldName}. Reason: Name change detected, ${oldName} -> ${newName}`).newMessage();
+						cc.say(process.env.TWITCH_USER, `Left channel ${oldName}. Reason: Name change detected, ${oldName} -> ${newName}`);
 					});
 				})
 				.catch((err) => {

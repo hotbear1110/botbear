@@ -320,7 +320,7 @@ exports.getPerm = (user) => new Promise(async (resolve) => {
 exports.nameChanges = async () => {
     const changed = [];
 
-    let channels = await sql.Query('SELECT * FROM Streamers');
+    let channels = await sql.Query('SELECT * FROM Streamers WHERE `banned` = ? AND `left` = ?', [0, 0]);
 
 	channels = [...this.groupArray(channels, 100)];
 
@@ -347,7 +347,7 @@ exports.nameChanges = async () => {
 
 						sql.Query('UPDATE Streamers SET username=? WHERE uid=?', [realUser, streamer.id]);
 
-						changed.push([realUser, streamers.filter(x => x.uid == streamer.id)[0].username]);
+						changed.push([realUser, streamers.filter(x => x.uid == streamer.id)[0].username, streamer.id]);
 					}
 				});
             }
@@ -360,27 +360,51 @@ exports.nameChanges = async () => {
 };
 
 exports.bannedStreamers = async () => {
-	return new Promise(async (Resolve, Reject) => {
 		let streamers = await sql.Query('SELECT * FROM Streamers');
-		let bannedUsers = [];
+		let changedUsers = [];
 
-		for (const streamer of streamers) {
+		let checkBans = streamers.filter(x => x.banned === 0);
+
+		for (const streamer of checkBans) {
 			try {
 				const isBanned = await got(`https://api.ivr.fi/twitch/resolve/${streamer.username}`).json();
 
 				if (isBanned.banned === true) {
-					await sql.Query('DELETE FROM Streamers WHERE uid=?', [streamer.uid]);
+					await sql.Query('UPDATE Streamers SET banned = ? WHERE uid=?', [1, streamer.uid]);
 
-					bannedUsers.push(streamer.username);
+					changedUsers.push({
+						User: streamer.username,
+						uid: streamer.uid,
+						Status: 'Banned',
+					});
 				}
 			} catch (err) {
-				Reject(err);
+				console.log(err);
 			}
 		}
 
-		Resolve(bannedUsers);
-	});
-};
+		let checkUnbans = streamers.filter(x => x.banned === 1);
+
+		for (const streamer of checkUnbans) {
+			try {
+				const isBanned = await got(`https://api.ivr.fi/twitch/resolve/${streamer.username}`).json();
+
+				if (isBanned.banned === false) {
+					await sql.Query('UPDATE Streamers SET banned = ? WHERE uid=?', [0, streamer.uid]);
+
+					changedUsers.push({
+						User: streamer.username,
+						uid: streamer.uid,
+						Status: 'Unbanned',
+					});
+				}
+			} catch (err) {
+				console.log(err);
+			}
+		}
+		Promise.all(changedUsers);
+		return changedUsers;
+	};
 
 
 exports.similarity = async function (s1, s2) {
