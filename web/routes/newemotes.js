@@ -160,6 +160,12 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: 'FeelsLagMan',
+                EmoteID: '60afcde452a13d1adba73d29',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-01-17T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'HEWILLNEVER',
                 EmoteID: '60b6e6d45d373afbd69c2d45',
                 AddedBy: 'NymN',
