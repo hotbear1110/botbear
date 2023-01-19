@@ -160,6 +160,12 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: 'Okayge',
+                EmoteID: '60e7328e484ebd628b556b3e',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-01-19T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'Wheel',
                 EmoteID: '60db33899a9fbb6acd26b151',
                 AddedBy: 'MODS',
@@ -270,6 +276,12 @@ module.exports = (function () {
         ];
 
         const viewerEmotes = [
+            {
+                EmoteCode: 'walterSmile',
+                EmoteID: '60fdd36e5ab6dc5bc4b1a7f8',
+                AddedBy: 'southbye',
+                CreatedAt: '2023-01-19T00:00:00.000000Z'
+            },
             {
                 EmoteCode: 'forsenWiggle',
                 EmoteID: '618a368217e4d50afc0cb2a8',
