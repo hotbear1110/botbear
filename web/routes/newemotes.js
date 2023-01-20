@@ -277,6 +277,12 @@ module.exports = (function () {
 
         const viewerEmotes = [
             {
+                EmoteCode: 'PotFaint',
+                EmoteID: '62ac06d1604faf8634221574',
+                AddedBy: 'Ligos96',
+                CreatedAt: '2023-01-20T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'walterSmile',
                 EmoteID: '60fdd36e5ab6dc5bc4b1a7f8',
                 AddedBy: 'southbye',
