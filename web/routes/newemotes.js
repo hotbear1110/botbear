@@ -97,6 +97,27 @@ module.exports = (function () {
 
          const modifyEmotes = [
             {
+                EmoteCode: 'forsenGa',
+                EmoteID: '61a7c0e5e9684edbbc37d13a',
+                AddedBy: 'agenttud',
+                Type: 'election',
+                CreatedAt: '2023-01-20T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'TriKool',
+                EmoteID: '635206405029098c3d6e1c6c',
+                AddedBy: 'vlashaaak',
+                Type: 'election',
+                CreatedAt: '2023-01-20T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'forsenCoomer',
+                EmoteID: '60aed84b423a803ccafdd4b4',
+                AddedBy: 'maxthurian',
+                Type: 'election',
+                CreatedAt: '2023-01-20T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'dankHug',
                 EmoteID: '616edc115ff09767de29919b',
                 AddedBy: 'hbear___',
