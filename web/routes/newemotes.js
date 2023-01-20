@@ -118,6 +118,13 @@ module.exports = (function () {
                 CreatedAt: '2023-01-20T00:00:00.000000Z'
             },
             {
+                EmoteCode: 'Susge',
+                EmoteID: '611a4f329fa9a9dd99b69750',
+                AddedBy: 'bankxs__',
+                Type: 'election',
+                CreatedAt: '2023-01-19T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'dankHug',
                 EmoteID: '616edc115ff09767de29919b',
                 AddedBy: 'hbear___',
