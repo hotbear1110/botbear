@@ -1,5 +1,5 @@
 const tools = require('../tools/tools.js');
-const got = require('../got');
+const { got } = require('../got');
 
 module.exports = {
     name: 'accage',
@@ -22,7 +22,7 @@ module.exports = {
                 username = input[2];
             }
 
-            const { body: twitchdata } = await got(`https://api.ivr.fi/v2/twitch/user?login=${username}`);
+            const twitchdata = await got(`https://api.ivr.fi/v2/twitch/user?login=${username}`).json();
 
             const ms = new Date().getTime() - Date.parse(twitchdata[0].createdAt);
 

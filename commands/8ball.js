@@ -12,7 +12,7 @@ module.exports = {
             if (module.exports.permission > perm) {
                 return;
             }
-            return responses[Math.floor(Math.random() * responses.length)];
+            return responses[~~(Math.random() * responses.length)];
         } catch (err) {
             console.log(err);
             return 'FeelsDankMan Error';
