@@ -10,34 +10,30 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-
 			if (!input[3]) {
 				return 'Format should be: "bb bmi weight(kg) height(cm)"';
 			}
-			let text = '';
-			let bmi = (input[3] ** 2) / 10000;
-			bmi = input[2] / bmi;
-
-			if (bmi <= 18.5) {
-				text = 'Underweight';
+	
+			let weight = parseFloat(input[2]);
+			let height = parseFloat(input[3]) / 100;
+			let bmi = weight / (height ** 2);
+	
+			let bmiStatus = "";
+			if (bmi < 18.5) {
+				bmiStatus = "Underweight";
+			} else if (bmi >= 18.5 && bmi <= 24.9) {
+				bmiStatus = "Normal weight";
+			} else if (bmi >= 25 && bmi <= 29.9) {
+				bmiStatus = "Overweight";
+			} else if (bmi >= 30 && bmi <= 34.9) {
+				bmiStatus = "Obese";
+			} else if (bmi >= 35) {
+				bmiStatus = "Extremely Obese";
 			}
-			if (bmi >= 18.5 && 24.9 >= bmi) {
-				text = 'Normal weight';
-			}
-			if (bmi >= 25 && 29.9 >= bmi) {
-				text = 'Overweight';
-			}
-			if (bmi >= 30 && 34.9 >= bmi) {
-				text = 'Obese';
-			}
-			if (bmi >= 35) {
-				text = 'Extremly obese';
-			}
-
-			bmi = bmi.toString().substring(0, 5);
-
-			return `${bmi} - ${text}`;
-
+	
+			bmi = bmi.toFixed(2);
+	
+			return `Your BMI is ${bmi}. You are ${bmiStatus}`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
