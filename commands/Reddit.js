@@ -12,7 +12,7 @@ module.exports = {
         return;
       }
 
-      const response = await got('https://www.reddit.com/r/RedditAndChill/.json', { json: true });
+      const response = await got('https://www.reddit.com/r/RedditAndChill/.json').json();
       const posts = response.body.data.children;
 
       let top3 = [];
@@ -20,7 +20,7 @@ module.exports = {
         top3.push(`${i+1}. ${posts[i].data.title} - by ${posts[i].data.author}`);
       }
 
-      return top3.join('\n');
+      return `Top 3 posts in redditandchill: ${top3.join(' | ')}`;
     } catch (err) {
       console.log(err);
       return 'FeelsDankMan Error';
