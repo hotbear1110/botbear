@@ -22,11 +22,11 @@ let Nymn_reversed = false;
      Nom_reversed = (Nom_reversed) ? false : true;
      let sorted = document.getElementById('Nomination-sorted');
      let Sort = document.getElementById('Nomination-sort-button');
-     if (Nom_reversed) {
-         sorted.innerText = 'Sorted by: Last added';
+     if (!Nom_reversed) {
+         sorted.innerText = 'Sorted by: New';
          Sort.innerText = 'Date added ▼';
      } else {
-         sorted.innerText = 'Sorted by: First added';
+         sorted.innerText = 'Sorted by: Old';
          Sort.innerText = 'Date added ▲';
      }
  }
@@ -48,11 +48,11 @@ let Nymn_reversed = false;
      Viewers_reversed = (Viewers_reversed) ? false : true;
      let sorted = document.getElementById('Viewers-sorted');
      let Sort = document.getElementById('Viewers-sort-button');
-     if (Viewers_reversed) {
-         sorted.innerText = 'Sorted by: Last added';
+     if (!Viewers_reversed) {
+         sorted.innerText = 'Sorted by: New';
          Sort.innerText = 'Date added ▼';
      } else {
-         sorted.innerText = 'Sorted by: First added';
+         sorted.innerText = 'Sorted by: Old';
          Sort.innerText = 'Date added ▲';
      }
  }
@@ -75,11 +75,11 @@ let Nymn_reversed = false;
      Nymn_reversed = (Nymn_reversed) ? false : true;
      let sorted = document.getElementById('Nymn/mods-sorted');
      let Sort = document.getElementById('Nymn/mods-sort-button');
-     if (Nymn_reversed) {
-         sorted.innerText = 'Sorted by: Last added';
+     if (!Nymn_reversed) {
+         sorted.innerText = 'Sorted by: New';
          Sort.innerText = 'Date added ▼';
      } else {
-         sorted.innerText = 'Sorted by: First added';
+         sorted.innerText = 'Sorted by: Old';
          Sort.innerText = 'Date added ▲';
      }
  }

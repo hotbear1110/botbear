@@ -14,16 +14,15 @@
     <div class="emotes">
     <div class="subTable-nomination" style="float: left;">
         <h2>Nomination Emotes</h2>
-        <h3 id="Nomination-sorted">Sorted by: First added </h3>
+        <h3 id="Nomination-sorted">Sorted by: New </h3>
         <table id="Nomination-emoteSort">
 
             <tr>
                 <th>Emote</th>
                 <th>Emote name</th>
                 <th>Nominated by</th>
-                <th id="Nomination-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseNominations()">Date added ▲</th>
+                <th id="Nomination-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseNominations()">Date added ▼</th>
             </tr>
-            <%emotes.reverse()%>
         <% emotes.forEach(function(emote) { %>
 
             <%if (emote.Type === "election") { %>
@@ -47,16 +46,15 @@
 
     <div class="subTable" style="float: left;">
         <h2>Emotes Added by Viewers</h2>
-        <h3 id="Viewers-sorted">Sorted by: First added </h3>
+        <h3 id="Viewers-sorted">Sorted by: New </h3>
         <table id="Viewers-emoteSort">
 
             <tr>
                 <th>Emote</th>
                 <th>Emote name</th>
                 <th>Added by</th>
-                <th id="Viewers-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseViewers()">Date added ▲</th>
+                <th id="Viewers-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseViewers()">Date added ▼</th>
             </tr>
-            <%viewerEmotes.reverse()%>
         <% viewerEmotes.forEach(function(emote) { %>
         <%emoteLink = `https://7tv.app/emotes/${emote.EmoteID}`%>
 
@@ -79,17 +77,16 @@
 
     <div class="subTable" style="float: left;">
         <h2>Emotes Added by NymN/MODS</h2>
-        <h3 id="Nymn/mods-sorted">Sorted by: First added </h3>
+        <h3 id="Nymn/mods-sorted">Sorted by: New </h3>
         <table id="Nymn/mods-emoteSort">
 
             <tr>
                 <th>Emote</th>
                 <th>Emote name</th>
                 <th>Added by</th>
-                <th id="Nymn/mods-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseNymnMods()">Date added ▲</th>
+                <th id="Nymn/mods-sort-button" style="color: #3a89ff; cursor: pointer; text-align: left;" onclick="reverseNymnMods()">Date added ▼</th>
 
             </tr>
-            <%nymnEmotes.reverse()%>
         <% nymnEmotes.forEach(function(emote) { %>
         <%emoteLink = `https://7tv.app/emotes/${emote.EmoteID}`%>
 
