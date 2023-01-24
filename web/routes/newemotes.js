@@ -188,6 +188,12 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: 'peepoPizza',
+                EmoteID: '60b0e3cb7500a64f7c0ba32d',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-01-23T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'parasocial',
                 EmoteID: '626bac5655df243a4fa819cd',
                 AddedBy: 'NymN',
