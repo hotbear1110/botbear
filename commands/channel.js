@@ -29,7 +29,7 @@ module.exports = {
 				}
 
 				if (input[3]) {
-					let streamer = await got(`https://api.ivr.fi/twitch/resolve/${input[3]}`).json();
+					let streamer = await got(`https://api.ivr.fi/v2/twitch/user?login=${input[3]}`).json();
 					uid = streamer.id;
 					username = input[3];
 				}
@@ -88,7 +88,7 @@ module.exports = {
 				let uid = user['user-id'];
 				if (channel != 'botbear1110' && channel != 'hottestbear' && channel != user.username && perm < 2000) { return; }
 				if (input[3]) {
-					let streamer = await got(`https://api.ivr.fi/twitch/resolve/${input[3]}`).json();
+					let streamer = await got(`https://api.ivr.fi/v2/twitch/user?login=${input[3]}`).json();
 					uid = streamer.id;
 					username = input[3];
 				}
