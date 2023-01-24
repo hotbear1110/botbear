@@ -24,7 +24,7 @@ module.exports = {
 			let title = '';
 			const streamTitle = await sql.Query('SELECT * FROM Streamers WHERE username=?', [realchannel]);
 			if (!streamTitle[0]) {
-				let userID = await got(`https://api.ivr.fi/twitch/resolve/${input[2]}`).json();
+				let userID = await got(`https://api.ivr.fi/v2/twitch/user?login=${input[2]}`).json();
 
 				userID = userID.id;
 
