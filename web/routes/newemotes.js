@@ -188,6 +188,12 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: 'meow',
+                EmoteID: '6210799f238beda80c09cfb8',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-01-24T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'peepoPizza',
                 EmoteID: '60b0e3cb7500a64f7c0ba32d',
                 AddedBy: 'NymN',
