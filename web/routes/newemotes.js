@@ -190,7 +190,7 @@ module.exports = (function () {
             {
                 EmoteCode: 'meow',
                 EmoteID: '6210799f238beda80c09cfb8',
-                AddedBy: 'NymN(fawcan)',
+                AddedBy: 'NymN (fawcan)',
                 CreatedAt: '2023-01-24T00:00:00.000000Z'
             },
             {
