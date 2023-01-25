@@ -1,5 +1,6 @@
 const tools = require('../tools/tools.js');
 const { got } = require('./../got');
+const sql = require('./../sql/index.js');
 
 module.exports = {
 	name: 'deveval',

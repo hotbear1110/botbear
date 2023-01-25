@@ -55,7 +55,7 @@ module.exports = {
 				if (alreadyJoined.left === 1)  {
 					return cc.join(username)
 					.then(async() => {
-						await sql.Query('UPDATE Streamers SET left =? WHERE username =?', [0, username]);
+						await sql.Query('UPDATE Streamers SET `left` =? WHERE username =?', [0, username]);
 
 						await tools.joinEventSub(uid);
 
@@ -110,7 +110,7 @@ module.exports = {
 				}
 
 				else {
-					await sql.Query('UPDATE Streamers SET left =? WHERE username =?', [1, username]);
+					await sql.Query('UPDATE Streamers SET `left`=? WHERE username=?', [1, username]);
 					await tools.deleteEventSub(uid);
 
 					cc.part(username).catch((err) => {
