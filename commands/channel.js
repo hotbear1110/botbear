@@ -8,7 +8,7 @@ const sql = require('./../sql/index.js');
 module.exports = {
 	name: 'channel',
 	ping: true,
-	description: '"bb channel join/leave" the bot joins or leaves your channel(only works in hottestbear/botbear1110 chats). "bb channel [live/offline/title/game]emote *emote*" this changes the notify emotes. "bb channel trivia *seconds*" this changes the trivia cooldown(Default is 300s, if cd is too low, it can bug out)',
+	description: '"bb channel join/leave" the bot joins or leaves your channel(only works in hbear___/botbear1110 chats). "bb channel [live/offline/title/game]emote *emote*" this changes the notify emotes. "bb channel trivia *seconds*" this changes the trivia cooldown(Default is 300s, if cd is too low, it can bug out)',
 	permission: 100,
 	category: 'Core command',
 	execute: async (channel, user, input, perm) => {
@@ -78,7 +78,7 @@ module.exports = {
 						})
 						.catch((err) => {
 							console.log(err);
-							return 'Error joining channel ask @hottestbear for help.';
+							return 'Error joining channel ask @hbear___ for help.';
 						});
 
 				}
@@ -86,7 +86,7 @@ module.exports = {
 			case 'leave': {
 				let username = user.username;
 				let uid = user['user-id'];
-				if (channel != 'botbear1110' && channel != 'hottestbear' && channel != user.username && perm < 2000) { return; }
+				if (channel != 'botbear1110' && channel != 'hbear___' && channel != user.username && perm < 2000) { return; }
 				if (input[3]) {
 					let streamer = await got(`https://api.ivr.fi/v2/twitch/user?login=${input[3]}`).json();
 					uid = streamer.id;
@@ -123,7 +123,7 @@ module.exports = {
 			}
 			case 'liveemote': {
 				let username = user.username;
-				if (channel != 'botbear1110' && channel != 'hottestbear' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
+				if (channel != 'botbear1110' && channel != 'hbear___' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
 				if (!input[3]) {
 					return;
 				}
@@ -150,7 +150,7 @@ module.exports = {
 			}
 			case 'gameemote': {
 				let username = user.username;
-				if (channel != 'botbear1110' && channel != 'hottestbear' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
+				if (channel != 'botbear1110' && channel != 'hbear___' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
 				if (!input[3]) {
 					return;
 				}
@@ -177,7 +177,7 @@ module.exports = {
 			}
 			case 'titleemote': {
 				let username = user.username;
-				if (channel != 'botbear1110' && channel != 'hottestbear' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
+				if (channel != 'botbear1110' && channel != 'hbear___' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
 				if (!input[3]) {
 					return;
 				}
@@ -204,7 +204,7 @@ module.exports = {
 			}
 			case 'offlineemote': {
 				let username = user.username;
-				if (channel != 'botbear1110' && channel != 'hottestbear' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
+				if (channel != 'botbear1110' && channel != 'hbear___' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
 				if (!input[3]) {
 					return;
 				}
