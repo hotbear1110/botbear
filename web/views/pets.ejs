@@ -26,6 +26,35 @@
         <% }) %>
 
     </div>
+
 </div>
+<% if (pages > 0) { %>
+    <div class="navigation">
+        <% if (current == 1) { %>
+            <a class="disabled">First</a>
+        <% } else { %>
+            <a href="/pets/yabbe/1">First</a>
+        <% } %>
+        <% let i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+        <% if (i !== 1) { %>
+            <a class="disabled">...</a>
+        <% } %>
+        <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+            <% if (i == current) { %>
+                <a class="active"><%= i %></a>
+            <% } else { %>
+                <a href="/pets/yabbe/<%= i %>"><%= i %></a>
+            <% } %>
+            <% if (i == Number(current) + 4 && i < pages) { %>
+                <a class="disabled">...</a>
+            <% } %>
+        <% } %>
+        <% if (current == pages) { %>
+            <a class="disabled">Last</a>
+        <% } else { %>
+            <a href="/pets/yabbe/<%= pages %>">Last</a>
+        <% } %>
+        </div>
+<% } %>
 </body>
 </html>

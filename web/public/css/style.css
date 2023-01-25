@@ -74,6 +74,7 @@ h2, h3 {
   flex-basis: auto;
   flex-direction: row;
   flex-wrap: wrap;
+  margin-top: 5rem;
   margin-left: 5rem;
   margin-right: 5rem;
   grid-auto-rows: auto;
@@ -92,3 +93,29 @@ h2, h3 {
   flex-shrink: 3;
   align-content: center;
 }
+
+.navigation {
+  padding-top: 5rem;
+  padding-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  font-family: arial, sans-serif;
+}
+
+.navigation a {
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  color: #3a89ff;
+}
+
+.navigation .disabled {
+  color: #1d4786;
+}
+
+.navigation .active {
+  color: #3a89ff;
+  background-color: #1f2b3a6c;
+ }
+
+.navigation a:hover:not(.active):not(.disabled) {background-color: #1d2633;}
