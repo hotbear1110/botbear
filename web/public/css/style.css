@@ -68,3 +68,27 @@ h2, h3 {
 ::-webkit-scrollbar-thumb:hover {
   background: #1d2633; 
 }
+
+.grid-container {
+  display: flex;
+  flex-basis: auto;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-left: 5rem;
+  margin-right: 5rem;
+  grid-auto-rows: auto;
+  grid-gap: 4px 4px;
+  grid-template-areas: "left middle middle right";
+}
+
+.item {
+  color: #ffffff;
+  font-family: arial, sans-serif;
+  font-size: 10pt;
+  align-self: center;
+  display: flex;
+  flex-basis: auto;
+  flex-grow: 4;
+  flex-shrink: 3;
+  align-content: center;
+}

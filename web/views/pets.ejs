@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pets</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="pets">
+
+        <div class="grid-container">
+
+        <% pets.forEach(function(pet) { %>
+            <div class="item">
+                <div>
+                    <div id="image"><a href="<%= pet.Image %>" target="_blank" rel="noopener noreferrer"><img src="<%= pet.Image %>" style="max-width:600px;width:100%;max-height:600px;width:100%"> </a></div>
+                  <div id="text">Pet Name: <%-pet.Pet_name %></div>
+                  <div id="text">Pet: <%-pet.Pet %></div>
+                  <div id="text">User: <%-pet.User %></div>
+                </div>
+              </div>
+        <% }) %>
+
+    </div>
+</div>
+</body>
+</html>

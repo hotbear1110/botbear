@@ -26,7 +26,8 @@
         { router: 'callback', path: '/callback' },
         { router: 'login', path: '/login'},
         { router: 'resolved', path: '/resolved' },
-        { router: 'newemotes', path: '/newemotes/nymn' }
+        { router: 'newemotes', path: '/newemotes/nymn' },
+        { router: 'pets', path: '/pets/yabbe' }
     ];
     
     const express = require('express');
