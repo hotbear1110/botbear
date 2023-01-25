@@ -518,7 +518,7 @@ exports.joinEventSub = async function (uid) {
 	let data = JSON.stringify({
 		'type': 'channel.update',
 		'version': '1',
-		'condition': { 'broadcaster_user_id': uid.toString() },
+		'condition': { 'broadcaster_user_id': uid },
 		'transport': { 'method': 'webhook', 'callback': 'https://hotbear.org/eventsub', 'secret': process.env.TWITCH_SECRET }
 	});
 	await got.post('https://api.twitch.tv/helix/eventsub/subscriptions', {
@@ -533,7 +533,7 @@ exports.joinEventSub = async function (uid) {
 	data = JSON.stringify({
 		'type': 'stream.online',
 		'version': '1',
-		'condition': { 'broadcaster_user_id': uid.toString() },
+		'condition': { 'broadcaster_user_id': uid },
 		'transport': { 'method': 'webhook', 'callback': 'https://hotbear.org/eventsub', 'secret': process.env.TWITCH_SECRET }
 	});
 	await got.post('https://api.twitch.tv/helix/eventsub/subscriptions', {
@@ -548,7 +548,7 @@ exports.joinEventSub = async function (uid) {
 	data = JSON.stringify({
 		'type': 'stream.offline',
 		'version': '1',
-		'condition': { 'broadcaster_user_id': uid.toString() },
+		'condition': { 'broadcaster_user_id': uid },
 		'transport': { 'method': 'webhook', 'callback': 'https://hotbear.org/eventsub', 'secret': process.env.TWITCH_SECRET }
 	});
 	await got.post('https://api.twitch.tv/helix/eventsub/subscriptions', {
