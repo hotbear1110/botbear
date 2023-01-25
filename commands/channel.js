@@ -43,7 +43,7 @@ module.exports = {
 				if (alreadyJoined.banned === 1)  {
 					return cc.join(username)
 					.then(async() => {
-						await sql.Query('UPDATE Streamers SET banned = ? WHERE username = ? ', [0, username]);
+						await sql.Query('UPDATE Streamers SET banned=? WHERE username=?', [0, username]);
 
 						await tools.joinEventSub(uid);
 
@@ -55,7 +55,7 @@ module.exports = {
 				if (alreadyJoined.left === 1)  {
 					return cc.join(username)
 					.then(async() => {
-						await sql.Query('UPDATE Streamers SET left = ? WHERE username = ? ', [0, username]);
+						await sql.Query('UPDATE Streamers SET left=? WHERE username=?', [0, username]);
 
 						await tools.joinEventSub(uid);
 
