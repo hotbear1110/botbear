@@ -11,6 +11,7 @@ module.exports = (function () {
         await new Promise(async function (resolve) {
             while(hasPage) {
                 const currentPage = await got(`https://bot-api.gempir.com/api/emotelog?channel=nymn&limit=100&page=${page}`).json();
+                if (!currentPage.length) {
                     resolve(emotes);
                     hasPage = false;
                 }
