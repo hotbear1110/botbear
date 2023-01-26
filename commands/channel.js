@@ -88,8 +88,8 @@ module.exports = {
 				if (channel != 'botbear1110' && channel != 'hbear___' && channel != user.username && perm < 2000) { return; }
 				if (input[3]) {
 					let streamer = await got(`https://api.ivr.fi/v2/twitch/user?login=${input[3]}`).json();
-					uid = streamer.id;
-					username = input[3];
+					uid = streamer[0]?.id;
+					username = input[3].toLowerCase();
 				}
 
 				if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !await tools.isMod(user, input[3])) {
