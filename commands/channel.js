@@ -40,7 +40,7 @@ module.exports = {
                 WHERE username=?`,
 				[username]);
 
-				if (alreadyJoined[0].banned === 1)  {
+				if (alreadyJoined[0]?.banned === 1)  {
 					return cc.join(username)
 					.then(async() => {
 						await sql.Query('UPDATE Streamers SET banned =? WHERE username =?', [0, username]);
@@ -52,7 +52,7 @@ module.exports = {
 					});
 				}
 
-				if (alreadyJoined[0].left === 1)  {
+				if (alreadyJoined[0]?.left === 1)  {
 					return cc.join(username)
 					.then(async() => {
 						await sql.Query('UPDATE Streamers SET `left` =? WHERE username =?', [0, username]);
@@ -105,7 +105,7 @@ module.exports = {
                             WHERE username =? `,
 				[username]);
 
-				if (!alreadyJoined.length || alreadyJoined[0].left === 1) {
+				if (!alreadyJoined.length || alreadyJoined[0]?.left === 1) {
 					return 'I am not in your channel';
 				}
 
