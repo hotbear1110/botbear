@@ -4,17 +4,17 @@ const querystring = require('querystring');
 module.exports = (function () {
     const router = require('express').Router();
 
-    const client_id = process.env.SPOTIFY_CLIENT_ID;
-    const redirect_uri = 'https://hotbear.org/callback';
+    const client_id = process.env.TWITCH_CLIENTID;
+    const redirect_uri = 'https://hotbear.org/twitch/callback';
 
     /* /Login */
     router.get('/', async (req, res) => {
         let state = generateRandomString(16);
-        let scope = 'user-read-playback-state user-read-currently-playing user-read-private user-modify-playback-state';
+        let scope = '';
       
-        res.redirect('https://accounts.spotify.com/authorize?' +
+        res.redirect('https://id.twitch.tv/oauth2/authorize?' +
           querystring.stringify({
-            response_type: 'code',
+            response_type: 'token',
             client_id: client_id,
             scope: scope,
             redirect_uri: redirect_uri,

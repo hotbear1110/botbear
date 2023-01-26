@@ -23,11 +23,13 @@
         { router: 'commands', path: '/' },
         { router: 'suggestions', path: '/suggestions'},
         { router: 'eventsub', path: '/eventsub' },
-        { router: 'callback', path: '/callback' },
-        { router: 'login', path: '/login'},
-        { router: 'resolved', path: '/resolved' },
+        { router: 'spotify/callback', path: '/spotify/callback' },
+        { router: 'spotify/login', path: '/spotify/login'},
+        { router: 'spotify/resolved', path: '/spotify/resolved' },
         { router: 'newemotes', path: '/newemotes/nymn' },
-        { router: 'pets', path: '/pets/yabbe' }
+        { router: 'pets', path: '/pets/yabbe' },
+        { router: 'twitch/callback', path: '/twitch/callback' },
+        { router: 'twitch/login', path: '/twitch/login'},
     ];
     
     const express = require('express');

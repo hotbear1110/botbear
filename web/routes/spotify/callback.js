@@ -1,14 +1,14 @@
 require('dotenv').config();
 const querystring = require('querystring');
-const { got } = require('../../got');
+const { got } = require('../../../got');
 
 module.exports = (function () {
-    const sql = require('../../sql/index.js');
+    const sql = require('../../../sql/index.js');
     const router = require('express').Router();
 
     const client_id = process.env.SPOTIFY_CLIENT_ID;
     const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
-    const redirect_uri = 'https://hotbear.org/callback';
+    const redirect_uri = 'https://hotbear.org/spotify/callback';
 
     /* /Callback */
     router.get('/', async (req, res) => {
