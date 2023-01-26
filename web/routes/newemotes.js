@@ -202,7 +202,7 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
-                EmoteCode: 'gondola2',
+                EmoteCode: 'Gondola2',
                 EmoteID: '60af206912d77014919c5ba6',
                 AddedBy: 'NymN',
                 CreatedAt: '2023-01-26T00:00:00.000000Z'
