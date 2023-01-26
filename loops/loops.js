@@ -194,7 +194,7 @@ setInterval(async function () {
 			if (foundName === false) {
 				await sql.Query('UPDATE Streamers SET seventv_sub=? WHERE username=?', [0, streamer.username]);
 			}
-			}, 500*i);
+			}, 1000*i);
 
 	}
 }, 300000);
