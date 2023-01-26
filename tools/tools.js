@@ -367,7 +367,7 @@ exports.bannedStreamers = async () => {
 
 		for (const streamer of checkBans) {
 			try {
-				const isBanned = await got(`https://api.ivr.fi/v2/twitch/user?login=${streamer.username}`).json();
+				const [isBanned] = await got(`https://api.ivr.fi/v2/twitch/user?login=${streamer.username}`).json();
 
 				if (isBanned.banned === true) {
 					await sql.Query('UPDATE Streamers SET banned = ? WHERE uid=?', [1, streamer.uid]);
@@ -387,7 +387,7 @@ exports.bannedStreamers = async () => {
 
 		for (const streamer of checkUnbans) {
 			try {
-				const isBanned = await got(`https://api.ivr.fi/v2/twitch/user?login=${streamer.username}`).json();
+				const [isBanned] = await got(`https://api.ivr.fi/v2/twitch/user?login=${streamer.username}`).json();
 
 				if (isBanned.banned === false) {
 					await sql.Query('UPDATE Streamers SET banned = ? WHERE uid=?', [0, streamer.uid]);
