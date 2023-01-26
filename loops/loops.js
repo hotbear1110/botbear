@@ -197,7 +197,7 @@ setInterval(async function () {
 			}, 1000*i);
 
 	}
-}, 300000);
+}, 600000);
 
 /** TODO Refactor */
 setInterval(async function () {
