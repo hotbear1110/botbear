@@ -202,6 +202,18 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: 'gondola2',
+                EmoteID: '60af206912d77014919c5ba6',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-01-26T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: '(Wednesday day off)',
+                EmoteID: '',
+                AddedBy: '(Wednesday day off)',
+                CreatedAt: '2023-01-25T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'meow',
                 EmoteID: '6210799f238beda80c09cfb8',
                 AddedBy: 'NymN (fawcan)',
