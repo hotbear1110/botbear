@@ -292,7 +292,7 @@ module.exports = {
 					return `FeelsDankMan api error: ${err.name} `;
 				}
 			}
-			return `FeelsDankMan Error: ${err.response.data.error} `;
+			return `FeelsDankMan Error: ${err.response} `;
 		}
 	}
 };
