@@ -30,10 +30,9 @@ module.exports = {
 
 				if (input[3]) {
 					let streamer = await got(`https://api.ivr.fi/v2/twitch/user?login=${input[3]}`).json();
-					uid = streamer.id;
+					uid = streamer[0]?.id;
 					username = input[3];
 				}
-
 				const alreadyJoined = await sql.Query(`
                 SELECT *
                 FROM Streamers
