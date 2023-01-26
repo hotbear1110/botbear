@@ -515,6 +515,7 @@ exports.checkAllBanphrases = async function (message, channel) {
 exports.joinEventSub = async function (uid) {
 	if (process.env.TWITCH_SECRET === undefined) return;
 
+	try {
 	let data = JSON.stringify({
 		'type': 'channel.update',
 		'version': '1',
@@ -559,6 +560,9 @@ exports.joinEventSub = async function (uid) {
 		},
 		body: data
 	});
+	} catch(err) {
+		console.log(err);
+	}
 
 	return true;
 };
