@@ -13,7 +13,7 @@ module.exports = (function () {
         let auth = res.access_token;
         let state = req.query.state || null;
 
-        console.log(req);
+        console.log(res);
       return router;
 
          if (state) {
