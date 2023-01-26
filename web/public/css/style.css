@@ -119,3 +119,7 @@ h2, h3 {
  }
 
 .navigation a:hover:not(.active):not(.disabled) {background-color: #1d2633;}
+
+.pet-info {
+  text-align: center;
+}
