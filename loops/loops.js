@@ -194,10 +194,10 @@ setInterval(async function () {
 				await sql.Query('UPDATE Streamers SET seventv_sub=? WHERE username=?', [0, streamer.username]);
 			}
 
-			}, 1000*i);
+			}, 500*i);
 
 	}
-}, 600000);
+}, 300000);
 
 /** TODO Refactor */
 setInterval(async function () {
