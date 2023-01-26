@@ -4,7 +4,20 @@ module.exports = (function () {
 
     /* /suggestions */
     router.get('/', async (req, res) => {
-        let emotes = await got('https://bot-api.gempir.com/api/emotelog?channel=nymn&limit=100').json();
+        let emotes = [];
+        let hasPage = true;
+        let page = 1;
+
+        await new Promise(async function (resolve) {
+            while(hasPage) {
+                const currentPage = await got(`https://bot-api.gempir.com/api/emotelog?channel=nymn&limit=100&page=${page}`).json();
+                    resolve(emotes);
+                    hasPage = false;
+                }
+                emotes = emotes.concat(currentPage);
+                page++;
+            }
+        });
 
         emotes.push({ 
             EmoteCode: 'AlienPls',
