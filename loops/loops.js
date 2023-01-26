@@ -178,7 +178,10 @@ setInterval(async function () {
 			await sql.Query('UPDATE Streamers SET emote_list=? WHERE username=?', [Emote_list, streamer.username]);
 			await sql.Query('UPDATE Streamers SET emote_removed=? WHERE username=?', [Emote_removed, streamer.username]);
 
-			const isSubbed = await got('https://api.7tv.app/v2/badges?user_identifier=twitch_id').json();
+			let isSubbed;
+			try {
+				isSubbed = await got('https://api.7tv.app/v2/badges?user_identifier=twitch_id').json();
+
 
 			let foundName = false;
 			for (const badge of isSubbed['badges']) {
@@ -194,6 +197,10 @@ setInterval(async function () {
 			if (foundName === false) {
 				await sql.Query('UPDATE Streamers SET seventv_sub=? WHERE username=?', [0, streamer.username]);
 			}
+			} catch (err) {
+				console.log(err);
+			}
+
 			}, 1000*i);
 
 	}
