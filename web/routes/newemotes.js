@@ -111,6 +111,13 @@ module.exports = (function () {
 
          const modifyEmotes = [
             {
+                EmoteCode: 'HandsUp',
+                EmoteID: '619209bc17e4d50afc0d9619',
+                AddedBy: 'marrryanx',
+                Type: 'election',
+                CreatedAt: '2023-01-27T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'forsenGa',
                 EmoteID: '61a7c0e5e9684edbbc37d13a',
                 AddedBy: 'agenttud',
@@ -201,6 +208,12 @@ module.exports = (function () {
 
 
          const nymnEmotes = [
+            {
+                EmoteCode: 'bruhSit',
+                EmoteID: '611c6818c7e1fe52005c1371',
+                AddedBy: 'MODS',
+                CreatedAt: '2023-01-27T00:00:00.000000Z'
+            },
             {
                 EmoteCode: 'Gondola2',
                 EmoteID: '60af206912d77014919c5ba6',
