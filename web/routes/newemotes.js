@@ -209,6 +209,12 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: 'Vacatime',
+                EmoteID: '62dbd0fa0a430aad0143c1f4',
+                AddedBy: 'MODS',
+                CreatedAt: '2023-01-28T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'bruhSit',
                 EmoteID: '611c6818c7e1fe52005c1371',
                 AddedBy: 'MODS',
