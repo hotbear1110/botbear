@@ -209,6 +209,12 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: '4WeirdBusiness',
+                EmoteID: '60ae84eb4b1ea4526d5bc117',
+                AddedBy: 'MODS',
+                CreatedAt: '2023-01-29T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'Vacatime',
                 EmoteID: '62dbd0fa0a430aad0143c1f4',
                 AddedBy: 'MODS',
