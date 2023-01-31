@@ -10,40 +10,46 @@ module.exports = (function () {
 
     /* /Callback */
     router.get('/', async (req, res) => {
-        let auth = res.access_token;
+        let code = res.query.code;
         let state = req.query.state || null;
 
         console.log(res);
       return router;
 
          if (state) {
-          let authOptions = {
-            url: 'https://api.twitch.tv/helix/users?id=141981764',
-            headers: {
-              'Authorization': 'Bearer ' + auth,
-              'Client-Id': client_id
-            }
+          let userAuthOptions = {
+            url: 'https://id.twitch.tv/oauth2/token',
+            params: querystring.stringify({
+              client_id: client_id,
+              client_secret: client_secret,
+              code: code,
+              grant_type: 'authorization_code',
+              redirect_uri: 'https://hotbear.org/twitch/callback'
+            })
           };
 
-          const twitchRequest = await got.post(authOptions.url, {
-						headers: authOptions.headers,
-            form: authOptions.form,
-					}).json();
+        const userAuth = await got.post(userAuthOptions.url + userAuthOptions.params).json();
 
+        let authOptions = {
+          url: 'https://api.twitch.tv/helix/users',
+          headers: {
+            'Authorization': 'Bearer ' + userAuth.access_token,
+            'Client-Id': client_id
+          }
+        };
 
-        const current_state = await sql.Query('SELECT state FROM Spotify WHERE refresh_token = ?'[spotifyToken.refresh_token]);
+        const twitchRequest = await got.post(authOptions.url, {
+          headers: authOptions.headers,
+          form: authOptions.form,
+        }).json();
 
-        if (current_state) {
-          await sql.Query('UPDATE Spotify SET  access_token = ?, expires_in = ? WHERE state = ? ', [spotifyToken.access_token, expires_in, current_state]);
-          state = current_state;
-        } else {
           await sql.Query(`INSERT INTO Spotify 
-        			(state, access_token, refresh_token, expires_in) 
+        			(state, uid, username) 
             			values 
-        			(?, ?, ?, ?)`,
-				[state, spotifyToken.access_token, spotifyToken.refresh_token, expires_in]
+        			(?, ?, ?)`,
+				[state, twitchRequest.data[0].id, twitchRequest.data[0].login]
 				);
-        }
+          state = current_state;
 
                 res.redirect('/resolved?' + 
                 querystring.stringify({
