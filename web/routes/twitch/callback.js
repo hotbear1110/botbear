@@ -14,6 +14,11 @@ module.exports = (function () {
         let code = req.query.code;
         let state = req.query.state || null;
 
+        if (req.query.error === 'access_denied') {
+          res.redirect('../music');
+          return router;
+        }
+
          if (state) {
           let userAuthOptions = {
             url: 'https://id.twitch.tv/oauth2/token?',
