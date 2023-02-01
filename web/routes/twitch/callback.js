@@ -66,7 +66,8 @@ module.exports = (function () {
           res.setHeader('Set-Cookie', cookie.serialize('token', String(cookieToken), {
             httpOnly: true,
             maxAge: 60 * 60 * 24 * 7, // 1 week
-            domain: 'hotbear.org'
+            domain: 'hotbear.org',
+            sameSite: 'none'
           }));
 
           await sql.Query('UPDATE Spotify SET  cookieToken = ? WHERE uid = ? ', [cookieToken, twitchRequest.data[0].id]);
@@ -80,7 +81,8 @@ module.exports = (function () {
         res.setHeader('Set-Cookie', cookie.serialize('token', String(cookieToken), {
           httpOnly: true,
           maxAge: 60 * 60 * 24 * 7, // 1 week
-          domain: 'hotbear.org'
+          domain: 'hotbear.org',
+          sameSite: 'none'
         }));
 
           await sql.Query(`INSERT INTO Spotify 
