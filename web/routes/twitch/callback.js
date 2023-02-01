@@ -1,7 +1,7 @@
 require('dotenv').config();
 const querystring = require('querystring');
 const { got } = require('../../../got');
-const cookie = require('cookie');
+const cookie = require('cookie-session');
 
 module.exports = (function () {
     const sql = require('../../../sql/index.js');
