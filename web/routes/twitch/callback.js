@@ -1,7 +1,7 @@
 require('dotenv').config();
 const querystring = require('querystring');
 const { got } = require('../../../got');
-const cookie = require('cookie');
+const cookie = require('cookie-session');
 
 module.exports = (function () {
     const sql = require('../../../sql/index.js');
@@ -63,8 +63,9 @@ module.exports = (function () {
         if (hasID.length) {
           let cookieToken = generateRandomString(255);
 
-          res.setHeader('Set-Cookie', cookie.serialize('token', String(cookieToken), {
-            httpOnly: true,
+          router.use(cookie({
+            name: 'token',
+            keys: [cookieToken],
             maxAge: 60 * 60 * 24 * 7 // 1 week
           }));
 
@@ -76,8 +77,9 @@ module.exports = (function () {
 
         let cookieToken = generateRandomString(255);
 
-        res.setHeader('Set-Cookie', cookie.serialize('token', String(cookieToken), {
-          httpOnly: true,
+        router.use(cookie({
+          name: 'token',
+          keys: [cookieToken],
           maxAge: 60 * 60 * 24 * 7 // 1 week
         }));
 
