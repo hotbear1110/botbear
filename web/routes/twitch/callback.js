@@ -63,11 +63,11 @@ module.exports = (function () {
         if (hasID.length) {
           let cookieToken = generateRandomString(255);
 
-          res.setHeader('Set-Cookie', cookie.serialize('token', String(cookieToken), {
-            httpOnly: true,
+          router.use(cookie({
+            name: 'token',
+            keys: [cookieToken],
             maxAge: 60 * 60 * 24 * 7, // 1 week
-            domain: 'hotbear.org',
-            sameSite: 'none'
+            domain: 'hotbear.org'
           }));
 
           await sql.Query('UPDATE Spotify SET  cookieToken = ? WHERE uid = ? ', [cookieToken, twitchRequest.data[0].id]);
@@ -78,11 +78,11 @@ module.exports = (function () {
 
         let cookieToken = generateRandomString(255);
 
-        res.setHeader('Set-Cookie', cookie.serialize('token', String(cookieToken), {
-          httpOnly: true,
+        router.use(cookie({
+          name: 'token',
+          keys: [cookieToken],
           maxAge: 60 * 60 * 24 * 7, // 1 week
-          domain: 'hotbear.org',
-          sameSite: 'none'
+          domain: 'hotbear.org'
         }));
 
           await sql.Query(`INSERT INTO Spotify 
