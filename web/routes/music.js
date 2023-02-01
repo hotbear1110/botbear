@@ -6,8 +6,8 @@ module.exports = (function () {
     /* /resolved */
     router.get('/', async (req, res) => {
         let cookies = req.cookies || '';
-
-        let cookieToken = cookies.cookieToken;
+        console.log(req.cookies);
+        let cookieToken = cookies.token;
         
         res.render('music', { cookieToken: cookieToken });
     });

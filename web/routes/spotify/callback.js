@@ -17,7 +17,7 @@ module.exports = (function () {
       
         let cookies = req.cookies || '';
 
-        let cookieToken = cookies.cookieToken;
+        let cookieToken = cookies.token;
 
         if (!cookieToken) {
           res.redirect('../music');
