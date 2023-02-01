@@ -16,7 +16,7 @@ module.exports = (function () {
 
       let cookieToken = cookies.cookieToken;
 
-      if (cookieToken.length) {
+      if (cookieToken) {
         const hasToken = await sql.Query('SELECT * FROM Spotify WHERE cookieToken = ?', [cookieToken]);
 
         if (hasToken.length) {
