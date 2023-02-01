@@ -1,7 +1,6 @@
 require('dotenv').config();
 const querystring = require('querystring');
 const { got } = require('../../../got');
-const cookie = require('cookie-session');
 
 module.exports = (function () {
     const sql = require('../../../sql/index.js');
@@ -62,13 +61,8 @@ module.exports = (function () {
         
         if (hasID.length) {
           let cookieToken = generateRandomString(255);
+          res.cookie('token', cookieToken, {maxAge: 60 * 60 * 24 * 7, /* 1 week */});
 
-          router.use(cookie({
-            name: 'token',
-            keys: [cookieToken],
-            maxAge: 60 * 60 * 24 * 7, // 1 week
-            domain: 'hotbear.org'
-          }));
 
           await sql.Query('UPDATE Spotify SET  cookieToken = ? WHERE uid = ? ', [cookieToken, twitchRequest.data[0].id]);
 
@@ -77,13 +71,8 @@ module.exports = (function () {
         }
 
         let cookieToken = generateRandomString(255);
+        res.cookie('token', cookieToken, {maxAge: 60 * 60 * 24 * 7, /* 1 week */});
 
-        router.use(cookie({
-          name: 'token',
-          keys: [cookieToken],
-          maxAge: 60 * 60 * 24 * 7, // 1 week
-          domain: 'hotbear.org'
-        }));
 
           await sql.Query(`INSERT INTO Spotify 
         			(state, uid, username, cookieToken) 

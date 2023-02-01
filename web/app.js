@@ -3,6 +3,7 @@
     const sql = require('./../sql/index.js');
     const Redis = require('./../tools/redis.js');
     const got = require('./../got');
+    const cookieParser = require('cookie-parser');
 
     await Redis.Get().Connect();
     await got.Setup();
@@ -40,6 +41,7 @@
     
     app.use(favicon(join(__dirname, 'public/img/LETSPEPE.png')));
     app.use(express.static('./public'));
+    app.use(cookieParser());
     app.use('/css', express.static(join(__dirname, 'public/css')));
     app.use('/js', express.static(join(__dirname, 'public/js')));
     
