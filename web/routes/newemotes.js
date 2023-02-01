@@ -209,6 +209,18 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: 'coupleofidiots',
+                EmoteID: '634379257361e04bb26bdb49',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-02T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'Cooking',
+                EmoteID: '61a91b7315b3ff4a5bb8e72b/',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-01T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'AREYOUAGIRL',
                 EmoteID: '60cfa860ca263e7ca4de398a',
                 AddedBy: 'NymN',
