@@ -25,11 +25,11 @@
         { router: 'eventsub', path: '/eventsub' },
         { router: 'spotify/callback', path: '/spotify/callback' },
         { router: 'spotify/login', path: '/spotify/login'},
-        { router: 'spotify/resolved', path: '/spotify/resolved' },
         { router: 'newemotes', path: '/newemotes/nymn' },
         { router: 'pets', path: '/pets/yabbe' },
         { router: 'twitch/callback', path: '/twitch/callback' },
         { router: 'twitch/login', path: '/twitch/login'},
+        { router: 'music', path: '/music'},
     ];
     
     const express = require('express');
