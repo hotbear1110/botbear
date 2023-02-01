@@ -17,7 +17,7 @@ module.exports = (function () {
 
          if (state) {
           let userAuthOptions = {
-            url: 'https://id.twitch.tv/oauth2/token',
+            url: 'https://id.twitch.tv/oauth2/token?',
             params: querystring.stringify({
               client_id: client_id,
               client_secret: client_secret,
@@ -46,7 +46,7 @@ module.exports = (function () {
         };
 
         let twitchRequest;
-        
+
         try {
 
         twitchRequest = await got.post(authOptions.url, {
