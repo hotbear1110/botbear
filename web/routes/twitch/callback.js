@@ -49,7 +49,7 @@ module.exports = (function () {
 
         try {
 
-        twitchRequest = await got.post(authOptions.url, {
+        twitchRequest = await got(authOptions.url, {
           headers: authOptions.headers,
           form: authOptions.form,
         }).json();
