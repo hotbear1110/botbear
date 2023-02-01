@@ -66,7 +66,8 @@ module.exports = (function () {
           router.use(cookie({
             name: 'token',
             keys: [cookieToken],
-            maxAge: 60 * 60 * 24 * 7 // 1 week
+            maxAge: 60 * 60 * 24 * 7, // 1 week
+            domain: 'hotbear.org'
           }));
 
           await sql.Query('UPDATE Spotify SET  cookieToken = ? WHERE uid = ? ', [cookieToken, twitchRequest.data[0].id]);
@@ -80,7 +81,8 @@ module.exports = (function () {
         router.use(cookie({
           name: 'token',
           keys: [cookieToken],
-          maxAge: 60 * 60 * 24 * 7 // 1 week
+          maxAge: 60 * 60 * 24 * 7, // 1 week
+          domain: 'hotbear.org'
         }));
 
           await sql.Query(`INSERT INTO Spotify 
