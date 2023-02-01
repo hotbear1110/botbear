@@ -1,5 +1,7 @@
 require('dotenv').config();
 const querystring = require('querystring');
+const cookie = require('cookie');
+const sql = require('../../../sql/index.js');
 
 module.exports = (function () {
     const router = require('express').Router();
@@ -9,6 +11,19 @@ module.exports = (function () {
 
     /* /Login */
     router.get('/', async (req, res) => {
+
+      let cookies = cookie.parse(req.headers.cookie || '');
+
+      let cookieToken = cookies.cookieToken;
+
+      if (cookieToken.length) {
+        const hasToken = await sql.Query('SELECT * FROM Spotify WHERE cookieToken = ?', [cookieToken]);
+
+        if (hasToken.length) {
+          res.redirect('../music');
+          return router;
+        }
+      }
         let state = generateRandomString(16);
         let scope = '';
       
