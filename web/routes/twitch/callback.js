@@ -12,7 +12,7 @@ module.exports = (function () {
 
     /* /Callback */
     router.get('/', async (req, res) => {
-        let code = res.query.code;
+        let code = req.query.code;
         let state = req.query.state || null;
 
         
@@ -74,7 +74,7 @@ module.exports = (function () {
         			(?, ?, ?, ?)`,
 				[state, twitchRequest.data[0].id, twitchRequest.data[0].login, cookieToken]
 				);
-        
+
         res.redirect('../music');
 
         } else {
