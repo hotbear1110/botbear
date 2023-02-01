@@ -27,7 +27,15 @@ module.exports = (function () {
             })
           };
 
-        const userAuth = await got.post(userAuthOptions.url + userAuthOptions.params).json();
+        
+        let userAuth;
+        try {
+          userAuth = await got.post(userAuthOptions.url + userAuthOptions.params).json();
+        } catch (err) {
+          console.log(err);
+          return router;
+        }
+
 
         let authOptions = {
           url: 'https://api.twitch.tv/helix/users',
@@ -37,11 +45,19 @@ module.exports = (function () {
           }
         };
 
-        const twitchRequest = await got.post(authOptions.url, {
+        let twitchRequest;
+        
+        try {
+
+        twitchRequest = await got.post(authOptions.url, {
           headers: authOptions.headers,
           form: authOptions.form,
         }).json();
 
+      } catch (err) {
+        console.log(err);
+        return router;
+      }
         const hasID = await sql.Query('SELECT * FROM Spotify WHERE uid = ?', [twitchRequest.data[0].id]);
         
         if (hasID.length) {
