@@ -29,7 +29,7 @@ module.exports = (function () {
       
         res.redirect('https://id.twitch.tv/oauth2/authorize?' +
           querystring.stringify({
-            response_type: 'token',
+            response_type: 'code',
             client_id: client_id,
             scope: scope,
             redirect_uri: redirect_uri,
