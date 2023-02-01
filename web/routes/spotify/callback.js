@@ -1,6 +1,7 @@
 require('dotenv').config();
 const querystring = require('querystring');
 const { got } = require('../../../got');
+const cookie = require('cookie');
 
 module.exports = (function () {
     const sql = require('../../../sql/index.js');
@@ -15,6 +16,21 @@ module.exports = (function () {
         let code = req.query.code || null;
         let state = req.query.state || null;
       
+        let cookies = cookie.parse(req.headers.cookie || '');
+
+        let cookieToken = cookies.cookieToken;
+
+        if (!cookieToken) {
+          res.redirect('../music');
+          return router;
+        }
+
+        const hasToken = await sql.Query('SELECT * FROM Spotify WHERE cookieToken = ?', [cookieToken]);
+
+        if (!hasToken.length) {
+          res.redirect('../music');
+          return router;
+        }
 
          if (state) {
           let authOptions = {
@@ -37,19 +53,8 @@ module.exports = (function () {
 
         const expires_in = Date.now() + spotifyToken.expires_in * 1000; 
 
-        const current_state = await sql.Query('SELECT state FROM Spotify WHERE refresh_token = ?'[spotifyToken.refresh_token]);
+        await sql.Query('UPDATE Spotify SET  access_token = ?, expires_in = ?, refresh_token = ? WHERE cookieToken = ? ', [spotifyToken.access_token, expires_in, spotifyToken.refresh_token, cookieToken]);
 
-        if (current_state) {
-          await sql.Query('UPDATE Spotify SET  access_token = ?, expires_in = ? WHERE state = ? ', [spotifyToken.access_token, expires_in, current_state]);
-          state = current_state;
-        } else {
-          await sql.Query(`INSERT INTO Spotify 
-        			(state, access_token, refresh_token, expires_in) 
-            			values 
-        			(?, ?, ?, ?)`,
-				[state, spotifyToken.access_token, spotifyToken.refresh_token, expires_in]
-				);
-        }
 
                 res.redirect('/resolved?' + 
                 querystring.stringify({
