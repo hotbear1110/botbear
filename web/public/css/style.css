@@ -1,33 +1,35 @@
 body {
   background-color: #010409;
-  }
-  h1, h2, h3, p, a {
-      font-family: arial, sans-serif;
-      color: #dddddd;
-      padding-left: 5px;
-  }
-  
-  table {
+}
+
+h1, h2, h3, p, a {
     font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  td, th {
-    text-align: left;
-    padding: 6px;
     color: #dddddd;
-    border: 3px solid #080b0f;
-    
-  }
-  td:nth-child(even), th:nth-child(even) {
-      border-left: 3px solid #080b0f;
-  }
+    padding-left: 5px;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  text-align: left;
+  padding: 6px;
+  color: #dddddd;
+  border: 3px solid #080b0f;
   
-  
-  tr:nth-child(even) {
-    background-color: #0d1117;
-  }
+}
+
+td:nth-child(even), th:nth-child(even) {
+    border-left: 3px solid #080b0f;
+}
+
+tr:nth-child(even) {
+  background-color: #0d1117;
+}
+
 h2, h3 {
   color: white;
   font-family: arial, sans-serif;
@@ -121,5 +123,76 @@ h2, h3 {
 .navigation a:hover:not(.active):not(.disabled) {background-color: #1d2633;}
 
 .pet-info {
+  text-align: center;
+}
+
+.music {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.musicbox {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: fit-content;
+  width: fit-content;
+  padding: 10px 60px 20px 60px;
+  border-radius: 10px 10px 10px 10px;
+  background-color: gray;
+  color: white;
+}
+
+.musicbutton {
+  background-color: #a62dc8;
+  font-size: 19px;
+  border: 1px solid #000000;
+  border-radius: 10px;
+  padding: 15px 50px;
+  cursor: pointer;
+}
+
+.musicbutton:hover {
+  color: #a62dc8;
+  background-color: #ffffff;
+}
+
+.spotify {
+  color: #ffffff;
+  background-color: #1ed760;
+}
+
+.spotify:hover {
+  color: #1ed760;
+  background-color: #ffffff;
+}
+
+.musicbutton.disabled {
+  pointer-events: none;
+  cursor: default;
+  background-color: #dddddd;
+  color: #4f4f4f; 
+  text-decoration: none;
+}
+
+.musicuser{
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  border-style: dashed;
+  border-color: white;
+  border-radius: 5px 5px 5px 5px;
+  height: 80px;
+  margin-top: 10px;
+}
+
+.musicuser > img {
+  height: 80%;
+}
+
+.musicbox > .error {
   text-align: center;
 }
