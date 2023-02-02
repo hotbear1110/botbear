@@ -23,12 +23,13 @@
                         <small>(Redirects to twitch.tv)</small>
                         <a href="https://hotbear.org/twitch/login" class="musicbutton">Log in with twitch</a>
                     </div>
+                    <% if (query.error){ %>
                     <div class="error">
-                        <% if (query.error){ %>
                             <p style="color:red">Error <%= query.error%>!
                                  <%= query.error_description.replace("+"," ")%></p>
-                        <% } %>
                     </div>
+                    <% } %>
+
                 <% } else { %>
                     <% const username=userInfo.username; %>
                     <% const uid=userInfo.uid; %>

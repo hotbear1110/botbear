@@ -4,11 +4,11 @@ const sql = require('./../../sql/index.js');
 const { got } = require('./../../got');
 
 module.exports = (function () {
-    /* /resolved */
     router.get('/', async (req, res) => {
         let cookies = req.cookies || '';
         let query = req.query;
 
+        console.log(query);
         let cookieToken = cookies.token;
 
         let userInfo = await sql.Query('SELECT * FROM Spotify WHERE cookieToken = ?', [cookieToken]);
