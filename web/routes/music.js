@@ -8,7 +8,6 @@ module.exports = (function () {
         let cookies = req.cookies || '';
         let query = req.query;
 
-        console.log(query);
         let cookieToken = cookies.token;
 
         let userInfo = await sql.Query('SELECT * FROM Spotify WHERE cookieToken = ?', [cookieToken]);
