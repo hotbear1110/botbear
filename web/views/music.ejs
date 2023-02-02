@@ -13,11 +13,11 @@
     <div class="wrapper">
         <div class="music">
             <div class="musicbox">
+                <div>
+                    <h3>Botbear Spotify integration</h3>
+                    <img src="/img/spotify_logo.png" alt="Spotify Logo" />
+                </div>
                 <%if (!cookieToken) { %>
-                    <div>
-                        <h3>Botbear Spotify integration</h3>
-                        <img src="/img/spotify_logo.png" alt="Spotify Logo" />
-                    </div>
                     <div style="display: grid;">
                         <h4>Step 1:</h4>
                         <small>(Redirects to twitch.tv)</small>
@@ -34,10 +34,6 @@
                     <% const username=userInfo.username; %>
                     <% const uid=userInfo.uid; %>
                     <% const logo=userInfo.logo; %>
-                    <div>
-                        <h3>Botbear Spotify integration</h3>
-                        <img src="./spotify_logo.png" alt="Spotify Logo" />
-                    </div>
                     <div style="display: grid;">
                         <h4>Step 1:</h4>
                         <a href="https://hotbear.org/twitch/login" class="musicbutton disabled">Twitch
