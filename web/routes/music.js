@@ -11,7 +11,7 @@ module.exports = (function () {
 
         let cookieToken = cookies.token;
 
-        let [userInfo] = await sql.Query('SELECT * FROM Spotify',);
+        let [userInfo] = await sql.Query('SELECT * FROM Spotify WHERE cookieToken = ?', [cookieToken]);
 
         if (userInfo.length) {
             const [getImage] = got(`https://api.ivr.fi/v2/twitch/user?id=${userInfo.id}`).json();
