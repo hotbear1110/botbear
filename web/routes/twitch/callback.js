@@ -15,7 +15,7 @@ module.exports = (function () {
         let state = req.query.state || null;
 
         if (req.query.error === 'access_denied') {
-          res.redirect('../music');
+          res.redirect('../music?' + querystring.stringify(req.query));
           return router;
         }
 
