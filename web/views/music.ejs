@@ -24,10 +24,9 @@
                         <a href="https://hotbear.org/twitch/login" class="musicbutton">Log in with twitch</a>
                     </div>
                     <div class="error">
-                        <% const params = new URL(window.location.toLocaleString()); %>
-                        <% if (params.getAll('error')){ %>
-                            <p style="color:red">Error <%= params.getAll('error')%>!
-                                 <%= params.getAll('error_description').replace("+"," ")%></p>
+                        <% if (query.error){ %>
+                            <p style="color:red">Error <%= params.error%>!
+                                 <%= paramserror_description.replace("+"," ")%></p>
                         <% } %>
                     </div>
                 <% } else { %>

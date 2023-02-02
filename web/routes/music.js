@@ -7,6 +7,7 @@ module.exports = (function () {
     /* /resolved */
     router.get('/', async (req, res) => {
         let cookies = req.cookies || '';
+        let query = req.query;
 
         let cookieToken = cookies.token;
 
@@ -17,7 +18,7 @@ module.exports = (function () {
             userInfo['logo'] = getImage.logo;
         }
 
-        res.render('music', { cookieToken: userInfo.length, userInfo: userInfo });
+        res.render('music', { cookieToken: userInfo.length, userInfo: userInfo, query: query });
     });
 
     return router;
