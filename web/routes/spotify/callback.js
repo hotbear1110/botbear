@@ -52,7 +52,7 @@ module.exports = (function () {
 
         const expires_in = Date.now() + spotifyToken.expires_in * 1000; 
 
-        await sql.Query('UPDATE Spotify SET  access_token = ?, expires_in = ?, refresh_token = ? WHERE cookieToken = ? ', [spotifyToken.access_token, expires_in, spotifyToken.refresh_token, cookieToken]);
+        await sql.Query('UPDATE Spotify SET state = ?, access_token = ?, expires_in = ?, refresh_token = ? WHERE cookieToken = ? ', [state, spotifyToken.access_token, expires_in, spotifyToken.refresh_token, cookieToken]);
 
 
                 res.redirect('/resolved?' + 

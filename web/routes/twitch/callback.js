@@ -80,10 +80,10 @@ module.exports = (function () {
 
 
           await sql.Query(`INSERT INTO Spotify 
-        			(state, uid, username, cookieToken) 
+        			(uid, username, cookieToken) 
             			values 
-        			(?, ?, ?, ?)`,
-				[state, twitchRequest.data[0].id, twitchRequest.data[0].login, cookieToken]
+        			(?, ?, ?)`,
+				[twitchRequest.data[0].id, twitchRequest.data[0].login, cookieToken]
 				);
 
         res.redirect('../music');
