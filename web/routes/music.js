@@ -13,13 +13,15 @@ module.exports = (function () {
 
         let userInfo = await sql.Query('SELECT * FROM Spotify WHERE cookieToken = ?', [cookieToken]);
 
-        if (userInfo.length) {
+        const hasToken = userInfo.length;
+
+        if (hasToken) {
             userInfo = userInfo[0];
             const [getImage] = await got(`https://api.ivr.fi/v2/twitch/user?id=${userInfo.uid}`).json();
             userInfo['logo'] = getImage.logo;
         }
 
-        res.render('music', { cookieToken: userInfo.length, userInfo: userInfo, query: query });
+        res.render('music', { cookieToken: hasToken, userInfo: userInfo, query: query });
     });
 
     return router;
