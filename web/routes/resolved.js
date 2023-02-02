@@ -1,6 +1,6 @@
 require('dotenv').config();
 const router = require('express').Router();
-const sql = require('../../../sql/index.js');
+const sql = require('../../sql/index.js');
 
 module.exports = (function () {
     router.get('/', async (req, res) => {
