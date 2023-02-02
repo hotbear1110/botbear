@@ -142,12 +142,12 @@ h2, h3 {
   width: fit-content;
   padding: 10px 60px 20px 60px;
   border-radius: 10px 10px 10px 10px;
-  background-color: gray;
+  background-color: #1f2b3a6c;
   color: white;
 }
 
 .musicbutton {
-  background-color: #a62dc8;
+  background-color: #9147ff;
   font-size: 19px;
   border: 1px solid #000000;
   border-radius: 10px;
@@ -156,8 +156,8 @@ h2, h3 {
 }
 
 .musicbutton:hover {
-  color: #a62dc8;
-  background-color: #ffffff;
+  color: #ffffff;
+  background-color: #7218e4;
 }
 
 .spotify {
@@ -166,8 +166,8 @@ h2, h3 {
 }
 
 .spotify:hover {
-  color: #1ed760;
-  background-color: #ffffff;
+  color: #ffffff;
+  background-color: #01ac3d;
 }
 
 .musicbutton.disabled {
