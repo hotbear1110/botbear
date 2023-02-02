@@ -48,6 +48,11 @@
                         <a href="https://hotbear.org/spotify/login" class="musicbutton spotify">Link
                             spotify account</a>
                     </div>
+                    <% if (query.error){ %>
+                        <div class="error">
+                                <p style="color:red">Error: <%= query.error%>!</p>
+                        </div>
+                        <% } %>
                 <% } %>
             </div>
         </div>

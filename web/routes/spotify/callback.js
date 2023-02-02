@@ -15,6 +15,11 @@ module.exports = (function () {
         let code = req.query.code || null;
         let state = req.query.state || null;
       
+        if (req.query.error === 'access_denied') {
+          res.redirect('../music?error=access_denied');
+          return router;
+        }
+        
         let cookies = req.cookies || '';
 
         let cookieToken = cookies.token;
