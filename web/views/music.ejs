@@ -25,8 +25,8 @@
                     </div>
                     <div class="error">
                         <% if (query.error){ %>
-                            <p style="color:red">Error <%= params.error%>!
-                                 <%= paramserror_description.replace("+"," ")%></p>
+                            <p style="color:red">Error <%= query.error%>!
+                                 <%= query.error_description.replace("+"," ")%></p>
                         <% } %>
                     </div>
                 <% } else { %>
