@@ -2,7 +2,7 @@ body {
   background-color: #010409;
 }
 
-h1, h2, h3, p, a {
+h1, h2, h3, h4, p, a, small {
     font-family: arial, sans-serif;
     color: #dddddd;
     padding-left: 5px;
