@@ -15,7 +15,7 @@ module.exports = (function () {
 
         if (userInfo.length) {
             userInfo = userInfo[0];
-            const [getImage] = await got(`https://api.ivr.fi/v2/twitch/user?id=${userInfo.id}`).json();
+            const [getImage] = await got(`https://api.ivr.fi/v2/twitch/user?id=${userInfo.uid}`).json();
             userInfo['logo'] = getImage.logo;
         }
 
