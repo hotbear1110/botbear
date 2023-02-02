@@ -14,6 +14,9 @@
     <%if (!cookieToken) { %>
     <a href="https://hotbear.org/twitch/login"> Twitch Login </a>
     <% } else { %>
+        <% const username = userInfo.username; %>
+        <% const uid = userInfo.uid; %>
+        <% const logo = userInfo.logo; %>
     <a href="https://hotbear.org/spotify/login"> Spotify Login </a>
     <%  } %>
 </body>
