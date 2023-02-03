@@ -1,18 +1,32 @@
 require('dotenv').config();
 const querystring = require('querystring');
+const sql = require('../../../sql/index.js');
 
 module.exports = (function () {
     const router = require('express').Router();
 
-    const client_id = process.env.SPOTIFY_CLIENT_ID;
-    const redirect_uri = 'https://hotbear.org/callback';
+    const client_id = process.env.TWITCH_CLIENTID;
+    const redirect_uri = 'https://hotbear.org/twitch/callback';
 
     /* /Login */
     router.get('/', async (req, res) => {
+
+      let cookies = req.cookies || '';
+
+      let cookieToken = cookies.token;
+
+      if (cookieToken) {
+        const hasToken = await sql.Query('SELECT * FROM Spotify WHERE cookieToken = ?', [cookieToken]);
+
+        if (hasToken.length) {
+          res.redirect('../music');
+          return router;
+        }
+      }
         let state = generateRandomString(16);
-        let scope = 'user-read-playback-state user-read-currently-playing user-read-private user-modify-playback-state';
+        let scope = '';
       
-        res.redirect('https://accounts.spotify.com/authorize?' +
+        res.redirect('https://id.twitch.tv/oauth2/authorize?' +
           querystring.stringify({
             response_type: 'code',
             client_id: client_id,

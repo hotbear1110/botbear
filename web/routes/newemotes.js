@@ -111,6 +111,13 @@ module.exports = (function () {
 
          const modifyEmotes = [
             {
+                EmoteCode: 'HandsUp',
+                EmoteID: '619209bc17e4d50afc0d9619',
+                AddedBy: 'marrryanx',
+                Type: 'election',
+                CreatedAt: '2023-01-27T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'forsenGa',
                 EmoteID: '61a7c0e5e9684edbbc37d13a',
                 AddedBy: 'agenttud',
@@ -201,6 +208,48 @@ module.exports = (function () {
 
 
          const nymnEmotes = [
+            {
+                EmoteCode: 'coupleofidiots',
+                EmoteID: '634379257361e04bb26bdb49',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-02T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'Cooking',
+                EmoteID: '61a91b7315b3ff4a5bb8e72b/',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-01T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'AREYOUAGIRL',
+                EmoteID: '60cfa860ca263e7ca4de398a',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-01-31T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: '4Love',
+                EmoteID: '60db66aa9a9fbb6acd8351c1',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-01-30T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: '4WeirdBusiness',
+                EmoteID: '60ae84eb4b1ea4526d5bc117',
+                AddedBy: 'MODS',
+                CreatedAt: '2023-01-29T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'Vacatime',
+                EmoteID: '62dbd0fa0a430aad0143c1f4',
+                AddedBy: 'MODS',
+                CreatedAt: '2023-01-28T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'bruhSit',
+                EmoteID: '611c6818c7e1fe52005c1371',
+                AddedBy: 'MODS',
+                CreatedAt: '2023-01-27T00:00:00.000000Z'
+            },
             {
                 EmoteCode: 'Gondola2',
                 EmoteID: '60af206912d77014919c5ba6',

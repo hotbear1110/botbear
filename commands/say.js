@@ -17,14 +17,14 @@ module.exports = {
 
 			msg.replace(regex.invisChar, '');
 
-            if (perm < 2000 && msg.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/g) && !msg.match(/^[./]me /)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
+            if (perm < 2000 && msg.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/gm)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
 				msg = '. ' + msg.charAt(0) + '\u{E0000}' + msg.substring(1);
 			}
-			if (msg.match(/^!/g)) {
-				msg = '❗ ' + msg.substring(1);
+			if (msg.match(/^!/gm)) {
+				msg = '❗ ' + msg.replace('!', '');
 			}
 
-			if (perm < 2000 && msg.match(/(\.|\/)color/g)) {
+			if (perm < 2000 && msg.match(/(\.|\/)color/gm)) {
 				return 'cmonBruh don\'t change my color';
 			}
 			const banRegex = new RegExp(`[./](ban|timeout|unmod) ${process.env.TWITCH_OWNERNAME}`,'gi');
