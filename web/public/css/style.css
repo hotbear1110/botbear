@@ -173,8 +173,8 @@ h2, h3 {
 .musicbutton.disabled {
   pointer-events: none;
   cursor: default;
-  background-color: #dddddd;
-  color: #7018e454; 
+  background-color: #7018e454;
+  color: #4f4f4f; 
   text-decoration: none;
 }
 
