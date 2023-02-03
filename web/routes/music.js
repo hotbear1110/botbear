@@ -16,8 +16,13 @@ module.exports = (function () {
 
         if (hasToken) {
             userInfo = userInfo[0];
-            const [getImage] = await got(`https://api.ivr.fi/v2/twitch/user?id=${userInfo.uid}`).json();
-            userInfo['logo'] = getImage.logo;
+            try {
+                const [getImage] = await got(`https://api.ivr.fi/v2/twitch/user?id=${userInfo.uid}`).json();
+                userInfo['logo'] = getImage.logo;
+            } catch (err) {
+                userInfo['logo'] = 'https://static-cdn.jtvnw.net/user-default-pictures-uv/13e5fa74-defa-11e9-809c-784f43822e80-profile_image-600x600.png'; //Fallback image
+            }
+
         }
 
         res.render('music', { cookieToken: hasToken, userInfo: userInfo, query: query });
