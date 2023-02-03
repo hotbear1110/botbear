@@ -49,11 +49,18 @@ module.exports = (function () {
             },
             json: true
           };
+          let spotifyToken;
+          try {
+            spotifyToken = await got.post(authOptions.url, {
+              headers: authOptions.headers,
+              form: authOptions.form,
+            }).json();
 
-          const spotifyToken = await got.post(authOptions.url, {
-						headers: authOptions.headers,
-            form: authOptions.form,
-					}).json();
+          } catch(err) {
+            res.redirect('../music?error=api_error');
+            return router;
+          }
+
 
         const expires_in = Date.now() + spotifyToken.expires_in * 1000; 
 

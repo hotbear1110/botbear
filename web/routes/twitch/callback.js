@@ -37,6 +37,7 @@ module.exports = (function () {
           userAuth = await got.post(userAuthOptions.url + userAuthOptions.params).json();
         } catch (err) {
           console.log(err);
+          res.redirect('../music?error=api_error');
           return router;
         }
 
@@ -60,6 +61,7 @@ module.exports = (function () {
 
       } catch (err) {
         console.log(err);
+        res.redirect('../music?error=api_error');
         return router;
       }
         const hasID = await sql.Query('SELECT * FROM Spotify WHERE uid = ?', [twitchRequest.data[0].id]);
