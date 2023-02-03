@@ -35,7 +35,7 @@ module.exports = {
             const spotify_user = await spotifyTools.fetchToken(uid);
 
 			if (spotify_user.no_auth) {
-				return (username === user.username) ? 'You have not authorized with the bot. Please login here: https://hotbear.org/login' : 'That user has not authorized with the bot.';
+				return (username === user.username) ? 'You have not authorized with the bot. Please login here: https://hotbear.org/music' : 'That user has not authorized with the bot.';
 			}
 
 			switch(input[2]) {

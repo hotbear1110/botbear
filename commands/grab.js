@@ -41,7 +41,7 @@ module.exports = {
             }
 
 			if (spotify_user.no_auth) {
-				return 'You have not authorized with the bot. Please login here: https://hotbear.org/login';
+				return 'You have not authorized with the bot. Please login here: https://hotbear.org/music';
 			}
 			if (spotify_target.no_auth) {
 				return 'That user has not authorized with the bot.';
