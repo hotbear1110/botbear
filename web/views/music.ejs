@@ -9,16 +9,54 @@
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
-<body>
+<body style="margin: 0;">
+    <div class="wrapper">
+        <div class="music">
+            <div class="musicbox">
+                <div>
+                    <h3>Botbear Spotify integration</h3>
+                    <img src="/img/spotify_logo.png" alt="Spotify Logo" />
+                </div>
+                <%if (!cookieToken) { %>
+                    <div style="display: grid;">
+                        <h4>Step 1:</h4>
+                        <small>(Redirects to twitch.tv)</small>
+                        <a href="https://hotbear.org/twitch/login" class="musicbutton">Log in with twitch</a>
+                    </div>
+                    <% if (query.error){ %>
+                    <div class="error">
+                            <p style="color:red">Error: <%= query.error%>!</p>
+                    </div>
+                    <% } %>
 
-    <%if (!cookieToken) { %>
-    <a href="https://hotbear.org/twitch/login"> Twitch Login </a>
-    <% } else { %>
-        <% const username = userInfo.username; %>
-        <% const uid = userInfo.uid; %>
-        <% const logo = userInfo.logo; %>
-    <a href="https://hotbear.org/spotify/login"> Spotify Login </a>
-    <%  } %>
+                <% } else { %>
+                    <% const username=userInfo.username; %>
+                    <% const uid=userInfo.uid; %>
+                    <% const logo=userInfo.logo; %>
+                    <div style="display: grid;">
+                        <h4>Step 1:</h4>
+                        <a href="https://hotbear.org/twitch/login" class="musicbutton disabled">Twitch
+                            linked!</a>
+                    </div>
+                    <div class="musicuser">
+                        <img src="<%= logo%>" alt="User logo">
+                        <p><%= username%></p>
+                    </div>
+                    <div style="display: grid;">
+                        <h4>Step 2:</h4>
+                        <small>(Redirects to spotify.com)</small>
+                        <a href="https://hotbear.org/spotify/login" class="musicbutton spotify">Link
+                            spotify account</a>
+                    </div>
+                    <% if (query.error){ %>
+                        <div class="error">
+                                <p style="color:red">Error: <%= query.error%>!</p>
+                        </div>
+                        <% } %>
+                <% } %>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

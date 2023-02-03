@@ -15,6 +15,11 @@ module.exports = (function () {
         let code = req.query.code || null;
         let state = req.query.state || null;
       
+        if (req.query.error === 'access_denied') {
+          res.redirect('../music?error=access_denied');
+          return router;
+        }
+        
         let cookies = req.cookies || '';
 
         let cookieToken = cookies.token;
@@ -44,15 +49,22 @@ module.exports = (function () {
             },
             json: true
           };
+          let spotifyToken;
+          try {
+            spotifyToken = await got.post(authOptions.url, {
+              headers: authOptions.headers,
+              form: authOptions.form,
+            }).json();
 
-          const spotifyToken = await got.post(authOptions.url, {
-						headers: authOptions.headers,
-            form: authOptions.form,
-					}).json();
+          } catch(err) {
+            res.redirect('../music?error=api_error');
+            return router;
+          }
+
 
         const expires_in = Date.now() + spotifyToken.expires_in * 1000; 
 
-        await sql.Query('UPDATE Spotify SET  access_token = ?, expires_in = ?, refresh_token = ? WHERE cookieToken = ? ', [spotifyToken.access_token, expires_in, spotifyToken.refresh_token, cookieToken]);
+        await sql.Query('UPDATE Spotify SET state = ?, access_token = ?, expires_in = ?, refresh_token = ? WHERE cookieToken = ? ', [state, spotifyToken.access_token, expires_in, spotifyToken.refresh_token, cookieToken]);
 
 
                 res.redirect('/resolved?' + 

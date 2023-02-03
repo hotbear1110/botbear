@@ -31,6 +31,7 @@
         { router: 'twitch/callback', path: '/twitch/callback' },
         { router: 'twitch/login', path: '/twitch/login'},
         { router: 'music', path: '/music'},
+        { router: 'resolved', path: '/resolved'},
     ];
     
     const express = require('express');
