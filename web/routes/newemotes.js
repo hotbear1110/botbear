@@ -216,6 +216,12 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: 'XiJinNymN',
+                EmoteID: '611687c2446a415801b1b55c',
+                AddedBy: 'MODS',
+                CreatedAt: '2023-02-04T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'DonkDriving',
                 EmoteID: '610ff4353f3e99ddb4628023',
                 AddedBy: 'NymN',
