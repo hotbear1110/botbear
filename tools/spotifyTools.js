@@ -47,7 +47,12 @@ exports.fetchToken = async function(uid) {
     const expires_in = spotify_user[0].expires_in;
 
 	if(Date.now() > expires_in) {
-		access_token = await this.refreshToken(uid, refresh_token);
+        try {
+            access_token = await this.refreshToken(uid, refresh_token);
+        } catch (err) {
+            console.log(err);
+            return { error: 'Failed to refresh token' };
+        }
 	}
 
     return { opt_in: spotify_user[0].opt_in, access_token: access_token };

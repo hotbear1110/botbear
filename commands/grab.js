@@ -36,6 +36,14 @@ module.exports = {
             const spotify_user = await spotifyTools.fetchToken(uid);
 			const spotify_target = await spotifyTools.fetchToken(target_uid);
 
+			if (spotify_user.error) {
+				return 'Something went wrong when refreshing your token. Try re authenticating with the bot: https://hotbear.org/music';
+			}
+
+			if (spotify_target.error) {
+				return 'Something went wrong when refreshing that users token. They can try re authenticating with the bot: https://hotbear.org/music';
+			}
+
             if (user.username === target_user) {
                 return 'FeelsDankMan You can\'t grab your own spotify';
             }
