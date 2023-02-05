@@ -216,6 +216,12 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: 'peepoTalk',
+                EmoteID: '62f9c8cf00630d5b2acd66d1',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-05T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'XiJinNymN',
                 EmoteID: '611687c2446a415801b1b55c',
                 AddedBy: 'MODS',
