@@ -228,7 +228,7 @@ module.exports = {
 				}
 			}
 			case 'trivia': {
-				if (!await tools.isMod(user, channel) && perm >= 2000) {
+				if (!await tools.isMod(user, channel) && perm < 2000) {
 					return;
 				}
 
