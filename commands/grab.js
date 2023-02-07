@@ -1,7 +1,6 @@
 const sql = require('./../sql/index.js');
 const { got } = require('./../got');
 const spotifyTools = require('../tools/spotifyTools.js');
-const youtube = require('youtube-search-api');
 
 module.exports = {
 	name: 'grab',
@@ -127,11 +126,9 @@ module.exports = {
 			const progress_min_sec = spotifyTools.millisToMinutesAndSeconds(position);
 			const duration_min_sec = spotifyTools.millisToMinutesAndSeconds(duration_ms);
 
-			let yt_link = (await youtube.GetListByKeyword(artist + ' ' + title, false, 1, [{ type: 'music' }])).items[0].id;
-
 			return (setTimestamp) ?
-			`Now playing ${title} by ${artist} - (${progress_min_sec}/${duration_min_sec}) | Link: youtu.be/${yt_link}` :
-			`Now playing ${title} by ${artist} | Link: youtu.be/${yt_link}`;
+			`Now playing ${title} by ${artist} - (${progress_min_sec}/${duration_min_sec})` :
+			`Now playing ${title} by ${artist}`;
 
 		} catch (err) {
 			console.log(err);
