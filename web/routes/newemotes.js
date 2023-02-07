@@ -216,6 +216,12 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: 'peepoPog',
+                EmoteID: '60afa6b412f90fadd60a7d9b',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-07T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'MeowwartsSchool',
                 EmoteID: '6237279d73f35ccbda40a64e',
                 AddedBy: 'NymN',
