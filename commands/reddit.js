@@ -17,7 +17,7 @@ module.exports = {
 
       let top3 = [];
       for (let i = 0; i < 3; i++) {
-        top3.push(`${i+1}. ${posts[i].data.title} - by ${posts[i].data.author}`);
+        top3.push(`${i+1}. [${posts[i].data.title}](https://www.reddit.com${posts[i].data.permalink}) - by ${posts[i].data.author}`);
       }
 
       return `Top 3 posts in redditandchill: ${top3.join(' | ')}`;
