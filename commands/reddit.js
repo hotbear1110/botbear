@@ -1,9 +1,9 @@
 const { got } = require('./../got');
 /* lists top 3 posts from NymN reddit */
 module.exports = {
-  name: 'Reddit',
+  name: 'reddit',
   ping: true,
-  description: 'This command will list the top 3 posts on the Forsen subreddit.',
+  description: 'This command will list the top 3 posts on the NymN subreddit.',
   permission: 100,
   category: 'Random command',
   execute: async (channel, user, input, perm) => {
@@ -13,7 +13,7 @@ module.exports = {
       }
 
       const response = await got('https://www.reddit.com/r/RedditAndChill/.json').json();
-      const posts = response.body.data.children;
+      const posts = response.data.children;
 
       let top3 = [];
       for (let i = 0; i < 3; i++) {
