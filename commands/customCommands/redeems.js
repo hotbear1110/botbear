@@ -21,9 +21,7 @@ module.exports = {
 			}
             const emotes = await got('https://bot-api.gempir.com/api/emotelog?channel=nymn&limit=100').json();
 
-            let response = emotes.filter(x => x.Type === 'seventv').map(x => `${x.EmoteCode} by ${x.AddedBy}`).slice(0, 10).join(', ');
-
-            response = await tools.unpingString(response, channel);
+            let response = emotes.filter(x => x.Type === 'seventv').map(x => `${x.EmoteCode} by ${tools.unpingUser(x.AddedBy)}`).slice(0, 10).join(', ');
 
 			return response;
 		} catch (err) {

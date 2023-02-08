@@ -18,8 +18,8 @@ module.exports = {
 				if (input[2].startsWith('@')) {
 					input[2] = input[2].substring(1);
 				}
-				uid = await got(`https://api.ivr.fi/twitch/resolve/${input[2]}`).json();
-				uid = uid.id;
+				uid = await got(`https://api.ivr.fi/v2/twitch/user?login=${input[2]}`).json();
+				uid = uid[0].id;
 				realuser = input[2];
 			}
 			let realchannel = channel;

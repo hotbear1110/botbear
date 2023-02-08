@@ -187,7 +187,7 @@ module.exports = (async function() {
                 }
                 let gameTime = new Date().getTime();
                 console.log(gameusers);
-                await sql.Query('UPDATE StreamerSET game=?, game_time=? WHERE username=?', [newGame, gameTime, streamer.username]);
+                await sql.Query('UPDATE Streamers SET game=?, game_time=? WHERE username=?', [newGame, gameTime, streamer.username]);
 
                 console.log(streamer.username + ' NEW GAME: ' + newGame);
                 if (!notifyDisabled || channel === 'botbear1110') {

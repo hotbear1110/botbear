@@ -44,7 +44,7 @@ module.exports = {
 
 					
 					if (!this.user || !this.pet || !this.name || !this.link) {
-						return 'Unexpected unput - Example: bb test add user:"NymN" pet:"Cat" name:"Apollo" link:"Link To Image"';
+						return 'Unexpected unput - Example: bb pet add user:"NymN" pet:"Cat" name:"Apollo" link:"Link To Image"';
 					}
 
 					await sql.Query(`INSERT INTO Yabbe_pet 

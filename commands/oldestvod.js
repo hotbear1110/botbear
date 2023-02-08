@@ -20,7 +20,7 @@ module.exports = {
 				realchannel = input[2];
 			}
 
-			const userID = await got(`https://api.ivr.fi/twitch/resolve/${realchannel}`).json();
+			const [userID] = await got(`https://api.ivr.fi/v2/twitch/user?login=${realchannel}`).json();
 
 			if (userID.status === 404) {
 				return `Could not find user: "${realchannel}"`;

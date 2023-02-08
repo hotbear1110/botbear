@@ -16,9 +16,10 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
+			/*
 			if (![62300805, 135186096, 174141858, 11148817, 84180052, 17497365, 184066698].includes(+user[`room-id`]) && !(perm >= 1500)) {
 				return 'This command is currently disabled :)';
-			}
+			}*/
 
 			let bannedPhrases = /\brac(?:ist[sm]?|e)\b/gi;
 

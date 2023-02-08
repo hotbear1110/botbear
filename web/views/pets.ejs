@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pets</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="pet-info">
+    <h1>Chat's Pets</h1>
+    <p>This is a collection of images of chat's pets.</p>
+    <p>You can add your own pets either by submitting them on the discord, asking @NinaTurbo or by using the command: bb pet add</p>
+    <p>Example: bb pet add user:"yabbe" pet:"Cat" name:"Minus" link:"Link To Image"'</p>
+</div>
+    <div class="pets">
+
+        <div class="grid-container">
+
+        <% pets.forEach(function(pet) { %>
+            <div class="item">
+                <div>
+                    <div id="image"><a href="<%= pet.Image %>" target="_blank" rel="noopener noreferrer"><img src="<%= pet.Image %>" style="max-width:600px;width:100%;max-height:600px;width:100%"> </a></div>
+                  <div id="text">Pet Name: <%-pet.Pet_name %></div>
+                  <div id="text">Pet: <%-pet.Pet %></div>
+                  <div id="text">User: <%-pet.User %></div>
+                </div>
+              </div>
+        <% }) %>
+
+    </div>
+
+</div>
+<% if (pages > 0) { %>
+    <div class="navigation">
+        <% if (current == 1) { %>
+            <a class="disabled">First</a>
+        <% } else { %>
+            <a href="/pets/yabbe/1">First</a>
+        <% } %>
+        <% let i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+        <% if (i !== 1) { %>
+            <a class="disabled">...</a>
+        <% } %>
+        <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+            <% if (i == current) { %>
+                <a class="active"><%= i %></a>
+            <% } else { %>
+                <a href="/pets/yabbe/<%= i %>"><%= i %></a>
+            <% } %>
+            <% if (i == Number(current) + 4 && i < pages) { %>
+                <a class="disabled">...</a>
+            <% } %>
+        <% } %>
+        <% if (current == pages) { %>
+            <a class="disabled">Last</a>
+        <% } else { %>
+            <a href="/pets/yabbe/<%= pages %>">Last</a>
+        <% } %>
+        </div>
+<% } %>
+</body>
+</html>

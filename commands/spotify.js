@@ -2,8 +2,6 @@ require('dotenv').config();
 const { got } = require('./../got');
 const sql = require('./../sql/index.js');
 const spotifyTools = require('../tools/spotifyTools.js');
-const youtube = require('youtube-search-api');
-const { ErrorReply } = require('redis');
 
 module.exports = {
 	name: 'spotify',
@@ -34,8 +32,12 @@ module.exports = {
 
             const spotify_user = await spotifyTools.fetchToken(uid);
 
+			if (spotify_user.error) {
+				return 'Something went wrong when refreshing your token. Try re authenticating with the bot: https://hotbear.org/music';
+			}
+
 			if (spotify_user.no_auth) {
-				return (username === user.username) ? 'You have not authorized with the bot. Please login here: https://hotbear.org/login' : 'That user has not authorized with the bot.';
+				return (username === user.username) ? 'You have not authorized with the bot. Please login here: https://hotbear.org/music' : 'That user has not authorized with the bot.';
 			}
 
 			switch(input[2]) {
@@ -77,12 +79,9 @@ module.exports = {
 			const progress_min_sec = spotifyTools.millisToMinutesAndSeconds(progress_ms);
 			const duration_min_sec = spotifyTools.millisToMinutesAndSeconds(duration_ms);
 
-
-			const yt_link = (await youtube.GetListByKeyword(artist + ' ' + title, false, 1, [{ type: 'music' }])).items[0].id;
-
 			return (username === user.username) ?
-					`Currently playing song: ${title} by ${artist} - (${progress_min_sec}/${duration_min_sec}) | Link: youtu.be/${yt_link}` :
-					`Currently playing song on ${username}'s spotify: ${title} by ${artist} - (${progress_min_sec}/${duration_min_sec}) | Link: youtu.be/${yt_link}`;
+					`Currently playing song: ${title} by ${artist} - (${progress_min_sec}/${duration_min_sec})` :
+					`Currently playing song on ${username}'s spotify: ${title} by ${artist} - (${progress_min_sec}/${duration_min_sec})`;
 		} catch (err) {
 			console.log(err);
 			if (err.message.startsWith('RequestError: Unexpected token U in JSON at position 0')) {

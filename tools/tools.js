@@ -367,7 +367,7 @@ exports.bannedStreamers = async () => {
 
 		for (const streamer of checkBans) {
 			try {
-				const isBanned = await got(`https://api.ivr.fi/twitch/resolve/${streamer.username}`).json();
+				const [isBanned] = await got(`https://api.ivr.fi/v2/twitch/user?login=${streamer.username}`).json();
 
 				if (isBanned.banned === true) {
 					await sql.Query('UPDATE Streamers SET banned = ? WHERE uid=?', [1, streamer.uid]);
@@ -387,7 +387,7 @@ exports.bannedStreamers = async () => {
 
 		for (const streamer of checkUnbans) {
 			try {
-				const isBanned = await got(`https://api.ivr.fi/twitch/resolve/${streamer.username}`).json();
+				const [isBanned] = await got(`https://api.ivr.fi/v2/twitch/user?login=${streamer.username}`).json();
 
 				if (isBanned.banned === false) {
 					await sql.Query('UPDATE Streamers SET banned = ? WHERE uid=?', [0, streamer.uid]);
@@ -515,10 +515,11 @@ exports.checkAllBanphrases = async function (message, channel) {
 exports.joinEventSub = async function (uid) {
 	if (process.env.TWITCH_SECRET === undefined) return;
 
+	try {
 	let data = JSON.stringify({
 		'type': 'channel.update',
 		'version': '1',
-		'condition': { 'broadcaster_user_id': uid.toString() },
+		'condition': { 'broadcaster_user_id': uid },
 		'transport': { 'method': 'webhook', 'callback': 'https://hotbear.org/eventsub', 'secret': process.env.TWITCH_SECRET }
 	});
 	await got.post('https://api.twitch.tv/helix/eventsub/subscriptions', {
@@ -533,7 +534,7 @@ exports.joinEventSub = async function (uid) {
 	data = JSON.stringify({
 		'type': 'stream.online',
 		'version': '1',
-		'condition': { 'broadcaster_user_id': uid.toString() },
+		'condition': { 'broadcaster_user_id': uid },
 		'transport': { 'method': 'webhook', 'callback': 'https://hotbear.org/eventsub', 'secret': process.env.TWITCH_SECRET }
 	});
 	await got.post('https://api.twitch.tv/helix/eventsub/subscriptions', {
@@ -548,7 +549,7 @@ exports.joinEventSub = async function (uid) {
 	data = JSON.stringify({
 		'type': 'stream.offline',
 		'version': '1',
-		'condition': { 'broadcaster_user_id': uid.toString() },
+		'condition': { 'broadcaster_user_id': uid },
 		'transport': { 'method': 'webhook', 'callback': 'https://hotbear.org/eventsub', 'secret': process.env.TWITCH_SECRET }
 	});
 	await got.post('https://api.twitch.tv/helix/eventsub/subscriptions', {
@@ -559,6 +560,9 @@ exports.joinEventSub = async function (uid) {
 		},
 		body: data
 	});
+	} catch(err) {
+		console.log(err);
+	}
 
 	return true;
 };

@@ -19,8 +19,11 @@ sleep(10000);
 
 setInterval(async function () {
 	const streamers = await sql.Query('SELECT * FROM Streamers');
+	const isSubbed = await got('https://api.7tv.app/v2/badges?user_identifier=twitch_id').json();
 
-	for (const streamer of streamers) {
+	for (let i = 0; i < streamers.length; i++) {
+		setTimeout(async() => {
+			const streamer = streamers[i];
 			let Emote_list = JSON.parse(streamer.emote_list);
 			let Emote_removed = JSON.parse(streamer.emote_removed);
 			let noFFZ = 0;
@@ -37,26 +40,25 @@ setInterval(async function () {
 
 				if (!FFZ.room || (typeof FFZ.error != 'undefined') || !FFZ) {
 					noFFZ = 1;
-					continue;
-				}
-
-				let set = FFZ.room.set;
-				FFZ_list = FFZ.sets[`${set}`].emoticons;
-
-				for (const emote of FFZ_list) {
-					let inlist = 0;
-					for (const emotecheck of Emote_list) {
-						if (emotecheck.includes(emote['name']) && emotecheck.includes(emote['id'])) {
-							inlist = 1;
+				} else {
+					let set = FFZ.room.set;
+					FFZ_list = FFZ.sets[`${set}`].emoticons;
+	
+					for (const emote of FFZ_list) {
+						let inlist = 0;
+						for (const emotecheck of Emote_list) {
+							if (emotecheck.includes(emote['name']) && emotecheck.includes(emote['id'])) {
+								inlist = 1;
+							}
 						}
+						if (inlist === 0) {
+							let time = new Date().getTime();
+							let owner = emote['owner'];
+	
+							Emote_list.push([emote['name'], emote['id'], time, owner['name'], `https://www.frankerfacez.com/emoticon/${emote['id']}`, 'ffz']);
+						}
+	
 					}
-					if (inlist === 0) {
-						let time = new Date().getTime();
-						let owner = emote['owner'];
-
-						Emote_list.push([emote['name'], emote['id'], time, owner['name'], `https://www.frankerfacez.com/emoticon/${emote['id']}`, 'ffz']);
-					}
-
 				}
 
 			} catch (err) {
@@ -68,30 +70,30 @@ setInterval(async function () {
 
 				if ((typeof BTTV.message != 'undefined') || !BTTV) {
 					noBTTV = 1;
-					continue;
+				} else {
+					BTTV_list = BTTV['channelEmotes'].concat(BTTV['sharedEmotes']);
+
+					for (const emote of BTTV_list) {
+						let inlist = 0;
+						for (const emotecheck of Emote_list) {
+							if (emotecheck.includes(emote['code']) && emotecheck.includes(emote['id'])) {
+								inlist = 1;
+							}
+						}
+						if (inlist === 0) {
+							let time = new Date().getTime();
+							let owner = streamer.username;
+							if (emote['user']) {
+								owner = emote['user'];
+								owner = owner['name'];
+							}
+	
+							Emote_list.push([emote['code'], emote['id'], time, owner, `https://betterttv.com/emotes/${emote['id']}`, 'bttv']);
+						}
+	
+					}
 				}
 
-				BTTV_list = BTTV['channelEmotes'].concat(BTTV['sharedEmotes']);
-
-				for (const emote of BTTV_list) {
-					let inlist = 0;
-					for (const emotecheck of Emote_list) {
-						if (emotecheck.includes(emote['code']) && emotecheck.includes(emote['id'])) {
-							inlist = 1;
-						}
-					}
-					if (inlist === 0) {
-						let time = new Date().getTime();
-						let owner = streamer.username;
-						if (emote['user']) {
-							owner = emote['user'];
-							owner = owner['name'];
-						}
-
-						Emote_list.push([emote['code'], emote['id'], time, owner, `https://betterttv.com/emotes/${emote['id']}`, 'bttv']);
-					}
-
-				}
 			} catch (err) {
 				noBTTV = 1;
 
@@ -102,32 +104,32 @@ setInterval(async function () {
 
 				if ((typeof STV.message != 'undefined') || !STV) {
 					noSTV = 1;
-					continue;
+				} else {
+					STV_list = STV;
+
+					for (const emote of STV_list) {
+						let inlist = 0;
+	
+						for (const emotecheck of Emote_list) {
+							if (emotecheck.includes(emote['name']) && emotecheck.includes(emote['id'])) {
+								inlist = 1;
+								break;
+							}
+						}
+						if (inlist === 0) {
+							let time = new Date().getTime();
+							let owner = emote['owner'];
+							let zero_Width = '7tv';
+							if (emote['visibility_simple'][0] === 'ZERO_WIDTH') {
+								zero_Width = '7tv_ZERO_WIDTH';
+							}
+	
+							Emote_list.push([emote['name'], emote['id'], time, owner['login'], `https://7tv.app/emotes/${emote['id']}`, zero_Width]);
+						}
+	
+					}
 				}
 
-				STV_list = STV;
-
-				for (const emote of STV_list) {
-					let inlist = 0;
-
-					for (const emotecheck of Emote_list) {
-						if (emotecheck.includes(emote['name']) && emotecheck.includes(emote['id'])) {
-							inlist = 1;
-							break;
-						}
-					}
-					if (inlist === 0) {
-						let time = new Date().getTime();
-						let owner = emote['owner'];
-						let zero_Width = '7tv';
-						if (emote['visibility_simple'][0] === 'ZERO_WIDTH') {
-							zero_Width = '7tv_ZERO_WIDTH';
-						}
-
-						Emote_list.push([emote['name'], emote['id'], time, owner['login'], `https://7tv.app/emotes/${emote['id']}`, zero_Width]);
-					}
-
-				}
 			} catch (err) {
 				noSTV = 1;
 
@@ -177,8 +179,6 @@ setInterval(async function () {
 			await sql.Query('UPDATE Streamers SET emote_list=? WHERE username=?', [Emote_list, streamer.username]);
 			await sql.Query('UPDATE Streamers SET emote_removed=? WHERE username=?', [Emote_removed, streamer.username]);
 
-			const isSubbed = await got('https://api.7tv.app/v2/badges?user_identifier=twitch_id').json();
-
 			let foundName = false;
 			for (const badge of isSubbed['badges']) {
 				if (badge['name'].split(' ').includes('Subscriber')) {
@@ -193,6 +193,9 @@ setInterval(async function () {
 			if (foundName === false) {
 				await sql.Query('UPDATE Streamers SET seventv_sub=? WHERE username=?', [0, streamer.username]);
 			}
+
+			}, 500*i);
+
 	}
 }, 300000);
 

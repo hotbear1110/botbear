@@ -142,8 +142,10 @@ async function onMessageHandler(channel, user, msg, self) {
 
 				delete activetrivia[channel];
 				delete triviaanswer[channel];
+				delete triviaHints[channel];
 				delete triviaHints2[channel];
 				delete gothint[channel];
+				delete gothint2[channel];
 				delete triviaTime[channel];
 				return;
 			}
@@ -194,7 +196,9 @@ async function onMessageHandler(channel, user, msg, self) {
 				delete activetrivia[channel];
 				delete triviaanswer[channel];
 				delete triviaHints[channel];
+				delete triviaHints2[channel];
 				delete gothint[channel];
+				delete gothint2[channel];
 				delete triviaTime[channel];
 				return;
 			}

@@ -4,7 +4,21 @@ module.exports = (function () {
 
     /* /suggestions */
     router.get('/', async (req, res) => {
-        let emotes = await got('https://bot-api.gempir.com/api/emotelog?channel=nymn&limit=100').json();
+        let emotes = [];
+        let hasPage = true;
+        let page = 1;
+
+        await new Promise(async function (resolve) {
+            while(hasPage) {
+                const currentPage = await got(`https://bot-api.gempir.com/api/emotelog?channel=nymn&limit=100&page=${page}`).json();
+                if (!currentPage.length) {
+                    resolve(emotes);
+                    hasPage = false;
+                }
+                emotes = emotes.concat(currentPage);
+                page++;
+            }
+        });
 
         emotes.push({ 
             EmoteCode: 'AlienPls',
@@ -97,6 +111,20 @@ module.exports = (function () {
 
          const modifyEmotes = [
             {
+                EmoteCode: 'Madge',
+                EmoteID: '60ae99233c27a8b79c7fcb73',
+                AddedBy: 'hey_bgood',
+                Type: 'election',
+                CreatedAt: '2023-02-04T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'HandsUp',
+                EmoteID: '619209bc17e4d50afc0d9619',
+                AddedBy: 'marrryanx',
+                Type: 'election',
+                CreatedAt: '2023-01-27T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'forsenGa',
                 EmoteID: '61a7c0e5e9684edbbc37d13a',
                 AddedBy: 'agenttud',
@@ -187,6 +215,108 @@ module.exports = (function () {
 
 
          const nymnEmotes = [
+            {
+                EmoteCode: 'peepoPog',
+                EmoteID: '60afa6b412f90fadd60a7d9b',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-07T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'MeowwartsSchool',
+                EmoteID: '6237279d73f35ccbda40a64e',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-06T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'peepoTalk',
+                EmoteID: '62f9c8cf00630d5b2acd66d1',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-05T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'XiJinNymN',
+                EmoteID: '611687c2446a415801b1b55c',
+                AddedBy: 'MODS',
+                CreatedAt: '2023-02-04T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'DonkDriving',
+                EmoteID: '610ff4353f3e99ddb4628023',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-03T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'coupleofidiots',
+                EmoteID: '634379257361e04bb26bdb49',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-02T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'Cooking',
+                EmoteID: '61a91b7315b3ff4a5bb8e72b/',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-01T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'AREYOUAGIRL',
+                EmoteID: '60cfa860ca263e7ca4de398a',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-01-31T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: '4Love',
+                EmoteID: '60db66aa9a9fbb6acd8351c1',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-01-30T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: '4WeirdBusiness',
+                EmoteID: '60ae84eb4b1ea4526d5bc117',
+                AddedBy: 'MODS',
+                CreatedAt: '2023-01-29T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'Vacatime',
+                EmoteID: '62dbd0fa0a430aad0143c1f4',
+                AddedBy: 'MODS',
+                CreatedAt: '2023-01-28T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'bruhSit',
+                EmoteID: '611c6818c7e1fe52005c1371',
+                AddedBy: 'MODS',
+                CreatedAt: '2023-01-27T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'Gondola2',
+                EmoteID: '60af206912d77014919c5ba6',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-01-26T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: '(Wednesday day off)',
+                EmoteID: '',
+                AddedBy: '(Wednesday day off)',
+                CreatedAt: '2023-01-25T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'meow',
+                EmoteID: '6210799f238beda80c09cfb8',
+                AddedBy: 'NymN (fawcan)',
+                CreatedAt: '2023-01-24T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'peepoPizza',
+                EmoteID: '60b0e3cb7500a64f7c0ba32d',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-01-23T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'parasocial',
+                EmoteID: '626bac5655df243a4fa819cd',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-01-22T00:00:00.000000Z'
+            },
             {
                 EmoteCode: 'KKrikey',
                 EmoteID: '603ea168284626000d068881',

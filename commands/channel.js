@@ -8,7 +8,7 @@ const sql = require('./../sql/index.js');
 module.exports = {
 	name: 'channel',
 	ping: true,
-	description: '"bb channel join/leave" the bot joins or leaves your channel(only works in hottestbear/botbear1110 chats). "bb channel [live/offline/title/game]emote *emote*" this changes the notify emotes. "bb channel trivia *seconds*" this changes the trivia cooldown(Default is 300s, if cd is too low, it can bug out)',
+	description: '"bb channel join/leave" the bot joins or leaves your channel(only works in hbear___/botbear1110 chats). "bb channel [live/offline/title/game]emote *emote*" this changes the notify emotes. "bb channel trivia *seconds*" this changes the trivia cooldown(Default is 300s, if cd is too low, it can bug out)',
 	permission: 100,
 	category: 'Core command',
 	execute: async (channel, user, input, perm) => {
@@ -29,21 +29,20 @@ module.exports = {
 				}
 
 				if (input[3]) {
-					let streamer = await got(`https://api.ivr.fi/twitch/resolve/${input[3]}`).json();
-					uid = streamer.id;
-					username = input[3];
+					let streamer = await got(`https://api.ivr.fi/v2/twitch/user?login=${input[3]}`).json();
+					uid = streamer[0]?.id;
+					username = input[3].toLowerCase();
 				}
-
 				const alreadyJoined = await sql.Query(`
                 SELECT *
                 FROM Streamers
                 WHERE username=?`,
 				[username]);
 
-				if (alreadyJoined.banned === 1)  {
+				if (alreadyJoined[0]?.banned === 1)  {
 					return cc.join(username)
 					.then(async() => {
-						await sql.Query('UPDATE Streamers SET banned = ? WHERE username = ? ', [0, username]);
+						await sql.Query('UPDATE Streamers SET banned =? WHERE username =?', [0, username]);
 
 						await tools.joinEventSub(uid);
 
@@ -52,10 +51,10 @@ module.exports = {
 					});
 				}
 
-				if (alreadyJoined.left === 1)  {
+				if (alreadyJoined[0]?.left === 1)  {
 					return cc.join(username)
 					.then(async() => {
-						await sql.Query('UPDATE Streamers SET left = ? WHERE username = ? ', [0, username]);
+						await sql.Query('UPDATE Streamers SET `left` =? WHERE username =?', [0, username]);
 
 						await tools.joinEventSub(uid);
 
@@ -78,7 +77,7 @@ module.exports = {
 						})
 						.catch((err) => {
 							console.log(err);
-							return 'Error joining channel ask @hottestbear for help.';
+							return 'Error joining channel ask @hbear___ for help.';
 						});
 
 				}
@@ -86,11 +85,11 @@ module.exports = {
 			case 'leave': {
 				let username = user.username;
 				let uid = user['user-id'];
-				if (channel != 'botbear1110' && channel != 'hottestbear' && channel != user.username && perm < 2000) { return; }
+				if (channel != 'botbear1110' && channel != 'hbear___' && channel != user.username && perm < 2000) { return; }
 				if (input[3]) {
-					let streamer = await got(`https://api.ivr.fi/twitch/resolve/${input[3]}`).json();
-					uid = streamer.id;
-					username = input[3];
+					let streamer = await got(`https://api.ivr.fi/v2/twitch/user?login=${input[3]}`).json();
+					uid = streamer[0]?.id;
+					username = input[3].toLowerCase();
 				}
 
 				if (input[3] && user['user-id'] != process.env.TWITCH_OWNERUID && !await tools.isMod(user, input[3])) {
@@ -105,12 +104,12 @@ module.exports = {
                             WHERE username =? `,
 				[username]);
 
-				if (!alreadyJoined.length || alreadyJoined.left === 1) {
+				if (!alreadyJoined.length || alreadyJoined[0]?.left === 1) {
 					return 'I am not in your channel';
 				}
 
 				else {
-					await sql.Query('UPDATE Streamers SET left = ? WHERE username = ? ', [1, username]);
+					await sql.Query('UPDATE Streamers SET `left`=? WHERE username=?', [1, username]);
 					await tools.deleteEventSub(uid);
 
 					cc.part(username).catch((err) => {
@@ -123,7 +122,7 @@ module.exports = {
 			}
 			case 'liveemote': {
 				let username = user.username;
-				if (channel != 'botbear1110' && channel != 'hottestbear' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
+				if (channel != 'botbear1110' && channel != 'hbear___' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
 				if (!input[3]) {
 					return;
 				}
@@ -150,7 +149,7 @@ module.exports = {
 			}
 			case 'gameemote': {
 				let username = user.username;
-				if (channel != 'botbear1110' && channel != 'hottestbear' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
+				if (channel != 'botbear1110' && channel != 'hbear___' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
 				if (!input[3]) {
 					return;
 				}
@@ -177,7 +176,7 @@ module.exports = {
 			}
 			case 'titleemote': {
 				let username = user.username;
-				if (channel != 'botbear1110' && channel != 'hottestbear' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
+				if (channel != 'botbear1110' && channel != 'hbear___' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
 				if (!input[3]) {
 					return;
 				}
@@ -204,7 +203,7 @@ module.exports = {
 			}
 			case 'offlineemote': {
 				let username = user.username;
-				if (channel != 'botbear1110' && channel != 'hottestbear' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
+				if (channel != 'botbear1110' && channel != 'hbear___' && perm < 2000 && !await tools.isMod(user, channel)) { return; }
 				if (!input[3]) {
 					return;
 				}
@@ -229,7 +228,7 @@ module.exports = {
 				}
 			}
 			case 'trivia': {
-				if (!await tools.isMod(user, channel) && perm >= 2000) {
+				if (!await tools.isMod(user, channel) && perm < 2000) {
 					return;
 				}
 
@@ -292,7 +291,7 @@ module.exports = {
 					return `FeelsDankMan api error: ${err.name} `;
 				}
 			}
-			return `FeelsDankMan Error: ${err.response.data.error} `;
+			return `FeelsDankMan Error: ${err.response} `;
 		}
 	}
 };

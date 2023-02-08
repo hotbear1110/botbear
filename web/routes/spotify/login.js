@@ -5,12 +5,12 @@ module.exports = (function () {
     const router = require('express').Router();
 
     const client_id = process.env.SPOTIFY_CLIENT_ID;
-    const redirect_uri = 'https://hotbear.org/callback';
+    const redirect_uri = 'https://hotbear.org/spotify/callback';
 
     /* /Login */
     router.get('/', async (req, res) => {
         let state = generateRandomString(16);
-        let scope = 'user-read-playback-state user-read-currently-playing user-read-private user-modify-playback-state';
+        let scope = 'user-read-playback-state user-read-private user-modify-playback-state';
       
         res.redirect('https://accounts.spotify.com/authorize?' +
           querystring.stringify({
