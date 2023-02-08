@@ -126,6 +126,7 @@ module.exports = {
 			const progress_min_sec = spotifyTools.millisToMinutesAndSeconds(position);
 			const duration_min_sec = spotifyTools.millisToMinutesAndSeconds(duration_ms);
 
+
 			return (setTimestamp) ?
 			`Now playing ${title} by ${artist} - (${progress_min_sec}/${duration_min_sec})` :
 			`Now playing ${title} by ${artist}`;
