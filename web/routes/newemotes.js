@@ -216,6 +216,18 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: 'headBang',
+                EmoteID: '60ae4f175d3fdae583148348',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-09T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: '(Wednesday day off)',
+                EmoteID: '',
+                AddedBy: '(Wednesday day off)',
+                CreatedAt: '2023-02-08T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'peepoPog',
                 EmoteID: '60afa6b412f90fadd60a7d9b',
                 AddedBy: 'NymN',
