@@ -16,8 +16,12 @@ module.exports = {
       const posts = response.data.children;
 
       let top3 = [];
-      for (let i = 0; i < 3; i++) {
-        top3.push(`${i+1}. ${posts[i].data.title} - https://redd.it/${posts[i].data.id} by ${posts[i].data.author}`);
+      let count = 0;
+      for (let i = 0; i < posts.length; i++) {
+        if (!posts[i].data.stickied && count < 3) {
+          top3.push(`${count+1}. ${posts[i].data.title} - https://redd.it/${posts[i].data.id} by ${posts[i].data.author}`);
+          count++;
+        }
       }
 
       return `Top 3 posts in redditandchill: ${top3.join(' | ')}`;
