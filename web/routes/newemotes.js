@@ -111,6 +111,13 @@ module.exports = (function () {
 
          const modifyEmotes = [
             {
+                EmoteCode: '!join',
+                EmoteID: '63e79f39743d199fec640849',
+                AddedBy: 'socialiststar',
+                Type: 'election',
+                CreatedAt: '2023-02-10T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'Madge',
                 EmoteID: '60ae99233c27a8b79c7fcb73',
                 AddedBy: 'hey_bgood',
@@ -215,6 +222,18 @@ module.exports = (function () {
 
 
          const nymnEmotes = [
+            {
+                EmoteCode: 'SoyScream',
+                EmoteID: '60ae745fdc23eca68e4e0a3d',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-11T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'Ratge',
+                EmoteID: '60ba145c31abfff37bd0d280',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-10T00:00:00.000000Z'
+            },
             {
                 EmoteCode: 'headBang',
                 EmoteID: '60ae4f175d3fdae583148348',
