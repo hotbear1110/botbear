@@ -3,6 +3,14 @@ const sql = require('../sql/index.js');
 const { commandDisabled, humanizeDuration } = require('./../tools/tools.js');
 const CONSTANTS = require('./constants.js');
 
+const RANKUP_MESSAGES = [
+    'ranked up', // !rankup success 
+    'reset your rank', // !prestige success
+    'rankup', // !rankup fail
+    'ranked high enough', // !prestige fail
+    'you are currently rank', // !rank
+];
+
 /**
  * @typedef { Object } CooldownRes
  * @property { String | void } error - indicates an 4xx, 5xx error
@@ -31,18 +39,7 @@ const CONSTANTS = require('./constants.js');
 
     const joined = input.join(' ').replace(/user.username/g, '');
 
-    if (input[0] !== '[Cookies]' || 
-        joined.includes([
-                'ranked up' || // !rankup success 
-                'reset your rank' || // !prestige success
-                'rankup' || // !rankup fail
-                'ranked high enough' || // !prestige fail
-                'you are currently rank'] // !rank
-                )) {
-        return false;
-    }
-
-    return true;
+    return !(input[0] !== '[Cookies]' || RANKUP_MESSAGES.some(msg => joined.includes(msg)));
 };
 
 /**
