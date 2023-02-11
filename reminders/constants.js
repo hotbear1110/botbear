@@ -7,5 +7,4 @@ module.exports = {
     },
     ALREADY_CLAIMED: 'you have already claimed a cookie',
     API: (route) => `https://api.roaringiron.com/${route}`
-
 };
