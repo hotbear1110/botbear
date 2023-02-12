@@ -12,23 +12,31 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			
+
 			const streams = ['https://www.twitch.tv/directory/game/Pools%2C%20Hot%20Tubs%2C%20and%20Beaches'];
-			
+
 			const rand = Math.floor(Math.random() * streams.length);
-			
-			const stream = await got(`https://api.twitch.tv/kraken/streams?limit=1&game=Pools%2C%20Hot%20Tubs%2C%20and%20Beaches&offset=${rand}`, {
-				headers: {
-					'Client-ID': 'YOUR_TWITCH_CLIENT_ID',
-					'Accept': 'application/vnd.twitchtv.v5+json'
-				}
-			}).json();
-			
-			if (stream.streams.length === 0) {
+
+			const url = `https://www.twitch.tv/directory/game/Pools%2C%20Hot%20Tubs%2C%20and%20Beaches?language=en`;
+
+			const response = await got(url);
+
+			const pattern = /"streamPreviewLink":"(.+?)"/g;
+
+			let match;
+			const streamLinks = [];
+
+			while ((match = pattern.exec(response.body)) !== null) {
+				streamLinks.push(match[1]);
+			}
+
+			if (streamLinks.length === 0) {
 				return `No streams found for ${streams[rand]}.`;
 			}
-			
-			return `Here you go: ${stream.streams[0].channel.url}`;
+
+			const stream = streamLinks[Math.floor(Math.random() * streamLinks.length)];
+
+			return `Here you go: ${stream}`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
