@@ -16,7 +16,7 @@ module.exports = {
 		const choice = validInput ? choices[index] : 'rock';
 
 		// Get the bot's choice
-		const botChoice = choices[Math.floor(Math.random() * choices.length)];
+		const botChoice = choices[~~(Math.random() * choices.length - 1)];
 
 		// Determine the winner
 		let result = '';
