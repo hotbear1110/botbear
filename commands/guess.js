@@ -1,6 +1,6 @@
 module.exports = {
     name: 'guess',
-    ping: true,
+    ping: false,
     description: 'Guess a number between 1 and 10!',
     permission: 100,
     category: 'Fun command',
@@ -11,7 +11,7 @@ module.exports = {
           return;
         }
         
-        const randomNumber = Math.floor(Math.random() * 10) + 1;
+        const randomNumber = ~~(Math.random() * 9) + 1;
         const guess = parseInt(input[2]);
         
         if (isNaN(guess)) {
