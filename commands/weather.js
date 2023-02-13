@@ -9,7 +9,11 @@ module.exports = {
   noBanphrase: true,
   execute: async (channel, user, input) => {
     try {
-      const url = `https://www.timeanddate.com/weather/${input}`;
+      if (input.length < 3) {
+        return 'Usage: bb weather <city>';
+      }
+      const city = input[2];
+      const url = `https://www.timeanddate.com/weather/${city}`;
 
       const response = await got(url);
       const weatherRegex = /id="qlook".*?>(.*?)<\/p>/s;
@@ -17,7 +21,7 @@ module.exports = {
 
       if (matches) {
         const weather = matches[1].replace(/<\/?[^>]+(>|$)/g, '');
-        return `The weather in ${input} is currently ${weather}`;
+        return `The weather in ${city} is currently ${weather}`;
       } else {
         return 'I could not find the weather for that city.';
       }
@@ -27,3 +31,7 @@ module.exports = {
     }
   }
 };
+
+};
+
+
