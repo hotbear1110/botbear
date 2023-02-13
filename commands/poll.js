@@ -13,7 +13,7 @@ module.exports = {
 			if (input.length < 4) {
 				return 'Usage: "bb poll Question? Option1 Option2 Option3"';
 			}
-			const question = input[2].replace('?', '');
+			const question = input.slice(2).join(' ').replace('?', '');
 			const options = input.slice(3);
 			const reactions = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿'];
 			if (options.length > reactions.length) {
