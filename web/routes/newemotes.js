@@ -223,9 +223,27 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: '(Birthday day off)',
+                EmoteID: '',
+                AddedBy: '(Birthday day off)',
+                CreatedAt: '2023-02-14T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'batDisco',
+                EmoteID: '61143ae59bf574f1fded6724',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-13T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'SoyScream',
                 EmoteID: '60ae745fdc23eca68e4e0a3d',
                 AddedBy: 'NymN',
+                CreatedAt: '2023-02-12T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'TAUNTED',
+                EmoteID: '63ebd1953eab12f5199c044a',
+                AddedBy: 'MODS',
                 CreatedAt: '2023-02-11T00:00:00.000000Z'
             },
             {
