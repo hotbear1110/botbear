@@ -71,15 +71,15 @@ exports.messageHandler = class Cooldown {
 		}
 
 		setTimeout(async () => {
-			let tempList = talkedRecently[this.channel] || [];
+			let tempList = talkedRecently[this.channel];
 			if (this.noCD === 0) {
 				if (this.message === oldmessage) {
 					this.message = (this.message.endsWith(' 󠀀 '))  ? this.message.substring(this.message.length-4, 0) : this.message + ' 󠀀 ';
 				}
 				await cc.say(this.channel, this.message);
 			}
+			oldmessage = this.message;
 			tempList.shift();
-			tempList.push(this.message);
 			talkedRecently[this.channel] = tempList;
 			if (!talkedRecently[this.channel].length) {
 				delete talkedRecently[this.channel];
