@@ -223,6 +223,24 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: 'gekPls',
+                EmoteID: '60ccd826197108c5ca4c1169',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-17T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'Donkborne',
+                EmoteID: '63b70f6dc57736fec02f900c',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-16T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'pepeJAM',
+                EmoteID: '6040a8bccf6746000db10348',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-15T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: '(Birthday day off)',
                 EmoteID: '',
                 AddedBy: '(Birthday day off)',
