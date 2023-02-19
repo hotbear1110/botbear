@@ -111,6 +111,13 @@ module.exports = (function () {
 
          const modifyEmotes = [
             {
+                EmoteCode: 'VeryClean',
+                EmoteID: '63f23fffa614e946636a70dc',
+                AddedBy: 'ludias',
+                Type: 'election',
+                CreatedAt: '2023-02-24T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'pepeMeltdown',
                 EmoteID: '609eebd34c18609a1d984f3f',
                 AddedBy: 'mrastor',
