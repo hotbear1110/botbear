@@ -223,6 +223,12 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: 'Rime',
+                EmoteID: '61e32b713441abfa431ca77c',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-18T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'gekPls',
                 EmoteID: '60ccd826197108c5ca4c1169',
                 AddedBy: 'NymN',
