@@ -112,10 +112,38 @@ module.exports = (function () {
          const modifyEmotes = [
             {
                 EmoteCode: 'VeryClean',
-                EmoteID: '63f23fffa614e946636a70dc',
+                EmoteID: '63f2440c3ebf15a76f4f07e9',
                 AddedBy: 'ludias',
                 Type: 'election',
-                CreatedAt: '2023-02-24T00:00:00.000000Z'
+                CreatedAt: '2023-01-24T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'DOCBOZO',
+                EmoteID: '63f25606bb16b52ef4a0d27f',
+                AddedBy: 'alex_illustration',
+                Type: 'election',
+                CreatedAt: '2023-01-16T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'heCrazy',
+                EmoteID: '63f27b343b0894cb3bf5c950',
+                AddedBy: 'ludias',
+                Type: 'election',
+                CreatedAt: '2023-01-17T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'FeelsWeakMan',
+                EmoteID: '63f2806d08f5788b589253c7',
+                AddedBy: 'tolatos',
+                Type: 'election',
+                CreatedAt: '2023-01-26T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'batJAM',
+                EmoteID: '63f3697e0588a70e9a8d1f6f',
+                AddedBy: 'bankxs__',
+                Type: 'election',
+                CreatedAt: '2023-02-06T00:00:00.000000Z'
             },
             {
                 EmoteCode: 'pepeMeltdown',
@@ -203,7 +231,7 @@ module.exports = (function () {
             },
             {
                 EmoteCode: 'docL',
-                EmoteID: '6350bab5462cfc442024c27c',
+                EmoteID: '63f3c388face0f3bbeaad1d1',
                 AddedBy: 'timboooooh',
                 Type: 'election',
                 CreatedAt: '2023-01-03T00:00:00.000000Z'
@@ -237,6 +265,24 @@ module.exports = (function () {
 
          const nymnEmotes = [
             {
+                EmoteCode: 'MEMONEYING',
+                EmoteID: '63fa2b0117478c0c59fc73c1',
+                AddedBy: 'MODS',
+                CreatedAt: '2023-02-25T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'Fridge',
+                EmoteID: '61fc0f1123f0a55b0ba8313d',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-24T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: '(Wednesday day off)',
+                EmoteID: '',
+                AddedBy: '(Wednesday day off)',
+                CreatedAt: '2023-02-22T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: 'Rime',
                 EmoteID: '61e32b713441abfa431ca77c',
                 AddedBy: 'NymN',
@@ -268,7 +314,7 @@ module.exports = (function () {
             },
             {
                 EmoteCode: 'batDisco',
-                EmoteID: '61143ae59bf574f1fded6724',
+                EmoteID: '63f28aebf2915b442ca80ce5',
                 AddedBy: 'NymN',
                 CreatedAt: '2023-02-13T00:00:00.000000Z'
             },
@@ -559,7 +605,7 @@ module.exports = (function () {
             },
             {
                 EmoteCode: 'batPls',
-                EmoteID: '610a8aab49dcebc8a3924f42',
+                EmoteID: '63f36852f2915b442ca820ad',
                 AddedBy: 'FutureNactiveAccount',
                 CreatedAt: '2023-01-13T00:00:00.000000Z'
             },
