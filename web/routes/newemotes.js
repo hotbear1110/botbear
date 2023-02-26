@@ -277,10 +277,34 @@ module.exports = (function () {
                 CreatedAt: '2023-02-24T00:00:00.000000Z'
             },
             {
+                EmoteCode: 'ApolloWake',
+                EmoteID: '616ee25bb6d21adaffbe9177',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-23T00:00:00.000000Z'
+            },
+            {
                 EmoteCode: '(Wednesday day off)',
                 EmoteID: '',
                 AddedBy: '(Wednesday day off)',
                 CreatedAt: '2023-02-22T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'catKISS',
+                EmoteID: '60a1babb3c3362f9a4b8b33a',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-21T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'PokerFace',
+                EmoteID: '60ef515648cde2fcc3c699da',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-20T00:00:00.000000Z'
+            },
+            {
+                EmoteCode: 'silly',
+                EmoteID: '627580419a4c13e9457927c3',
+                AddedBy: 'NymN',
+                CreatedAt: '2023-02-19T00:00:00.000000Z'
             },
             {
                 EmoteCode: 'Rime',
