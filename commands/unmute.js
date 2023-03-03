@@ -1,5 +1,5 @@
 const redis = require('./../tools/redis.js');
-const cc = require('../bot.js').cc;
+const { got } = require('./../got');
 
 module.exports = {
 	name: 'unmute',
@@ -29,7 +29,12 @@ module.exports = {
             await redis.Get().Set(`${channel}:unmute_time`, 0);
 
 			if (channel === 'nymn') {
-				cc.say(channel, '/unban TitleChange_Bot');
+				await got.delete(`https://api.twitch.tv/helix/moderation/bans?broadcaster_id=62300805&moderator_id=${process.env.TWITCH_UID}&user_id=268612479`, {
+					headers: {
+						'client-id': process.env.TWITCH_CLIENTID,
+						'Authorization': process.env.TWITCH_AUTH,
+					}
+				} ).json();
 			}
 
 			return 'Successfully unmuted notifications';

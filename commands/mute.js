@@ -1,5 +1,5 @@
 const redis = require('./../tools/redis.js');
-const cc = require('../bot.js').cc;
+const { got } = require('./../got');
 
 module.exports = {
 	name: 'mute',
@@ -45,7 +45,20 @@ module.exports = {
             mute(duration / 1000);
 
 			if (channel === 'nymn') {
-				cc.say(channel, '/timeout TitleChange_Bot ' + min + 'm Muted for notification spam');
+				await got.post(`https://api.twitch.tv/helix/moderation/bans?broadcaster_id=62300805&moderator_id=${process.env.TWITCH_UID}`, {
+					headers: {
+						'client-id': process.env.TWITCH_CLIENTID,
+						'Authorization': process.env.TWITCH_AUTH,
+						'Content-Type': 'application/json'
+					},
+					json: {
+						'data': {
+							'user_id': '268612479',
+							'duration': min * 60,
+							'reason': 'Muted for notification spam'
+						}
+					}
+				} ).json();
 			}
 
 			return `Successfully muted notifications for ${min} min`;
