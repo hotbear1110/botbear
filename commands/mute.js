@@ -32,8 +32,8 @@ module.exports = {
 				return '2nd input can\'t be negative or 0';
 
 			}
-			let isnumber = !isNaN(min);
-			if (!isnumber) {
+			let isnumber = parseInt(min);
+			if (isNaN(isnumber)) {
 				return '2nd input should be a number';
 			}
 
