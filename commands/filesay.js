@@ -20,7 +20,7 @@ module.exports = {
 				return;
 			}
                 let apicall = await got(input[2]);
-                apicall.body.split('\n').map(x => cc.say(input[3] ?? channel, x));
+                await Promise.allSettled(apicall.body.split('\n').map(x => cc.say(input[3] ?? channel, x)));
 
                 return;
         } catch (err) {
