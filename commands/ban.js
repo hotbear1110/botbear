@@ -27,7 +27,7 @@ module.exports = {
 
                 const query = `
 			    query {
-                    users(logins: ${users}) {
+                    users(logins: ["${users.join('", "')}"]) {
                         id
                     }
                   }`;
