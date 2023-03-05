@@ -23,7 +23,7 @@ module.exports = {
                 const min = 0 || input[3];
                 const channel_uid = (await sql.Query('SELECT uid FROM Streamers WHERE username=?', [channel]))[0].uid;
 
-                const users = apicall.body.replaceAll('\r').split('\n');
+                const users = apicall.body.replaceAll('\r', '').split('\n');
 
                 const query = `
 			    query {
