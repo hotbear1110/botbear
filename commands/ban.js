@@ -21,6 +21,7 @@ module.exports = {
 			}
                 const apicall = await got(input[2]);
                 const min = input[3] ?? 0;
+                const reason = input.slice(4).join(' ');
                 const channel_uid = (await sql.Query('SELECT uid FROM Streamers WHERE username=?', [channel]))[0].uid.toString();
 
                 const users = apicall.body.split(/\r?\n/);
@@ -54,7 +55,7 @@ module.exports = {
 						'data': {
 							'user_id': x.id,
 							'duration': min * 60,
-							'reason': 'Muted for notification spam'
+							'reason': reason
 						}
 					}
 				}).json();
