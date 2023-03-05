@@ -23,7 +23,7 @@ module.exports = {
                 const min = 0 || input[3];
                 const channel_uid = (await sql.Query('SELECT uid FROM Streamers WHERE username=?', [channel]))[0].uid;
 
-                const users = apicall.body.replaceAll('\r', '').split('\n');
+                const users = apicall.body.split(/\r?\n/);
 
                 const query = `
 			    query {
@@ -41,8 +41,7 @@ module.exports = {
 					query: query
 				}),
 			}).json();
-            console.log(users);
-            console.log(users_uid);
+            console.log(users_uid.data.users);
             await Promise.allSettled(users_uid.data.users.map(async x =>  await got.post(`https://api.twitch.tv/helix/moderation/bans?broadcaster_id=${channel_uid}&moderator_id=${process.env.TWITCH_UID}`, {
 					headers: {
 						'client-id': process.env.TWITCH_CLIENTID,
