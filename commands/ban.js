@@ -41,9 +41,10 @@ module.exports = {
 					query: query
 				}),
 			}).json();
-            console.log(channel_uid);
-            
-            await Promise.allSettled(users_uid.data.users.map(async (x) => { console.log(x.id); await got.post(`https://api.twitch.tv/helix/moderation/bans?broadcaster_id=${channel_uid}&moderator_id=${process.env.TWITCH_UID}`, {
+
+            await Promise.allSettled(users_uid.data.users.map(async (x) => {
+                try {
+                    await got.post(`https://api.twitch.tv/helix/moderation/bans?broadcaster_id=${channel_uid}&moderator_id=${process.env.TWITCH_UID}`, {
 					headers: {
 						'client-id': process.env.TWITCH_CLIENTID,
 						'Authorization': process.env.TWITCH_USER_AUTH,
@@ -56,7 +57,11 @@ module.exports = {
 							'reason': 'Muted for notification spam'
 						}
 					}
-				} ).json();}));
+				}).json();
+            } catch (err) {
+                    console.log(err);
+                }
+            }));
 
                 return;
         } catch (err) {
