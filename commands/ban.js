@@ -21,7 +21,7 @@ module.exports = {
 			}
                 const apicall = await got(input[2]);
                 const min = 0 || input[3];
-                const channel_uid = (await sql.Query('SELECT uid FROM Streamers WHERE username=?', [channel]))[0].uid;
+                const channel_uid = (await sql.Query('SELECT uid FROM Streamers WHERE username=?', [channel]))[0].uid.toString();
 
                 const users = apicall.body.split(/\r?\n/);
 
@@ -42,7 +42,8 @@ module.exports = {
 				}),
 			}).json();
             console.log(channel_uid);
-            await Promise.allSettled(users_uid.data.users.map(async x =>  await got.post(`https://api.twitch.tv/helix/moderation/bans?broadcaster_id=${channel_uid}&moderator_id=${process.env.TWITCH_UID}`, {
+            
+            await Promise.allSettled(users_uid.data.users.map(async (x) => { console.log(x.id); await got.post(`https://api.twitch.tv/helix/moderation/bans?broadcaster_id=${channel_uid}&moderator_id=${process.env.TWITCH_UID}`, {
 					headers: {
 						'client-id': process.env.TWITCH_CLIENTID,
 						'Authorization': process.env.TWITCH_USER_AUTH,
@@ -55,7 +56,7 @@ module.exports = {
 							'reason': 'Muted for notification spam'
 						}
 					}
-				} ).json()));
+				} ).json();}));
 
                 return;
         } catch (err) {
