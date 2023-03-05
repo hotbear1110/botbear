@@ -41,7 +41,7 @@ module.exports = {
 					query: query
 				}),
 			}).json();
-            console.log(usersz);
+            console.log(users);
             console.log(users_uid);
             await Promise.allSettled(users_uid.data.users.map(async x =>  await got.post(`https://api.twitch.tv/helix/moderation/bans?broadcaster_id=${channel_uid}&moderator_id=${process.env.TWITCH_UID}`, {
 					headers: {
