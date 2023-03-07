@@ -1,16 +1,18 @@
 let talkedRecently = {};
+const tools = require('./tools.js');
 
 exports.whisperHandler = class Cooldown {
-	constructor(user, message) {
-		this.user = user;
+	constructor(recipient, message) {
+		this.sender = process.env.TWITCH_UID;
+		this.recipient = recipient;
 		this.message = message;
 		this.noCD = 0;
 	}
 
 	async Cooldown() {
 		let cooldown = 1250;
-		if (talkedRecently[this.user]) {
-			cooldown = 1250 * (talkedRecently[this.user].length);
+		if (talkedRecently[this.recipient]) {
+			cooldown = 1250 * (talkedRecently[this.recipient].length);
 
 		}
 		return cooldown;
@@ -19,28 +21,28 @@ exports.whisperHandler = class Cooldown {
 	async newWhisper() {
 		const cc = require('../bot.js').cc;
 
-		if (talkedRecently[this.user]) {
+		if (talkedRecently[this.recipient]) {
 			this.noCD = 0;
-			let tempList = talkedRecently[this.user];
+			let tempList = talkedRecently[this.recipient];
 			tempList.push(this.message);
-			talkedRecently[this.user] = tempList;
+			talkedRecently[this.recipient] = tempList;
 		} else {
-			cc.whisper(this.user, this.message);
+			await tools.sendWhisper(this.recipient, this.sender, this.message);
 			this.noCD = 1;
 			let tempList = [];
 			tempList.push(this.message);
-			talkedRecently[this.user] = tempList;
+			talkedRecently[this.recipient] = tempList;
 		}
 
-		setTimeout(() => {
-			let tempList = talkedRecently[this.user];
+		setTimeout(async () => {
+			let tempList = talkedRecently[this.recipient];
 			if (this.noCD === 0) {
-				cc.whisper(this.user, this.message);
+				await tools.sendWhisper(this.recipient, this.sender, this.message);
 			}
 			tempList.shift();
-			talkedRecently[this.user] = tempList;
-			if (!talkedRecently[this.user].length) {
-				delete talkedRecently[this.user];
+			talkedRecently[this.recipient] = tempList;
+			if (!talkedRecently[this.recipient].length) {
+				delete talkedRecently[this.recipient];
 				this.noCD = 0;
 			}
 
