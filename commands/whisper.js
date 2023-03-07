@@ -1,4 +1,5 @@
 let whisperHandler = require('../tools/whisperHandler.js').whisperHandler;
+const tools = require('../tools/tools.js');
 
 module.exports = {
 	name: 'whisper',
@@ -12,13 +13,11 @@ module.exports = {
 				return;
 			}
 
-			let message = input.slice();
-			message.shift();
-			message.shift();
-			message.shift();
-			message = message.toString().replaceAll(',', ' ');
+			const message = input.slice(3).join(' ');
 
-			new whisperHandler(input[2], message).newWhisper();
+			const userID = tools.getUserIDs([input[2]]);
+
+			new whisperHandler(userID, message).newWhisper();
 
 			return;
 		} catch (err) {
