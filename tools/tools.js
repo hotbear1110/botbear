@@ -948,3 +948,41 @@ exports.groupArray = function*(arr, size) {
 		yield arr.slice(i, (i += size));
 	}
 };
+
+exports.sendWhisper = async function (sender, recipient, message) {
+	try {
+		await got.post(`https://api.twitch.tv/helix/whispers?from_user_id=${sender}&to_user_id=${recipient}`, {
+		headers: {
+			'client-id': process.env.TWITCH_CLIENTID,
+			'Authorization': process.env.TWITCH_USER_AUTH,
+			'Content-Type': 'application/json'
+		},
+		json: {
+			'message': message
+		}
+	}).json();
+} catch (err) {
+		console.log(err);
+	}
+}
+
+exports.getUserIDs = async function (username) {
+	const query = `
+			    query {
+                    users(logins: ["${users.join('", "')}"]) {
+                        id
+                    }
+                  }`;
+
+                  const users_uid = await got.post('https://gql.twitch.tv/gql', {
+				headers: {
+					'Client-ID': process.env.THREELETTERAPI_CLIENTID,
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					query: query
+				}),
+			}).json();
+		
+		return users_uid.data.users.map(x => x.id);
+}
