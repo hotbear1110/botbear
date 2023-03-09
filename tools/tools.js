@@ -964,9 +964,9 @@ exports.sendWhisper = async function (sender, recipient, message) {
 } catch (err) {
 		console.log(err);
 	}
-}
+};
 
-exports.getUserIDs = async function (username) {
+exports.getUserIDs = async function (users) {
 	const query = `
 			    query {
                     users(logins: ["${users.join('", "')}"]) {
@@ -985,4 +985,4 @@ exports.getUserIDs = async function (username) {
 			}).json();
 		
 		return users_uid.data.users.map(x => x.id);
-}
+};
