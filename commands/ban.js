@@ -26,24 +26,10 @@ module.exports = {
 
                 const users = apicall.body.split(/\r?\n/);
 
-                const query = `
-			    query {
-                    users(logins: ["${users.join('", "')}"]) {
-                        id
-                    }
-                  }`;
+				const userIDs = tools.getUserIDs(users);
 
-                  const users_uid = await got.post('https://gql.twitch.tv/gql', {
-				headers: {
-					'Client-ID': process.env.THREELETTERAPI_CLIENTID,
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					query: query
-				}),
-			}).json();
 
-            await Promise.allSettled(users_uid.data.users.map(async (x) => {
+            await Promise.allSettled(userIDs.map(async (uid) => {
                 try {
                     await got.post(`https://api.twitch.tv/helix/moderation/bans?broadcaster_id=${channel_uid}&moderator_id=${process.env.TWITCH_UID}`, {
 					headers: {
@@ -53,7 +39,7 @@ module.exports = {
 					},
 					json: {
 						'data': {
-							'user_id': x.id,
+							'user_id': uid,
 							'duration': min * 60,
 							'reason': reason
 						}
