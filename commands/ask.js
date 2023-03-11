@@ -30,12 +30,13 @@ module.exports = {
 			}
 
 			input = input.splice(2);
-			const msg = input.join(' ');
+			let msg = input.toString().replaceAll(',', ' ');
+			const prompt = `Q: ${msg}\nA:`;
 
-			const url = 'https://api.openai.com/v1/chat/completions';
+			const url = 'https://api.openai.com/v1/completions';
 			const params = {
-				'model': 'gpt-3.5-turbo',
-				'messages': [{'role': 'user', 'content': msg}],
+				'model': 'text-davinci-003',
+				'prompt': prompt,
 				'max_tokens': 160,
 				'temperature': 0,
 				'frequency_penalty': 0.0,
@@ -48,8 +49,10 @@ module.exports = {
 
 			try {
 				const response = await got.post(url, { json: params, headers: headers }).json();
-				const output = response.choices[0].message.content
+				const output = `${prompt}${response.choices[0].text}`
+					.substring(prompt.length)
 					.replace(URL, '$1[DOMAIN]$3$4$5');
+
 
 				if (activetrivia[`${channel}`]) {
 					let triviaRegex = new RegExp(triviaanswer[`${channel}`], 'gi');
