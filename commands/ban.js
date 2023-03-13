@@ -27,7 +27,7 @@ module.exports = {
 
                 const users = apicall.body.split(/\r?\n/);
 
-				const userIDs = tools.getUserIDs(users);
+				const userIDs = await tools.getUserIDs(users);
 
 
             await Promise.allSettled(userIDs.map(async (uid) => {

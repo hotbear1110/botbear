@@ -967,22 +967,28 @@ exports.sendWhisper = async function (sender, recipient, message) {
 };
 
 exports.getUserIDs = async function (users) {
-	const query = `
-			    query {
-                    users(logins: ["${users.join('", "')}"]) {
-                        id
-                    }
-                  }`;
+	try { 
+		const query = `
+		query {
+			users(logins: ["${users.join('", "')}"]) {
+				id
+			}
+		  }`;
 
-                  const users_uid = await got.post('https://gql.twitch.tv/gql', {
-				headers: {
-					'Client-ID': process.env.THREELETTERAPI_CLIENTID,
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					query: query
-				}),
-			}).json();
-		
-		return users_uid.data.users.map(x => x.id);
+		const users_uid = await got.post('https://gql.twitch.tv/gql', {
+		headers: {
+			'Client-ID': process.env.THREELETTERAPI_CLIENTID,
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			query: query
+		}),
+	}).json();
+
+return users_uid.data.users.map(x => x.id);
+	} catch (err) {
+		console.log(err);
+		return;
+	}
+
 };
