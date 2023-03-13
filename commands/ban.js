@@ -1,5 +1,6 @@
 const { got } = require('./../got');
 const sql = require('./../sql/index.js');
+const tools = require('../tools/tools.js');
 
 module.exports = {
 	name: 'ban',
