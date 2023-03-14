@@ -985,7 +985,7 @@ exports.getUserIDs = async function (users) {
 		}),
 	}).json();
 
-return users_uid.data.users.map(x => x.id);
+return users_uid.data.users.map(x => x?.id);
 	} catch (err) {
 		console.log(err);
 		return;

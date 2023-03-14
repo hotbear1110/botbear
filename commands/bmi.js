@@ -18,17 +18,17 @@ module.exports = {
 			let height = parseFloat(input[3]) / 100;
 			let bmi = weight / (height ** 2);
 	
-			let bmiStatus = "";
+			let bmiStatus = '';
 			if (bmi < 18.5) {
-				bmiStatus = "Underweight";
+				bmiStatus = 'Underweight';
 			} else if (bmi >= 18.5 && bmi <= 24.9) {
-				bmiStatus = "Normal weight";
+				bmiStatus = 'Normal weight';
 			} else if (bmi >= 25 && bmi <= 29.9) {
-				bmiStatus = "Overweight";
+				bmiStatus = 'Overweight';
 			} else if (bmi >= 30 && bmi <= 34.9) {
-				bmiStatus = "Obese";
+				bmiStatus = 'Obese';
 			} else if (bmi >= 35) {
-				bmiStatus = "Extremely Obese";
+				bmiStatus = 'Extremely Obese';
 			}
 	
 			bmi = bmi.toFixed(2);
