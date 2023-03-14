@@ -31,7 +31,7 @@ module.exports = {
 			if (channel === 'nymn') {
 				await got.delete(`https://api.twitch.tv/helix/moderation/bans?broadcaster_id=62300805&moderator_id=${process.env.TWITCH_UID}&user_id=268612479`, {
 					headers: {
-						'client-id': process.env.TWITCH_CLIENTID,
+						'client-id': process.env.TWITCH_USER_CLIENTID,
 						'Authorization': process.env.TWITCH_USER_AUTH,
 					}
 				} ).json();

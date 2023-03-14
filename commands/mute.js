@@ -47,7 +47,7 @@ module.exports = {
 			if (channel === 'nymn') {
 				await got.post(`https://api.twitch.tv/helix/moderation/bans?broadcaster_id=62300805&moderator_id=${process.env.TWITCH_UID}`, {
 					headers: {
-						'client-id': process.env.TWITCH_CLIENTID,
+						'client-id': process.env.TWITCH_USER_CLIENTID,
 						'Authorization': process.env.TWITCH_USER_AUTH,
 						'Content-Type': 'application/json'
 					},
