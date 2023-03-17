@@ -26,7 +26,7 @@
         <% emotes.forEach(function(emote) { %>
 
             <%if (emote.Type === "election") { %>
-            <%emoteImage = `https://cdn.7tv.app/emote/${emote.EmoteID}/2x`%>
+            <%emoteImage = `https://cdn.7tv.app/emote/${emote.EmoteID}/2x.webp`%>
             <%emoteLink = `https://7tv.app/emotes/${emote.EmoteID}`%>
 
             <tr>
@@ -58,7 +58,7 @@
         <% viewerEmotes.forEach(function(emote) { %>
         <%emoteLink = `https://7tv.app/emotes/${emote.EmoteID}`%>
 
-            <%emoteImage = `https://cdn.7tv.app/emote/${emote.EmoteID}/2x`%>
+            <%emoteImage = `https://cdn.7tv.app/emote/${emote.EmoteID}/2x.webp`%>
 
             <tr>
                 <td> <a href="<%= emoteLink %>" target="_blank" rel="noopener noreferrer"><img src="<%= emoteImage %>"> </a></td>
@@ -90,7 +90,7 @@
         <% nymnEmotes.forEach(function(emote) { %>
         <%emoteLink = `https://7tv.app/emotes/${emote.EmoteID}`%>
 
-            <%emoteImage = `https://cdn.7tv.app/emote/${emote.EmoteID}/2x`%>
+            <%emoteImage = `https://cdn.7tv.app/emote/${emote.EmoteID}/2x.webp`%>
             <% if (!emote.EmoteID.length) { %>
                 <%emoteLink = ''%>
 
