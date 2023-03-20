@@ -27,7 +27,9 @@ module.exports = {
             try {
                 const connection = await got(url, {
                     timeout: {
-                        socket: 5000
+                        socket: 2000,
+                        lookup: 2000,
+                        connect: 2000,
                     },
                     throwHttpErrors: false
                 });
