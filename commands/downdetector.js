@@ -34,13 +34,19 @@ module.exports = {
                 isup = true;
               } catch (err) {
                 response = err.code;
-                isup = !(['ETIMEDOUT', 'ENOTFOUND'].includes(err.code));
-                console.error(err.request);
+                isup = false;
+                console.error(response);
               }
-			return isup ? url + ' seems to be working | response: ' + response : url + ' seems to be down | response: ' + ((response === 'ETIMEDOUT') ? 'Server timed out' : 'Server not found');
+			return isup ? url + ' seems to be working | response: ' + response : url + ' seems to be down | response: ' + erros[response] ?? response;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
 		}
 	}
+};
+
+const erros = {
+	ETIMEDOUT: 'Server timed out',
+	ENOTFOUND: 'Server not found',
+	EAI_AGAIN : 'DNS server failed to fulfill the request',
 };
