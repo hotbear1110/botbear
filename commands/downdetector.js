@@ -41,7 +41,7 @@ module.exports = {
                 isup = false;
                 console.error(response);
               }
-			return isup ? tools.unpingUser(url) + ' seems to be working | response: ' + response : url + ' seems to be down | response: ' + erros[response] ?? response;
+			return isup ? tools.unpingUser(url) + ' seems to be working | response: ' + response : tools.unpingUser(url) + ' seems to be down | response: ' + erros[response] ?? response;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
