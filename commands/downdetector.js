@@ -18,7 +18,8 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-            const url = (input[2].match(/^(https?:\/\/)/)) ? input[2] : 'https://' + input[2];
+            let url = (input[2].match(/^(https?:\/\/)/)) ? input[2] : 'https://' + input[2];
+            url = (url.match(/(\.\w+)$/)) ? url : url + '.com';
 
             let response = 404;
             let isup = false;
