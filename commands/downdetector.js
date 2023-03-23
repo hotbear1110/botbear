@@ -39,7 +39,7 @@ module.exports = {
               } catch (err) {
                 response = err.code;
                 isup = false;
-                console.error(response);
+                console.error(err);
               }
 			return isup ? tools.unpingUser(url) + ' seems to be working | response: ' + response : tools.unpingUser(url) + ' seems to be down | response: ' + erros[response] ?? response;
 		} catch (err) {

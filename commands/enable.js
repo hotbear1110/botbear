@@ -36,7 +36,9 @@ module.exports = {
 					return 'That command is not disabled';
 				}
 
-				disabledList.splice(disabledList.indexOf(command), 1);
+				while(disabledList.includes(command)) {
+					disabledList.splice(disabledList.indexOf(command), 1);
+				}
 
 				disabledList = JSON.stringify(disabledList);
 
