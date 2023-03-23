@@ -43,7 +43,12 @@ exports.messageHandler = class Cooldown {
 		}
 
 		if (!this.noBanphrase) {
-			this.message = await tools.checkAllBanphrases(this.message, this.channel);
+			try	{
+				this.message = await tools.checkAllBanphrases(this.message, this.channel);
+			} catch (err) {
+				console.log(err);
+				this.message = 'Failed to check for banphrases';
+			}
 		}
 		if (this.ping) {
 			this.message = `${this.user['display-name']}, ${this.message}`;
