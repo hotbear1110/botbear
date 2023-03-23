@@ -840,7 +840,7 @@ exports.getChatters = async (channel) => {
 		}),
 	}).json()).data.user.channel.chatters;
 
-	Object.values(ThreeLetterApiCall).map(x => x.map(y => y.login)).map(x => list = list.concat(x));
+	list = Object.values(ThreeLetterApiCall).reduce((chatters, logins) => { logins.forEach(chatter => chatters.push(chatter.login)); return chatters; }, []);
 
     return list;
 };
