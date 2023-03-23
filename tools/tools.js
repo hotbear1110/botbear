@@ -234,12 +234,7 @@ exports.massping = (message, channel) => new Promise(async (resolve) => {
 	const dbpings = await sql.Query('SELECT username FROM Users WHERE ' + Array(dblist.length).fill('username = ?').join(' OR '), dblist);
 
 	let dbnames = dbpings.map(a => a.username);
-    const users = await module.exports.getChatters(channel);
-
-	let userlist = [];
-	for (const [_, values] of Object.entries(users)) {
-		userlist = userlist.concat(values);
-	}
+    let userlist = await module.exports.getChatters(channel);
 
 	userlist = userlist.concat(dbnames.filter(x => !userlist.includes(x)));
 
@@ -809,13 +804,43 @@ exports.unpingUser = (user) =>`${user[0]}\u{E0000}${user.slice(1)}`;
  * @returns { Promise<string[]> }
  */
 exports.getChatters = async (channel) => {
-    const list = [];
-    const response = await got(`https://tmi.twitch.tv/group/user/${channel}/chatters`).json();
-    const chatters = response.chatters;
+    let list = [];
+	let query = `
+	query {
+		user (login: "${channel}") {
+			channel {
+				chatters {
+					broadcasters {
+						login
+					},
+					staff {
+						login
+					},
+					moderators {
+						login
+					},
+					vips {
+						login
+					},
+					viewers {
+						login
+					}
+				}
+			}
+		}
+	}`;
 
-    for (const chatter of Object.values(chatters)) {
-        list.push(...chatter);
-    }
+	let ThreeLetterApiCall = (await got.post('https://gql.twitch.tv/gql', {
+		headers: {
+			'Client-ID': process.env.THREELETTERAPI_CLIENTID,
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			query: query
+		}),
+	}).json()).data.user.channel.chatters;
+
+	Object.values(Object.values(ThreeLetterApiCall)[0]).map(x => x.map(y => y.login)).map(x => list = list.concat(x));
 
     return list;
 };
