@@ -204,7 +204,7 @@ module.exports = (function () {
             {
                 EmoteCode: 'dankHug',
                 EmoteID: '616edc115ff09767de29919b',
-                AddedBy: 'hbear___',
+                AddedBy: 'Thotbear',
                 Type: 'election',
                 CreatedAt: '2023-01-06T00:00:00.000000Z'
             },

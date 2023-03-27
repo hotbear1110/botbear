@@ -8,7 +8,7 @@ const sql = require('./../sql/index.js');
 module.exports = {
 	name: 'channel',
 	ping: true,
-	description: '"bb channel join/leave" the bot joins or leaves your channel(only works in hbear___/botbear1110 chats). "bb channel [live/offline/title/game]emote *emote*" this changes the notify emotes. "bb channel trivia *seconds*" this changes the trivia cooldown(Default is 300s, if cd is too low, it can bug out)',
+	description: '"bb channel join/leave" the bot joins or leaves your channel(only works in Thotbear/botbear1110 chats). "bb channel [live/offline/title/game]emote *emote*" this changes the notify emotes. "bb channel trivia *seconds*" this changes the trivia cooldown(Default is 300s, if cd is too low, it can bug out)',
 	permission: 100,
 	category: 'Core command',
 	execute: async (channel, user, input, perm) => {
@@ -77,7 +77,7 @@ module.exports = {
 						})
 						.catch((err) => {
 							console.log(err);
-							return 'Error joining channel ask @hbear___ for help.';
+							return 'Error joining channel ask @Thotbear for help.';
 						});
 
 				}

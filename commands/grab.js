@@ -134,7 +134,7 @@ module.exports = {
 		} catch (err) {
 			console.log(err);
 			if (err.message.startsWith('RequestError: Unexpected token U in JSON at position 0')) {
-				return 'FeelsDankMan I\'m still not verified by spotify, so I can only add spotify "testers" manually via the dev dashboard. If you want to become a "tester" message @hbear___. You will need to provide your Email to get added.';
+				return 'FeelsDankMan I\'m still not verified by spotify, so I can only add spotify "testers" manually via the dev dashboard. If you want to become a "tester" message @Thotbear. You will need to provide your Email to get added.';
 			}
 			return 'FeelsDankMan Error';
 		}
