@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Config</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body style="margin: 0;">
+    <div class="wrapper">
+        <div class="music">
+            <div class="musicbox">
+                <div>
+                    <h3>Twitch Login</h3>
+                </div>
+                <%if (!hasToken) { %>
+                    <div style="display: grid;">
+                        <h4>Step 1:</h4>
+                        <small>(Redirects to twitch.tv)</small>
+                        <a href="https://hotbear.org/bot/login" class="musicbutton">Log in with twitch</a>
+                    </div>
+                    <% if (query.error){ %>
+                    <div class="error">
+                            <p style="color:red">Error: <%= query.error%>!</p>
+                    </div>
+                    <% } %>
+
+                <% } else { %>
+
+
+                <% } %>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

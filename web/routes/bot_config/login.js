@@ -1,6 +1,6 @@
 require('dotenv').config();
 const querystring = require('querystring');
-const sql = require('../../../sql/index.js');
+const sql = require('./../../../sql/index.js');
 
 module.exports = (function () {
     const router = require('express').Router();
@@ -17,7 +17,7 @@ module.exports = (function () {
 
 
       if (cookieToken) {
-        const hasToken = await sql.Query('SELECT * FROM Spotify WHERE cookieToken = ?', [cookieToken]);
+        const hasToken = await sql.Query('SELECT * FROM bot_config WHERE cookieToken = ?', [cookieToken]);
 
         if (hasToken.length) {
           res.redirect('./config');
@@ -57,7 +57,7 @@ module.exports = (function () {
                                         moderator:read:chatters 
                                         moderator:read:shield_mode 
                                         moderator:manage:shield_mode 
-                                        moderator:read:shoutouts 
+                                        moderator:read:shoutout s 
                                         moderator:manage:shoutouts 
                                         moderator:read:followers`
                                          :

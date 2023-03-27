@@ -32,6 +32,8 @@
         { router: 'twitch/login', path: '/twitch/login'},
         { router: 'music', path: '/music'},
         { router: 'resolved', path: '/resolved'},
+        { router: 'bot_config/config', path: '/bot/config'},
+        { router: 'bot_config/login', path: '/bot/login'},
     ];
     
     const express = require('express');
