@@ -40,10 +40,8 @@ module.exports = {
 						'Content-Type': 'application/json'
 					},
 					json: {
-						'data': {
-                            'message': message,
-                            'color':'purple'
-                        }
+                        'message': message,
+                        'color':'purple'
 					}
 				}).json();
             } catch (err) {
