@@ -26,7 +26,7 @@ module.exports = {
 			message.shift();
 			message.shift();
 
-			message = message.join();
+			message = message.join(' ');
 		
 
             await Promise.allSettled(Array.from({length: input[2]})
