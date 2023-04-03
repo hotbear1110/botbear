@@ -31,7 +31,7 @@ module.exports = {
 
             await Promise.allSettled(Array.from({length: input[2]})
                                             .fill(message)
-                                            .forEach(async (message) => {
+                                            .map(async (message) => {
                 try {
                     await got.post(`https://api.twitch.tv/helix/chat/announcements?broadcaster_id=${channel_uid}&moderator_id=${process.env.TWITCH_UID}`, {
 					headers: {
