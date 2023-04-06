@@ -18,7 +18,7 @@ module.exports = {
 
 			message = message.toString().replaceAll(',', ' ');
 			
-			Array.from({length: input[2]}).fill(message).map(x => cc.say(channel, x));
+			await Promise.allSettled(Array.from({length: input[2]}).fill(message).map(x => cc.say(channel, x)));
 
 			return;
 		} catch (err) {
