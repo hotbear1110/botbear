@@ -89,7 +89,7 @@ async function onMessageHandler(channel, user, msg, self) {
         return;
     }
 
-	const offlineonly = await sql.Query('SELECT * FROM Streamers WHERE username=?', [channel]);
+	const offlineonly = await sql.Query('SELECT offlineonly, islive FROM Streamers WHERE username=?', [channel]);
 
 
 	console.log(2);
