@@ -64,7 +64,6 @@ let userList = [];
  * @returns 
  */
 async function onMessageHandler(channel, user, msg, self) {
-	console.log(msg);
 	if (user['message-type'] === 'whisper') {
 		return;
 	}
@@ -84,12 +83,16 @@ async function onMessageHandler(channel, user, msg, self) {
 		cc.say(channel, '/me pajaLada 🚨 WHAT HAPPENED');
 		return;
 	}
+	console.log(1);
 
     if (self || (user['user-id'] !== '425363834' && !activetrivia[channel] && !msg.toLowerCase().startsWith(prefix + ' '))) {
         return;
     }
 
 	const offlineonly = await sql.Query('SELECT * FROM Streamers WHERE username=?', [channel]);
+
+
+	console.log(2);
 
 	if (offlineonly[0].offlineonly === 1 && offlineonly[0].islive === 1 && user.username !== channel) {
 		return;
@@ -207,6 +210,7 @@ async function onMessageHandler(channel, user, msg, self) {
 	}
 
 	let input = msg.split(' ');
+	console.log(3);
 
 
     /*for (let i = 0; i < input.length; i++) {
@@ -265,6 +269,7 @@ async function onMessageHandler(channel, user, msg, self) {
             }
         }
     }
+	console.log(4);
 
 	if (!msg.toLowerCase().startsWith(prefix + ' ') || input[1] === undefined) {
 		return;
