@@ -9,7 +9,7 @@
         database: process.env.DB_DATABASE,
         connectTimeout: 10000,
         waitForConnections: true,
-        connectionLimit: 10,
+        connectionLimit: 20,
         maxIdle: 10, 
         idleTimeout: 60000, 
         queueLimit: 0
