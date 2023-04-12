@@ -42,7 +42,7 @@ module.exports = {
      * @returns {Promise<void>}
      */
 	New: async function (opts) {
-		this.con = await mysql.createConnection(opts);
+		this.con = await mysql.createPool(opts);
 
 		this.con.on('error', (e) => {
 			console.error('MySQL error: ' + e);

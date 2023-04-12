@@ -16,8 +16,6 @@ cc.on('message', onMessageHandler);
 cc.on('connected', onConnectedHandler);
 cc.on('pong', async (latency) => {
 	console.log(latency);
-	await sql.Query('INSERT INTO Latency (Latency) values (?)', [latency]);
-
 });
 
 cc.connect();
