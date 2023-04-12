@@ -64,6 +64,7 @@ let userList = [];
  * @returns 
  */
 async function onMessageHandler(channel, user, msg, self) {
+	console.log(msg);
 	if (user['message-type'] === 'whisper') {
 		return;
 	}
