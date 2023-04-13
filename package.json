@@ -34,7 +34,7 @@
     "require-dir": "^1.2.0",
     "tmi.js": "^1.8.5",
     "underscore": "^1.13.1",
-    "vm2": "^3.9.11",
+    "vm2": "^3.9.16",
     "xml-js": "^1.6.11",
     "youtube-search-api": "^1.1.1"
   },
