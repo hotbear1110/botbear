@@ -18,7 +18,7 @@ function sleep(milliseconds) {
 sleep(10000);
 
 setInterval(async function () {
-	const streamers = await sql.Query('SELECT uid, username, Emote_list, Emote_removed FROM Streamers');
+	const streamers = await sql.Query('SELECT uid, username, emote_list, emote_removed FROM Streamers');
 
 	for (let i = 0; i < streamers.length; i++) {
 		setTimeout(async() => {
