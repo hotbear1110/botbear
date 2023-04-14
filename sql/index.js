@@ -63,7 +63,7 @@ module.exports = {
 	Query: async function (query, data = []) {
 		return await this.con.query(query, data)
 			.then(([rows]) => {
-				console.log('sql query: ' + rows);
+				console.log('sql query: ' + JSON.stringify(rows));
 				return rows;
 			})
 			.catch((err) => {
