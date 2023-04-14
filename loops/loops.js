@@ -25,8 +25,8 @@ setInterval(async function () {
 			const streamer = streamers[i];
 			let Emote_list = JSON.parse(streamer.emote_list);
 			let Emote_removed = JSON.parse(streamer.emote_removed);
-			const old_Emote_list = Emote_list;
-			const old_Emote_removed = Emote_removed;
+			const old_Emote_list = streamer.emote_list;
+			const old_Emote_removed = streamer.emote_removed;
 			let noFFZ = 0;
 			let noBTTV = 0;
 			let noSTV = 0;
