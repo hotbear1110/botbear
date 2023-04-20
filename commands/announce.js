@@ -5,7 +5,7 @@ module.exports = {
 	name: 'announce',
 	ping: true,
 	description: 'spam announces something',
-	permission: 2000,
+	permission: 1500,
 	cooldown: 3, //in seconds
 	category: 'Dev command',
 	opt_outable: false,
