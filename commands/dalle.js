@@ -18,7 +18,7 @@ module.exports = {
 				return;
 			}
 			//temp change
-			if (![62300805, 135186096, 11148817, 84180052].includes(+user[`room-id`]) && !(perm >= 1500)) {
+			if (![62300805, 135186096, 11148817, 84180052].includes(+user['room-id']) && !(perm >= 1500)) {
 				return 'This command is currently disabled :)';
 			}
 
