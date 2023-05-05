@@ -178,7 +178,7 @@ setInterval(async function () {
 			Emote_list = JSON.stringify(Emote_list);
 			Emote_removed = JSON.stringify(Emote_removed);
 
-			if (old_Emote_list !== Emote_list) {
+			if (old_Emote_list !== Emote_list && Emote_list.length) {
 				await sql.Query('UPDATE Streamers SET emote_list=? WHERE username=?', [Emote_list, streamer.username]);
 			}
 			if (old_Emote_removed !== Emote_removed) {
