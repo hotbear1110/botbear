@@ -406,7 +406,7 @@ async function onMessageHandler(channel, user, msg, self) {
 			return;
 		}
 		const isLive = await sql.Query('SELECT islive FROM Streamers WHERE username=?', [channel]);
-		if (isLive[0].islive === 1) {
+		if (isLive[0].islive === 1 && process.env.TWITCH_USER !== 'devbear1110') {
 			return;
 		}
 
@@ -464,7 +464,7 @@ async function onMessageHandler(channel, user, msg, self) {
 			return;
 		}
 		const isLive = await sql.Query('SELECT islive FROM Streamers WHERE username=?', [channel]);
-		if (isLive[0].islive === 1) {
+		if (isLive[0].islive === 1 && process.env.TWITCH_USER !== 'devbear1110') {
 			return;
 		}
 
