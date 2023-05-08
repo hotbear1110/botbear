@@ -4,7 +4,7 @@ const tools = require('../tools/tools.js');
 module.exports = {
 	name: 'trivia2',
 	ping: false,
-	description: 'This command will start a new trivia in chat (To see the cooldown on this command, do: "bb check triviacooldown") - Api used: https://gazatu.xyz/',
+	description: 'This command will start a new trivia in chat, Example: \' bb trivia2 include:"Forsen,Anime" \' or \' bb trivia2 exclude:"Forsen,Anime" \' (To see the cooldown on this command, do: "bb check triviacooldown") - Api used: https://gazatu.xyz/ - Categories available: https://gazatu.xyz/trivia/categories',
 	permission: 100,
 	category: 'Random command',
 	execute: async (channel, user, input, perm) => {
@@ -12,15 +12,23 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			let excludeCategories = encodeURIComponent('[Anime,Hentai,Weeb,D DansGame TA]');
 
-			let questions = await got(`https://api.gazatu.xyz/trivia/questions?count=1&exclude=${excludeCategories}`).json();
+			const inputCategories = /(?<=include:")[^"]+(?=")/i.exec(input.join(' '));
 
-			let question = decodeURIComponent(questions[0].question);
+			const inputExclude = /(?<=exclude:")[^"]+(?=")/i.exec(input.join(' '));
+
+			const excludeCategories = `[${inputExclude}]` ?? encodeURIComponent('[Anime,Hentai,Weeb,D DansGame TA]');
+
+			const url = `https://api.gazatu.xyz/trivia/questions?count=1&exclude=${excludeCategories}`
+						+ ((inputCategories) ? `&include=${encodeURIComponent(`[${inputCategories}]`)}` : '');
+
+			const questions = await got(url).json();
+
+			const question = decodeURIComponent(questions[0].question);
 			let correct_answer = decodeURIComponent(questions[0].answer);
-			let hint1 = questions[0].hint1;
-			let hint2 = questions[0].hint2;
-			let category = decodeURIComponent(questions[0].category);
+			const hint1 = questions[0].hint1;
+			const hint2 = questions[0].hint2;
+			const category = decodeURIComponent(questions[0].category);
 			correct_answer = tools.removeTrailingStuff(correct_answer);
 
 			return [`(Trivia) [${category}] Question: ${question}`, correct_answer, hint1, hint2];
