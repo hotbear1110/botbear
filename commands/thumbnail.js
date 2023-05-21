@@ -36,7 +36,13 @@ module.exports = {
             }
 
             if (liveCheck.data.length) {
-                const thumbnail = liveCheck.data[0].thumbnail_url.replace('{width}', '1920').replace('{height}', '1080') + '?cum';
+                let thumbnail = liveCheck.data[0].thumbnail_url.replace('{width}', '1920').replace('{height}', '1080') + '?cum';
+
+                let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+              
+                for (let i = 0; i < 5; i++) {
+                    thumbnail += possible.charAt(Math.floor(Math.random() * possible.length));
+                }
 
                 return thumbnail;
             }
@@ -63,7 +69,13 @@ module.exports = {
                 return 'That user has no vods';
             }
 
-            const thumbnail = vodList.data[0].thumbnail_url.replace('%{width}', '1920').replace('%{height}', '1080') + '?cum';
+            let thumbnail = vodList.data[0].thumbnail_url.replace('%{width}', '1920').replace('%{height}', '1080') + '?cum';
+
+            let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+              
+            for (let i = 0; i < 5; i++) {
+                thumbnail += possible.charAt(Math.floor(Math.random() * possible.length));
+            }
 
 			return thumbnail;
 		} catch (err) {
@@ -72,3 +84,14 @@ module.exports = {
 		}
 	}
 };
+
+
+const generateRandomString = function(length) {
+    let text = '';
+    let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  
+    for (let i = 0; i < length; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+  };
