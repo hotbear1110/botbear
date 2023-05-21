@@ -298,7 +298,7 @@ async function onMessageHandler(channel, user, msg, self) {
 	disabledCheck = JSON.parse(disabledCheck[0].disabled_commands);
 
 	if (disabledCheck.includes(realcommand)) {
-		new messageHandler(channel, `${realcommand} is disabled in this chat :)`).newMessage();
+		new messageHandler(channel, `${realcommand} is disabled in this chat :)`, true).newMessage();
 		return;
 	}
 
