@@ -20,6 +20,27 @@ module.exports = {
 			}
             let realchannel = input[2] ?? channel;
 
+            const liveCheck = await got('https://api.twitch.tv/helix/streams', {
+                headers: {
+                    'client-id': process.env.TWITCH_USER_CLIENTID,
+                    'Authorization': process.env.TWITCH_USER_AUTH
+                },
+                searchParams: {
+                    'user_login': realchannel
+                },
+                throwHttpErrors: false
+            }).json();
+
+            if (liveCheck.status === 400) {
+                return `Could not find user: "${realchannel}"`;
+            }
+
+            if (liveCheck.data.length) {
+                const thumbnail = liveCheck.data[0].thumbnail_url.replace('{width}', '1920').replace('{height}', '1080') + '?cum';
+
+                return thumbnail;
+            }
+
             const [userID] = await got(`https://api.ivr.fi/v2/twitch/user?login=${realchannel}`).json();
 
             if (userID.status === 404) {
@@ -34,7 +55,7 @@ module.exports = {
                 searchParams: {
                     'user_id': userID.id,
                     'type': 'archive',
-                    'first': 100
+                    'first': 1
                 }
             }).json();
 
@@ -42,7 +63,7 @@ module.exports = {
                 return 'That user has no vods';
             }
 
-            const thumbnail = vodList.data[0].thumbnail_url.replace('%{width}', '1920').replace('%{height}', '1080');
+            const thumbnail = vodList.data[0].thumbnail_url.replace('%{width}', '1920').replace('%{height}', '1080') + '?cum';
 
 			return thumbnail;
 		} catch (err) {
