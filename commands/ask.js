@@ -74,7 +74,7 @@ module.exports = {
 			} catch (err) {
 				console.log(err);
 				if (err.response.statusCode === 429) {
-					return 'Nime you have used all of this months bb ask';
+					return 'nymnIme you have used all of this months bb ask';
 				}
 			}
 
