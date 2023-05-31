@@ -87,7 +87,7 @@ module.exports = {
 			if (err.message.startsWith('RequestError: Unexpected token U in JSON at position 0')) {
 				return 'FeelsDankMan I\'m still not verified by spotify, so I can only add spotify "testers" manually via the dev dashboard. If you want to become a "tester" message @Thotbear. You will need to provide your Email to get added.';
 			}
-			return 'FeelsDankMan Error';
+			return 'FeelsDankMan Error - My spotify app is still not approved, so this command is broken for now PoroSad';
 		}
 	}
 };
