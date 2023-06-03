@@ -35,7 +35,7 @@ module.exports = {
 			message = message.join(' ');
 		
 
-            await Promise.allSettled(Array.from({length: input[2]})
+            await Promise.allSettled(Array.from({length: spamCount})
                                             .fill(message)
                                             .map(async (message) => {
                 try {
