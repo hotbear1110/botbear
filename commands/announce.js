@@ -21,10 +21,16 @@ module.exports = {
 			}
             const channel_uid = (await sql.Query('SELECT uid FROM Streamers WHERE username=?', [channel]))[0].uid.toString();
 
+            let spamCount = input[2];
             let message = input.slice();
 			message.shift();
 			message.shift();
-			message.shift();
+
+            if (+spamCount) {
+                message.shift();
+            } else {
+                spamCount = 1;
+            }
 
 			message = message.join(' ');
 		
