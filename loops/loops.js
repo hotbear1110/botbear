@@ -17,6 +17,11 @@ function sleep(milliseconds) {
 
 sleep(10000);
 
+/* Disabled for now, cause this shit is filling up the entire heap...
+    * Will not be fixing it, since it would just be better to remake
+    * the entire project >:)
+
+
 setInterval(async function () {
 	const streamers = await sql.Query('SELECT uid, username, emote_list, emote_removed FROM Streamers');
 
@@ -189,6 +194,8 @@ setInterval(async function () {
 
 	}
 }, 300000);
+
+*/
 
 /** TODO Refactor */
 setInterval(async function () {
