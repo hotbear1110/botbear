@@ -833,6 +833,7 @@ exports.getChatters = async (channel) => {
 	let ThreeLetterApiCall = (await got.post('https://gql.twitch.tv/gql', {
 		headers: {
 			'Client-ID': process.env.THREELETTERAPI_CLIENTID,
+			'Authorization': process.env.THREELETTERAPI_AUTH,
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({
@@ -883,6 +884,7 @@ exports.getMods = async (channel) => {
 		let ThreeLetterApiCall = (await got.post('https://gql.twitch.tv/gql', {
 			headers: {
 				'Client-ID': process.env.THREELETTERAPI_CLIENTID,
+				'Authorization': process.env.THREELETTERAPI_AUTH,
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
@@ -933,6 +935,7 @@ exports.getVips = async (channel) => {
 		let ThreeLetterApiCall = (await got.post('https://gql.twitch.tv/gql', {
 			headers: {
 				'Client-ID': process.env.THREELETTERAPI_CLIENTID,
+				'Authorization': process.env.THREELETTERAPI_AUTH,
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
@@ -1003,6 +1006,7 @@ exports.getUserIDs = async function (users) {
 		const users_uid = await got.post('https://gql.twitch.tv/gql', {
 		headers: {
 			'Client-ID': process.env.THREELETTERAPI_CLIENTID,
+			'Authorization': process.env.THREELETTERAPI_AUTH,
 			'Content-Type': 'application/json',
 		},
 		body: JSON.stringify({
