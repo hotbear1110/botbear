@@ -20,7 +20,7 @@ module.exports = {
 			}
             const apolloRequest = await got('https://pastebin.com/raw/UXbPxmd5');
 
-            const json = JSON.parse(remRequest.body);
+            const json = JSON.parse(apolloRequest.body);
 
             console.log(json[0]);
             const image = json[~~(Math.random() * json.length - 1)].url;
