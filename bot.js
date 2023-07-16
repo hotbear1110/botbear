@@ -119,7 +119,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
 				triviaScore = Math.round(triviaScore);
 
-				new messageHandler(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) BroBalt You get +${triviaScore} points`).newMessage();
+				new messageHandler(channel, `.me (Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) BroBalt You get +${triviaScore} points`).newMessage();
 				let userchannel = [];
 				userchannel.push(`"${user.username}"`);
 				userchannel.push(`"${channel}"`);
@@ -172,7 +172,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
 				triviaScore = Math.round(triviaScore);
 
-				new messageHandler(channel, `(Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) BroBalt You get +${triviaScore} points`).newMessage();
+				new messageHandler(channel, `.me (Trivia) ${user.username}, Correct! You won the trivia! The correct answer was "${triviaanswer[channel]}"! (${similarity}% similarity) BroBalt You get +${triviaScore} points`).newMessage();
 				let userchannel = [];
 				userchannel.push(`"${user.username}"`);
 				userchannel.push(`"${channel}"`);
@@ -333,7 +333,7 @@ async function onMessageHandler(channel, user, msg, self) {
 			const ms = new Date().getTime() - triviaTime[channel];
 			let timePassed = tools.humanizeDuration(ms);
 			if (parseInt(timePassed) < 10) {
-				new messageHandler(channel, 'You need to wait 10 seconds to get a hint.').newMessage();
+				new messageHandler(channel, '.me You need to wait 10 seconds to get a hint.').newMessage();
 				return;
 			}
 			let hintcount = 0;
@@ -376,14 +376,14 @@ async function onMessageHandler(channel, user, msg, self) {
 				hint = hint + ' 󠀀 ';
 			}
 
-			new messageHandler(channel, `(Trivia) ${user.username}, Hint: ${hint}`).newMessage();
+			new messageHandler(channel, `.me (Trivia) ${user.username}, Hint: ${hint}`).newMessage();
 			oldmessage = `(Trivia) ${user.username}, Hint: ${hint}`;
 			return;
 		} else if (!gothint2[channel]) {
 			const ms = new Date().getTime() - triviaTime[channel];
 			let timePassed = tools.humanizeDuration(ms);
 			if (parseInt(timePassed) < 10) {
-				new messageHandler(channel, 'You need to wait 10 seconds to get a hint.').newMessage();
+				new messageHandler(channel, '.me You need to wait 10 seconds to get a hint.').newMessage();
 				return;
 			}
 			gothint[channel] = true;
@@ -394,7 +394,7 @@ async function onMessageHandler(channel, user, msg, self) {
 				hint = hint + ' 󠀀 ';
 			}
 
-			new messageHandler(channel, `(Trivia) ${user.username}, Hint: ${hint}`).newMessage();
+			new messageHandler(channel, `.me (Trivia) ${user.username}, Hint: ${hint}`).newMessage();
 			oldmessage = `(Trivia) ${user.username}, Hint: ${hint}`;
 			return;
 		}
@@ -402,7 +402,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
 	if (realcommand === 'trivia') {
 		if (activetrivia[channel]) {
-			new messageHandler(channel, 'There is already an active trivia').newMessage();
+			new messageHandler(channel, '.me There is already an active trivia').newMessage();
 			return;
 		}
 		const isLive = await sql.Query('SELECT islive FROM Streamers WHERE username=?', [channel]);
@@ -422,7 +422,7 @@ async function onMessageHandler(channel, user, msg, self) {
 		const triviaCD = new tools.Cooldown(channel, realcommand, cd[0].trivia_cooldowns);
 
 		if ((await triviaCD.setCooldown(perm)).length && !await tools.isMod(user, channel)) {
-			new messageHandler(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
+			new messageHandler(channel, `.me Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
 			return;
 		}
 		let result = await commands[realcommand].execute(channel, user, input, perm);
@@ -447,7 +447,7 @@ async function onMessageHandler(channel, user, msg, self) {
 		gothint[channel] = false;
 		triviaTimeout(channel, triviaTimeID, result[2]);
 
-		let response = result[0];
+		let response = '.me ' + result[0];
 
 		if (response === oldmessage) {
 			response = response + ' 󠀀 ';
@@ -460,7 +460,7 @@ async function onMessageHandler(channel, user, msg, self) {
 
 	if (realcommand === 'trivia2') {
 		if (activetrivia[channel]) {
-			new messageHandler(channel, 'There is already an active trivia').newMessage();
+			new messageHandler(channel, '.me There is already an active trivia').newMessage();
 			return;
 		}
 		const isLive = await sql.Query('SELECT islive FROM Streamers WHERE username=?', [channel]);
@@ -480,7 +480,7 @@ async function onMessageHandler(channel, user, msg, self) {
 		const triviaCD = new tools.Cooldown(channel, realcommand, cd[0].trivia_cooldowns);
 
 		if ((await triviaCD.setCooldown(perm)).length && !await tools.isMod(user, channel)) {
-			new messageHandler(channel, `Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
+			new messageHandler(channel, `.me Trivia is still on cooldown. Available in ${triviaCD.formattedTime()}`).newMessage();
 			return;
 		}
 
@@ -510,7 +510,7 @@ async function onMessageHandler(channel, user, msg, self) {
 		triviaTimeout(channel, triviaTimeID, result[1]);
 
 
-		let response = result[0];
+		let response = '.me ' + result[0];
 
 		if (response === oldmessage) {
 			response = response + ' 󠀀 ';
