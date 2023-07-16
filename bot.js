@@ -432,6 +432,8 @@ async function onMessageHandler(channel, user, msg, self) {
 		if (!result) {
 			return;
 		}
+		
+		result = '.me ' + result;
 
 		triviaanswer[channel] = result[2];
 
@@ -447,7 +449,7 @@ async function onMessageHandler(channel, user, msg, self) {
 		gothint[channel] = false;
 		triviaTimeout(channel, triviaTimeID, result[2]);
 
-		let response = '.me ' + result[0];
+		let response = result[0];
 
 		if (response === oldmessage) {
 			response = response + ' 󠀀 ';
@@ -489,7 +491,7 @@ async function onMessageHandler(channel, user, msg, self) {
 			result = ['(Trivia) [ FeelsDankMan ] Question: nymnDank Something went wrong!?!', 'LULE WHO MADE THIS', 'This bot is so bad LuL', 'MegaLUL @hotbear1110'];
 		}
 
-
+		result = '.me ' + result;
 
 		if (!result) {
 			return;
@@ -510,7 +512,7 @@ async function onMessageHandler(channel, user, msg, self) {
 		triviaTimeout(channel, triviaTimeID, result[1]);
 
 
-		let response = '.me ' + result[0];
+		let response = result[0];
 
 		if (response === oldmessage) {
 			response = response + ' 󠀀 ';
