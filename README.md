@@ -1,7 +1,7 @@
 # botbear
 Dank bot that does stuff, idk
 Link to my commands: https://hotbear.org/
-If you just want this bot in your channel just write "bb join" in #botbear1110 or #Thotbear :)
+If you just want this bot in your channel just write "bb join" in # or #HotBear1110 :)
 Made by: Mads Hauberg
 
 ## Building
