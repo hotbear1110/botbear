@@ -17,7 +17,7 @@ function sleep(milliseconds) {
 
 sleep(10000);
 
-/*
+
 setInterval(async function () {
 	const streamers = await sql.Query('SELECT uid, username, emote_list, emote_removed FROM Streamers');
 
@@ -190,7 +190,7 @@ setInterval(async function () {
 
 	}
 }, 300000);
-*/
+
 
 /** TODO Refactor */
 setInterval(async function () {
