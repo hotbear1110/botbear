@@ -52,6 +52,9 @@ module.exports = {
 				if (userID.status === 404 || userID === '') {
 					return response;
 				}
+				
+				userID = userID[0];
+				
 				if (userID.banned === true) {
 					response = `Multiple users found. ${response} | User-ID found: ${userID['id']} - PepeHands [BANNED USER] | Type: ${userID.banReason}`;
 				} else {
@@ -61,6 +64,9 @@ module.exports = {
 				if (userID.statusCode === 404) {
 					return 'No users found';
 				}
+				
+				userID = userID[0];
+				
 				if (userID.banned === true) {
 					response = `User-ID found: ${userID.id} - PepeHands [BANNED USER] | Type: ${userID.banReason}`;
 				} else {
