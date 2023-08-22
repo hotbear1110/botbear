@@ -42,10 +42,10 @@ module.exports = {
 					uiduser = input[2];
 				}
 
-				userID = await got(`https://api.ivr.fi/v2/twitch/user/${input[2]}`).json();
+				userID = await got(`https://api.ivr.fi/v2/twitch/user?login=${input[2]}`).json();
 
 			} else {
-				userID = await got(`https://api.ivr.fi/v2/twitch/user/${uiduser}`).json();
+				userID = await got(`https://api.ivr.fi/v2/twitch/user?login=${uiduser}`).json();
 			}
 
 			if (response.length) {
