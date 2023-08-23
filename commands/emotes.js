@@ -24,8 +24,8 @@ module.exports = {
 			}
 
 			if (!this.streamer.length) {
-				return 'I don\'t have an emote list for that channnel.';
-		}
+				return 'I don\'t have an emote list for that channel.';
+			}
 			let emotes = JSON.parse(this.streamer[0].emote_list).reverse();
 
 			
