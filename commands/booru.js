@@ -23,9 +23,7 @@ module.exports = {
 
             let queryCheck = await got(`https://safebooru.org/autocomplete.php?q=${search}`).json();
 
-            console.log(queryCheck);
-
-            if (queryCheck.length) {
+            if (queryCheck.length && !(queryCheck.length === 1 && queryCheck[0].value === search)) {
                 queryCheck = " | Similar Queries: " + queryCheck.map(x => x.value).join(' - ');
             } else {
                 queryCheck = "";
