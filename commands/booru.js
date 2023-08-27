@@ -19,7 +19,7 @@ module.exports = {
 				return;
 			}
 
-            let search = input.slice(2);
+            let search = input.slice(2).join(' ');
 
             let queryCheck = await got(`https://safebooru.org/autocomplete.php?q=${search}`).json();
 
