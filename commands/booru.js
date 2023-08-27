@@ -27,6 +27,8 @@ module.exports = {
 
             const maxRequestsCheckjson = JSON.parse(maxRequestsCheckxml);
 
+            console.log(maxRequestsCheckjson);
+
             const pidMax = maxRequestsCheckjson.posts.count;
 
             if (pidMax === 0) {
