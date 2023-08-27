@@ -35,9 +35,9 @@ module.exports = {
                 return 'No images found for that query'
             }
 
-            const remRequest = await got(`https://safebooru.org/index.php?page=dapi&s=post&q=index&limit=1&tags=${search}&pid=${~~(Math.random() * pidMax - 1)}`);
+            const booruRequest = await got(`https://safebooru.org/index.php?page=dapi&s=post&q=index&limit=1&tags=${search}&pid=${~~(Math.random() * pidMax - 1)}`);
 
-            const xml = convert.xml2json(remRequest.body, {compact: true, spaces: 4});
+            const xml = convert.xml2json(booruRequest.body, {compact: true, spaces: 4});
 
             const json = JSON.parse(xml);
 
