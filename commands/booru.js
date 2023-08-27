@@ -26,7 +26,7 @@ module.exports = {
             console.log(queryCheck);
 
             if (queryCheck.length) {
-                queryCheck = " | Similar Queries: " + queryCheck.map(x => x.value).join(', ');
+                queryCheck = " | Similar Queries: " + queryCheck.map(x => x.value).join(' - ');
             } else {
                 queryCheck = "";
             }
