@@ -21,6 +21,16 @@ module.exports = {
 
             let search = input.slice(2);
 
+            const queryCheck = await got(`https://safebooru.org/autocomplete.php?q=${search}`).json();
+
+            console.log(queryCheck);
+
+            if (queryCheck.length) {
+                queryCheck = " | Similar Queries: " + queryCheck.map(x => x.value).join(', ');
+            } else {
+                queryCheck = "";
+            }
+
             const maxRequestscheck = await got(`https://safebooru.org/index.php?page=dapi&s=post&q=index&limit=1&tags=${search}&pid=0`);
 
             const maxRequestsCheckxml = convert.xml2json(maxRequestscheck.body, {compact: true, spaces: 4});
@@ -30,7 +40,7 @@ module.exports = {
             const pidMax = maxRequestsCheckjson.posts._attributes.count;
 
             if (pidMax == 0) {
-                return 'No images found for that query'
+                return 'No images found for that query' + queryCheck;
             }
 
             const booruRequest = await got(`https://safebooru.org/index.php?page=dapi&s=post&q=index&limit=1&tags=${search}&pid=${~~(Math.random() * pidMax - 1)}`);
@@ -39,7 +49,7 @@ module.exports = {
 
             const json = JSON.parse(xml);
 
-			return `nymnAww ${json.posts.post._attributes.file_url}`;
+			return `nymnAww ${json.posts.post._attributes.file_url}` + queryCheck;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
