@@ -27,11 +27,8 @@ module.exports = {
 
             const maxRequestsCheckjson = JSON.parse(maxRequestsCheckxml);
 
-            console.log(maxRequestsCheckjson);
-
             const pidMax = maxRequestsCheckjson.posts._attributes.count;
 
-            if (pidMax === 0) {
                 return 'No images found for that query'
             }
 
