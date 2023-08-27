@@ -21,7 +21,7 @@ module.exports = {
 
             let search = input.slice(2);
 
-            const queryCheck = await got(`https://safebooru.org/autocomplete.php?q=${search}`).json();
+            let queryCheck = await got(`https://safebooru.org/autocomplete.php?q=${search}`).json();
 
             console.log(queryCheck);
 
