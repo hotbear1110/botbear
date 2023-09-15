@@ -8,13 +8,12 @@ const regex = require('./regex.js');
 const sql = require('../sql/index.js');
 
 exports.banphrasePass = (message, channel) => new Promise(async (resolve) => {
-	this.channel = channel;
 	this.message = message.replace(/^\/me /, '');
 	this.data = await sql.Query(`
           SELECT banphraseapi
           FROM Streamers
           WHERE username=?`,
-	[this.channel]);
+	[channel]);
 	if (!this.data.length) {
 		this.banphraseapi = null;
 	} else {
@@ -59,17 +58,13 @@ exports.banphrasePass = (message, channel) => new Promise(async (resolve) => {
 });
 
 exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve) => {
-	this.channel = channel;
 	this.message = encodeURIComponent(message).replaceAll('%0A', '%20').replace(/^\/me /, '');
-	this.data = await sql.Query('SELECT * FROM Streamers WHERE username=?', [this.channel]);
+	this.data = await sql.Query('SELECT uid, banphraseapi2 FROM Streamers WHERE username=?', [channel]);
 
 	if (this.data[0]) {
 		this.userid = this.data[0].uid;
 		this.banphraseapi2 = this.data[0].banphraseapi2;
 	} else {
-		this.banphraseapi2 = null;
-	}
-	if (this.banphraseapi2 !== null) {
 		try {
 			this.checkBanphrase = await got(`${this.banphraseapi2}/api/channel/${this.userid}/moderation/check_message?message=botbear1110%3A%20${this.message}`).json();
 			if (this.checkBanphrase['banned'] == true) {
@@ -88,18 +83,17 @@ exports.banphrasePassV2 = (message, channel) => new Promise(async (resolve) => {
 				console.log(err);
 				resolve(0);
 			}
+		}	}
+
+	try {
+		this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%3A%20${this.message}`).json();
+		if (this.checkBanphrase['banned'] == true) {
+			resolve(true);
 		}
-	} else {
-		try {
-			this.checkBanphrase = await got(`https://paj.pajbot.com/api/channel/62300805/moderation/check_message?message=botbear1110%3A%20${this.message}`).json();
-			if (this.checkBanphrase['banned'] == true) {
-				resolve(true);
-			}
-			resolve(false);
-		} catch (err) {
-			console.log(err);
-			resolve(0);
-		}
+		resolve(false);
+	} catch (err) {
+		console.log(err);
+		resolve(0);
 	}
 
 });
