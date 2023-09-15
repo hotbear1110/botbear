@@ -66,7 +66,7 @@ module.exports = {
             }).json();
 
             if (!vodList.data.length) {
-                return 'That user has no vods';
+                return 'That user is offline and has no vods';
             }
 
             let thumbnail = vodList.data[0].thumbnail_url.replace('%{width}', '1920').replace('%{height}', '1080') + '?cum';
@@ -77,7 +77,7 @@ module.exports = {
                 thumbnail += possible.charAt(Math.floor(Math.random() * possible.length));
             }
 
-			return thumbnail;
+			return '[OFFLINE] | VOD Thumbnail:' + thumbnail;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
