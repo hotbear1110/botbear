@@ -77,7 +77,7 @@ module.exports = {
                 thumbnail += possible.charAt(Math.floor(Math.random() * possible.length));
             }
 
-			return '[OFFLINE] | VOD Thumbnail:' + thumbnail;
+			return '[OFFLINE] | VOD Thumbnail: ' + thumbnail;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
