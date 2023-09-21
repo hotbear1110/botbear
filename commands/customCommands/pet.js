@@ -22,6 +22,13 @@ module.exports = {
 			switch(input[2]) {
 				case 'add': {
 
+					const isMod = user.mod || user['user-type'] === 'mod';
+					const isBroadcaster = channel.toLowerCase() === user.username.toLowerCase();
+
+					if (!isMod && !isBroadcaster && perm < 2000) {
+						return 'Only mods can use this command';
+					}
+
 					let isBanned = (await sql.Query('SELECT * FROM Yabbe_bans WHERE Command=? AND User=?', ['pet', user.username.toLowerCase()]));
 
 					if (isBanned.length) {
@@ -88,6 +95,13 @@ module.exports = {
 					return `Deleted pet image: ID: ${pet[0].ID} | User: ${pet[0].User} | Pet: ${pet[0].Pet} | Pet Name: ${pet[0].Pet_name} | Image: ${pet[0].Image} `;
 				}
 				case 'ban': {
+					const isMod = user.mod || user['user-type'] === 'mod';
+					const isBroadcaster = channel.toLowerCase() === user.username.toLowerCase();
+
+					if (!isMod && !isBroadcaster && perm < 2000) {
+						return 'Only mods can use this command';
+					}
+
 					let isBanned = (await sql.Query('SELECT * FROM Yabbe_bans WHERE Command=? AND User=?', ['pet', input[3].toLowerCase()]));
 
 					if (isBanned.length) {
@@ -104,6 +118,13 @@ module.exports = {
 					return `@${input[3]} Is now banned from adding pets`;
 				}
 				case 'unban': {
+					const isMod = user.mod || user['user-type'] === 'mod';
+					const isBroadcaster = channel.toLowerCase() === user.username.toLowerCase();
+
+					if (!isMod && !isBroadcaster && perm < 2000) {
+						return 'Only mods can use this command';
+					}
+					
 					let isBanned = (await sql.Query('SELECT * FROM Yabbe_bans WHERE Command=? AND User=?', ['pet', input[3].toLowerCase()]));
 
 					if (!isBanned.length) {
