@@ -12,7 +12,10 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			const streamer = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+
+			const emoteChannel = input[2] ?? channel;
+
+			const streamer = await sql.Query(`SELECT * FROM Streamers WHERE username="${emoteChannel}"`);
 			let emotes = JSON.parse(streamer[0].emote_list);
 
 
@@ -21,10 +24,10 @@ module.exports = {
 			let ffzcount = emotes.filter(emote => emote.includes('ffz'));
 
 			if (!emotes.length) {
-				return 'there are no 3rd party emotes in this channel.';
+				return `there are no 3rd party emotes in #${emoteChannel}.`;
 			}
 			else {
-				return `There are ${emotes.length} 3rd party emotes in this channel | BTTV: ${bttvccount.length} FFZ: ${ffzcount.length} 7TV: ${seventvcount.length}`;
+				return `There are ${emotes.length} 3rd party emotes in #${emoteChannel} | BTTV: ${bttvccount.length} FFZ: ${ffzcount.length} 7TV: ${seventvcount.length}`;
 			}
 		} catch (err) {
 			console.log(err);
