@@ -3,7 +3,7 @@ const sql = require('./../../sql/index.js');
 module.exports = {
 	name: 'pet',
 	ping: true,
-	description: 'Shows an image of a pet from a random chatter',
+	description: 'Shows an image of a pet from a random chatter | Images: https://hotbear.org/pets/yabbe/',
 	permission: 100,
 	cooldown: 1800, //in seconds
 	category: 'channelSpecific command',
