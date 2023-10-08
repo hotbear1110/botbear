@@ -77,7 +77,7 @@ module.exports = {
 						})
 						.catch((err) => {
 							console.log(err);
-							return 'Error joining channel ask @Thotbear for help.';
+							return 'Error joining channel ask @hotbear1110 for help.';
 						});
 
 				}
