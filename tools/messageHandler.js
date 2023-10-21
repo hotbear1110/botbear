@@ -42,14 +42,6 @@ exports.messageHandler = class Cooldown {
 			}
 		}
 
-		if (!this.noBanphrase) {
-			try	{
-				this.message = await tools.checkAllBanphrases(this.message, this.channel);
-			} catch (err) {
-				console.log(err);
-				this.message = 'Failed to check for banphrases';
-			}
-		}
 		if (this.ping) {
 			this.message = `${this.user['display-name']}, ${this.message}`;
 		}
@@ -68,6 +60,14 @@ exports.messageHandler = class Cooldown {
 			if (this.message === oldmessage) {
 				this.message = (this.message.endsWith(' 󠀀 '))  ? this.message.substring(this.message.length-4, 0) : this.message + ' 󠀀 ';
 			}
+			if (!this.noBanphrase) {
+				try	{
+					this.message = await tools.checkAllBanphrases(this.message, this.channel);
+				} catch (err) {
+					console.log(err);
+					this.message = 'Failed to check for banphrases';
+				}
+			}
 			await cc.say(this.channel, this.message);
 			this.noCD = 1;
 			let tempList = [];
@@ -80,6 +80,14 @@ exports.messageHandler = class Cooldown {
 			if (this.noCD === 0) {
 				if (this.message === oldmessage) {
 					this.message = (this.message.endsWith(' 󠀀 '))  ? this.message.substring(this.message.length-4, 0) : this.message + ' 󠀀 ';
+				}
+				if (!this.noBanphrase) {
+					try	{
+						this.message = await tools.checkAllBanphrases(this.message, this.channel);
+					} catch (err) {
+						console.log(err);
+						this.message = 'Failed to check for banphrases';
+					}
 				}
 				await cc.say(this.channel, this.message);
 			}
