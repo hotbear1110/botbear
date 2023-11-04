@@ -6,7 +6,7 @@ module.exports = {
 	description: 'This command will give you the color name and hex of a given users username color. Example: "bb color NymN"',
 	permission: 100,
 	category: 'Info command',
-	noBanphrase: true,
+	noBanphrase: false,
 	execute: async (channel, user, input, perm) => {
 		try {
 			if (module.exports.permission > perm) {
