@@ -39,8 +39,8 @@ module.exports = {
             try {
                 const { statusCode, body }  = await got(MARKOV_URL, {
                     searchParams: {
-                        channelID: channelID.id,
-                        seed: msg
+                        "channelID": channelID.id,
+                        "seed": msg
                     },
                     timeout: {
                         request: 3000
@@ -50,13 +50,13 @@ module.exports = {
 
                 const response = JSON.parse(body);
 
-                if (!response.error) {
+                if (!response.errors) {
                     console.log(response);
                     return `🔖 ${await tools.unpingString(response.message, channel)}`;
                 }
 
                 markovStatusCode = statusCode;
-                markovError = response.error;
+                markovError = response.errors;
             }
             catch (err) {
                 console.log(err);
