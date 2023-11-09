@@ -38,7 +38,7 @@ module.exports = {
             console.log(msg);
             try {
                 const searchParams = new URLSearchParams([
-                    ['channelID', channelID.id],
+                    ['channelID', channelID],
                     ['seed', msg]
                 ]);
 
@@ -58,7 +58,7 @@ module.exports = {
                 }
 
                 markovStatusCode = statusCode;
-                markovError = response.errors;
+                markovError = response.error;
             }
             catch (err) {
                 console.log(err);
