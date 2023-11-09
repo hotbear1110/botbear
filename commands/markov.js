@@ -50,8 +50,9 @@ module.exports = {
 
                 const response = JSON.parse(body);
 
-                if (!response.error)
-                    return `┬¡ãÆ├Â├╗ ${await tools.unpingString(response.data.markov, channel)}`;
+                if (!response.error) {
+                    return `🔖 ${await tools.unpingString(response.message, channel)}`;
+                }
 
                 markovStatusCode = statusCode;
                 markovError = response.error;
