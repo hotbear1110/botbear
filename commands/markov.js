@@ -49,9 +49,9 @@ module.exports = {
                 });
 
                 const response = JSON.parse(body);
+                console.log(response);
 
                 if (!response.errors) {
-                    console.log(response);
                     return `🔖 ${await tools.unpingString(response.message, channel)}`;
                 }
 
