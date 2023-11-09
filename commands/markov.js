@@ -37,11 +37,13 @@ module.exports = {
             
             console.log(msg);
             try {
+                const searchParams = new URLSearchParams([
+                    ['channelID', channelID.id],
+                    ['seed', msg]
+                ]);
+
                 const { statusCode, body }  = await got(MARKOV_URL, {
-                    searchParams: {
-                        "channelID": channelID.id,
-                        "seed": msg
-                    },
+                    searchParams: searchParams,
                     timeout: {
                         request: 3000
                     },
