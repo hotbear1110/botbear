@@ -20,64 +20,79 @@ module.exports = {
 			}
 
             input = input.splice(2);
-            this.channel = await tools.getUserID(input.filter(x => x.startsWith('channel:'))[0]?.split(':')[1] ?? channel);
-            input = input.filter(x  => x !== `channel:${this.channel}`);
+            const channelName = input.filter(x => x.startsWith('channel:'))[0]?.split(':')[1] ?? channel;
+
+            const channelID = await tools.getUserID(channelName);
+            if (!channelID)
+            {
+                return 'Error: Channel not found';
+            }
+            input = input.filter(x  => x !== `channel:${channelName}`);
+
             let msg = input.join(' ');
-            let markovAPI;
-            let markovError;
+            let markovStatusCode = 200;
+            let markovError = '';
             
             console.log(msg);
             try {
-                markovAPI = await got(`https://magnolia.melon095.no/api/markov?channelID=${this.channel}&seed=${encodeURIComponent(msg)}`, { throwHttpErrors: false, timeout: {
-                    request: 3000
-                } }).json();
-                markovError = '';
-            } catch (err) {
+                const { statusCode, body }  = await got(MARKOV_URL, {
+                    searchParams: {
+                        channelID: channelID.id,
+                        seed: msg
+                    },
+                    timeout: {
+                        request: 3000
+                    },
+                    throwHttpErrors: false
+                });
+
+                const response = JSON.parse(body);
+
+                if (!response.error)
+                    return `┬¡ãÆ├Â├╗ ${await tools.unpingString(response.data.markov, channel)}`;
+
+                markovStatusCode = statusCode;
+                markovError = response.error;
+            }
+            catch (err) {
                 console.log(err);
             }
-            if (!markovAPI?.success) {
-                console.log(markovAPI);
-                markovError = await markovAPI?.error;
-                markovAPI = null;
-            }
 
-            let result =  await markovAPI?.data?.markov;
-            if (await markovAPI === null || !await markovAPI?.success) {
-                result = await new Promise(async (resolve) => {  await redisC.get(`Markov:${this.channel.toLowerCase()}`, async function (err, reply) {
-                    try {
-                    let data = JSON.parse(reply);
-                        console.log(data.length);
-                    const markov = new Markov({ stateSize: 1 });
-    
-                    
-                        markov.addData(data);
-                    
-                    const options = {
-                        maxTries: 10000,
-                        prng: Math.random,
-                        filter: (result) => {return result.score > 5 && result.refs.filter(x => x.string.toLowerCase().includes(msg.toLowerCase())).length > 0 && result.string.split(' ').length >= 10;}
-                      };
-    
-                    this.result = markov.generate(options);
-    
-                    resolve(this.result.string);
-    
-                } catch(err) {
-                    console.log(err);
-                    if (markovError === 'no data') {
-                        resolve('Error: No data from this channel, but it\'s getting logged (if it\'s a real channel).');
-                    }
-                    resolve('Error: ' + markovError);
+            const localMarkovData = await redisC.get(`Markov:${channelName.toLowerCase()}`);
+            let result;
+
+            try 
+            {
+                let jsonData = JSON.parse(localMarkovData);
+                console.log(jsonData.length);
+
+                const markov = new Markov({ stateSize: 1 });
+
+                markov.addData(jsonData);
+
+                const options = {
+                    maxTries: 10000,
+                    prng: Math.random,
+                    filter: (result) => {return result.score > 5 && result.refs.filter(x => x.string.toLowerCase().includes(msg.toLowerCase())).length > 0 && result.string.split(' ').length >= 10;}
+                };
+
+                result = markov.generate(options);
+            }
+            catch (err)
+            {
+                console.log(err);
+                if (markovStatusCode === 201) {
+                    return 'Error: No data from this channel, but it\'s getting logged (if it\'s a real channel).';
                 }
-                }); 
-            });
+
+                return 'Error: ' + markovError;
             }
             
-        console.log(await result);
+            console.log(result);
 
-        result = await tools.unpingString(result, channel);
 
-        return '🔖 '  + await result;
+        return `🔖 ${await tools.unpingString(result, channel)}`;
+
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
