@@ -1015,3 +1015,31 @@ return users_uid.data.users.map(x => x?.id);
 	}
 
 };
+
+exports.getUserID = async function (user) {
+	try { 
+		const query = `
+		query {
+			users(logins: ["${user}"]) {
+				id
+			}
+		  }`;
+
+		const user_uid = await got.post('https://gql.twitch.tv/gql', {
+		headers: {
+			'Client-ID': process.env.THREELETTERAPI_CLIENTID,
+			'Authorization': process.env.THREELETTERAPI_AUTH,
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			query: query
+		}),
+	}).json();
+
+return user_uid.data.users.map(x => x?.id);
+	} catch (err) {
+		console.log(err);
+		return;
+	}
+
+};
