@@ -28,7 +28,7 @@ module.exports = {
             
             console.log(msg);
             try {
-                markovAPI = await got(`https://magnolia.melon095.no/api/markov?channel=${this.channel}&seed=${encodeURIComponent(msg)}`, { throwHttpErrors: false, timeout: {
+                markovAPI = await got(`https://magnolia.melon095.no/api/markov?channelID=${this.channel}&seed=${encodeURIComponent(msg)}`, { throwHttpErrors: false, timeout: {
                     request: 3000
                 } }).json();
                 markovError = '';
