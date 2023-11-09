@@ -1036,7 +1036,7 @@ exports.getUserID = async function (user) {
 		}),
 	}).json();
 
-return user_uid.data.users.map(x => x?.id);
+return user_uid.data.users[0].id;
 	} catch (err) {
 		console.log(err);
 		return;
