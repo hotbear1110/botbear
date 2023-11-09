@@ -4,6 +4,8 @@ const tools = require('../tools/tools.js');
 const { got } = require('./../got');
 require('dotenv').config();
 
+const MARKOV_URL = 'https://magnolia.melon095.no/api/Markov/';
+
 module.exports = {
 	name: 'markov',
 	ping: false,
