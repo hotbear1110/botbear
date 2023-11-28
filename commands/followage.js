@@ -30,7 +30,7 @@ module.exports = {
 				}
 			}
 
-			const followcheck = await got(`https://api.ivr.fi/twitch/subage/${username}/${realchannel}`).json();
+			const followcheck = await got(`https://api.ivr.fi/v2/twitch/subage/${username}/${realchannel}`).json();
 
 			if (followcheck['followedAt']) {
 				const ms = new Date().getTime() - Date.parse(followcheck['followedAt']);
