@@ -17,6 +17,10 @@ module.exports = {
 				channel = input[2];
 			}
 
+			if (channel.match(/@?titleChange_bot,?/gi)) {
+				return;
+			}
+
 			const rl = await got(`https://logs.ivr.fi/channel/${channel}/random/?json`).json();
 
 			let message = tools.splitLine(rl.messages[0].text, 350);
