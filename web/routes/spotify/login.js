@@ -10,7 +10,7 @@ module.exports = (function () {
     /* /Login */
     router.get('/', async (req, res) => {
         let state = generateRandomString(16);
-        let scope = 'user-read-playback-state user-read-private user-modify-playback-state streaming';
+        let scope = 'user-read-playback-state user-read-private user-modify-playback-state streaming user-read-email';
       
         res.redirect('https://accounts.spotify.com/authorize?' +
           querystring.stringify({
