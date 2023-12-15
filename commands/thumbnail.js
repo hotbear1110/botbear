@@ -36,8 +36,6 @@ module.exports = {
             }
 
             if (liveCheck.data.length) {
-
-                if (liveCheck.data[0].game_name === "Art") { return 'https://clips.twitch.tv/IronicArtisticOrcaWTRuck-UecXBrM6ECC-DAZR'; }
                 
                 let thumbnail = liveCheck.data[0].thumbnail_url.replace('{width}', '1920').replace('{height}', '1080') + '?cum';
 
