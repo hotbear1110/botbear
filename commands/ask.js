@@ -30,13 +30,12 @@ module.exports = {
 			}
 
 			input = input.splice(2);
-			let msg = input.toString().replaceAll(',', ' ');
-			const prompt = `Q: ${msg}\nA:`;
+			let msg = input.join(',');
 
 			const url = 'https://api.openai.com/v1/completions';
 			const params = {
-				'model': 'text-davinci-003',
-				'prompt': prompt,
+				'model': 'gpt-3.5-turbo-instruct',
+				'prompt': msg,
 				'max_tokens': 160,
 				'temperature': 0,
 				'frequency_penalty': 0.0,
