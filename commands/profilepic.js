@@ -1,3 +1,5 @@
+const { got } = require('./../got');
+
 module.exports = {
 	name: 'profilepic',
 	ping: true,
