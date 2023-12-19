@@ -48,8 +48,8 @@ module.exports = {
 
 			try {
 				const response = await got.post(url, { json: params, headers: headers }).json();
-				const output = `${prompt}${response.choices[0].text}`
-					.substring(prompt.length)
+				const output = `${msg}${response.choices[0].text}`
+					.substring(msg.length)
 					.replace(URL, '$1[DOMAIN]$3$4$5');
 
 
