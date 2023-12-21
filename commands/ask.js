@@ -47,7 +47,7 @@ module.exports = {
 					'messages': [
 						{
 							'role': 'system',
-							'content': `you are in a twitch chat from the streamer ${channel}. ${channel}'s chat likes to joke around, be sarcastic and talk about another streamer called forsen`
+							'content': `you are in a twitch chat from the streamer ${channel}. ${channel}'s chat likes to joke around, be sarcastic and talk about another streamer called forsen, the chat dislikes weebs a lot`
 						},
 						{
 							'role': 'user',
