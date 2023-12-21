@@ -21,6 +21,8 @@ module.exports = {
 				return 'This command is currently disabled :)';
 			}*/
 
+			const demo = input.includes('demo:true');
+
 			let bannedPhrases = /\brac(?:ist[sm]?|e)\b/gi;
 
 			const stringmessage = input.join(' ');
@@ -32,17 +34,48 @@ module.exports = {
 			input = input.splice(2);
 			let msg = input.join(',');
 
+			let params;
+
+			if (demo) {
+				msg.replaceAll('demo:true', '');
+
+				params = {
+					'model': 'gpt-3.5-turbo',
+					"max_tokens": 100,
+					'messages': [
+						{
+							'role': 'system',
+							'content': `you are in a twitch chat from the streamer ${channel}. ${channel}'s chat likes to joke around, be sarcastic and talk about another streamer called forsen`
+						},
+						{
+							'role': 'user',
+							'content': `I am a user in the twitch chat from a streamer called ${channel}, my username is ${user.username}`
+						},
+						 {
+							'role': 'system',
+							'content': 'respond like you are chatting in the chat with me'
+						},
+						{
+							'role': 'user',
+							'content': msg
+						}
+					]
+				};
+			} else {
+				params = {
+					'model': 'gpt-3.5-turbo',
+					"max_tokens": 100,
+					'messages': [
+						{
+							'role': 'user',
+							'content': msg
+						}
+					]
+				};
+			}
+
 			const url = 'https://api.openai.com/v1/chat/completions';
-			const params = {
-				'model': 'gpt-3.5-turbo',
-				"max_tokens": 100,
-				'messages': [
-					{
-						'role': 'user',
-						'content': msg
-					}
-				]
-			};
+
 			const headers = {
 				'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
 			};
