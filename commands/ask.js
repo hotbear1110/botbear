@@ -32,15 +32,15 @@ module.exports = {
 			input = input.splice(2);
 			let msg = input.join(',');
 
-			const url = 'https://api.openai.com/v1/completions';
+			const url = 'https://api.openai.com/v1/chat/completions';
 			const params = {
-				'model': 'gpt-3.5-turbo-instruct',
-				'prompt': msg,
-				'max_tokens': 160,
-				'temperature': 0,
-				'frequency_penalty': 0.0,
-				'top_p': 1,
-				'presence_penalty': 0.0
+				'model': 'gpt-3.5-turbo',
+				'messages': [
+					{
+						'role': 'user',
+						'content': msg
+					}
+				]
 			};
 			const headers = {
 				'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
@@ -48,7 +48,7 @@ module.exports = {
 
 			try {
 				const response = await got.post(url, { json: params, headers: headers }).json();
-				const output = `${msg}${response.choices[0].text}`
+				const output = `${msg}${response.choices[0].message.content}`
 					.substring(msg.length)
 					.replace(URL, '$1[DOMAIN]$3$4$5');
 
