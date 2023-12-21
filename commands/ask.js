@@ -37,7 +37,7 @@ module.exports = {
 			let params;
 
 			if (demo) {
-				msg.replaceAll('demo:true', '');
+				msg = msg.replaceAll('demo:true', '');
 
 				this.ping = false;
 
