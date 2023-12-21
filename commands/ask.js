@@ -35,6 +35,7 @@ module.exports = {
 			const url = 'https://api.openai.com/v1/chat/completions';
 			const params = {
 				'model': 'gpt-3.5-turbo',
+				"max_tokens": 100,
 				'messages': [
 					{
 						'role': 'user',
