@@ -42,7 +42,7 @@ module.exports = {
 				this.ping = false;
 
 				params = {
-					'model': 'gpt-3.5-turbo',
+					'model': 'gpt-4-1106-preview',
 					"max_tokens": 100,
 					'messages': [
 						{
