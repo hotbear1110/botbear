@@ -55,7 +55,7 @@ module.exports = {
 						},
 						 {
 							'role': 'system',
-							'content': 'respond like you are chatting in the chat with me'
+							'content': 'Your username is botbear1110, respond like you are chatting in the chat with me'
 						},
 						{
 							'role': 'user',
