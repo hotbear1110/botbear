@@ -14,6 +14,9 @@ module.exports = {
 			}
 			let uid = user['user-id'];
 			let realuser = user.username;
+			if (realuser.match(/@?titleChange_bot,?/gi)) {
+				return;
+			}
 			if (input[2]) {
 				if (input[2].startsWith('@')) {
 					input[2] = input[2].substring(1);

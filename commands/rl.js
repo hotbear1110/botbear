@@ -23,6 +23,10 @@ module.exports = {
 
 			const rl = await got(`https://logs.ivr.fi/channel/${channel}/random/?json`).json();
 
+			if (rl.messages[0].username.match(/@?titleChange_bot,?/gi)) {
+				return;
+			}
+
 			let message = tools.splitLine(rl.messages[0].text, 350);
 
 			const timeago = new Date().getTime() - Date.parse(rl.messages[0].timestamp);
