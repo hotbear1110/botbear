@@ -33,7 +33,7 @@ module.exports = {
 						uiduser = uiduser['login'];
 						const uidBanned = await got(`https://api.ivr.fi/v2/twitch/user/${uiduser}`).json();
 						if (uidBanned.banned === true) {
-							response = `Username found: ${uiduser} - PepeHands [BANNED USER] | Type: ${uidBanned.banReason}`;
+							response = `Username found: ${uiduser} - nymnS [BANNED USER] | Type: ${uidBanned.banReason}`;
 						} else {
 							response = `Username found: ${uiduser}`;
 						}
@@ -56,7 +56,7 @@ module.exports = {
 				userID = userID[0];
 				
 				if (userID.banned === true) {
-					response = `Multiple users found. ${response} | User-ID found: ${userID['id']} - PepeHands [BANNED USER] | Type: ${userID.banReason}`;
+					response = `Multiple users found. ${response} | User-ID found: ${userID['id']} - nymnS [BANNED USER] | Type: ${userID.banReason}`;
 				} else {
 					response = `Multiple users found. ${response} | User-ID found: ${userID['id']}`;
 				}
@@ -68,7 +68,7 @@ module.exports = {
 				userID = userID[0];
 				
 				if (userID.banned === true) {
-					response = `User-ID found: ${userID.id} - PepeHands [BANNED USER] | Type: ${userID.banReason}`;
+					response = `User-ID found: ${userID.id} - nymnS [BANNED USER] | Type: ${userID.banReason}`;
 				} else {
 					response = `User-ID found: ${userID.id}`;
 				}
