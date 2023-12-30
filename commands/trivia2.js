@@ -4,7 +4,7 @@ const tools = require('../tools/tools.js');
 module.exports = {
 	name: 'trivia2',
 	ping: false,
-	description: 'This command will start a new trivia in chat, Example: \' bb trivia2 include:"Forsen,Anime" \' or \' bb trivia2 exclude:"Forsen,Anime" \' (To see the cooldown on this command, do: "bb check triviacooldown") - Api used: https://gazatu.xyz/ - Categories available: https://gazatu.xyz/trivia/categories',
+	description: 'This command will start a new trivia in chat, Example: \' bb trivia2 include:"forsen,anime" \' or \' bb trivia2 exclude:"forsen,anime" \' (To see the cooldown on this command, do: "bb check triviacooldown") - Api used: https://gazatu.xyz/ - Categories available: https://gazatu.xyz/trivia/categories',
 	permission: 100,
 	category: 'Random command',
 	execute: async (channel, user, input, perm) => {
@@ -17,7 +17,7 @@ module.exports = {
 
 			const inputExclude = /(?<=exclude:")[^"]+(?=")/i.exec(input.join(' '));
 
-			const excludeCategories = `[${inputExclude}]` ?? encodeURIComponent('[Anime,Hentai,Weeb,D DansGame TA]');
+			const excludeCategories = `[${inputExclude}]` ?? encodeURIComponent('[anime,hentai,weeb,d dansgame ta,vorkosigan_saga]]');
 
 			const url = `https://api.gazatu.xyz/trivia/questions?count=1&exclude=${excludeCategories}`
 						+ ((inputCategories) ? `&include=${encodeURIComponent(`[${inputCategories}]`)}` : '');
