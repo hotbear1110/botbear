@@ -15,9 +15,6 @@ module.exports = {
 			}
 			let uid = user['user-id'];
 			let realname = user.username;
-			if (realuser.match(/@?titleChange_bot,?/gi)) {
-				return;
-			}
 			if (input[2]) {
 				if (input[2].startsWith('@')) {
 					input[2] = input[2].substring(1);
@@ -25,6 +22,9 @@ module.exports = {
 				[uid] = await got(`https://api.ivr.fi/v2/twitch/user?login=${input[2]}`).json();
 				realname = uid.login;
 				uid = uid.id;
+			}
+			if (realname.match(/@?titleChange_bot,?/gi)) {
+				return;
 			}
 			let realchannel = channel;
 			if (input[3]) {
