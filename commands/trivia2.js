@@ -19,8 +19,9 @@ module.exports = {
 
 			const excludeCategories = (inputExclude?.length) ? `[${inputExclude}]` : encodeURIComponent('[anime,hentai,weeb,d dansgame ta,vorkosigan_saga,dota]]');
 
-			const url = `https://api.gazatu.xyz/trivia/questions?count=1&exclude=${excludeCategories}`
-						+ ((inputCategories) ? `&include=${encodeURIComponent(`[${inputCategories}]`)}` : '');
+			const url = `https://api.gazatu.xyz/trivia/questions?count=1`
+						+ ((inputExclude) ? `&exclude=${encodeURIComponent(`[${inputExclude}]`)}` : ''
+						+ ((inputCategories) ? `&include=${encodeURIComponent(`[${inputCategories},anime,hentai,weeb,d dansgame ta,vorkosigan_saga,dota]`)}` : '');
 
 			const questions = await got(url).json();
 
