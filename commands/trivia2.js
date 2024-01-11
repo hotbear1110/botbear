@@ -18,7 +18,7 @@ module.exports = {
 			const inputExclude = /(?<=exclude:")[^"]+(?=")/i.exec(input.join(' '));
 
 			const url = `https://api.gazatu.xyz/trivia/questions?count=1`
-						+ ((inputExclude) ? `&exclude=${encodeURIComponent(`[${inputExclude}]`)}` : ''
+						+ ((inputExclude) ? `&exclude=${encodeURIComponent(`[${inputExclude}]`)}` : '')
 						+ ((inputCategories) ? `&include=${encodeURIComponent(`[${inputCategories},anime,hentai,weeb,d dansgame ta,vorkosigan_saga,dota]`)}` : '');
 
 			const questions = await got(url).json();
