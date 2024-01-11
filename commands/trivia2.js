@@ -17,9 +17,18 @@ module.exports = {
 
 			const inputExclude = /(?<=exclude:")[^"]+(?=")/i.exec(input.join(' '));
 
-			const url = `https://api.gazatu.xyz/trivia/questions?count=1`
-						+ ((inputExclude) ? `&exclude=${encodeURIComponent(`[${inputExclude}]`)}` : '')
-						+ ((inputCategories) ? `&include=${encodeURIComponent(`[${inputCategories},anime,hentai,weeb,d dansgame ta,vorkosigan_saga,dota]`)}` : '');
+			let exludeCategories = '';
+
+			if (!inputCategories && !inputExclude) {
+				exludeCategories = '[anime,hentai,weeb,d dansgame ta,vorkosigan_saga,dota]'
+			} else if (!inputCategories && inputExclude) {
+				exludeCategories = `[anime,hentai,weeb,d dansgame ta,vorkosigan_saga,dota,${inputExclude}]`
+			} else if (inputCategories && inputExclude) {
+				exludeCategories = `[${inputExclude}]`
+			}
+
+			const url = `https://api.gazatu.xyz/trivia/questions?count=1&exclude=${encodeURIComponent(exludeCategories)}`
+						+ ((inputCategories) ? `&include=${encodeURIComponent(`[${inputCategories}]`)}` : '');
 
 			const questions = await got(url).json();
 
