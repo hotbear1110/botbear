@@ -51,15 +51,13 @@ module.exports = {
 
 			const now = new Date().getTime();
 
+			const responseList = []
+
 			for (const emote of emotes) {
-				emote[2] = `(${tools.humanizeDuration(now - emote[2])})`;
-
-				emote.splice(1, 1);
-				emote.splice(2, 3);
-
+				responseList.push(`${emote.name} (${tools.humanizeDuration(now - emote.time_added)})`)
 			}
 
-			emotes = emotes.toString().replaceAll(',', ' ');
+			emotes = responseList.join(' ');
 
 			if (input[2]) {
 				return `Added emotes ${(this.channel === channel) ? '' : `in #${this.channel}`} page[${input[2]}]: ${emotes}`;

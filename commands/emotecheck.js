@@ -154,15 +154,15 @@ module.exports = {
 			}
 
 			for (const emote of emotes) {
-				if (emote[0] === input[2]) {
+				if (emote.name === input[2]) {
 					found = 1;
 					response = [
 						`Name: ${input[2]}`,
-						(emote[5] === '7tv_ZERO_WIDTH') ? 'Platform: 7tv (zero width)' : `Platform: ${emote[5]}`,
-						`Added: ${tools.humanizeDuration(now - emote[2])} ago`,
+						`Platform: ${emote.platform}`,
+						`Added: ${tools.humanizeDuration(now - emote.time_added)} ago`,
 						ecount && `Ecount: ${ecount}`,
-						`Uploaded By: ${emote[3]}`,
-						`Link: ${emote[4]}`
+						`Uploaded By: ${emote.uploader}`,
+						`Link: https://cdn.7tv.app/emote/${emote.id}/4x.webp`
 					].filter(Boolean).join(' | ');
 					break;
 				}
