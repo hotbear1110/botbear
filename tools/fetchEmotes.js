@@ -38,29 +38,34 @@ exports.STV_emotes = new Promise(async(Resolve) => {
 }
 )
 
-exports.STV_emotes = new Promise(async() => {
+exports.STV_events = new Promise(async() => {
     const emote_set_ids = await sql.Query('SELECT emote_set FROM Streamers');
 
     const baseURL = 'https://events.7tv.io/v3@';
 
-    const events = emote_set_ids.map(emote_set => `emote_set.update<object_id=${emote_set.emote_set}>`);
+    const events = []
+
+    emote_set_ids.forEach(emote_set => {
+        if (emote_set.emote_set) {
+            events.push(`emote_set.update<object_id=${emote_set.emote_set}>`)
+        }
+    });
 
     const URL = baseURL + events.toString();
 
     const subscription = new EventSource(URL);
     
-    // Default events
     subscription.addEventListener('open', () => {
         console.log('Connection opened')
     });
 
-    // Default events
     subscription.addEventListener('close', () => {
         console.log('Connection closed')
     });
     
     subscription.addEventListener('error', () => {
-        console.error("Subscription err'd")
+        console.error("Subscription error")
+        console.log("URL: " + URL)
     });
 
 
