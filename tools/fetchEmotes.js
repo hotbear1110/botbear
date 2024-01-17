@@ -8,11 +8,8 @@ exports.STV_emotes = new Promise(async(Resolve) => {
         try {
             const STV_api = await got(`https://7tv.io/v3/users/twitch/${user.uid}`).json();
 
-            const emote_list = [];
-
-
             if (STV_api.emote_set.emotes.length) {
-                emote_list = STV_api.emote_set.emotes.reduce(
+                const emote_list = STV_api.emote_set.emotes.reduce(
                     (emote_list, emote) => { 
                         emote_list.push(
                         {
