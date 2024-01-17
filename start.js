@@ -59,6 +59,7 @@
     require('./bot.js');
     require('./loops/loops.js');
     await require('./tools/fetchEmotes.js').STV_emotes;
-    
+    require('./tools/fetchEmotes.js').STV_events;
+
     console.log('Ready!');
 })();
