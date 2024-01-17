@@ -22,7 +22,7 @@ exports.STV_emotes = new Promise(async(Resolve) => {
                             "uploader": (emote.data.owner?.username !== undefined) ? emote.data.owner.username : 'Unknown',
                             "platform": "7TV"
                         }
-                        ); return chatters;
+                        ); return emote_list;
                     }, []);
         
                 await sql.Query('UPDATE Streamers SET emote_list=? WHERE uid=?', [JSON.stringify(emote_list), user.uid]);
