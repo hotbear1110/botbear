@@ -3,7 +3,6 @@ const { got } = require('./../got');
 
 exports.STV_emotes = new Promise(async(Resolve) => {
     const user_ids = await sql.Query('SELECT uid FROM Streamers');
-    console.log(user_ids)
 
     for (const user of user_ids) {
         try {
@@ -22,9 +21,9 @@ exports.STV_emotes = new Promise(async(Resolve) => {
                 )
             });
     
-            await sql.Query('UPDATE Streamers SET emote_list=? WHERE uid=?', [emote_list, user_id]);
+            await sql.Query('UPDATE Streamers SET emote_list=? WHERE uid=?', [emote_list, user.uid]);
         } catch(error) {
-            //console.log(error)
+            console.log(error)
         }
 
     }
