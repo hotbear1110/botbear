@@ -21,7 +21,7 @@ exports.STV_emotes = new Promise(async(Resolve) => {
                 )
             });
     
-            await sql.Query('UPDATE Streamers SET emote_list=? WHERE uid=?', [emote_list, user.uid]);
+            await sql.Query('UPDATE Streamers SET emote_list=? WHERE uid=?', [JSON.stringify(emote_list), user.uid]);
         } catch(error) {
             console.log(error)
         }
