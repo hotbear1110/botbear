@@ -63,8 +63,8 @@ exports.STV_events = new Promise(async() => {
         console.log('Connection closed')
     });
     
-    subscription.addEventListener('error', () => {
-        console.error("Subscription error")
+    subscription.addEventListener('error', (err) => {
+        console.error("Subscription error: " + err)
         console.log("URL: " + URL)
     });
 
