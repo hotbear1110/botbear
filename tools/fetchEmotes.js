@@ -9,7 +9,7 @@ exports.STV_emotes = new Promise(async(Resolve) => {
             const STV_api = await got(`https://7tv.io/v3/users/twitch/${user.uid}`).json();
 
             const emote_list = []
-            STV_api.emote_set.emotes.array.forEach(emote => {
+            STV_api.emote_set.emotes.forEach(emote => {
                 emote_list.push(
                     {
                         "name": emote.name,
