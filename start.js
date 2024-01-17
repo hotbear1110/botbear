@@ -58,7 +58,7 @@
     require('./tools/markovLogger.js');
     require('./bot.js');
     require('./loops/loops.js');
-    require('./tools/fetchEmotes.js').STV_emotes;
+    await require('./tools/fetchEmotes.js').STV_emotes;
     
     console.log('Ready!');
 })();
