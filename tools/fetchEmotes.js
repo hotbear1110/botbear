@@ -4,9 +4,9 @@ const { got } = require('./../got');
 exports.STV_emotes = new Promise(async(Resolve) => {
     const user_ids = await sql.Query('SELECT uid FROM Streamers');
 
-    for (const user_id in user_ids) {
+    for (const user in user_ids) {
         try {
-            const STV_api = await got(`https://7tv.io/v3/users/twitch/${user_id}`).json();
+            const STV_api = await got(`https://7tv.io/v3/users/twitch/${user.uid}`).json();
 
             const emote_list = []
             STV_api.emote_set.emotes.array.forEach(emote => {
