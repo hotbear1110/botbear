@@ -3,6 +3,7 @@ const { got } = require('./../got');
 
 exports.STV_emotes = new Promise(async(Resolve) => {
     const user_ids = await sql.Query('SELECT uid FROM Streamers');
+    console.log(user_ids)
 
     for (const user in user_ids) {
         try {
