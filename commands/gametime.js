@@ -20,7 +20,7 @@ module.exports = {
 				}
 				realchannel = input[2];
 			}
-			const gameTimedata = await sql.Query('SELECT * FROM Streamers WHERE username=?', [realchannel]);
+			const gameTimedata = await sql.Query('SELECT game, game_time FROM Streamers WHERE username=?', [realchannel]);
 			if (!gameTimedata[0]) {
 				return 'That streamer is not in my database';
 			}

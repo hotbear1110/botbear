@@ -40,7 +40,7 @@ module.exports = {
 
 			const commits = shell.execSync('git rev-list --all --count');
 
-			let streamerCount = await sql.Query('SELECT * FROM Streamers');
+			let streamerCount = await sql.Query('SELECT uid FROM Streamers');
 
 			return `CPU: ${cpuused}% - Memory: ${used}${totalused}B/${total}B - Temperature: ${temp} - Commits: ${commits} KKona - Currently active in ${streamerCount.length} channels.`;
 		} catch (err) {

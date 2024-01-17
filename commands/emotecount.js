@@ -15,7 +15,7 @@ module.exports = {
 
 			const emoteChannel = input[2] ?? channel;
 
-			const streamer = await sql.Query(`SELECT * FROM Streamers WHERE username="${emoteChannel}"`);
+			const streamer = await sql.Query(`SELECT emote_list FROM Streamers WHERE username="${emoteChannel}"`);
 
 			if (!streamer.length) {
 				return 'I don\'t have that streamer in my database'

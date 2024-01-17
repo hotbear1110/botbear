@@ -61,9 +61,10 @@ module.exports = {
      * @returns {Promise<Array<T>>}
      */
 	Query: async function (query, data = []) {
+		console.log(query)
 		return await this.con.query(query, data)
 			.then(([rows]) => {
-				return rows;
+			return rows;
 			})
 			.catch((err) => {
 				// TODO Melon: Should this throw or not.

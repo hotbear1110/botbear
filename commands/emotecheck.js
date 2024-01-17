@@ -105,7 +105,7 @@ module.exports = {
 			console.log(err);
 		}
 		try {
-			const streamer = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+			const streamer = await sql.Query(`SELECT emote_list FROM Streamers WHERE username="${channel}"`);
 			let emotes = JSON.parse(streamer[0].emote_list);
 
 

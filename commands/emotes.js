@@ -17,7 +17,7 @@ module.exports = {
             input = input.filter(x  => x !== `channel:${this.channel}`);
 			
 			try {
-				this.streamer = await sql.Query(`SELECT * FROM Streamers WHERE username="${this.channel}"`) ?? '';
+				this.streamer = await sql.Query(`SELECT emote_list FROM Streamers WHERE username="${this.channel}"`) ?? '';
 			} catch(err) {
 				console.log(err);
 				this.streamer =  '';

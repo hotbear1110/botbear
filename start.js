@@ -16,7 +16,7 @@
     };
 
     await sql.New(sql_opts);
-    await sql.Migrate();
+    //await sql.Migrate();
 
     const got = require('./got');
     await got.Setup();

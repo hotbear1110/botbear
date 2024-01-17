@@ -13,7 +13,7 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-			const streamer = await sql.Query(`SELECT * FROM Streamers WHERE username="${channel}"`);
+			const streamer = await sql.Query(`SELECT emote_removed FROM Streamers WHERE username="${channel}"`);
 			let emotes = JSON.parse(streamer[0].emote_removed);
 
 			if (!emotes.length) {
