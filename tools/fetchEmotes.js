@@ -64,7 +64,7 @@ exports.STV_events = new Promise(async() => {
     });
     
     subscription.addEventListener('error', (err) => {
-        console.error("Subscription error: " + err)
+        console.error("Subscription error: " + JSON.stringify(err))
         console.log("URL: " + URL)
     });
 
