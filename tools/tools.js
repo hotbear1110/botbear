@@ -5,6 +5,7 @@ const bannedPhrases = require('./bannedPhrases.js');
 const hastebin = require('hastebin');
 const humanize = require('humanize-duration');
 const regex = require('./regex.js');
+const fetchEmotes = require('./fetchEmotes.js');
 const sql = require('../sql/index.js');
 
 exports.banphrasePass = (message, channel) => new Promise(async (resolve) => {
@@ -751,12 +752,13 @@ exports.joinChannel = async ({ username, uid }, joinEventsub = true) => {
 	const liveemote = 'FeelsOkayMan';
 	const offlineemote = 'FeelsBadMan';
 	const gameTime = new Date().getTime();
+	const fetchedEmotes = await fetchEmotes.STV_user_emotes(user.uid)
 
 	await sql.Query(`INSERT INTO Streamers 
-        (username, uid, islive, liveemote, titleemote, gameemote, offlineemote, live_ping, title_ping, game_ping, game_time, emote_list, emote_removed, disabled_commands) 
+        (username, uid, islive, liveemote, titleemote, gameemote, offlineemote, live_ping, title_ping, game_ping, game_time, emote_list, emote_removed, disabled_commands, emote_set) 
             values 
         (?, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?)`,
-	[username, uid, islive, liveemote, liveemote, liveemote, offlineemote, '[""]', '[""]', '[""]', gameTime, '[]', '[]', '[]']
+	[username, uid, islive, liveemote, liveemote, liveemote, offlineemote, '[""]', '[""]', '[""]', gameTime, fetchedEmotes.emote_list, '[]', '[]', fetchedEmotes.emote_set]
 	);
 
     if (joinEventsub) {

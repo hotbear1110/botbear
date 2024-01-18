@@ -2,36 +2,45 @@ const sql = require('../sql/index.js');
 const { got } = require('./../got');
 const EventSource = require('eventsource')
 
+exports.STV_user_emotes = async(uid) => {
+    try {
+        const STV_api = await got(`https://7tv.io/v3/users/twitch/${uid}`).json();
+
+        if (STV_api.emote_set.emotes.length) {
+            const emote_list = STV_api.emote_set.emotes.reduce(
+                (emote_list, emote) => { 
+                    emote_list.push(
+                    {
+                        "name": emote.name,
+                        "id": emote.id,
+                        "time_added": emote.timestamp,
+                        "uploader": (emote.data.owner?.username !== undefined) ? emote.data.owner.username : 'Unknown',
+                        "platform": "7TV"
+                    }
+                    ); return emote_list;
+                }, []);
+    
+            return {"emote_set": STV_api.emote_set.id, "emote_list": JSON.stringify(emote_list)}
+        }
+
+    } catch(error) {
+        console.log(error);
+    }
+
+
+    Resolve()
+}
+
 exports.STV_emotes = new Promise(async(Resolve) => {
     const user_ids = await sql.Query('SELECT uid FROM Streamers');
 
     
 
     for (const user of user_ids) {
-        try {
-            const STV_api = await got(`https://7tv.io/v3/users/twitch/${user.uid}`).json();
 
-            if (STV_api.emote_set.emotes.length) {
-                const emote_list = STV_api.emote_set.emotes.reduce(
-                    (emote_list, emote) => { 
-                        emote_list.push(
-                        {
-                            "name": emote.name,
-                            "id": emote.id,
-                            "time_added": emote.timestamp,
-                            "uploader": (emote.data.owner?.username !== undefined) ? emote.data.owner.username : 'Unknown',
-                            "platform": "7TV"
-                        }
-                        ); return emote_list;
-                    }, []);
-        
-                await sql.Query('UPDATE Streamers SET emote_set=?, emote_list=? WHERE uid=?', [STV_api.emote_set.id, JSON.stringify(emote_list), user.uid]);
-            }
+        const fetchedEmotes = await STV_user_emotes(user.uid)
 
-        } catch(error) {
-            console.log(error);
-        }
-
+        await sql.Query('UPDATE Streamers SET emote_set=?, emote_list=? WHERE uid=?', [fetchedEmotes.emote_set, fetchedEmotes.emote_list, user.uid]);
     }
     console.log(`Fetched all 7TV emotes`);
     Resolve()
@@ -65,7 +74,6 @@ exports.STV_events = new Promise(async() => {
     
     subscription.addEventListener('error', (err) => {
         console.error("Subscription error: " + JSON.stringify(err))
-        console.log("URL: " + URL)
     });
 
 
