@@ -36,6 +36,8 @@ module.exports = {
 				console.log(err);
 			}
 
+			let emotes = emote_list;
+
 			/*
 			
 			try {

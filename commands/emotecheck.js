@@ -105,9 +105,30 @@ module.exports = {
 			console.log(err);
 		}
 		try {
+			/*
+				TEMP SOLUTION UNTILL THE NEW EVENTSOURCE IS FINISHED
+			*/
+
+			let emote_list = []
+
+			try {
+				const uid = await tools.getUserID(this.channel);
+
+				if (!uid) {
+					return 'Unable to find the channel #' + this.channel;
+				}
+
+				emote_list = (await fetchEmote.STV_user_emotes(uid)).emote_list;
+			} catch {
+				console.log(err);
+			}
+
+			let emotes = emote_list;
+
+			/*
 			const streamer = await sql.Query(`SELECT emote_list FROM Streamers WHERE username="${channel}"`);
 			let emotes = JSON.parse(streamer[0].emote_list);
-
+			*/
 
 			const now = new Date().getTime();
 
