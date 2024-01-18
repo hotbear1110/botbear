@@ -22,7 +22,7 @@ module.exports = {
 				TEMP SOLUTION UNTILL THE NEW EVENTSOURCE IS FINISHED
 			*/
 
-			const emote_list = []
+			let emote_list = []
 
 			try {
 				const uid = await tools.getUserID(this.channel);
