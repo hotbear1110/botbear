@@ -31,7 +31,7 @@ module.exports = {
 					return 'Unable to find the channel #' + this.channel;
 				}
 
-				emote_list = (await fetchEmote.STV_user_emotes(uid)).emote_list;
+				emote_list = JSON.parse((await fetchEmote.STV_user_emotes(uid)).emote_list);
 			} catch {
 				console.log(err);
 			}
