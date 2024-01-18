@@ -71,10 +71,17 @@ exports.STV_events = new Promise(async() => {
 
     subscription.addEventListener('dispatch', (update) => {
         if (JSON.parse(update.data).body.pushed) {
-            console.log(JSON.parse(update.data).body.pushed)
+            console.log(JSON.parse(update.data).body.pushed.value.data)
+
+            const id = JSON.parse(update.data).body.pushed.value.id
+            const name = JSON.parse(update.data).body.pushed.value.name
+            const time_added = JSON.parse(update.data).body.pushed.value.timestamp
+
         }
         if (JSON.parse(update.data).body.pulled) {
             console.log(JSON.parse(update.data).body.pulled)
+
+            const id = JSON.parse(update.data).body.pulled.old_value.id
         }
     });
 
