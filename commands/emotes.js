@@ -19,7 +19,7 @@ module.exports = {
             input = input.filter(x  => x !== `channel:${this.channel}`);
 
 			/*
-				TEMP SOLUTION UNTILL THE NEW EVENSOURCE IS FINISHED
+				TEMP SOLUTION UNTILL THE NEW EVENTSOURCE IS FINISHED
 			*/
 
 			const emote_list = []
