@@ -1,5 +1,6 @@
 const tools = require('../tools/tools.js');
 const sql = require('./../sql/index.js');
+const fetchEmote = require('../tools/fetchEmotes.js');
 
 module.exports = {
 	name: 'emotes',
@@ -13,8 +14,29 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
+
 			this.channel = input.filter(x => x.startsWith('channel:'))[0]?.split(':')[1] ?? channel;
             input = input.filter(x  => x !== `channel:${this.channel}`);
+
+			/*
+				TEMP SOLUTION UNTILL THE NEW EVENSOURCE IS FINISHED
+			*/
+
+			const emote_list = []
+
+			try {
+				const uid = await tools.getUserID(this.channel);
+
+				if (!uid) {
+					return 'Unable to find the channel #' + this.channel;
+				}
+
+				emote_list = (await fetchEmote.STV_user_emotes(uid)).emote_list;
+			} catch {
+				console.log(err);
+			}
+
+			/*
 			
 			try {
 				this.streamer = await sql.Query(`SELECT emote_list FROM Streamers WHERE username="${this.channel}"`) ?? '';
@@ -28,6 +50,7 @@ module.exports = {
 			}
 			let emotes = JSON.parse(this.streamer[0].emote_list).reverse();
 
+			*/
 			
 			if (!emotes.length) {
 				return 'there are no 3rd party emotes in this channel.';
