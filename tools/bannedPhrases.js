@@ -1,1 +1,1 @@
-exports.bannedPhrases = ['nik ger', 'nig ker', 'nig ger', 'nik ker', 'nigga', 'ոigga'];
+exports.bannedPhrases = ['nik ger', 'nig ker', 'nig ger', 'nik ker', 'nigga', 'ոigga', 'ո'];
