@@ -34,10 +34,10 @@ module.exports = {
 					username = input[3].toLowerCase();
 				}
 				const alreadyJoined = await sql.Query(`
-                SELECT *
+                SELECT uid
                 FROM Streamers
-                WHERE username=?`,
-				[username]);
+                WHERE uid=?`,
+				[uid]);
 
 				if (alreadyJoined[0]?.banned === 1)  {
 					return cc.join(username)

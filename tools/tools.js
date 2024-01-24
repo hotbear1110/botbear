@@ -752,7 +752,7 @@ exports.joinChannel = async ({ username, uid }, joinEventsub = true) => {
 	const liveemote = 'FeelsOkayMan';
 	const offlineemote = 'FeelsBadMan';
 	const gameTime = new Date().getTime();
-	const fetchedEmotes = await fetchEmotes.STV_user_emotes(user.uid)
+	const fetchedEmotes = await fetchEmotes.STV_user_emotes(uid)
 
 	await sql.Query(`INSERT INTO Streamers 
         (username, uid, islive, liveemote, titleemote, gameemote, offlineemote, live_ping, title_ping, game_ping, game_time, emote_list, emote_removed, disabled_commands, emote_set) 
