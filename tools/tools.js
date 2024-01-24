@@ -755,9 +755,9 @@ exports.joinChannel = async ({ username, uid }, joinEventsub = true) => {
 	const fetchedEmotes = (await fetchEmotes.STV_user_emotes(uid)) ?? null
 
 	await sql.Query(`INSERT INTO Streamers 
-        (count, username, uid, islive, liveemote, titleemote, gameemote, offlineemote, live_ping, title_ping, game_ping, game_time, emote_list, emote_removed, disabled_commands, emote_set) 
+        (username, uid, islive, liveemote, titleemote, gameemote, offlineemote, live_ping, title_ping, game_ping, game_time, emote_list, emote_removed, disabled_commands, emote_set) 
             values 
-        (AUTO_INCREMENT, ?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?)`,
+        (?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?)`,
 	[username, uid, islive, liveemote, liveemote, liveemote, offlineemote, '[""]', '[""]', '[""]', gameTime, fetchedEmotes?.emote_list, '[]', '[]', fetchedEmotes?.emote_set]
 	);
 
