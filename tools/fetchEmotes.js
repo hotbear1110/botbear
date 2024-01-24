@@ -26,9 +26,6 @@ exports.STV_user_emotes = async(uid) => {
     } catch(error) {
         console.log(error);
     }
-
-
-    Resolve()
 }
 
 exports.STV_emotes = new Promise(async(Resolve) => {
