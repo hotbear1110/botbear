@@ -757,7 +757,7 @@ exports.joinChannel = async ({ username, uid }, joinEventsub = true) => {
 	await sql.Query(`INSERT INTO Streamers 
         (username, uid, islive, liveemote, titleemote, gameemote, offlineemote, live_ping, title_ping, game_ping, game_time, emote_list, emote_removed, disabled_commands, emote_set) 
             values 
-        (?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?)`,
+        (?, ?, ?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?, ?)`,
 	[username, uid, islive, liveemote, liveemote, liveemote, offlineemote, '[""]', '[""]', '[""]', gameTime, fetchedEmotes?.emote_list, '[]', '[]', fetchedEmotes?.emote_set]
 	);
 
