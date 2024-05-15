@@ -61,6 +61,7 @@ module.exports = {
 							Gempir - A moderator that likes pokimane and taylor swift a lot, he is in love with another chatter called Fawcan.
 							Cheezeburgersticks - A moderator that doesn't do anything but bully nymn.
 							Mr0lle (olle) - A moderator who likes to use weeb emotes, but isn't actually a weeb, he is just a femboy.
+							Xanabilek - A moderator who does a lot of stream overlay stuff to improve the stream quality, he is Fr*nch tho.
 							Tolatos - A chatter that likes Poros from league of legends way too much.
 							Joshlad - A VIP who is also a weeb.
 							FabulousPotato69 (fabby) - A VIP, but secretly just a mod with a wrong badge, he works for nymn.
@@ -74,6 +75,7 @@ module.exports = {
 							Supibot - An amazing twitch bot that has giga many features.
 							botnextdoor - Moderation bot that bans a lot of people.
 							chetbotwow - A trivia bot made by chetwow.
+							Froglin_ (froglin) - Has the biggest poglin you have ever seen.
 							`
 								:
 								``
