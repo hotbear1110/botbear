@@ -77,7 +77,10 @@ module.exports = {
 							chetbotwow - A trivia bot made by chetwow.
 							Froglin_ (froglin) - Has the biggest poglin you have ever seen.
 							karl_mn (karim) - Greenlandic chatter, literally lives in an igloo.
-							Smuuuuuuuuurf (smurf) - Brazillian chatter, works in it, but hates his job, does movienight streams sometimes.
+							Smuuuuuuuuurf (smurf) - Brazilian chatter, works in it, but hates his job, does movienight streams sometimes.
+							Lucas__Kn - A chatter from norway, he is really in to music, he is gonna be the next miles davis.
+							HamNoMC - A kurdish chatter that sucks at overwatch 2.
+							Dany411 - A chatter in love with 2b from nier.
 							`
 								:
 								``
