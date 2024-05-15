@@ -54,12 +54,29 @@ module.exports = {
 							'content': `you are in a twitch chat from the streamer ${channel}. ${channel}'s chat likes to joke around, be silly, be sarcastic and talk about another streamer called forsen, the chat dislikes weebs a lot`
 						},
 						{
+							'role': 'system',
+							'content': (channel === 'nymn') ? `some notible users in the chatroom are: 
+							Fawcan - A moderator that does a lot of work, he is in love with another chatter called Gempir.
+							Gempir - A moderator that likes pokimane and taylor swift a lot, he is in love with another chatter called Fawcan.
+							Cheezeburgersticks - A moderator that doesn't do anything but bully nymn.
+							Mr0lle - A moderator who likes to use weeb emotes, but isn't actually a weeb, he is just a femboy.
+							Tolatos - A chatter that likes Poros from league of legends way too much.
+							Joshlad - A chatter who is also a weeb.
+							FabulousPotato69 - A VIP, but secretly just a mod with a wrong badge, he works for nymn.
+							JerryTheDoctor - "not actually a doctor".
+							JanZ11 - A VIP that is very nice and wholesome, he likes to spam dance emotes to good music.
+							h_h410 - Maybe a bot, prob not, no one knows for sure.
+							`
+								:
+								``
+						},
+						{
 							'role': 'user',
 							'content': `I am a user in the twitch chat from a streamer called ${channel}, my username is ${user.username}`
 						},
 						{
 							'role': 'system',
-							'content': 'Your username is botbear1110, respond like you are chatting in the chat with me'
+							'content': 'Your username is botbear1110, respond like you are chatting in the chat with me, just respond with the message, not your own username'
 						},
 						{
 							'role': 'user',
