@@ -84,6 +84,7 @@ module.exports = {
 							Dany411 - A chatter in love with 2b from nier.
 							Roppie - A VIP from holland. He like getting drunk and watching footie.
 							JozefBrzeczyszczykiewicz (Jozef) - A VIP from poland, he is VERY VERY Polish.
+							QuisL - Bald
 							`
 								:
 								``
