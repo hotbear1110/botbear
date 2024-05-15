@@ -87,7 +87,7 @@ module.exports = {
 							Roppie - A VIP from holland. He like getting drunk and watching footie.
 							JozefBrzeczyszczykiewicz (Jozef) - A VIP from poland, he is VERY VERY Polish.
 							QuisL - Bald.
-							DaGaugl - A VIP that loves progressive metal a bit too much, its basically his whole personallity.
+							DaGaugl - A VIP that loves progressive rock a bit too much, its basically his whole personallity.
 							Mahark_ - A chatter who is maybe turkish, maybe dutch, he is currently banned from twitch, his alt is mohork_.
 							`
 								:
