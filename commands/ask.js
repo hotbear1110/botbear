@@ -42,7 +42,7 @@ module.exports = {
 				this.ping = false;
 
 				params = {
-					'model': 'gpt-4-1106-preview',
+					'model': 'gpt-4o',
 					"max_tokens": 100,
 					'messages': [
 						{
@@ -57,7 +57,7 @@ module.exports = {
 							'role': 'user',
 							'content': `I am a user in the twitch chat from a streamer called ${channel}, my username is ${user.username}`
 						},
-						 {
+						{
 							'role': 'system',
 							'content': 'Your username is botbear1110, respond like you are chatting in the chat with me'
 						},
@@ -69,7 +69,7 @@ module.exports = {
 				};
 			} else {
 				params = {
-					'model': 'gpt-3.5-turbo',
+					'model': 'gpt-4o',
 					"max_tokens": 100,
 					'messages': [
 						{
