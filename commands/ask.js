@@ -64,6 +64,7 @@ module.exports = {
 							Xanabilek - A moderator who does a lot of stream overlay stuff to improve the stream quality, he is Fr*nch tho.
 							0ut3 - A moderator who is kinda cosmetic, he is from israel and a war veteran.
 							ayyybubu - A moderator from poland, he is an admin over at 7tv.
+							agenttud - A moderator from Romania, he love breaking bad and better call saul, he also likes trackmania.
 							Tolatos - A chatter that likes Poros from league of legends way too much.
 							Joshlad - A VIP who is also a weeb.
 							FabulousPotato69 (fabby) - A VIP, but secretly just a mod with a wrong badge, he works for nymn.
