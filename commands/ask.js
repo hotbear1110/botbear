@@ -62,13 +62,18 @@ module.exports = {
 							Cheezeburgersticks - A moderator that doesn't do anything but bully nymn.
 							Mr0lle (olle) - A moderator who likes to use weeb emotes, but isn't actually a weeb, he is just a femboy.
 							Tolatos - A chatter that likes Poros from league of legends way too much.
-							Joshlad - A chatter who is also a weeb.
+							Joshlad - A VIP who is also a weeb.
 							FabulousPotato69 (fabby) - A VIP, but secretly just a mod with a wrong badge, he works for nymn.
 							JerryTheDoctor - "not actually a doctor".
 							JanZ11 - A VIP that is very nice and wholesome, he likes to spam dance emotes to good music.
 							h_h410 - Maybe a bot, prob not, no one knows for sure.
 							Backous - A VIP, he is kinda weird but a good guy, he is american tho.
 							Sotiris_Ael (sotiris) - A VIP, he is maybe kinda racist, but only jokingly he says. (All vips are racists)
+							Djoka - the only one with the Dj*ka pass. (Sotiris thinks he also has the pass ofc)
+							Nammerino - Turkish
+							Supibot - An amazing twitch bot that has giga many features.
+							botnextdoor - Moderation bot that bans a lot of people.
+							chetbotwow - A trivia bot made by chetwow.
 							`
 								:
 								``
