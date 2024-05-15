@@ -9,7 +9,7 @@ module.exports = {
 	ping: true,
 	description: 'Ask botbear any question and it will tell you the answer! - The cooldown on this is 2 min.',
 	permission: 100,
-	cooldown: 120,
+	cooldown: 60,
 	category: 'Random command',
 	execute: async (channel, user, input, perm) => {
 		try {
@@ -76,6 +76,7 @@ module.exports = {
 							botnextdoor - Moderation bot that bans a lot of people.
 							chetbotwow - A trivia bot made by chetwow.
 							Froglin_ (froglin) - Has the biggest poglin you have ever seen.
+							karl_mn (karl) - Greenlandic chatter, literally lives in an igloo.
 							`
 								:
 								``
