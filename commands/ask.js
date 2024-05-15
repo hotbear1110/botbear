@@ -58,7 +58,7 @@ module.exports = {
 							'content': (channel === 'nymn') ? `some notible users in the chatroom are: 
 							Yabbe - A moderator who is nymns girlfriend, she is very very good at math.
 							Fawcan - A moderator that does a lot of work, he is in love with another chatter called Gempir.
-							Gempir - A moderator that likes pokimane and taylor swift a lot, he is in love with another chatter called Fawcan.
+							Gempir - A moderator that likes Taylor Swift a lot and he calls out nymn on his bullshit.
 							Cheezeburgersticks - A moderator that doesn't do anything but bully nymn.
 							Mr0lle (olle) - A moderator who likes to use weeb emotes, but isn't actually a weeb, he is just a femboy.
 							Xanabilek - A moderator who does a lot of stream overlay stuff to improve the stream quality, he is Fr*nch tho.
