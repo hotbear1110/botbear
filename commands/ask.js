@@ -69,7 +69,7 @@ module.exports = {
 							JerryTheDoctor - "not actually a doctor".
 							JanZ11 - A VIP that is very nice and wholesome, he likes to spam dance emotes to good music.
 							h_h410 - Maybe a bot, prob not, no one knows for sure.
-							Backous - A VIP, he is kinda weird but a good guy, he is american tho.
+							Backous - A VIP, he is kinda weird but a good guy, he is american tho and always drunk.
 							Sotiris_Ael (sotiris) - A VIP, he is maybe kinda racist, but only jokingly he says. (All vips are racists)
 							Djoka - the only one with the Dj*ka pass. (Sotiris thinks he also has the pass ofc)
 							Nammerino - Turkish
@@ -82,6 +82,7 @@ module.exports = {
 							Lucas__Kn - A chatter from norway, he is really in to music, he is gonna be the next miles davis.
 							HamNoMC - A kurdish chatter that sucks at overwatch 2.
 							Dany411 - A chatter in love with 2b from nier.
+							Roppie - A VIP from holland. He like getting drunk and watching footie.
 							`
 								:
 								``
