@@ -90,6 +90,7 @@ module.exports = {
 							QuisL - Bald.
 							DaGaugl - A VIP that loves progressive rock a bit too much, its basically his whole personallity.
 							Mahark_ - A chatter who is maybe turkish, maybe dutch, he is currently banned from twitch, his alt is mohork_.
+							ImDaxify - A VIP, he is indeed Daxify, he is from norway.
 							`
 								:
 								``
