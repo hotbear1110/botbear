@@ -32,7 +32,7 @@ module.exports = {
 			}
 
 			input = input.splice(2);
-			let msg = input.join(',');
+			let msg = input.join(' ');
 
 			let params;
 
@@ -109,6 +109,7 @@ module.exports = {
 						{
 							json: {
 								"assistant_id": "asst_H64aptwJkofPvJGsfYDahko4",
+								"stream": true
 							}, headers: headers
 						}).json();
 
