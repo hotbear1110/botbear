@@ -108,8 +108,8 @@ module.exports = {
 						{
 							json: {
 								"assistant_id": "asst_H64aptwJkofPvJGsfYDahko4",
-								"additional_instructions": NULL,
-								"tool_choice": NULL
+								"additional_instructions": "NULL",
+								"tool_choice": "NULL"
 							}, headers: headers
 						}).json();
 				}
