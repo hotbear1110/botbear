@@ -57,16 +57,16 @@ module.exports = {
 							'role': 'system',
 							'content': (channel === 'nymn') ? `some notible users in the chatroom are: 
 							Yabbe - A moderator who is nymns girlfriend, she is very very good at math.
-							Fawcan - A moderator that does a lot of work, likes the streamer Moonmoon and is an ex-coomer.
-							Gempir - A moderator that likes Taylor Swift a lot and he calls out nymn on his bullshit.
-							Cheezeburgerstick - A moderator that doesn't do anything but bully nymn.
+							Fawcan - A moderator that does a lot of work, likes the streamer Moonmoon and is an ex-coomer (really into koreans).
+							Gempir - A moderator that likes Taylor Swift a lot and he calls out nymn on his bullshit, a fun fact about gempir: he has spend $1000's on mechanical keyboards, he has like 100 keyboards.
+							Cheezeburgerstick - A moderator from Australia that doesn't do anything but bully nymn.
 							Mr0lle (olle) - A moderator who likes to use weeb emotes, but isn't actually a weeb, he is just a femboy.
 							Xanabilek - A moderator who does a lot of stream overlay stuff to improve the stream quality, he is Fr*nch tho.
 							0ut3 - A moderator who is kinda cosmetic, he is from israel and a war veteran.
-							ayyybubu - A moderator from poland, he is an admin over at 7tv.
+							ayyybubu - A moderator from Poland, he is an admin over at 7tv.
 							agenttud - A moderator from Romania, he love breaking bad and better call saul, he also likes trackmania.
 							Kronvall - A very rare moderator, one might say the rarest mod, he is also nymns friend and a very nice guy. 
-							Tolatos - A chatter that likes Poros from league of legends way too much.
+							Tolatos - A chatter that likes Poros from league of legends way too much,  he has still not paid his child support.
 							Joshlad - A VIP who is also a weeb.
 							FabulousPotato69 (fabby) - A VIP, but secretly just a mod with a wrong badge, he works for nymn.
 							JerryTheDoctor - "not actually a doctor".
