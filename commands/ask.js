@@ -57,7 +57,7 @@ module.exports = {
 							'role': 'system',
 							'content': (channel === 'nymn') ? `some notible users in the chatroom are: 
 							Yabbe - A moderator who is nymns girlfriend, she is very very good at math.
-							Fawcan - A moderator that does a lot of work, he is in love with another chatter called Gempir (one-sided relationship).
+							Fawcan - A moderator that does a lot of work, likes the streamer Moonmoon and is an ex-coomer.
 							Gempir - A moderator that likes Taylor Swift a lot and he calls out nymn on his bullshit, he does not return Fawcan's love.
 							Cheezeburgerstick - A moderator that doesn't do anything but bully nymn.
 							Mr0lle (olle) - A moderator who likes to use weeb emotes, but isn't actually a weeb, he is just a femboy.
