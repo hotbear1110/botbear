@@ -36,7 +36,28 @@ module.exports = {
 
 			let params;
 
-			if (demo) {
+			let url = 'https://api.openai.com/v1/chat/completions';
+
+			let headers = {
+				'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+			};
+
+			if (demo && channel === 'nymn') {
+				msg = msg.replaceAll('demo:true', '');
+
+				this.ping = false;
+
+				url = 'https://api.openai.com/v1/threads/thread_I6vs7tJS9sLPAYe6PyQx6Dt4/messages';
+
+				headers = {
+					'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+					'OpenAI-Beta': 'assistants=v2'
+				};
+				params = {
+					"role": "user",
+					"content": `${user.username}: ${msg}`
+				};
+			} else if (demo) {
 				msg = msg.replaceAll('demo:true', '');
 
 				this.ping = false;
@@ -52,48 +73,6 @@ module.exports = {
 						{
 							'role': 'system',
 							'content': `you are in a twitch chat from the streamer ${channel}. ${channel}'s chat likes to joke around, be silly, be sarcastic and talk about another streamer called forsen, the chat dislikes weebs a lot. All mods are unpaid`
-						},
-						{
-							'role': 'system',
-							'content': (channel === 'nymn') ? `some notible users in the chatroom are: 
-							Yabbe - A moderator who is nymns girlfriend, she is very very good at math.
-							Fawcan - A moderator that does a lot of work, likes the streamer Moonmoon and is an ex-coomer (really into koreans).
-							Gempir - A moderator that likes Taylor Swift a lot and he calls out nymn on his bullshit, a fun fact about gempir: he has spend $1000's on mechanical keyboards, he has like 100 keyboards.
-							Cheezeburgerstick - A moderator from Australia that doesn't do anything but bully nymn.
-							Mr0lle (olle) - A moderator who likes to use weeb emotes, but isn't actually a weeb, he is just a femboy.
-							Xanabilek - A moderator who does a lot of stream overlay stuff to improve the stream quality, he is Fr*nch tho.
-							0ut3 - A moderator who is kinda cosmetic, he is from israel and a war veteran.
-							ayyybubu - A moderator from Poland, he is an admin over at 7tv.
-							agenttud - A moderator from Romania, he love breaking bad and better call saul, he also likes trackmania.
-							Kronvall - A very rare moderator, one might say the rarest mod, he is also nymns friend and a very nice guy. 
-							Tolatos - A chatter that likes Poros from league of legends way too much,  he has still not paid his child support.
-							Joshlad - A VIP who is also a weeb.
-							FabulousPotato69 (fabby) - A VIP, but secretly just a mod with a wrong badge, he works for nymn.
-							JerryTheDoctor - "not actually a doctor".
-							JanZ11 - A VIP that is very nice and wholesome, he likes to spam dance emotes to good music.
-							h_h410 - Maybe a bot, prob not, no one knows for sure.
-							Backous - A VIP, he is kinda weird but a good guy, he is american tho and always drunk.
-							Sotiris_Ael (sotiris) - A VIP, he is maybe kinda racist, but only jokingly he says. (All vips are racists)
-							Djoka - the only one with the Dj*ka pass. (Sotiris thinks he also has the pass ofc)
-							Nammerino - Turkish
-							Supibot - An amazing twitch bot that has giga many features.
-							botnextdoor - Moderation bot that bans a lot of people.
-							chetbotwow - A trivia bot made by chetwow.
-							Froglin_ (froglin) - Has the biggest poglin you have ever seen.
-							karl_mn (karim) - Greenlandic chatter, literally lives in an igloo.
-							Smuuuuuuuuurf (smurf) - Brazilian chatter, works in it, but hates his job, does movienight streams sometimes.
-							Lucas__Kn - A chatter from norway, he is really in to music, he is gonna be the next miles davis.
-							HamNoMC - A kurdish chatter that sucks at overwatch 2.
-							Dany411 - A chatter in love with 2b from nier.
-							Roppie - A VIP from holland. He like getting drunk and watching footie.
-							JozefBrzeczyszczykiewicz (Jozef) - A VIP from poland, he is VERY VERY Polish.
-							QuisL - Bald.
-							DaGaugl - A VIP that loves progressive rock a bit too much, its basically his whole personallity.
-							Mahark_ - A chatter who is maybe turkish, maybe dutch, he is currently banned from twitch, his alt is mohork_.
-							ImDaxify - A VIP, he is indeed Daxify, he is from norway.
-							`
-								:
-								``
 						},
 						{
 							'role': 'user',
@@ -122,14 +101,18 @@ module.exports = {
 				};
 			}
 
-			const url = 'https://api.openai.com/v1/chat/completions';
-
-			const headers = {
-				'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-			};
-
 			try {
 				const response = await got.post(url, { json: params, headers: headers }).json();
+				if (demo && channel === 'nymn') {
+					await got.post('https://api.openai.com/v1/threads/thread_I6vs7tJS9sLPAYe6PyQx6Dt4/runs',
+						{
+							json: {
+								"assistant_id": "asst_H64aptwJkofPvJGsfYDahko4",
+								"additional_instructions": NULL,
+								"tool_choice": NULL
+							}, headers: headers
+						}).json();
+				}
 				const output = `${msg}${response.choices[0].message.content}`
 					.substring(msg.length)
 					.replace(URL, '$1[DOMAIN]$3$4$5');
