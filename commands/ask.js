@@ -105,11 +105,17 @@ module.exports = {
 				const response = await got.post(url, { json: params, headers: headers }).json();
 				let output
 				if (demo && channel === 'nymn') {
-					const run = await got.post('https://api.openai.com/v1/threads/thread_I6vs7tJS9sLPAYe6PyQx6Dt4/runs',
+					await got.post('https://api.openai.com/v1/threads/thread_I6vs7tJS9sLPAYe6PyQx6Dt4/runs',
 						{
 							json: {
 								"assistant_id": "asst_H64aptwJkofPvJGsfYDahko4",
-								"stream": false
+							}, headers: headers
+						}).json();
+
+					const runs = await got.get('https://api.openai.com/v1/threads/thread_I6vs7tJS9sLPAYe6PyQx6Dt4/runs',
+						{
+							json: {
+								"order": "desc",
 							}, headers: headers
 						}).json();
 
@@ -117,7 +123,7 @@ module.exports = {
 						.substring(msg.length)
 						.replace(URL, '$1[DOMAIN]$3$4$5');
 
-					console.log(run)
+					console.log(runs)
 				} else {
 					output = `${msg}${response.choices[0].message.content}`
 						.substring(msg.length)
