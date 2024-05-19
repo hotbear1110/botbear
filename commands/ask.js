@@ -109,7 +109,7 @@ module.exports = {
 						{
 							json: {
 								"assistant_id": "asst_H64aptwJkofPvJGsfYDahko4",
-								"stream": "false"
+								"stream": false
 							}, headers: headers
 						}).json();
 
