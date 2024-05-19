@@ -107,9 +107,7 @@ module.exports = {
 					await got.post('https://api.openai.com/v1/threads/thread_I6vs7tJS9sLPAYe6PyQx6Dt4/runs',
 						{
 							json: {
-								"assistant_id": "asst_H64aptwJkofPvJGsfYDahko4",
-								"additional_instructions": "NULL",
-								"tool_choice": "NULL"
+								"assistant_id": "asst_H64aptwJkofPvJGsfYDahko4"
 							}, headers: headers
 						}).json();
 				}
