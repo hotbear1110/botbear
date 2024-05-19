@@ -111,7 +111,7 @@ module.exports = {
 								"assistant_id": "asst_H64aptwJkofPvJGsfYDahko4",
 								"stream": true
 							}, headers: headers
-						}).json();
+						});
 
 					const messages = await got.get('https://api.openai.com/v1/threads/thread_I6vs7tJS9sLPAYe6PyQx6Dt4/messages',
 						{
