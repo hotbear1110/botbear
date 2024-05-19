@@ -112,16 +112,16 @@ module.exports = {
 							}, headers: headers
 						}).json();
 
-					const runs = await got.get('https://api.openai.com/v1/threads/thread_I6vs7tJS9sLPAYe6PyQx6Dt4/runs?order=desc',
+					const messages = await got.get('https://api.openai.com/v1/threads/thread_I6vs7tJS9sLPAYe6PyQx6Dt4/messages',
 						{
 							headers: headers
 						}).json();
 
-					output = `${msg}${response.content[0].text.value}`
+					output = `${msg}${messages.data[0].content[0].text.value}`
 						.substring(msg.length)
 						.replace(URL, '$1[DOMAIN]$3$4$5');
 
-					console.log(runs)
+					console.log(messages)
 				} else {
 					output = `${msg}${response.choices[0].message.content}`
 						.substring(msg.length)
