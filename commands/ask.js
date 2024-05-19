@@ -112,11 +112,9 @@ module.exports = {
 							}, headers: headers
 						}).json();
 
-					const runs = await got.get('https://api.openai.com/v1/threads/thread_I6vs7tJS9sLPAYe6PyQx6Dt4/runs',
+					const runs = await got.get('https://api.openai.com/v1/threads/thread_I6vs7tJS9sLPAYe6PyQx6Dt4/runs?order=desc',
 						{
-							json: {
-								"order": "desc",
-							}, headers: headers
+							headers: headers
 						}).json();
 
 					output = `${msg}${response.content[0].text.value}`
