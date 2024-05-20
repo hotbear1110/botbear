@@ -42,6 +42,7 @@ module.exports = {
 				this.ping = false;
 
 				params = {
+					'temperature': 1.2,
 					'model': 'gpt-4o',
 					"max_tokens": 100,
 					'messages': [
