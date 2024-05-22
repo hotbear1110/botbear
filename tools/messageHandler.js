@@ -4,6 +4,9 @@ const talkedRecently = {};
 
 let oldmessage = '';
 
+// sorry don't know if there's something like this already. 
+const wait = ms => new Promise(res => setTimeout(res, ms);
+
 exports.messageHandler = class Cooldown {
 	constructor(channel, message, noBanphrase, showDelay, start, ping, user, spamAllowed) {
 		this.channel = channel;
@@ -68,7 +71,15 @@ exports.messageHandler = class Cooldown {
 					this.message = 'Failed to check for banphrases';
 				}
 			}
-			await cc.say(this.channel, this.message);
+
+			// splits the message every 500 chars (twitch max lenght)
+			const bits = this.message.match(/.{1,500}/g);
+			
+			bits.forEach(async bit => {
+				await cc.say(this.channel, bit);
+				await wait(2_000); // Let's wait some seconds just for shure.
+			});
+			
 			this.noCD = 1;
 			let tempList = [];
 			tempList.push(this.message);
