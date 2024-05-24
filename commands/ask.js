@@ -32,7 +32,7 @@ module.exports = {
 			}
 
 			input = input.splice(2);
-			let msg = input.join(',');
+			let msg = input.join(' ');
 
 			let params;
 
