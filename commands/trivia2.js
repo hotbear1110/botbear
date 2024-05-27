@@ -13,22 +13,17 @@ module.exports = {
 				return;
 			}
 
-			const inputCategories = /(?<=include:")[^"]+(?=")/i.exec(input.join(' '));
+			const inputCategory = input[2];
 
-			const inputExclude = /(?<=exclude:")[^"]+(?=")/i.exec(input.join(' '));
+			let exludeCategories = '[anime,hentai,weeb,d dansgame ta,vorkosigan_saga,dota]'
 
-			let exludeCategories = '';
 
-			if (!inputCategories && !inputExclude) {
-				exludeCategories = '[anime,hentai,weeb,d dansgame ta,vorkosigan_saga,dota]'
-			} else if (!inputCategories && inputExclude) {
-				exludeCategories = `[anime,hentai,weeb,d dansgame ta,vorkosigan_saga,dota,${inputExclude}]`
-			} else if (inputCategories && inputExclude) {
-				exludeCategories = `[${inputExclude}]`
+			if (inputCategory) {
+				exludeCategories = `[]`
 			}
 
 			const url = `https://api.gazatu.xyz/trivia/questions?count=1&exclude=${encodeURIComponent(exludeCategories)}`
-						+ ((inputCategories) ? `&include=${encodeURIComponent(`[${inputCategories}]`)}` : '');
+				+ ((inputCategory) ? `&include=${encodeURIComponent(`[${inputCategory}]`)}` : '');
 
 			const questions = await got(url).json();
 
