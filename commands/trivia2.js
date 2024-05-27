@@ -4,7 +4,7 @@ const tools = require('../tools/tools.js');
 module.exports = {
 	name: 'trivia2',
 	ping: false,
-	description: 'This command will start a new trivia in chat, Example: \' bb trivia2 include:"forsen,anime" \' or \' bb trivia2 exclude:"forsen,anime" \' (To see the cooldown on this command, do: "bb check triviacooldown") - Api used: https://gazatu.xyz/ - Categories available: https://gazatu.xyz/trivia/categories',
+	description: 'This command will start a new trivia in chat, Example: \' bb trivia2 forsen \' (To see the cooldown on this command, do: "bb check triviacooldown") - Api used: https://gazatu.xyz/ - Categories available: https://gazatu.xyz/trivia/categories',
 	permission: 100,
 	category: 'Random command',
 	execute: async (channel, user, input, perm) => {
