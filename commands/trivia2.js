@@ -19,11 +19,11 @@ module.exports = {
 
 
 			if (inputCategory) {
-				exludeCategories = `[]`
+				exludeCategories = '[]'
 			}
 
 			if (inputCategory.toLowerCase() === 'anime') {
-				inputCategory = false
+				inputCategory = '[]'
 			}
 
 			const url = `https://api.gazatu.xyz/trivia/questions?count=1&exclude=${encodeURIComponent(exludeCategories)}`
