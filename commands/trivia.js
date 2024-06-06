@@ -28,8 +28,8 @@ const OTDB_Categories = {
 	'vehicles': 28,
 	'comics': 29,
 	'gadgets': 30,
-	'anime': 31,
-	'manga': 31,
+	//'anime': 31,
+	//'manga': 31,
 	'cartoon': 32,
 	'cartoons': 32
 };
@@ -52,12 +52,12 @@ async function getTrivia(genre) {
 
 function arrayShuffle(array) {
 	const newArray = [...array];
-    for (let index = newArray.length - 1; index > 0; index--) {
-        const newIndex = Math.floor(Math.random() * (index + 1));
-        [newArray[index], newArray[newIndex]] = [newArray[newIndex], newArray[index]];
-    }
+	for (let index = newArray.length - 1; index > 0; index--) {
+		const newIndex = Math.floor(Math.random() * (index + 1));
+		[newArray[index], newArray[newIndex]] = [newArray[newIndex], newArray[index]];
+	}
 
-    return newArray;
+	return newArray;
 }
 
 module.exports = {
@@ -91,7 +91,7 @@ module.exports = {
 			let shuffled = arrayShuffle(allanswers);
 
 			shuffled = shuffled.map(x => decodeURIComponent(x))
-								.join(' | ');
+				.join(' | ');
 
 			correct_answer = tools.removeTrailingStuff(correct_answer);
 
