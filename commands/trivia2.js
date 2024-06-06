@@ -22,7 +22,7 @@ module.exports = {
 				exludeCategories = '[]'
 			}
 
-			if (inputCategory.toLowerCase() === 'anime') {
+			if (inputCategory?.toLowerCase() === 'anime') {
 				inputCategory = false
 			}
 
