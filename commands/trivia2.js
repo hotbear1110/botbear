@@ -13,7 +13,7 @@ module.exports = {
 				return;
 			}
 
-			const inputCategory = input[2];
+			let inputCategory = input[2];
 
 			let exludeCategories = '[anime,hentai,weeb,d dansgame ta,vorkosigan_saga,dota]'
 
@@ -23,7 +23,7 @@ module.exports = {
 			}
 
 			if (inputCategory.toLowerCase() === 'anime') {
-				inputCategory = ''
+				inputCategory = false
 			}
 
 			const url = `https://api.gazatu.xyz/trivia/questions?count=1&exclude=${encodeURIComponent(exludeCategories)}`
