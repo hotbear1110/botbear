@@ -13,7 +13,7 @@ module.exports = {
 				return;
 			}
 
-			let inputCategory = input[2];
+			let inputCategory = input[2] ?? false;
 
 			let exludeCategories = '[anime,hentai,weeb,d dansgame ta,vorkosigan_saga,dota]'
 
