@@ -23,7 +23,7 @@ module.exports = {
 			}
 
 			if (inputCategory.toLowerCase() === 'anime') {
-				inputCategory = '[]'
+				inputCategory = ''
 			}
 
 			const url = `https://api.gazatu.xyz/trivia/questions?count=1&exclude=${encodeURIComponent(exludeCategories)}`
