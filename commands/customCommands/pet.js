@@ -141,6 +141,7 @@ module.exports = {
 				default: {
 					let pets = await sql.Query('SELECT * FROM Yabbe_pet',);
 
+/*
 					let users = [];
 		
 					pets.map(x => users.includes(x.User) ? false : users.push(x.User));
@@ -148,7 +149,7 @@ module.exports = {
 					let user =  users[~~(Math.random() * users.length - 1)];
 		
 					pets = pets.filter(x => (x.User === user));
-		
+		*/
 					let pet =  pets[~~(Math.random() * pets.length - 1)];
 		
 					return `Random pet image: ID: ${pet.ID} | User: ${pet.User} | Pet: ${pet.Pet} | Pet Name: ${pet.Pet_name} | Image: ${pet.Image} `;
