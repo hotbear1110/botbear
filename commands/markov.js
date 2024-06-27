@@ -49,9 +49,9 @@ module.exports = {
                     filter: (result) => { return result.score > 5 && result.refs.filter(x => x.string.toLowerCase().includes(msg.toLowerCase())).length > 0 && result.string.split(' ').length >= 10; }
                 };
 
-                result = await markov.generate(options);
+                result = markov.generate(options);
 
-                console.log("aa: " + JSON.parse(result))
+                console.log("aa: " + result)
 
                 return `🔖 ${await tools.unpingString(result, channel)}`;
             });
