@@ -46,7 +46,7 @@ module.exports = {
                 const options = {
                     maxTries: 10000,
                     prng: Math.random,
-                    filter: (result) => { return result.score > 5 && result.refs.filter(x => x.string.toLowerCase().includes(msg.toLowerCase())).length > 0 && result.string.split(' ').length >= 10; }
+                    filter: (result) => { return result.score > 5 }
                 };
 
                 result = markov.generate(options);
