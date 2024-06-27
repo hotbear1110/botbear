@@ -35,7 +35,7 @@ module.exports = {
 
             let result;
 
-            await redisC.get(`Markov:${channelName.toLowerCase()}`, function (err, reply) {
+            await redisC.get(`Markov:${channelName.toLowerCase()}`, async function (err, reply) {
                 let jsonData = JSON.parse(reply);
 
 
@@ -49,7 +49,9 @@ module.exports = {
                     filter: (result) => { return result.score > 5 && result.refs.filter(x => x.string.toLowerCase().includes(msg.toLowerCase())).length > 0 && result.string.split(' ').length >= 10; }
                 };
 
-                result = markov.generate(options);
+                result = await markov.generate(options);
+
+                console.log("aa: " + result)
             });
 
             console.log("test: " + result);
