@@ -51,9 +51,9 @@ module.exports = {
 
                 result = markov.generate(options);
 
-                console.log("aa: " + result)
+                console.log("aa: " + result.string)
 
-                return `🔖 ${await tools.unpingString(result, channel)}`;
+                return `🔖 ${await tools.unpingString(result.string, channel)}`;
             });
 
         } catch (err) {
