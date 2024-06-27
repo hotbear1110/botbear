@@ -36,7 +36,7 @@ module.exports = {
             let result;
 
             await redisC.get(`Markov:${channelName.toLowerCase()}`, function (err, reply) {
-                console.log(jsonData)
+                console.log(reply)
 
                 let jsonData = JSON.parse(reply);
 
