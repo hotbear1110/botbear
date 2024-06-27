@@ -36,11 +36,8 @@ module.exports = {
             let result;
 
             await redisC.get(`Markov:${channelName.toLowerCase()}`, function (err, reply) {
-                console.log(reply)
-
                 let jsonData = JSON.parse(reply);
 
-                console.log(jsonData)
 
                 const markov = new Markov({ stateSize: 1 });
 
@@ -55,7 +52,7 @@ module.exports = {
                 result = markov.generate(options);
             });
 
-            console.log(result);
+            console.log("test: " + result);
 
             return `🔖 ${await tools.unpingString(result, channel)}`;
 
