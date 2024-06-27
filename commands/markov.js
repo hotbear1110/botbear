@@ -7,70 +7,41 @@ require('dotenv').config();
 const MARKOV_URL = 'https://magnolia.melon095.no/api/Markov/';
 
 module.exports = {
-	name: 'markov',
-	ping: false,
-	description: 'Markov',
-	permission: 100,
-	cooldown: 120, //in seconds
-	category: 'Random command',
-	opt_outable: false, 
-	// eslint-disable-next-line no-unused-vars
-	execute: async (channel, user, input, perm, aliascommand) => {
-		try {
-			if (module.exports.permission > perm) {
-				return;
-			}
+    name: 'markov',
+    ping: false,
+    description: 'Markov',
+    permission: 100,
+    cooldown: 120, //in seconds
+    category: 'Random command',
+    opt_outable: false,
+    // eslint-disable-next-line no-unused-vars
+    execute: async (channel, user, input, perm, aliascommand) => {
+        try {
+            if (module.exports.permission > perm) {
+                return;
+            }
 
             input = input.splice(2);
             const channelName = input.filter(x => x.startsWith('channel:'))[0]?.split(':')[1] ?? channel;
 
             const channelID = await tools.getUserID(channelName);
-            if (!channelID)
-            {
+            if (!channelID) {
                 return 'Error: Channel not found';
             }
-            input = input.filter(x  => x !== `channel:${channelName}`);
+            input = input.filter(x => x !== `channel:${channelName}`);
 
             let msg = input.join(' ');
             let markovStatusCode = 200;
-            let markovError = '';
-            
+
             console.log(msg);
-            try {
-                const searchParams = new URLSearchParams([
-                    ['channelID', channelID],
-                    ['seed', msg]
-                ]);
-
-                const { statusCode, body }  = await got(MARKOV_URL, {
-                    searchParams: searchParams,
-                    timeout: {
-                        request: 3000
-                    },
-                    throwHttpErrors: false
-                });
-
-                const response = JSON.parse(body);
-                console.log(response);
-
-                if (!response.errors) {
-                    return `🔖 ${await tools.unpingString(response.message, channel)}`;
-                }
-
-                markovStatusCode = statusCode;
-                markovError = response.error;
-            }
-            catch (err) {
-                console.log(err);
-            }
 
             const localMarkovData = await redisC.get(`Markov:${channelName.toLowerCase()}`);
             let result;
 
-            try 
-            {
+            console.log(localMarkovData);
+
+            try {
                 let jsonData = JSON.parse(localMarkovData);
-                console.log(jsonData.length);
 
                 const markov = new Markov({ stateSize: 1 });
 
@@ -79,29 +50,27 @@ module.exports = {
                 const options = {
                     maxTries: 10000,
                     prng: Math.random,
-                    filter: (result) => {return result.score > 5 && result.refs.filter(x => x.string.toLowerCase().includes(msg.toLowerCase())).length > 0 && result.string.split(' ').length >= 10;}
+                    filter: (result) => { return result.score > 5 && result.refs.filter(x => x.string.toLowerCase().includes(msg.toLowerCase())).length > 0 && result.string.split(' ').length >= 10; }
                 };
 
                 result = markov.generate(options);
             }
-            catch (err)
-            {
+            catch (err) {
                 console.log(err);
                 if (markovStatusCode === 201) {
                     return 'Error: No data from this channel, but it\'s getting logged (if it\'s a real channel).';
                 }
 
-                return 'Error: ' + markovError;
+                return 'Error: something went very wrong';
             }
-            
+
             console.log(result);
 
+            return `🔖 ${await tools.unpingString(result, channel)}`;
 
-        return `🔖 ${await tools.unpingString(result, channel)}`;
-
-		} catch (err) {
-			console.log(err);
-			return 'FeelsDankMan Error';
-		}
-	}
+        } catch (err) {
+            console.log(err);
+            return 'FeelsDankMan Error';
+        }
+    }
 };
