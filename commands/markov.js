@@ -1,10 +1,8 @@
 const Markov = require('markov-strings').default;
 const redisC = require('../tools/markovLogger.js').redisC;
 const tools = require('../tools/tools.js');
-const { got } = require('./../got');
 require('dotenv').config();
 
-const MARKOV_URL = 'https://magnolia.melon095.no/api/Markov/';
 
 module.exports = {
     name: 'markov',
@@ -35,13 +33,10 @@ module.exports = {
 
             console.log(msg);
 
-            const localMarkovData = await redisC.get(`Markov:${channelName.toLowerCase()}`);
             let result;
 
-            console.log(localMarkovData);
-
-            try {
-                let jsonData = JSON.parse(localMarkovData);
+            await redisC.get(`Markov:${channelName.toLowerCase()}`, function (err, reply) {
+                let jsonData = JSON.parse(reply);
 
                 const markov = new Markov({ stateSize: 1 });
 
@@ -54,15 +49,7 @@ module.exports = {
                 };
 
                 result = markov.generate(options);
-            }
-            catch (err) {
-                console.log(err);
-                if (markovStatusCode === 201) {
-                    return 'Error: No data from this channel, but it\'s getting logged (if it\'s a real channel).';
-                }
-
-                return 'Error: something went very wrong';
-            }
+            });
 
             console.log(result);
 
