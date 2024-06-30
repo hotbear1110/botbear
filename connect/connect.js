@@ -3,8 +3,8 @@ const sql = require('../sql/index.js');
 
 const channelOptions = [process.env.TWITCH_OWNERNAME];
 
-exports.setupChannels = new Promise(async(Resolve) => {
-	(await sql.Query('SELECT username FROM Streamers WHERE `banned` = ? AND `left` = ?', [0, 0]))
+exports.setupChannels = new Promise(async (Resolve) => {
+	(await sql.Query('SELECT username FROM Streamers WHERE `banned` = ? AND `have_left` = ?', [0, 0]))
 		.map(({ username }) => (username === process.env.TWITCH_OWNERNAME) ? true : channelOptions.push(username));
 
 	console.log(`Imported channels from database: ${channelOptions}`);
