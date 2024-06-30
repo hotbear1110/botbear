@@ -2,36 +2,36 @@ const sql = require('../sql/index.js');
 const { got } = require('./../got');
 const EventSource = require('eventsource')
 
-exports.STV_user_emotes = async(uid) => {
+exports.STV_user_emotes = async (uid) => {
     try {
         const STV_api = await got(`https://7tv.io/v3/users/twitch/${uid}`).json();
 
         if (STV_api.emote_set.emotes.length) {
             const emote_list = STV_api.emote_set.emotes.reduce(
-                (emote_list, emote) => { 
+                (emote_list, emote) => {
                     emote_list.push(
-                    {
-                        "name": emote.name,
-                        "id": emote.id,
-                        "time_added": emote.timestamp,
-                        "uploader": (emote.data.owner?.username !== undefined) ? emote.data.owner.username : 'Unknown',
-                        "platform": "7TV"
-                    }
+                        {
+                            "name": emote.name,
+                            "id": emote.id,
+                            "time_added": emote.timestamp,
+                            "uploader": (emote.data.owner?.username !== undefined) ? emote.data.owner.username : 'Unknown',
+                            "platform": "7TV"
+                        }
                     ); return emote_list;
                 }, []);
-    
-            return {"emote_set": STV_api.emote_set.id, "emote_list": JSON.stringify(emote_list)}
+
+            return { "emote_set": STV_api.emote_set.id, "emote_list": JSON.stringify(emote_list) }
         }
 
-    } catch(error) {
+    } catch (error) {
         console.log(error);
     }
 }
 
-exports.STV_emotes = new Promise(async(Resolve) => {
+exports.STV_emotes = new Promise(async (Resolve) => {
     const user_ids = await sql.Query('SELECT uid FROM Streamers');
 
-    
+
 
     for (const user of user_ids) {
 
@@ -44,6 +44,7 @@ exports.STV_emotes = new Promise(async(Resolve) => {
 }
 )
 
+/*
 exports.STV_events = new Promise(async() => {
     const emote_set_ids = await sql.Query('SELECT emote_set FROM Streamers');
 
@@ -91,4 +92,4 @@ exports.STV_events = new Promise(async() => {
     });
 
 }
-)
+)*/
