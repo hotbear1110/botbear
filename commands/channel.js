@@ -18,7 +18,9 @@ module.exports = {
 			}
 			switch (input[2]) {
 				case 'join': {
-					return "Twitch has changed a bunch of how bots join channels, so the bot cannot be added to more channels for now..."
+					if (perm < 2000) {
+						return "Twitch has changed a bunch of how bots join channels, so the bot cannot be added to more channels for now..."
+					}
 					if (channel !== process.env.TWITCH_USER && channel !== process.env.TWITCH_OWNERNAME && perm < 2000) { return; }
 					let username = user.username;
 					let uid = user['user-id'];
