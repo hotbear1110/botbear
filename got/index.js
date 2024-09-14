@@ -12,7 +12,8 @@ module.exports = (() => {
                     },
                     timeout: {
                         request: 20000
-                    }
+                    },
+                    http2: true
                 });
         }
 
