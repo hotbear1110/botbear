@@ -59,7 +59,7 @@ module.exports = {
 						{
 							'role': 'system',
 							'content': (channel === 'nymn') ? `
-							nymn is currently ${(stream.islive) ? 'not ' : ''} live.
+							nymn is currently ${(!stream.islive) ? 'not ' : ''} live.
 							nymn's title is: "${stream.title}"
 							`
 								:
