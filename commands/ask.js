@@ -41,6 +41,8 @@ module.exports = {
 
 				this.ping = false;
 
+				const stream = (await sql.Query('SELECT title, islive FROM Streamers WHERE username=?', [channel]))[0];
+
 				params = {
 					'temperature': 1.2,
 					'model': 'gpt-4o',
@@ -53,6 +55,15 @@ module.exports = {
 						{
 							'role': 'system',
 							'content': `you are in a twitch chat from the streamer ${channel}. ${channel}'s chat likes to joke around, be silly, be sarcastic and talk about another streamer called forsen, the chat dislikes weebs a lot. All mods are unpaid`
+						},
+						{
+							'role': 'system',
+							'content': (channel === 'nymn') ? `
+							nymn is currently ${(stream.islive) ? 'not ' : ''} live.
+							nymn's title is: "${stream.title}"
+							`
+								:
+								``
 						},
 						{
 							'role': 'system',
