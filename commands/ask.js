@@ -41,7 +41,7 @@ module.exports = {
 
 				this.ping = false;
 
-				const stream = (await sql.Query('SELECT title, islive FROM Streamers WHERE username=?', [channel]))[0];
+				const stream = (await sql.Query('SELECT game, title, islive FROM Streamers WHERE username=?', [channel]))[0];
 
 				params = {
 					'temperature': 1.2,
@@ -61,6 +61,7 @@ module.exports = {
 							'content': (channel === 'nymn') ? `
 							nymn is currently ${(!stream.islive) ? 'not ' : ''} live.
 							nymn's title is: "${stream.title}"
+							nymn's category is: "${stream.game}"
 							`
 								:
 								``
