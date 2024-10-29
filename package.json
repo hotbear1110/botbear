@@ -29,7 +29,7 @@
     "hastebin": "^0.2.1",
     "humanize-duration": "^3.27.0",
     "markov-strings": "^3.0.1",
-    "mysql2": "^2.3.0",
+    "mysql2": "^3.9.8",
     "redis": "^4.2.0",
     "require-dir": "^1.2.0",
     "tmi.js": "^1.8.5",
