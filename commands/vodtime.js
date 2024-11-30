@@ -36,9 +36,11 @@ module.exports = {
 
 			const momentTime = moment(starttime, 'GMT')
 
+			console.log('test: ' + starttime)
+
 			starttime = momentTime.tz("Europe/Berlin").format().replace(/\+.+/,'.000Z');
 
-
+			console.log('test: ' + starttime)
 
 			let duration = response.data[0].duration;
 
