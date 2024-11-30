@@ -33,7 +33,7 @@ module.exports = {
 
 			starttime = new Date(starttime);
 			//Adding 2 hours = CEST - Adding 1 hour = CET
-			starttime = date.addHours(starttime, 2);
+			starttime = date.addHours(starttime, 1);
 
 
 			let duration = response.data[0].duration;
