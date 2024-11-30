@@ -38,7 +38,7 @@ module.exports = {
 
 			console.log('test: ' + starttime)
 
-			starttime = momentTime.tz("Europe/Berlin").format().replace(/\+.+/,'.000Z');
+			starttime = new Date(momentTime.tz("Europe/Berlin").format().replace(/\+.+/,'.000Z'));
 
 			console.log('test: ' + starttime)
 
