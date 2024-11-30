@@ -2,6 +2,7 @@ require('dotenv').config();
 const { got } = require('./../got');
 const tools = require('../tools/tools.js');
 const date = require('date-and-time');
+const moment = require('moment-timezone');
 
 module.exports = {
 	name: 'vodtime',
@@ -33,7 +34,7 @@ module.exports = {
 
 			starttime = new Date(starttime);
 			//Adding 2 hours = CEST - Adding 1 hour = CET
-			starttime = date.addHours(starttime, 1);
+			starttime = date.tz("Europe/Berlin");
 
 
 			let duration = response.data[0].duration;
