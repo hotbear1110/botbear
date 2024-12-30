@@ -4,7 +4,7 @@ const sql = require('./../sql/index.js');
 module.exports = {
 	name: 'check',
 	ping: true,
-	description: 'This command will check info about other users. Available check commands: "bb check permission NymN"(gives you the permission lvl)',
+	description: 'This command will check info about other users.',
 	permission: 100,
 	category: 'Info command',
 	execute: async (channel, user, input, perm) => {
@@ -26,63 +26,6 @@ module.exports = {
 
 				return `${username}'s permission is: ${User[0].permission}`;
             }
-			case 'points': {
-                if (input[3]) {
-                    if (input[3]?.startsWith('@')) {
-                        input[3] = input[3].substring(1);
-                    }
-                    username = input[3];
-                }
-                
-                if (input[4]) {
-                    if (input[4]?.startsWith('@')) {
-                        input[4] = input[4].substring(1);
-                    }
-                    channel = input[4];
-                }
-
-				let userchannel = [];
-				userchannel.push(`"${username}"`);
-				userchannel.push(`"${channel}"`);
-				const User_trivia = await sql.Query('SELECT points FROM MyPoints WHERE username=?', [`[${userchannel}]`]);
-
-				if (!User_trivia.length) {
-					return 'That user has no points yet :)';
-				}
-
-				if (username === user.username.toLowerCase()) {
-					return `has ${User_trivia[0].points.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} trivia points in #${channel}`;
-				}
-				return `${username} has ${User_trivia[0].points.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')} trivia points in #${channel}`;
-            }
-			case 'leaderboard': {
-                if (input[3]) {
-                    if (input[3].startsWith('@')) {
-                        input[3] = input[3].substring(1);
-                    }
-                    channel = input[3];
-                }
-
-				const Trivia_leaderboard = await sql.Query('SELECT * FROM MyPoints ORDER BY points DESC');
-
-				let leaderboard = [];
-
-				for (const user of Trivia_leaderboard) {
-					let realuser = JSON.parse(user.username);
-					if (realuser[1] === `${channel}`) {
-						leaderboard.push(`${realuser[0]}: ${user.points}`);
-					}
-				}
-				if (!leaderboard.length) {
-					return 'There are no users with points in this channel';
-				}
-
-				leaderboard = leaderboard.toString().replaceAll(',', '\n');
-
-				let hastebinlist = await tools.makehastebin(`Trivia leaderboard for #${channel}:\n\n${leaderboard}`);
-
-				return `Trivia leaderboard for #${channel}: ${hastebinlist}`;
-            }
 			case 'triviacooldown': {
                 if (input[3]) {
 					if (input[3].startsWith('@')) {
@@ -101,7 +44,7 @@ module.exports = {
 				
             }
 			default:
-				return 'Stuff available to check: permission, points, leaderboard, triviacooldown';
+				return 'Stuff available to check: permission, triviacooldown';
 			}
 		} catch (err) {
 			console.log(err);
