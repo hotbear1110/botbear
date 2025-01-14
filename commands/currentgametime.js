@@ -52,5 +52,3 @@ module.exports = {
 		}
 	}
 };
-
-document.querySelectorAll(".g-x-s-block").forEach((x) => test2.push(x.textContent)) 
