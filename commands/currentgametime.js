@@ -1,6 +1,6 @@
 const { got } = require('./../got');
 const sql = require('./../sql/index.js');
-const puppeteer = require('puppeteer');
+const htmlparser = require('node-html-parser')
 
 module.exports = {
 	name: 'currentgametime',
@@ -33,19 +33,17 @@ module.exports = {
 
             const categoryID = categoryData.data[0].id;
             
-            const browser = await puppeteer.launch();
-            const page = await browser.newPage();
-            await page.goto(`https://twitchtracker.com/${channel}/games/${categoryID}`);
+            const response = await got(`https://twitchtracker.com/${channel}/games/${categoryID}`);
+
+            const html = htmlparser.parse(response)
 
             const test = [];
 
-            await page.evaluate((document) =>
-                document.querySelectorAll(".g-x-s-block").forEach((x) => test.push(x.textContent)) 
-                );
+            html.querySelectorAll(".g-x-s-block").forEach((x) => test.push(x.textContent))
 
-            const response = test.find((x) => { if (x.includes("Time streamed")) {return true} }).split('\n')[1];
+            const time = test.find((x) => { if (x.includes("Time streamed")) {return true} }).split('\n')[1];
 
-			return response;
+			return time;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
