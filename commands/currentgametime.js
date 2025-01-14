@@ -33,7 +33,7 @@ module.exports = {
 
             const categoryID = categoryData.data[0].id;
             
-            const response = await got(`https://twitchtracker.com/${channel}/games/${categoryID}`);
+            const response = await got(`https://twitchtracker.com/${channel}/games/${categoryID}`, { headers: { 'Cookie': 'cf_clearance=5f0QiGMwCgLB6BeAD_6iU0Le1ymg6n.EZoR7AbyhQpk-1736891853-1.2.1.1-8_6lTET6UE2aydR4dJXxkx8M9Qycs92tuCf7XGdkDfgqsUsQnJdIm91IzhjMHDNCdz.Mu.8vV7WvIWYAnGk9xk8CICja60zSfGgB4YzaR.rRYV0YFwGWSD0LeC8VmL4mZJm7PVUYE7dQfln0IyFsO1lnYqWGYyt2lWrZSIDKs2rXx4FpL9JAIQTM9_gyrSX.UFyjW6SP62Bu.rnRjVinMyHXzS6m.paqu2PnB.h4GS_JmriRmBGnQldETP2l6X4A4ZMcNZ_NM7uAPrw3x1WPimeIeSuTd58.obGONo1GpST92HGDqm_tWQxauUE0xQgtE7mp74YBSbo1u9EkJCaoUA', 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64; rv:133.0) Gecko/20100101 Firefox/133.0' } });
 
             const html = htmlparser.parse(response)
 
