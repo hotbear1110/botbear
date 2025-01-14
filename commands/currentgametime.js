@@ -24,7 +24,7 @@ module.exports = {
             
             const game = gameData[0].game;
 
-            const categoryData = await got(`GET https://api.twitch.tv/helix/search/categories?query=${game}&first=1`, {
+            const categoryData = await got(`https://api.twitch.tv/helix/search/categories?query=${game}&first=1`, {
 				headers: {
 					'client-id': process.env.TWITCH_CLIENTID,
 					'Authorization': process.env.TWITCH_AUTH
