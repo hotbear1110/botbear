@@ -39,7 +39,7 @@ module.exports = {
 
             const test = [];
 
-            await page.evaluate(() =>
+            await page.evaluate((document) =>
                 document.querySelectorAll(".g-x-s-block").forEach((x) => test.push(x.textContent)) 
                 );
 
