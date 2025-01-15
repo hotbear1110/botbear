@@ -1,3 +1,4 @@
+
 const { got } = require('./../got');
 const sql = require('./../sql/index.js');
 const htmlparser = require('node-html-parser')
@@ -40,6 +41,8 @@ module.exports = {
             const test = [];
 
             html.querySelectorAll(".g-x-s-block").forEach((x) => test.push(x.textContent))
+
+            console.log(test)
 
             const time = test.find((x) => { if (x.includes("Time streamed")) {return true} }).split('\n')[1];
 
