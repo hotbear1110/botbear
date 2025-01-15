@@ -65,7 +65,7 @@ module.exports = {
                         ms: () => 'ms',
                     },
                 },
-                units: ['h', 'm', 's'],
+                units: ['h'],
                 largest: 3,
                 round: true,
                 conjunction: ' and ',
