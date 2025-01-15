@@ -39,8 +39,6 @@ module.exports = {
 
             const html = htmlparser.parse(response.body)
 
-            console.log(html)
-
             const divs = [];
 
             html.querySelectorAll(".g-x-s-block").forEach((x) => divs.push(x.textContent))
