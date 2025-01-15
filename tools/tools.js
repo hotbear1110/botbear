@@ -176,8 +176,8 @@ hastebin.createPaste(message, hasteoptions)
  * @param { number } ms 
  * @returns { String }
  */
-exports.humanizeDuration = (ms) => {
-	const options = {
+exports.humanizeDuration = (ms, set_options) => {
+	const options = set_options ?? {
 		language: 'shortEn',
 		languages: {
 			shortEn: {

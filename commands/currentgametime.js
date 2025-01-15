@@ -51,7 +51,29 @@ module.exports = {
 
             const ms = min * 60000
 
-			return `${channel} has streamed ${game} for a total of ${tools.humanizeDuration(ms)}`;
+            const humanize_options = {
+                language: 'shortEn',
+                languages: {
+                    shortEn: {
+                        y: () => 'y',
+                        mo: () => 'mo',
+                        w: () => 'w',
+                        d: () => 'd',
+                        h: () => 'h',
+                        m: () => 'm',
+                        s: () => 's',
+                        ms: () => 'ms',
+                    },
+                },
+                units: ['h', 'm', 's'],
+                largest: 3,
+                round: true,
+                conjunction: ' and ',
+                spacer: '',
+        
+            }
+
+			return `${channel} has streamed ${game} for a total of ${tools.humanizeDuration(ms, humanize_options)}`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
