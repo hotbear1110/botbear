@@ -42,7 +42,7 @@ module.exports = {
 
             html.querySelectorAll(".g-x-s-block").forEach((x) => test.push(x.textContent))
 
-            console.log(html)
+            console.log(response)
 
             const time = test.find((x) => { if (x.includes("Time streamed")) {return true} }).split('\n')[1];
 
