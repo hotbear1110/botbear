@@ -60,7 +60,7 @@ module.exports = {
                         w: () => 'w',
                         d: () => 'd',
                         h: () => ' hours',
-                        m: () => 'mins',
+                        m: () => ' mins',
                         s: () => 's',
                         ms: () => 'ms',
                     },
