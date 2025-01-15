@@ -51,7 +51,7 @@ module.exports = {
 
             const ms = min * 60000
 
-			return `${channel}'s total streamtime in ${game} is ${tools.humanizeDuration(ms)}`;
+			return `${channel} has streamed ${game} for a total of ${tools.humanizeDuration(ms)}`;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
