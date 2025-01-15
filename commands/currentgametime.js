@@ -49,7 +49,7 @@ module.exports = {
                 return 'I unable to find any data for this category'
             }
 
-            const min = test.find((x) => { if (x.includes("Time streamed")) {return true} }).split('\n')[1];
+            const min = divs.find((x) => { if (x.includes("Time streamed")) {return true} }).split('\n')[1];
 
             const ms = min * 60000
 
