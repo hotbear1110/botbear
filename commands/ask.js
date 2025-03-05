@@ -45,7 +45,7 @@ module.exports = {
 
 				params = {
 					'temperature': 1.2,
-					'model': 'mistral-large-latest',
+					'model': 'pixtral-large-latest',
 					"max_tokens": 100,
 					'messages': [
 						{
@@ -124,7 +124,7 @@ module.exports = {
 				};
 			} else {
 				params = {
-					'model': 'mistral-large-latest',
+					'model': 'pixtral-large-latest',
 					"max_tokens": 100,
 					'messages': [
 						{
