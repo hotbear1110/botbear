@@ -45,7 +45,7 @@ module.exports = {
 
 				params = {
 					'temperature': 1.2,
-					'model': 'gpt-4o',
+					'model': 'mistral-small-latest',
 					"max_tokens": 100,
 					'messages': [
 						{
@@ -124,7 +124,7 @@ module.exports = {
 				};
 			} else {
 				params = {
-					'model': 'gpt-4o',
+					'model': 'mistral-small-latest',
 					"max_tokens": 100,
 					'messages': [
 						{
@@ -139,10 +139,10 @@ module.exports = {
 				};
 			}
 
-			const url = 'https://api.openai.com/v1/chat/completions';
+			const url = 'https://api.mistral.ai/v1/chat/completions';
 
 			const headers = {
-				'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+				'Authorization': `Bearer ${process.env.MISTRAL_API_KEY}`,
 			};
 
 			try {
