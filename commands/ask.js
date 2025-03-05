@@ -129,7 +129,11 @@ module.exports = {
 					'messages': [
 						{
 							'role': 'system',
-							'content': `short answer, use plain text with no formatting or newlines, no more than 300 letters, symbols and spaces total`
+							'content': `short answer with no more than 300 characters, symbols and spaces in total`
+						},
+						{
+							'role': 'system',
+							'content': `use plain text with no formatting or newlines`
 						},
 						{
 							'role': 'user',
