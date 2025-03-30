@@ -44,7 +44,6 @@ module.exports = {
 				const stream = (await sql.Query('SELECT game, title, islive FROM Streamers WHERE username=?', [channel]))[0];
 
 				params = {
-					'temperature': 1.2,
 					'model': 'pixtral-large-latest',
 					"max_tokens": 100,
 					'messages': [
