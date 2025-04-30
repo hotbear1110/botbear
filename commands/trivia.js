@@ -96,7 +96,7 @@ module.exports = {
 			correct_answer = tools.removeTrailingStuff(correct_answer);
 
 			if (question.toLowerCase().includes('which of these') || question.toLowerCase().includes('which one of these') || question.toLowerCase().includes('which of the following') || question.toLowerCase().includes('all of the following') || question.toLowerCase().includes('which one of the following')) {
-				return [`(Trivia) [${category}] Question: ${question} - [${shuffled}]`, 'FeelsDankMan you already got the hint.', correct_answer];
+				return [`(Trivia) [${category}] Question: ${question} - [ ${shuffled} ]`, 'FeelsDankMan you already got the hint.', correct_answer];
 			} else {
 				return [`(Trivia) [${category}] Question: ${question}`, shuffled, correct_answer];
 			}
