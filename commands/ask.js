@@ -57,6 +57,10 @@ module.exports = {
 						},
 						{
 							'role': 'system',
+							'content': `The current date and time is: ${new Date().toLocaleDateString('en-US', { timeZone: 'Europe/Berlin' })}`
+						},
+						{
+							'role': 'system',
 							'content': (channel === 'nymn') ? `
 							nymn is currently ${(!stream.islive) ? 'not ' : ''} live.
 							nymn's title is: "${stream.title}"
@@ -108,8 +112,8 @@ module.exports = {
 								``
 						},
 						{
-							'role': 'user',
-							'content': `I am a user in the twitch chat from a streamer called ${channel}, my username is ${user.username}`
+							'role': 'system',
+							'content': `You are chatting with a twitch user in a chat from a streamer called ${channel}, the chatters username is ${user.username}`
 						},
 						{
 							'role': 'system',
