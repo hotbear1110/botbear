@@ -57,7 +57,7 @@ module.exports = {
 						},
 						{
 							'role': 'system',
-							'content': `The current date and time is: ${(new Date()).toLocaleString('en-US', { timeZone: 'Europe/Berlin' })}`
+							'content': `The current date and time in central europe is: ${(new Date()).toLocaleString('en-US', { timeZone: 'Europe/Berlin' })}`
 						},
 						{
 							'role': 'system',
