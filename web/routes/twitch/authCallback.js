@@ -59,17 +59,17 @@ module.exports = (function () {
         }
 
 
-        const hasID = await sql.Query('SELECT * FROM Auth_user WHERE uid = ?', [twitchRequest.data[0].id]);
+        const hasID = await sql.Query('SELECT * FROM Auth_users WHERE uid = ?', [twitchRequest.data[0].id]);
 
         const expires_in = Date.now() + userAuth.expires_in;
 
         if (hasID.length) {
-          await sql.Query('UPDATE Auth_user SET access_token = ?, refresh_token = ?, expires_in = ? WHERE uid = ? ', [userAuth.access_token, userAuth.refresh_token, expires_in, twitchRequest.data[0].id]);
+          await sql.Query('UPDATE Auth_users SET access_token = ?, refresh_token = ?, expires_in = ? WHERE uid = ? ', [userAuth.access_token, userAuth.refresh_token, expires_in, twitchRequest.data[0].id]);
 
           return router;
         }
 
-          await sql.Query(`INSERT INTO Auth_user 
+          await sql.Query(`INSERT INTO Auth_users 
         			(uid, access_token, refresh_token, expires_in) 
             			values 
         			(?, ?, ?, ?)`,

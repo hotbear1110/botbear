@@ -31,14 +31,14 @@ exports.refreshToken = async function(uid, refresh_token) {
 
     const expires_in = Date.now() + twitchRefresh.expires_in;
 
-    await sql.Query('UPDATE Auth_user SET access_token = ?, expires_in = ? WHERE uid = ?',
+    await sql.Query('UPDATE Auth_users SET access_token = ?, expires_in = ? WHERE uid = ?',
         [new_access_token, expires_in, uid]);
 
     return new_access_token;
 };
 
 exports.fetchToken = async function(uid) {
-    const twitch_user = await sql.Query('SELECT * FROM Auth_user WHERE uid = ?',[uid]);
+    const twitch_user = await sql.Query('SELECT * FROM Auth_users WHERE uid = ?',[uid]);
 
     if (!twitch_user.length){
         return { no_auth: true };
