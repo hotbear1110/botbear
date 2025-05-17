@@ -34,6 +34,7 @@
         { router: 'resolved', path: '/resolved'},
         { router: 'twitch/authCallback', path: '/twitch/auth/callback' },
         { router: 'twitch/auth', path: '/twitch/auth'},
+        { router: 'twitch/success', path: '/twitch/success'},
     ];
     
     const express = require('express');

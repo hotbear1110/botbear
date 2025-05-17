@@ -66,6 +66,8 @@ module.exports = (function () {
         if (hasID.length) {
           await sql.Query('UPDATE Auth_users SET access_token = ?, refresh_token = ?, expires_in = ? WHERE uid = ? ', [userAuth.access_token, userAuth.refresh_token, expires_in, twitchRequest.data[0].id]);
 
+          res.redirect('../success');
+
           return router;
         }
 
@@ -76,7 +78,7 @@ module.exports = (function () {
 				[twitchRequest.data[0].id, userAuth.access_token, userAuth.refresh_token, expires_in]
 				);
 
-        res.redirect('../commands');
+        res.redirect('../success');
 
         } else {
             res.redirect('/#' +
