@@ -1,5 +1,6 @@
 const redis = require('./../tools/redis.js');
 const { got } = require('./../got');
+const twitchAuth = require('../tools/twitchAuth.js');
 
 module.exports = {
 	name: 'mute',
@@ -45,10 +46,23 @@ module.exports = {
             mute(duration / 1000);
 
 			if (channel === 'nymn') {
+				const twitch_user = await twitchAuth.fetchToken(uid);
+
+				if (twitch_user.error) {
+					return 'Something went wrong when refreshing user token DinkDonk @HotBear1110';
+				}
+	
+				if (twitch_user.no_auth) {
+					return 'Bot is not authorized DinkDonk @HotBear1110';
+				}
+	
+	
+				const access_token = twitch_user.access_token;
+
 				await got.post(`https://api.twitch.tv/helix/moderation/bans?broadcaster_id=62300805&moderator_id=${process.env.TWITCH_UID}`, {
 					headers: {
 						'client-id': process.env.TWITCH_USER_CLIENTID,
-						'Authorization': process.env.TWITCH_USER_AUTH,
+						'Authorization': access_token,
 						'Content-Type': 'application/json'
 					},
 					json: {
