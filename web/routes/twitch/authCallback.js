@@ -76,6 +76,7 @@ module.exports = (function () {
 				[twitchRequest.data[0].id, userAuth.access_token, userAuth.refresh_token, expires_in]
 				);
 
+        res.redirect('../commands');
 
         } else {
             res.redirect('/#' +
