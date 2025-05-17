@@ -46,7 +46,7 @@ module.exports = {
             mute(duration / 1000);
 
 			if (channel === 'nymn') {
-				const twitch_user = await twitchAuth.fetchToken(uid);
+				const twitch_user = await twitchAuth.fetchToken(user['user-id']);
 
 				if (twitch_user.error) {
 					return 'Something went wrong when refreshing user token DinkDonk @HotBear1110';
