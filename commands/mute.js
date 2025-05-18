@@ -1,6 +1,7 @@
 const redis = require('./../tools/redis.js');
 const { got } = require('./../got');
 const twitchAuth = require('../tools/twitchAuth.js');
+const sql = require('./../sql/index.js');
 
 module.exports = {
 	name: 'mute',

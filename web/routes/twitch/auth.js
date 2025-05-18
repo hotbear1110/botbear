@@ -1,6 +1,5 @@
 require('dotenv').config();
 const querystring = require('querystring');
-const sql = require('../../../sql/index.js');
 
 module.exports = (function () {
     const router = require('express').Router();
