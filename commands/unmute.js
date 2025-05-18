@@ -1,6 +1,7 @@
 const redis = require('./../tools/redis.js');
 const { got } = require('./../got');
 const twitchAuth = require('../tools/twitchAuth.js');
+const sql = require('./../sql/index.js');
 
 module.exports = {
 	name: 'unmute',
@@ -46,7 +47,7 @@ module.exports = {
 
 				await got.delete(`https://api.twitch.tv/helix/moderation/bans?broadcaster_id=62300805&moderator_id=${process.env.TWITCH_UID}&user_id=268612479`, {
 					headers: {
-						'client-id': process.env.TWITCH_USER_CLIENTID,
+						'client-id': process.env.TWITCH_CLIENTID,
 						'Authorization': access_token,
 					}
 				} ).json();

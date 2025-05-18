@@ -23,8 +23,8 @@ module.exports = {
 
             const profile = await got('https://api.twitch.tv/helix/users', {
                 headers: {
-                    'client-id': process.env.TWITCH_USER_CLIENTID,
-                    'Authorization': process.env.TWITCH_USER_AUTH
+                    'client-id': process.env.TWITCH_CLIENTID,
+                    'Authorization': process.env.TWITCH_AUTH
                 },
                 searchParams: {
                     'login': username

@@ -22,8 +22,8 @@ module.exports = {
 
             const liveCheck = await got('https://api.twitch.tv/helix/streams', {
                 headers: {
-                    'client-id': process.env.TWITCH_USER_CLIENTID,
-                    'Authorization': process.env.TWITCH_USER_AUTH
+                    'client-id': process.env.TWITCH_CLIENTID,
+                    'Authorization': process.env.TWITCH_AUTH
                 },
                 searchParams: {
                     'user_login': realchannel
@@ -56,8 +56,8 @@ module.exports = {
 
             const vodList = await got('https://api.twitch.tv/helix/videos', {
                 headers: {
-                    'client-id': process.env.TWITCH_USER_CLIENTID,
-                    'Authorization': process.env.TWITCH_USER_AUTH
+                    'client-id': process.env.TWITCH_CLIENTID,
+                    'Authorization': process.env.TWITCH_AUTH
                 },
                 searchParams: {
                     'user_id': userID.id,

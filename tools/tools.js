@@ -978,7 +978,7 @@ exports.sendWhisper = async function (sender, recipient, message) {
 		await got.post(`https://api.twitch.tv/helix/whispers?from_user_id=${sender}&to_user_id=${recipient}`, {
 		headers: {
 			'client-id': process.env.TWITCH_CLIENTID,
-			'Authorization': process.env.TWITCH_USER_AUTH,
+			'Authorization': process.env.TWITCH_AUTH,
 			'Content-Type': 'application/json'
 		},
 		json: {
