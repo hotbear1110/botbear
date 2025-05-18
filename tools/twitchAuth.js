@@ -38,6 +38,7 @@ exports.refreshToken = async function(uid, refresh_token) {
 };
 
 exports.fetchToken = async function(uid) {
+    console.log(uid)
     const twitch_user = await sql.Query('SELECT * FROM Auth_users WHERE uid = ?',[uid]);
 
     if (!twitch_user.length){
