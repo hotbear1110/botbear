@@ -65,7 +65,7 @@ module.exports = {
 				await got.post(`https://api.twitch.tv/helix/moderation/bans?broadcaster_id=62300805&moderator_id=${process.env.TWITCH_UID}`, {
 					headers: {
 						'client-id': process.env.TWITCH_CLIENTID,
-						'Authorization': access_token,
+						'Authorization': 'Bearer ' + access_token,
 						'Content-Type': 'application/json'
 					},
 					json: {
