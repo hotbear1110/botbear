@@ -1,5 +1,6 @@
 const redis = require('./../tools/redis.js');
 const { got } = require('./../got');
+const twitchAuth = require('../tools/twitchAuth.js');
 
 module.exports = {
 	name: 'unmute',
@@ -29,10 +30,24 @@ module.exports = {
             await redis.Get().Set(`${channel}:unmute_time`, 0);
 
 			if (channel === 'nymn') {
+				const uid = await sql.Query('SELECT uid FROM Streamers WHERE username = ?',[channel])[0]?.uid;
+				
+				const twitch_user = await twitchAuth.fetchToken(uid);
+
+				if (twitch_user.error) {
+					return 'Something went wrong when refreshing user token DinkDonk @HotBear1110';
+				}
+
+				if (twitch_user.no_auth) {
+					return 'Bot is not authorized DinkDonk @HotBear1110';
+				}
+
+				const access_token = twitch_user.access_token;
+
 				await got.delete(`https://api.twitch.tv/helix/moderation/bans?broadcaster_id=62300805&moderator_id=${process.env.TWITCH_UID}&user_id=268612479`, {
 					headers: {
 						'client-id': process.env.TWITCH_USER_CLIENTID,
-						'Authorization': process.env.TWITCH_USER_AUTH,
+						'Authorization': access_token,
 					}
 				} ).json();
 			}
