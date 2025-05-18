@@ -31,7 +31,7 @@ module.exports = {
             await redis.Get().Set(`${channel}:unmute_time`, 0);
 
 			if (channel === 'nymn') {
-				const uid = await sql.Query('SELECT uid FROM Streamers WHERE username = ?',[channel])[0]?.uid;
+				const uid = (await sql.Query('SELECT uid FROM Streamers WHERE username = ?',[channel]))[0]?.uid;
 				
 				const twitch_user = await twitchAuth.fetchToken(uid);
 

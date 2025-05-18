@@ -47,7 +47,7 @@ module.exports = {
             mute(duration / 1000);
 
 			if (channel === 'nymn') {
-				const uid = await sql.Query('SELECT uid FROM Streamers WHERE username = ?',[channel])[0]?.uid;
+				const uid = (await sql.Query('SELECT uid FROM Streamers WHERE username = ?',[channel]))[0]?.uid;
 				
 				const twitch_user = await twitchAuth.fetchToken(uid);
 
