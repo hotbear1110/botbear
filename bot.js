@@ -630,9 +630,13 @@ async function triviaTimeout(channel, triviaTimeID, answer) {
     setTimeout(() => {
         if (activetrivia[channel]) {
             if (triviaTime[channel] === triviaTimeID) {
-                delete activetrivia[channel];
-                delete triviaanswer[channel];
-                delete triviaHints[channel];
+		delete activetrivia[channel];
+		delete triviaanswer[channel];
+		delete triviaHints[channel];
+		delete triviaHints2[channel];
+		delete gothint[channel];
+		delete gothint2[channel];
+		delete triviaTime[channel];
 
                 new messageHandler(channel, `.me The trivia timed out after 60 seconds. The answer was: "${answer}"`).newMessage();
             }
