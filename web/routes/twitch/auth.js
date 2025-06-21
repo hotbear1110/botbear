@@ -11,7 +11,7 @@ module.exports = (function () {
     router.get('/', async (req, res) => {
 
         let state = generateRandomString(16);
-        let scope = 'moderator:manage:banned_users+chat:read+chat:write';
+        let scope = 'moderator:manage:banned_users chat:read';
       
         res.redirect('https://id.twitch.tv/oauth2/authorize?' +
           querystring.stringify({
