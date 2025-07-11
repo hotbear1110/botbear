@@ -2,7 +2,6 @@ require('dotenv').config();
 const sql = require('../sql/index.js');
 const { got } = require('./../got');
 const querystring = require('querystring');
-const sql = require('./../sql/index.js');
 
 const channelOptions = [process.env.TWITCH_OWNERNAME];
 
