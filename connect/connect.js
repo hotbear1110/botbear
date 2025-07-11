@@ -30,6 +30,8 @@ exports.setupChannels = new Promise(async (Resolve) => {
 		console.log(err);
 	}
 
+	console.log(refresh);
+
 	
 	if (!refresh.error) {
 		await sql.Query('UPDATE Auth_users SET access_token = ?, refresh_token = ?, expires_in = ? WHERE uid = ?', [refresh.access_token, refresh.refresh_token, refresh.expires_in, process.env.TWITCH_UID]);
