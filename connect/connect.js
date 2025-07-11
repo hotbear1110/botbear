@@ -30,7 +30,7 @@ exports.setupChannels = new Promise(async (Resolve) => {
 		console.log(err);
 	}
 
-	console.log(refresh);
+	console.log(await refresh);
 
 	
 	if (!refresh.error) {
