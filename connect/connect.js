@@ -29,9 +29,8 @@ exports.setupChannels = new Promise(async (Resolve) => {
 		await sql.Query('UPDATE Auth_users SET access_token = ?, refresh_token = ?, WHERE uid = ? ', [refesh.access_token, refesh.refresh_token, process.env.TWITCH_UID]);
 
 		password = refesh.access_token;
+		Resolve();
 	}
-
-	Resolve();
 });
 
 exports.TMISettings = {
