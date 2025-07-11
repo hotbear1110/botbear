@@ -16,7 +16,7 @@ exports.setupChannels = new Promise(async (Resolve) => {
 
 	console.log(`Imported channels from database: ${channelOptions}`);
 
-	const old_refresh_token = await sql.Query('SELECT refresh_token FROM Auth_users WHERE uid = ?', [process.env.TWITCH_UID]);
+	const old_refresh_token = (await sql.Query('SELECT refresh_token FROM Auth_users WHERE uid = ?', [process.env.TWITCH_UID]))[0].refresh_token;
 	let refresh;
 	try {
 		refresh = await got.post('https://id.twitch.tv/oauth2/token?' +
