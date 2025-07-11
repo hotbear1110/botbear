@@ -1,13 +1,37 @@
 require('dotenv').config();
 const sql = require('../sql/index.js');
+const { got } = require('./../got');
+const querystring = require('querystring');
+const sql = require('./../sql/index.js');
 
 const channelOptions = [process.env.TWITCH_OWNERNAME];
+
+const client_id = process.env.TWITCH_CLIENTID;
+const client_secret = process.env.TWITCH_SECRET;
+let password = process.env.TWITCH_PASSWORD;
 
 exports.setupChannels = new Promise(async (Resolve) => {
 	(await sql.Query('SELECT username FROM Streamers WHERE `banned` = ? AND `have_left` = ?', [0, 0]))
 		.map(({ username }) => (username === process.env.TWITCH_OWNERNAME) ? true : channelOptions.push(username));
 
 	console.log(`Imported channels from database: ${channelOptions}`);
+
+	const old_refresh_token = await sql.Query('SELECT refresh_token FROM Auth_users WHERE uid = ?', [process.env.TWITCH_UID]);
+
+	const refesh = await got.post('https://id.twitch.tv/oauth2/token?' +
+			  querystring.stringify({
+				client_id: client_id,
+				client_secret: client_secret,
+				grant_type: 'refresh_token',
+				refresh_token: old_refresh_token
+			  }))
+	
+	if (!refesh.error) {
+		await sql.Query('UPDATE Auth_users SET access_token = ?, refresh_token = ?, WHERE uid = ? ', [refesh.access_token, refesh.refresh_token, process.env.TWITCH_UID]);
+
+		password = refesh.access_token;
+	}
+
 	Resolve();
 });
 
@@ -21,7 +45,7 @@ exports.TMISettings = {
 	},
 	identity: {
 		username: process.env.TWITCH_USER,
-		password: process.env.TWITCH_PASSWORD,
+		password: password,
 	},
 	channels: channelOptions,
 };
