@@ -25,9 +25,9 @@ exports.setupChannels = new Promise(async (Resolve) => {
 			  client_secret: client_secret,
 			  grant_type: 'refresh_token',
 			  refresh_token: old_refresh_token
-			}));
+			})).json();
 
-			console.log(await refresh);
+			console.log(refresh);
 
 	
 			if (!refresh.error) {
