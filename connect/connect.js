@@ -1,4 +1,5 @@
 require('dotenv').config();
+const { reject } = require('underscore');
 const sql = require('../sql/index.js');
 const { got } = require('./../got');
 const querystring = require('querystring');
@@ -16,21 +17,28 @@ exports.setupChannels = new Promise(async (Resolve) => {
 	console.log(`Imported channels from database: ${channelOptions}`);
 
 	const old_refresh_token = await sql.Query('SELECT refresh_token FROM Auth_users WHERE uid = ?', [process.env.TWITCH_UID]);
-
-	const refesh = await got.post('https://id.twitch.tv/oauth2/token?' +
-			  querystring.stringify({
-				client_id: client_id,
-				client_secret: client_secret,
-				grant_type: 'refresh_token',
-				refresh_token: old_refresh_token
-			  }))
-	
-	if (!refesh.error) {
-		await sql.Query('UPDATE Auth_users SET access_token = ?, refresh_token = ?, WHERE uid = ? ', [refesh.access_token, refesh.refresh_token, process.env.TWITCH_UID]);
-
-		password = refesh.access_token;
-		Resolve();
+	let refresh;
+	try {
+		refresh = await got.post('https://id.twitch.tv/oauth2/token?' +
+			querystring.stringify({
+			  client_id: client_id,
+			  client_secret: client_secret,
+			  grant_type: 'refresh_token',
+			  refresh_token: old_refresh_token
+			}));
+	} catch (err) {
+		console.log(err);
 	}
+
+	
+	if (!refresh.error) {
+		await sql.Query('UPDATE Auth_users SET access_token = ?, refresh_token = ?, expires_in = ?, WHERE uid = ? ', [refresh.access_token, refresh.refresh_token, refresh.expires_in, process.env.TWITCH_UID]);
+
+		password = refresh.access_token;
+		Resolve();
+		return;
+	}
+	throw('');
 });
 
 exports.TMISettings = {
