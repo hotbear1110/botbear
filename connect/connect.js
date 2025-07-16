@@ -25,6 +25,7 @@ exports.setupChannels = new Promise(async (Resolve) => {
 			grant_type: 'refresh_token',
 			refresh_token: old_refresh_token
 		})).json();
+		console.log('test');
 
 		if (!refresh.error) {
 			const expires_in = Date.now() + refresh.expires_in;
