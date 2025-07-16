@@ -11,7 +11,7 @@ const redis = require('./tools/redis.js');
 const whisperHandler = require('./tools/whisperHandler.js').whisperHandler;
 
 const cc = new tmi.client(login.TMISettings);
-
+console.log(login.TMISettings);
 cc.on('message', onMessageHandler);
 cc.on('connected', onConnectedHandler);
 cc.on('pong', async (latency) => {
