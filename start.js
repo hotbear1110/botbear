@@ -1,6 +1,5 @@
 (async () => {
     require('dotenv').config();
-    await require('./connect/connect.js').setupChannels;
     const sql = require('./sql/index.js');
 
     const sql_opts = {
@@ -21,6 +20,8 @@
 
     const got = require('./got');
     await got.Setup();
+
+    await require('./connect/connect.js').setupChannels;
 
     /** @type { Array<SQL.Streamers> } */
     const channels = await sql.Query('SELECT username, uid FROM Streamers');
