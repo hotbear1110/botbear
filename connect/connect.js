@@ -31,7 +31,6 @@ exports.setupChannels = new Promise(async (Resolve) => {
 	console.log(`Imported channels from database: ${channelOptions}`);
 
 	const old_refresh_token = (await sql.Query('SELECT refresh_token FROM Auth_users WHERE uid = ?', [process.env.TWITCH_UID]))[0].refresh_token;
-	console.log('test');
 
 	const refresh = await got.post('https://id.twitch.tv/oauth2/token?' +
 		querystring.stringify({
@@ -47,7 +46,6 @@ exports.setupChannels = new Promise(async (Resolve) => {
 			await sql.Query('UPDATE Auth_users SET access_token = ?, refresh_token = ?, expires_in = ? WHERE uid = ?', [refresh.access_token, refresh.refresh_token, expires_in, process.env.TWITCH_UID]);
 	
 			this.TMISettings.identity.password = 'oauth:' + refresh.access_token;
-			console.log('setupChannel - ' + password);
 		} else {
 			throw('setupChannels error');
 		} 
