@@ -1,5 +1,6 @@
 (async () => {
     require('dotenv').config();
+    await require('./connect/connect.js').setupChannels;
     const sql = require('./sql/index.js');
 
     const sql_opts = {
@@ -55,7 +56,7 @@
     await redis.Subscribe('EventSub');
 
     require('./tools/markovLogger.js');
-    await (require('./connect/connect.js').setupChannels);
+    require('./bot.js');
     require('./loops/loops.js');
     //await require('./tools/fetchEmotes.js').STV_emotes;
     //require('./tools/fetchEmotes.js').STV_events;

@@ -1,5 +1,4 @@
 require('dotenv').config();
-const { reject } = require('underscore');
 const sql = require('../sql/index.js');
 const { got } = require('./../got');
 const querystring = require('querystring');
