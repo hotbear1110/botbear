@@ -34,12 +34,10 @@ exports.setupChannels = new Promise(async (Resolve) => {
 	
 			password = 'oauth:' + refresh.access_token;
 			console.log('setupChannel - ' + password);
-			Resolve(password);
-			return;
 		} else {
 			throw('setupChannels error');
 		}
-
+		Resolve();
 });
 
 exports.TMISettings = {
