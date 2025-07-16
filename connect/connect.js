@@ -47,7 +47,7 @@ exports.setupChannels = new Promise(async (Resolve) => {
 
 			await sql.Query('UPDATE Auth_users SET access_token = ?, refresh_token = ?, expires_in = ? WHERE uid = ?', [refresh.access_token, refresh.refresh_token, expires_in, process.env.TWITCH_UID]);
 	
-			TMISettings.identity.password = 'oauth:' + refresh.access_token;
+			this.TMISettings.identity.password = 'oauth:' + refresh.access_token;
 			console.log('setupChannel - ' + password);
 		} else {
 			throw('setupChannels error');
