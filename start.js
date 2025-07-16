@@ -56,6 +56,7 @@
     await redis.Subscribe('EventSub');
 
     require('./tools/markovLogger.js');
+    console.log('test');
     require('./bot.js');
     require('./loops/loops.js');
     //await require('./tools/fetchEmotes.js').STV_emotes;
