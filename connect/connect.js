@@ -33,7 +33,7 @@ exports.setupChannels = new Promise(async (Resolve) => {
 				await sql.Query('UPDATE Auth_users SET access_token = ?, refresh_token = ?, expires_in = ? WHERE uid = ?', [refresh.access_token, refresh.refresh_token, expires_in, process.env.TWITCH_UID]);
 		
 				password = 'oauth:' + refresh.access_token;
-				console.log(password);
+				console.log('setupChannel - ' + password);
 				Resolve();
 				return;
 			}
