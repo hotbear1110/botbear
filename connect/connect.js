@@ -18,29 +18,27 @@ exports.setupChannels = new Promise(async (Resolve) => {
 
 	const old_refresh_token = (await sql.Query('SELECT refresh_token FROM Auth_users WHERE uid = ?', [process.env.TWITCH_UID]))[0].refresh_token;
 
-	try {
-		const refresh = await got.post('https://id.twitch.tv/oauth2/token?' +
-			querystring.stringify({
-			  client_id: client_id,
-			  client_secret: client_secret,
-			  grant_type: 'refresh_token',
-			  refresh_token: old_refresh_token
-			})).json();
-	
-			if (!refresh.error) {
-				const expires_in = Date.now() + refresh.expires_in;
+	const refresh = await got.post('https://id.twitch.tv/oauth2/token?' +
+		querystring.stringify({
+			client_id: client_id,
+			client_secret: client_secret,
+			grant_type: 'refresh_token',
+			refresh_token: old_refresh_token
+		})).json();
 
-				await sql.Query('UPDATE Auth_users SET access_token = ?, refresh_token = ?, expires_in = ? WHERE uid = ?', [refresh.access_token, refresh.refresh_token, expires_in, process.env.TWITCH_UID]);
-		
-				password = 'oauth:' + refresh.access_token;
-				console.log('setupChannel - 	' + password);
-				Resolve(password);
-				return;
-			}
-	} catch (err) {
-		console.log(err);
-		throw('');
-	}
+		if (!refresh.error) {
+			const expires_in = Date.now() + refresh.expires_in;
+
+			await sql.Query('UPDATE Auth_users SET access_token = ?, refresh_token = ?, expires_in = ? WHERE uid = ?', [refresh.access_token, refresh.refresh_token, expires_in, process.env.TWITCH_UID]);
+	
+			password = 'oauth:' + refresh.access_token;
+			console.log('setupChannel - ' + password);
+			Resolve(password);
+			return;
+		} else {
+			throw('setupChannels error');
+		}
+
 });
 
 exports.TMISettings = {
