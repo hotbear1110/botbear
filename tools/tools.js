@@ -551,7 +551,7 @@ exports.joinEventSub = async function (uid) {
 		body: data
 	});
 	} catch(err) {
-		console.log(err);
+		console.log('Join Event Sub Error - ' + err);
 	}
 
 	return true;

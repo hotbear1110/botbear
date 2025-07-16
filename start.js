@@ -50,13 +50,13 @@
 
     await require('./commands/index.js').Load();
     await require('./connect/connect.js').setupChannels;
+    console.log('test');
 
     const redis = require('./tools/redis.js').Get();
     await redis.Connect();
     await redis.Subscribe('EventSub');
 
     require('./tools/markovLogger.js');
-    console.log('test');
     require('./bot.js');
     require('./loops/loops.js');
     //await require('./tools/fetchEmotes.js').STV_emotes;
