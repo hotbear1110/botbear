@@ -29,7 +29,6 @@
     /// As such if in the future there would be changes to uid's such as adding a letter or something, we would have a big problem.
     /// We should change the uid's to strings in the database.
     /// And remove that String casting.
-    console.log('test1');
     const checkOwner = channels.find(({ uid }) => String(uid) === process.env.TWITCH_OWNERUID);
     if (!checkOwner) {
         const user = {
@@ -48,9 +47,9 @@
         };
         await joinChannel(opts);
     }
-    console.log('test');
 
     await require('./commands/index.js').Load();
+    console.log('test');
     await require('./connect/connect.js').setupChannels;
     
     const redis = require('./tools/redis.js').Get();
