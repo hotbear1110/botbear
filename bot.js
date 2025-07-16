@@ -18,7 +18,7 @@ cc.on('pong', async (latency) => {
 	console.log(latency);
 });
 
-cc.connect().catch(console.log(error));
+cc.connect().catch((err) => {console.log(err)});
 
 
 cc.on('notice', (channel, msgid, message) => {
