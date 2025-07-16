@@ -37,7 +37,7 @@ exports.setupChannels = new Promise(async (Resolve) => {
 		} else {
 			throw('setupChannels error');
 		}
-		Resolve();
+		Resolve(password);
 });
 
 exports.TMISettings = {
