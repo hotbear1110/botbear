@@ -55,7 +55,7 @@
     await redis.Subscribe('EventSub');
 
     require('./tools/markovLogger.js');
-    await (await require('./connect/connect.js').setupChannels).then(require('./bot.js'));
+    await (require('./connect/connect.js').setupChannels).then(require('./bot.js'));
     require('./loops/loops.js');
     //await require('./tools/fetchEmotes.js').STV_emotes;
     //require('./tools/fetchEmotes.js').STV_events;
