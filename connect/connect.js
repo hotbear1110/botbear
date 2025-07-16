@@ -10,6 +10,21 @@ const client_id = process.env.TWITCH_CLIENTID;
 const client_secret = process.env.TWITCH_SECRET;
 let password = process.env.TWITCH_PASSWORD;
 
+exports.TMISettings = {
+	options: {
+		joinInterval: process.env.BOT_VERIFIED ? 300 : 2000,
+	},
+	connection: {
+		secure: true,
+		reconnect: true,
+	},
+	identity: {
+		username: process.env.TWITCH_USER,
+		password: password,
+	},
+	channels: channelOptions,
+};
+
 exports.setupChannels = new Promise(async (Resolve) => {
 	(await sql.Query('SELECT username FROM Streamers WHERE `banned` = ? AND `have_left` = ?', [0, 0]))
 		.map(({ username }) => (username === process.env.TWITCH_OWNERNAME) ? true : channelOptions.push(username));
@@ -39,18 +54,3 @@ exports.setupChannels = new Promise(async (Resolve) => {
 		} 
 		Resolve(password);
 });
-
-exports.TMISettings = {
-	options: {
-		joinInterval: process.env.BOT_VERIFIED ? 300 : 2000,
-	},
-	connection: {
-		secure: true,
-		reconnect: true,
-	},
-	identity: {
-		username: process.env.TWITCH_USER,
-		password: password,
-	},
-	channels: channelOptions,
-};
