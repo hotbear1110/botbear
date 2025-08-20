@@ -18,6 +18,7 @@ module.exports = {
 			}
 
 			input.shift();
+			input.shift();
 
 			const msg = input.toString();
 			
