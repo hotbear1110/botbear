@@ -17,7 +17,11 @@ module.exports = {
 				return;
 			}
 
-            const prompts = await sql.Query('SELECT Response FROM Ask',);
+			input.shift();
+
+			const msg = input.toString();
+			
+            const prompts = await sql.Query(`SELECT Response FROM Ask WHERE Response LIKE "%${msg}%"`,);
 
             const prompt =  prompts[~~(Math.random() * prompts.length - 1)];
 
