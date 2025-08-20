@@ -26,6 +26,10 @@ module.exports = {
 
             const prompt =  prompts[~~(Math.random() * prompts.length - 1)];
 
+			if (!prompt.Response) {
+				return `Could not find any ask with: ${msg}`;
+			}
+
 			return prompt.Response;
 		} catch (err) {
 			console.log(err);
