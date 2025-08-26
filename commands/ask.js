@@ -89,7 +89,6 @@ module.exports = {
 							JanZ11 - A VIP that is very nice and wholesome, he likes to spam dance emotes to good music.
 							h_h410 - Maybe a bot, prob not, no one knows for sure.
 							Backous - A VIP, he is kinda weird but a good guy, he is american tho and always drunk.
-							Sotiris_Ael (sotiris) - A VIP, he is maybe kinda racist, but only jokingly he says. (All vips are racists)
 							Djoka - the only one with the Dj*ka pass. (Sotiris thinks he also has the pass ofc)
 							Nammerino - Turkish
 							Supibot - An amazing twitch bot that has giga many features.
