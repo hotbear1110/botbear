@@ -18,66 +18,52 @@ module.exports = {
 			if (module.exports.permission > perm) {
 				return;
 			}
-            let realchannel = input[2] ?? channel;
+			
+ 			if (!process.env.THREELETTERAPI_CLIENTID) {
+				return 'FeelsDankMan Error: THREELETTERAPI_CLIENTID isn`t set';
+			}
 
-            const liveCheck = await got('https://api.twitch.tv/helix/streams', {
-                headers: {
-                    'client-id': process.env.TWITCH_CLIENTID,
-                    'Authorization': process.env.TWITCH_AUTH
-                },
-                searchParams: {
-                    'user_login': realchannel
-                },
-                throwHttpErrors: false
-            }).json();
+			const realchannel = input[2] ?? channel;
 
-            if (liveCheck.status === 400) {
-                return `Could not find user: "${realchannel}"`;
-            }
+			const live_thumbnail = await got("https://static-cdn.jtvnw.net/previews-ttv/live_user_nymn-0x0.jpg").json();
 
-            if (liveCheck.data.length) {
-                
-                let thumbnail = liveCheck.data[0].thumbnail_url.replace('{width}', '1920').replace('{height}', '1080') + '?cum';
+			console.log(live_thumbnail);
 
-                let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-              
-                for (let i = 0; i < 5; i++) {
-                    thumbnail += possible.charAt(Math.floor(Math.random() * possible.length));
-                }
+			const query = `
+			query {
+   					user(login:"${realchannel}") {
+						videoShelves {
+	  						edges {
+		 						node {
+		 							items {
+		  								...on Video {
+											previewThumbnailURL(width:0 height:0)
+		   									}
+			 							}
+		  							}
+		  						}
+		 					}
+	   					}
+					}`;
 
-                return thumbnail;
-            }
+			const ThreeLetterApiCall = await got.post('https://gql.twitch.tv/gql', {
+				headers: {
+                    'Authorization': process.env.THREELETTERAPI_AUTH,
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					query: query
+				}),
+			}).json();
 
-            const [userID] = await got(`https://api.ivr.fi/v2/twitch/user?login=${realchannel}`).json();
+            
+			if (!ThreeLetterApiCall.data.user) {
+				return 'FeelsDankMan Something went wrong!';
+			}
 
-            if (userID.status === 404) {
-                return `Could not find user: "${realchannel}"`;
-            }
-
-            const vodList = await got('https://api.twitch.tv/helix/videos', {
-                headers: {
-                    'client-id': process.env.TWITCH_CLIENTID,
-                    'Authorization': process.env.TWITCH_AUTH
-                },
-                searchParams: {
-                    'user_id': userID.id,
-                    'type': 'archive',
-                    'first': 1
-                }
-            }).json();
-
-            if (!vodList.data.length) {
-                return 'That user is offline and has no vods';
-            }
-
-            let thumbnail = vodList.data[0].thumbnail_url.replace('%{width}', '1920').replace('%{height}', '1080') + '?cum';
-
-            let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-              
-            for (let i = 0; i < 5; i++) {
-                thumbnail += possible.charAt(Math.floor(Math.random() * possible.length));
-            }
-
+            console.log(ThreeLetterApiCall);
+            const thumbnail = ThreeLetterApiCall["data"]["user"]["videoShelves"]["edges"][1]["node"]["items"][0]["previewThumbnailURL"];
+							
 			return '[OFFLINE] | VOD Thumbnail: ' + thumbnail;
 		} catch (err) {
 			console.log(err);
