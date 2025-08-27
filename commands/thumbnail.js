@@ -25,7 +25,7 @@ module.exports = {
 
 			const realchannel = input[2] ?? channel;
 
-			let thumbnail = await got(`https://static-cdn.jtvnw.net/previews-ttv/live_user_${realchannel}-0x0.jpg`);
+			let thumbnail = (await got(`https://static-cdn.jtvnw.net/previews-ttv/live_user_${realchannel}-0x0.jpg`)).url;
 			
 			console.log(thumbnail);
 
