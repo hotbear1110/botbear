@@ -49,7 +49,7 @@ module.exports = {
 	
 				const ThreeLetterApiCall = await got.post('https://gql.twitch.tv/gql', {
 					headers: {
-	                    'Authorization': process.env.THREELETTERAPI_AUTH,
+						'Client-ID': process.env.THREELETTERAPI_CLIENTID,
 						'Content-Type': 'application/json',
 					},
 					body: JSON.stringify({
