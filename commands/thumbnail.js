@@ -61,9 +61,11 @@ module.exports = {
 				}
 	
 	            thumbnail = ThreeLetterApiCall["data"]["user"]["videoShelves"]["edges"][1]["node"]["items"][0]["previewThumbnailURL"];
+
+				return '[OFFLINE] | VOD Thumbnail: ' + thumbnail;
 			}
 						
-			return '[OFFLINE] | VOD Thumbnail: ' + thumbnail;
+			return thumbnail;
 		} catch (err) {
 			console.log(err);
 			return 'FeelsDankMan Error';
