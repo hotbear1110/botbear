@@ -25,9 +25,9 @@ module.exports = {
 
 			const realchannel = input[2] ?? channel;
 
-			let thumbnail = (await got(`https://static-cdn.jtvnw.net/previews-ttv/live_user_${realchannel}-0x0.jpg`)).url;
+			let thumbnail = (await got(`https://static-cdn.jtvnw.net/previews-ttv/live_user_${realchannel}.jpg`)).url;
 			
-			if (thumbnail === "https://static-cdn.jtvnw.net/ttv-static/404_preview-0x0.jpg") {
+			if (thumbnail === "https://static-cdn.jtvnw.net/ttv-static/404_preview.jpg") {
 				const query = `
 				query {
 	   					user(login:"${realchannel}") {
