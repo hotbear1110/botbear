@@ -25,45 +25,47 @@ module.exports = {
 
 			const realchannel = input[2] ?? channel;
 
-			const live_thumbnail = await got("https://static-cdn.jtvnw.net/previews-ttv/live_user_nymn-0x0.jpg").json();
-
+			let thumbnail = await got(`https://static-cdn.jtvnw.net/previews-ttv/live_user_${realchannel}-0x0.jpg`);
+			
 			console.log(live_thumbnail);
 
-			const query = `
-			query {
-   					user(login:"${realchannel}") {
-						videoShelves {
-	  						edges {
-		 						node {
-		 							items {
-		  								...on Video {
-											previewThumbnailURL(width:0 height:0)
-		   									}
-			 							}
-		  							}
-		  						}
-		 					}
-	   					}
-					}`;
-
-			const ThreeLetterApiCall = await got.post('https://gql.twitch.tv/gql', {
-				headers: {
-                    'Authorization': process.env.THREELETTERAPI_AUTH,
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({
-					query: query
-				}),
-			}).json();
-
-            
-			if (!ThreeLetterApiCall.data.user) {
-				return 'FeelsDankMan Something went wrong!';
+			if (thumbnail === "https://static-cdn.jtvnw.net/ttv-static/404_preview-0x0.jpg") {
+				const query = `
+				query {
+	   					user(login:"${realchannel}") {
+							videoShelves {
+		  						edges {
+			 						node {
+			 							items {
+			  								...on Video {
+												previewThumbnailURL(width:0 height:0)
+			   									}
+				 							}
+			  							}
+			  						}
+			 					}
+		   					}
+						}`;
+	
+				const ThreeLetterApiCall = await got.post('https://gql.twitch.tv/gql', {
+					headers: {
+	                    'Authorization': process.env.THREELETTERAPI_AUTH,
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						query: query
+					}),
+				}).json();
+	
+	            
+				if (!ThreeLetterApiCall.data.user) {
+					return 'FeelsDankMan Something went wrong!';
+				}
+	
+	            console.log(ThreeLetterApiCall);
+	            thumbnail = ThreeLetterApiCall["data"]["user"]["videoShelves"]["edges"][1]["node"]["items"][0]["previewThumbnailURL"];
 			}
-
-            console.log(ThreeLetterApiCall);
-            const thumbnail = ThreeLetterApiCall["data"]["user"]["videoShelves"]["edges"][1]["node"]["items"][0]["previewThumbnailURL"];
-							
+						
 			return '[OFFLINE] | VOD Thumbnail: ' + thumbnail;
 		} catch (err) {
 			console.log(err);
