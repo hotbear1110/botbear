@@ -54,10 +54,13 @@ module.exports = {
 						query: query
 					}),
 				}).json();
-	
+
+				if(!ThreeLetterApiCall.data.user.videoShelves) {
+					return `FeelsDankMan That user does not exist`
+				}
 	            
-				if (!ThreeLetterApiCall.data.user.videoShelves || !ThreeLetterApiCall["data"]["user"]["videoShelves"]["edges"].length) {
-					return `FeelsDankMan Unable to find any thumbnails for ${realchannel}`;
+				if (!ThreeLetterApiCall["data"]["user"]["videoShelves"]["edges"].length) {
+					return `FeelsDankMan That user is not live and does not have any VODs`;
 				}
 	
 	            thumbnail = ThreeLetterApiCall["data"]["user"]["videoShelves"]["edges"][1]["node"]["items"][0]["previewThumbnailURL"];
