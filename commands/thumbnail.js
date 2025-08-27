@@ -56,7 +56,7 @@ module.exports = {
 				}).json();
 	
 	            
-				if (!ThreeLetterApiCall.data.user.videoShelves) {
+				if (!ThreeLetterApiCall.data.user.videoShelves || !ThreeLetterApiCall["data"]["user"]["videoShelves"]["edges"].length) {
 					return `FeelsDankMan Unable to find any thumbnails for ${realchannel}`;
 				}
 	
