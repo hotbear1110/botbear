@@ -27,8 +27,6 @@ module.exports = {
 
 			let thumbnail = (await got(`https://static-cdn.jtvnw.net/previews-ttv/live_user_${realchannel}-0x0.jpg`)).url;
 			
-			console.log(thumbnail);
-
 			if (thumbnail === "https://static-cdn.jtvnw.net/ttv-static/404_preview-0x0.jpg") {
 				const query = `
 				query {
@@ -62,7 +60,6 @@ module.exports = {
 					return `FeelsDankMan Unable to find any thumbnails for ${realchannel}`;
 				}
 	
-	            console.log(ThreeLetterApiCall);
 	            thumbnail = ThreeLetterApiCall["data"]["user"]["videoShelves"]["edges"][1]["node"]["items"][0]["previewThumbnailURL"];
 			}
 						
