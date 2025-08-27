@@ -64,6 +64,12 @@ module.exports = {
 
 				return '[OFFLINE] | VOD Thumbnail: ' + thumbnail;
 			}
+
+			const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+			for (let i = 0; i < 5; i++) {
+				thumbnail += '?' + possible.charAt(Math.floor(Math.random() * possible.length));
+			}
 						
 			return thumbnail;
 		} catch (err) {
