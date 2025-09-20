@@ -18,7 +18,7 @@ module.exports = {
 			msg.replace(regex.invisChar, '');
 
             if (perm < 2000 && msg.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b|^\bkloy\b/gm)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
-				msg = '. ' + msg.charAt(0) + '\u{E0000}' + msg.substring(1);
+				msg = '. ' + msg.charAt(0) + '\u034f' + msg.substring(1);
 			}
 			if (msg.match(/^!/gm)) {
 				msg = '❗ ' + msg.replace('!', '');

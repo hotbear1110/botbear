@@ -791,7 +791,7 @@ exports.commandDisabled = async (command, channel) => {
  * @param { string } user 
  * @returns { string }
  */
-exports.unpingUser = (user) =>`${user[0]}\u{E0000}${user.slice(1)}`;
+exports.unpingUser = (user) =>`${user[0]}\u034f${user.slice(1)}`;
 
 /**
  * Fetch a list of chatters in a given chat.

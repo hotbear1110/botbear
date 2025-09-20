@@ -67,7 +67,7 @@ module.exports = {
 				if (message[1]) {
 					return `#${realchannel} ${realmessages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
 				}
-				return `nymnDank ${realmessages.displayName}'s last message in #${realchannel[0]}\u{E0000}${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
+				return `nymnDank ${realmessages.displayName}'s last message in #${realchannel[0]}\u034f${realchannel.slice(1)} was: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
 			}
 
 		} catch (err) {

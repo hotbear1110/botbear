@@ -37,7 +37,8 @@ module.exports = {
                 '\u{3164}',
                 '\u{34f}',
                 '\u{ad}',
-                '\u{ffa0}'
+                '\u{ffa0}',
+                '\u034f'
             ].join('|'), 'gmu');
 
             
@@ -66,7 +67,7 @@ module.exports = {
 			msg = msg.replace(regex.invisChar, '').replace(invisChar2, '');
 
             if (perm < 2000 && msg.match(/[&|$|/|.|?|-]|\bkb\b|^\bmelon\b/gm)) { // ignores &, $, kb, /, ., ?, !, - bot prefixes (. and / are twitch reserved prefixes)  
-				msg = '. ' + msg.charAt(0) + '\u{E0000}' + msg.substring(1);
+				msg = '. ' + msg.charAt(0) + '\u034f' + msg.substring(1);
 			}
 			if (msg.match(/^!/gm)) {
 				msg = '❗ ' + msg.replace('!', '');

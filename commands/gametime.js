@@ -31,7 +31,7 @@ module.exports = {
 
 				const ms = new Date().getTime() - oldgameTime;
 
-				return `#${realchannel[0]}\u{E0000}${realchannel.slice(1)} has been in the category: (${game}), for ${tools.humanizeDuration(ms)}`;
+				return `#${realchannel[0]}\u034f${realchannel.slice(1)} has been in the category: (${game}), for ${tools.humanizeDuration(ms)}`;
 			}
 			return `#${realchannel}'s current game is: (${game})`;
 		} catch (err) {

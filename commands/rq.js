@@ -74,7 +74,7 @@ module.exports = {
 				if (message[1]) {
 					return `#${realchannel} ${rl.messages[0].displayName}: ${message[0]}... - (${tools.humanizeDuration(timeago)} ago)`;
 				}
-				return `#${realchannel[0]}\u{E0000}${realchannel.slice(1)} ${realmessages.displayName}: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
+				return `#${realchannel[0]}\u034f${realchannel.slice(1)} ${realmessages.displayName}: ${message} - (${tools.humanizeDuration(timeago)} ago)`;
 			}
 
 		} catch (err) {
