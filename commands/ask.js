@@ -168,7 +168,8 @@ module.exports = {
 
 			try {
 				const response = await got.post(url, { json: params, headers: headers }).json();
-				const output = `${msg}${response.choices[0].message.content}`
+				const response_content = (demo2) ? response.outputs[0].content : response.choices[0].message.content;
+				const output = `${msg}${response_content}`
 					.substring(msg.length)
 					.replace(URL, '$1[DOMAIN]$3$4$5');
 
