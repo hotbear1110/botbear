@@ -170,10 +170,12 @@ module.exports = {
 				const response = await got.post(url, { json: params, headers: headers, timeout: { request: 60000 } }).json();
 				let response_content = '';
 
+				console.log(JSON.stringify(response))
+
 				if (demo2) {
 					for (const output of response.outputs) {
 						if (output.type === 'message.output') {
-							if (output.content instanceof String) {
+							if (typeof output.content === 'string') {
 								response_content += output.content;
 							} else {
 								for (const message of output.content) {
