@@ -23,6 +23,8 @@ module.exports = {
 
 			const demo = input.includes('demo:true');
 
+			const demo2 = input.includes('demo2:true');
+
 			let bannedPhrases = /\brac(?:ist[sm]?|e)\b/gi;
 
 			const stringmessage = input.join(' ');
@@ -35,6 +37,8 @@ module.exports = {
 			let msg = input.join(' ');
 
 			let params;
+
+			let url = 'https://api.mistral.ai/v1/chat/completions';
 
 			if (demo) {
 				msg = msg.replaceAll('demo:true', '');
@@ -125,6 +129,18 @@ module.exports = {
 						}
 					]
 				};
+			} else if (demo2) {
+				params = {
+							"agent_id": "ag_019bc8824029723b85ab43c400ed6d6e",
+							"inputs": [
+								{
+									"role": "user",
+									"content": msg
+								}
+							]
+						};
+				url = 'https://api.mistral.ai/v1/conversations';
+
 			} else {
 				params = {
 					'model': 'pixtral-large-latest',
@@ -145,8 +161,6 @@ module.exports = {
 					]
 				};
 			}
-
-			const url = 'https://api.mistral.ai/v1/chat/completions';
 
 			const headers = {
 				'Authorization': `Bearer ${process.env.MISTRAL_API_KEY}`,
