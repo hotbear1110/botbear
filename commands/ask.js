@@ -173,9 +173,13 @@ module.exports = {
 				if (demo2) {
 					for (const output of response.outputs) {
 						if (output.type === 'message.output') {
-							for (const message of output.content) {
-								if (message.type === 'text') {
-									response_content += message.text;
+							if (output.content instanceof String) {
+								response_content += output.content;
+							} else {
+								for (const message of output.content) {
+									if (message.type === 'text') {
+										response_content += message.text;
+									}
 								}
 							}
 						}
