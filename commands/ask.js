@@ -167,7 +167,7 @@ module.exports = {
 			};
 
 			try {
-				const response = await got.post(url, { json: params, headers: headers }).json();
+				const response = await got.post(url, { json: params, headers: headers, timeout: { request: 60000 } }).json();
 				let response_content = '';
 
 				if (demo2) {
