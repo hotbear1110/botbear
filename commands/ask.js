@@ -168,7 +168,23 @@ module.exports = {
 
 			try {
 				const response = await got.post(url, { json: params, headers: headers }).json();
-				const response_content = (demo2) ? response.outputs[response.outputs.length - 1].content : response.choices[0].message.content;
+				let response_content = '';
+
+				if (demo2) {
+					for (const output of response.outputs) {
+						if (output.type === 'message.output') {
+							for (const message of output.content) {
+								if (message.type === 'text') {
+									response_content += message.text;
+								}
+							}
+						}
+					}
+				} else {
+					response_content = response.choices[0].message.content;
+				}
+
+
 				const output = `${msg}${response_content}`
 					.substring(msg.length)
 					.replace(URL, '$1[DOMAIN]$3$4$5');
