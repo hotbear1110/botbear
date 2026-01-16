@@ -130,6 +130,8 @@ module.exports = {
 					]
 				};
 			} else if (demo2) {
+				msg = msg.replaceAll('demo2:true', '');
+
 				params = {
 							"agent_id": "ag_019bc8824029723b85ab43c400ed6d6e",
 							"inputs": [
