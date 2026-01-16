@@ -7,7 +7,7 @@ const sql = require('./../sql/index.js');
 module.exports = {
 	name: 'ask',
 	ping: true,
-	description: 'Ask botbear any question and it will tell you the answer! - The cooldown on this is 2 min.',
+	description: 'Ask botbear any question and it will tell you the answer!',
 	permission: 100,
 	cooldown: 5,
 	category: 'Random command',
