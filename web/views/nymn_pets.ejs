@@ -13,8 +13,8 @@
     <div class="pet-info">
     <h1>Chat's Pets</h1>
     <p>This is a collection of images of chat's pets.</p>
-    <p>You can add your own pets either by submitting them on the discord, asking @NinaTurbo or by using the command: bb pet add</p>
-    <p>Example: bb pet add user:"yabbe" pet:"Cat" name:"Minus" link:"Link To Image"'</p>
+    <p>You can add your own pets by asking @HotBear1110</p>
+    <p>Example: bb pet add user:"nymn" pet:"Cat" name:"Apollo" link:"Link To Image"'</p>
 </div>
     <div class="pets">
 
@@ -45,7 +45,7 @@
         <% if (current == 1) { %>
             <a class="disabled">First</a>
         <% } else { %>
-            <a href="/pets/yabbe/1">First</a>
+            <a href="/pets/nymn/1">First</a>
         <% } %>
         <% let i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
         <% if (i !== 1) { %>
@@ -55,7 +55,7 @@
             <% if (i == current) { %>
                 <a class="active"><%= i %></a>
             <% } else { %>
-                <a href="/pets/yabbe/<%= i %>"><%= i %></a>
+                <a href="/pets/nymn/<%= i %>"><%= i %></a>
             <% } %>
             <% if (i == Number(current) + 4 && i < pages) { %>
                 <a class="disabled">...</a>
@@ -64,7 +64,7 @@
         <% if (current == pages) { %>
             <a class="disabled">Last</a>
         <% } else { %>
-            <a href="/pets/yabbe/<%= pages %>">Last</a>
+            <a href="/pets/nymn/<%= pages %>">Last</a>
         <% } %>
         </div>
 <% } %>
