@@ -3,7 +3,7 @@ const sql = require('./../../sql/index.js');
 module.exports = {
 	name: 'pet',
 	ping: true,
-	description: 'Shows an image of a pet from a random chatter | Images: https://hotbear.org/pets/yabbe/',
+	description: 'Shows an image of a pet from a random chatter | Images: https://hotbear.org/pets/yabbe/ | https://hotbear.org/pets/nymn/',
 	permission: 100,
 	cooldown: 1800, //in seconds
 	category: 'channelSpecific command',
@@ -11,7 +11,7 @@ module.exports = {
 	showDelay: false,
 	noBanphrase: true,
 	channelSpecific: true,
-	activeChannel: ['yabbe'],
+	activeChannel: ['yabbe', 'nymn'],
 	// eslint-disable-next-line no-unused-vars
 	execute: async (channel, user, input, perm, aliascommand) => {
 		try {
@@ -29,13 +29,13 @@ module.exports = {
 						return 'Only mods can use this command';
 					}
 
-					let isBanned = (await sql.Query('SELECT * FROM Yabbe_bans WHERE Command=? AND User=?', ['pet', user.username.toLowerCase()]));
+					let isBanned = (await sql.Query(`SELECT * FROM ${channel.toLowerCase()}_bans WHERE Command=? AND User=?`, ['pet', user.username.toLowerCase()]));
 
 					if (isBanned.length) {
 						return;
 					}
 
-					let id = (await sql.Query('SELECT ID FROM Yabbe_pet'));
+					let id = (await sql.Query(`SELECT ID FROM ${channel.toLowerCase()}_pet`));
 
 					id = id[id.length - 1].ID + 1;
 
@@ -54,7 +54,7 @@ module.exports = {
 						return 'Unexpected unput - Example: bb pet add user:"NymN" pet:"Cat" name:"Apollo" link:"Link To Image"';
 					}
 
-					await sql.Query(`INSERT INTO Yabbe_pet 
+					await sql.Query(`INSERT INTO ${channel.toLowerCase()}_pet 
         			(ID, User, Pet, Pet_name, Image) 
             			values 
         			(?, ?, ?, ?, ?)`,
@@ -84,13 +84,13 @@ module.exports = {
 						return '3rd input should be a number';
 					}
 
-					const pet = await sql.Query('SELECT * FROM Yabbe_pet WHERE ID=?', [input[3]]);
+					const pet = await sql.Query(`SELECT * FROM ${channel.toLowerCase()}_pet WHERE ID=?`, [input[3]]);
 
 					if (!pet.length) {
 						return 'No pet entry with id: ' + input[3];
 					}
 
-					await sql.Query('DELETE FROM Yabbe_pet WHERE ID=?', [input[3]]);
+					await sql.Query(`DELETE FROM ${channel.toLowerCase()}_pet WHERE ID=?`, [input[3]]);
 
 					return `Deleted pet image: ID: ${pet[0].ID} | User: ${pet[0].User} | Pet: ${pet[0].Pet} | Pet Name: ${pet[0].Pet_name} | Image: ${pet[0].Image} `;
 				}
@@ -102,13 +102,13 @@ module.exports = {
 						return 'Only mods can use this command';
 					}
 
-					let isBanned = (await sql.Query('SELECT * FROM Yabbe_bans WHERE Command=? AND User=?', ['pet', input[3].toLowerCase()]));
+					let isBanned = (await sql.Query(`SELECT * FROM ${channel.toLowerCase()}_bans WHERE Command=? AND User=?`, ['pet', input[3].toLowerCase()]));
 
 					if (isBanned.length) {
 						return 'That user is already banned';
 					}
 
-					await sql.Query(`INSERT INTO Yabbe_bans 
+					await sql.Query(`INSERT INTO ${channel.toLowerCase()}_bans 
         			(Command, User) 
             			values 
         			(?, ?)`,
@@ -125,13 +125,13 @@ module.exports = {
 						return 'Only mods can use this command';
 					}
 					
-					let isBanned = (await sql.Query('SELECT * FROM Yabbe_bans WHERE Command=? AND User=?', ['pet', input[3].toLowerCase()]));
+					let isBanned = (await sql.Query(`SELECT * FROM ${channel.toLowerCase()}_bans WHERE Command=? AND User=?`, ['pet', input[3].toLowerCase()]));
 
 					if (!isBanned.length) {
 						return 'That user is not banned';
 					}
 
-					await sql.Query(`DELETE FROM Yabbe_bans 
+					await sql.Query(`DELETE FROM ${channel.toLowerCase()}_bans 
         			WHERE Command=? AND User=?`,
 				['pet', input[3].toLowerCase()]
 				);
@@ -139,7 +139,7 @@ module.exports = {
 					return `@${input[3]} Is now unbanned from adding pets`;
 				}
 				default: {
-					let pets = await sql.Query('SELECT * FROM Yabbe_pet',);
+					let pets = await sql.Query(`SELECT * FROM ${channel.toLowerCase()}_pet`,);
 
 /*
 					let users = [];

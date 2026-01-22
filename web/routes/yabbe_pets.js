@@ -1,6 +1,6 @@
 module.exports = (function () {
     const router = require('express').Router();
-    const sql = require('./../../sql/index.js');
+    const sql = require('../../sql/index.js');
 
     /* /suggestions */
     router.get('/(:page)?', async (req, res) => {
@@ -13,7 +13,7 @@ module.exports = (function () {
     
         pets = pets.slice((perPage * page) - perPage, perPage * page);
 
-        res.render('pets', {
+        res.render('yabbe_pets', {
             pets: pets,
             current: page,
             pages: Math.ceil(count / perPage)
