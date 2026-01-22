@@ -4,7 +4,7 @@ module.exports = (function () {
 
     /* /suggestions */
     router.get('/(:page)?', async (req, res) => {
-        let pets = await sql.Query('SELECT * FROM Yabbe_pet',);
+        let pets = await sql.Query('SELECT * FROM yabbe_pet',);
 
         let perPage = 20;
         let page = req.params.page || 1;
