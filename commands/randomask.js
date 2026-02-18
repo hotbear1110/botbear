@@ -20,7 +20,7 @@ module.exports = {
 			input.shift();
 			input.shift();
 
-			const msg = input.toString();
+			const msg = input.toString().replaceAll(',', ' ');
 			
             const prompts = await sql.Query(`SELECT Response FROM Ask WHERE Response LIKE "%${msg}%"`,);
 
