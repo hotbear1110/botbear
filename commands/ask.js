@@ -141,7 +141,7 @@ module.exports = {
 								}
 							]
 						};
-				url = 'https://api.mistral.ai/v1/conversations';
+				url = 'https://api.mistral.ai/v1/conversations/conv_019c915c4e8e7639aedf5f7b9d35a51c';
 
 			} else {
 				params = {
