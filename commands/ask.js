@@ -133,13 +133,11 @@ module.exports = {
 				msg = msg.replaceAll('demo2:true', '');
 
 				params = {
-							"agent_id": "ag_019bc8824029723b85ab43c400ed6d6e",
-							"inputs": [
-								{
-									"role": "user",
-									"content": msg
-								}
-							]
+							//"agent_id": "ag_019bc8824029723b85ab43c400ed6d6e",
+							"inputs": msg,
+							"stream": false,
+							"store": true,
+							"handoff_execution": "server"
 						};
 				url = 'https://api.mistral.ai/v1/conversations/conv_019c915c4e8e7639aedf5f7b9d35a51c';
 
